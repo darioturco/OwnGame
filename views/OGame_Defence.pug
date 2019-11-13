@@ -1,0 +1,294 @@
+doctype html
+head
+  meta(http-equiv='Content-Type' content='text/html; charset=UTF-8')
+  meta(http-equiv='Language' content='en')
+  meta(name='ogame-timestamp' content='1572884151')
+  meta(name='ogame-universe-name' content='')
+  meta(name='ogame-universe-speed' content='6')
+  meta(name='ogame-universe-speed-fleet' content='2')
+  meta(name='ogame-language' content='en')
+  meta(name='ogame-donut-galaxy' content='1')
+  meta(name='ogame-donut-system' content='1')
+  meta(name='ogame-player-id' content='106077')
+  meta(name='ogame-player-name' content='dturco')
+  meta(name='ogame-planet-id' content='33655142')
+  meta(name='ogame-planet-name' content='Planeta Principal')
+  meta(name='ogame-planet-coordinates' content='2:289:4')
+  meta(name='ogame-planet-type' content='planet')
+  link(rel='stylesheet' type='text/css' href='./Css/General_Style.css' media='screen')
+  link(rel='shortcut icon' type='image/x-icon' href='Imagenes/Favicon.ico')
+  script(src='./Scripts/General_Player.js')
+  script(src='./Scripts/Description.js')
+  title OGame
+body#defense
+  .contentBoxBody
+    #box
+      // TOP MENU
+      #info.header.normal
+        #clearAdvice
+        #bar
+          ul
+            li#playerName
+              | Player:
+              span.textBeefy
+                a.textBeefy(href='./Player.html') dturco
+            li
+              span (2255)
+              a(href='./Highscore.html') Highscore
+            li
+              a(href='./Vacas.html') Vacas
+            li
+              a(href='./Search.html') Search
+            li
+              a(href='./Options.html') Options
+            li
+              a(href='./GodMain.html') God Mode
+            li.OGameClock 07.12.2019 16:17:18
+        ul#resources
+          li#metal_box.metal
+            .resourceIcon.metal
+            span.value
+              span#resources_metal 500
+          li#crystal_box.crystal
+            .resourceIcon.crystal
+            span.value
+              span#resources_crystal 500
+          li#deuterium_box.deuterium
+            .resourceIcon.deuterium
+            span.value
+              span#resources_deuterium 200
+          li#energy_box.energy
+            .resourceIcon.energy
+            span.value
+              span#resources_energy 31
+          li#darkmatter_box.darkmatter.dark_highlight_tablet
+            img(src='./Imagenes/Dark_matter.gif')
+            span.value
+              span#resources_darkmatter 0
+        #message-wrapper
+          // Notificaciones de mensajes y flotas
+          a.comm_menu.messages(href='./Ogame_messages.html')
+            span.new_msg_count.totalMessages.noMessage.news(data-new-messages='0') 0
+            // Mensajes
+          a.comm_menu.chat(href='./Vacas.html')
+            span.new_msg_count.totalChatMessages.noMessage(data-new-messages='0') 0
+            // Chat
+          #messages_collapsed
+            #eventboxFilled.eventToggle(style='display: none;')
+              a#js_eventDetailsClosed(href='javascript:void(0);' title='More details')
+              a#js_eventDetailsOpen.open(href='javascript:void(0);' title='Less detail')
+            #eventboxLoading.textCenter.textBeefy(style='display: none;')
+              img(height='16' width='16' src='./Imagenes/Loading.gif')
+              | load...
+            #eventboxBlank.textCenter(style='') No fleet movement
+          #attack_alert.eventToggle.noAttack
+            // <a href="https://s163-en.ogame.gameforge.com/game/index.php?page=eventList"></a>
+            a(href='javascript:void(0);')
+          br.clearfloat
+        #helper
+          a.highlight.Close(href='./OGame_Reward.html') ?
+        #selectedPlanetName.textCenter Planeta Principal
+      #toolbarcomponent
+        // LEFTMENU
+        #links
+          ul#menuTable.leftmenu
+            li
+              span.menu_icon
+                a(href='./Ogame_Reward.html' target='_self')
+                  .menuImage.overview
+              a.menubutton(href='./Ogame_Overview.html' target='_self')
+                span.textlabel Overview
+            li
+              span.menu_icon
+                a(href='./Ogame_ResourceSetings.html' target='_self')
+                  .menuImage.resources
+              a.menubutton(href='./Ogame_Resources.html' target='_self')
+                span.textlabel Resources
+            li
+              span.menu_icon
+                .menuImage.station
+              a.menubutton(href='./Ogame_Facilities.html' target='_self')
+                span.textlabel Facilities
+            li
+              span.menu_icon
+                a.overlay.Right(href='./Ogame_Tecnology.html' target='_blank')
+                  .menuImage.research
+              a.menubutton(href='./Ogame_Research.html' target='_self')
+                span.textlabel Research
+            li
+              span.menu_icon
+                .menuImage.shipyard
+              a.menubutton(href='./Ogame_Shipyard.html' target='_self')
+                span.textlabel Shipyard
+            li
+              span.menu_icon
+                .menuImage.defense.highlighted
+              a.menubutton.selected(href='./Ogame_Defence.html' target='_self')
+                span.textlabel Defence
+            li
+              span.menu_icon
+                a(href='./Ogame_Movement.html' target='_self')
+                  .menuImage.fleet1
+              a.menubutton(href='./Ogame_Fleet.html' target='_self')
+                span.textlabel Fleet
+            li
+              span.menu_icon
+                .menuImage.galaxy
+              a.menubutton(href='./Ogame_Galaxy.html' target='_self')
+                span.textlabel Galaxy
+          br.clearfloat
+      #contentWrapper
+        // CONTENT AREA
+        #inhalt
+          #planet(style='background-image:url(./Imagenes/Shipyard/Defence.jpg)')
+            #header_text
+              h2 Defence - Planeta Principal
+            form(method='POST' action='' name='form')
+              #detail.detail_screen
+                #defense_403_large.pic
+                  a.techtree_link.tooltip.overlay(href='./Ogame_Tecnology.html')
+                    .techtree_img
+                    span.label Techtree
+                #content
+                  h2 Heavy Laser
+                  a#close.close_details(href='javascript:void(0);' onclick='toggleDescription(-1);return false;')
+                  span.level
+                    | Number: 0
+                    span.undermark
+                  br.clearfloat
+                  ul.production_info.narrow
+                    li
+                      | Production duration
+                      span#buildDuration.time
+                        | 4m 34s
+                        span.undermark
+                    li
+                      | Construction possible:
+                      span#possibleInTime.time now
+                  .enter
+                    p.amount Number:
+                    .clearfix.maxlink_wrap
+                      input#number.amount_input(type='text' pattern='[0-9,.]*' size='5' name='menge' value='')
+                      .maxlink_arrow
+                      a#maxlink.tooltip(href='javascript:void(0);' onclick="document.forms['form'].menge.value = 4;") [max. 4]
+                  .costs_wrap
+                    p.costs_info Costs per piece:
+                    ul#costs
+                      li.metal.tooltip
+                        .resourceIcon.metal
+                        .cost 6.000
+                      li.crystal.tooltip
+                        .resourceIcon.crystal
+                        .cost 2.000
+                  .build-it_wrap
+                    .premium_info_placeholder
+                    a.build-it(href='javascript:void(0);')
+                      span Build
+                br(clear='all')
+                #description
+                  .txt_box
+                    a.tooltip.help.overlay(href='./Ogame_Tecnology.html')
+                    p.description_txt(style='width: 90%') The heavy laser is the logical development of the light laser.
+          .c-left
+          .c-right
+          #buttonz
+            .header
+              h2 Defensive structures
+            .content
+              ul#defensebuilding
+                li#defense1.on
+                  .item_box.defense401
+                    .buildingimg
+                      a#details401.detail_button.tooltip.slideIn(onclick='toggleDescription(51);return false;' href='javascript:void(0);')
+                        span.ecke
+                          span.level
+                            span.textlabel Rocket Launcher
+                            | 0
+                li#defense2.on
+                  .item_box.defense402
+                    .buildingimg
+                      a#details402.detail_button.tooltip.slideIn(onclick='toggleDescription(52);return false;' href='javascript:void(0);')
+                        span.ecke
+                          span.level
+                            span.textlabel Light Laser
+                            | 0
+                li#defense3.on
+                  .item_box.defense403
+                    .buildingimg
+                      a#details403.detail_button.tooltip.slideIn(onclick='toggleDescription(53);return false;' href='javascript:void(0);')
+                        span.ecke
+                          span.level
+                            span.textlabel Heavy Laser
+                            | 0
+                li#defense4.on
+                  .item_box.defense404
+                    .buildingimg
+                      a#details404.detail_button.tooltip.slideIn(onclick='toggleDescription(54);return false;' href='javascript:void(0);')
+                        span.ecke
+                          span.level
+                            span.textlabel Gauss Cannon
+                            | 0
+                li#defense5.on
+                  .item_box.defense405
+                    .buildingimg
+                      a#details405.detail_button.tooltip.slideIn(onclick='toggleDescription(55);return false;' href='javascript:void(0);')
+                        span.ecke
+                          span.level
+                            span.textlabel Ion Cannon
+                            | 0
+                li#defense6.on
+                  .item_box.defense406
+                    .buildingimg
+                      a#details406.detail_button.tooltip.slideIn(onclick='toggleDescription(56);return false;' href='javascript:void(0);')
+                        span.ecke
+                          span.level
+                            span.textlabel Plasma Turret
+                            | 0
+                li#defense7.on
+                  .item_box.defense407
+                    .buildingimg
+                      a#details407.detail_button.tooltip.slideIn(onclick='toggleDescription(57);return false;' href='javascript:void(0);')
+                        span.ecke
+                          span.level
+                            span.textlabel Small Shield Dome
+                            | 0
+                li#defense8.on
+                  .item_box.defense408
+                    .buildingimg
+                      a#details408.detail_button.tooltip.slideIn(onclick='toggleDescription(58);return false;' href='javascript:void(0);')
+                        span.ecke
+                          span.level
+                            span.textlabel Large Shield Dome
+                            | 0
+                li#defense9.on
+                  .item_box.defense502
+                    .buildingimg
+                      a#details502.detail_button.tooltip.slideIn(onclick='toggleDescription(59);return false;' href='javascript:void(0);')
+                        span.ecke
+                          span.level
+                            span.textlabel Anti-Ballistic Missiles
+                            | 0
+                li#defense10.on
+                  .item_box.defense503
+                    .buildingimg
+                      a#details503.detail_button.tooltip.slideIn(onclick='toggleDescription(60);return false;' href='javascript:void(0);')
+                        span.ecke
+                          span.level
+                            span.textlabel Interplanetary Missiles
+                            | 0
+              br.clearfloat
+              .footer
+      #rechts
+        // RIGHTMENU
+        #norm
+          #myWorlds
+            #countColonies
+              p.textCenter
+                span 1/1
+                |  Planets
+            #planetList
+              #planet-33655142.smallplanet
+                a.planetlink.Right.Close(href='https://s163-en.ogame.gameforge.com/game/index.php?page=overview&cp=33655142')
+                  img.planetPic.js_replace2x(alt='Planet' src='./Imagenes/Planets/Planet_1.png' width='48' height='48')
+                  span.planet-name Planeta Principal
+                  span.planet-koords [2:289:4]

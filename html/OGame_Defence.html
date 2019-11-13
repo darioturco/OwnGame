@@ -1,0 +1,379 @@
+<!DOCTYPE html><html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Language" content="en">
+  <meta name="ogame-timestamp" content="1572884151">
+  <meta name="ogame-universe-name" content="">
+  <meta name="ogame-universe-speed" content="6">
+  <meta name="ogame-universe-speed-fleet" content="2">
+  <meta name="ogame-language" content="en">
+  <meta name="ogame-donut-galaxy" content="1">
+  <meta name="ogame-donut-system" content="1">
+  <meta name="ogame-player-id" content="106077">
+  <meta name="ogame-player-name" content="dturco">
+  <meta name="ogame-planet-id" content="33655142">
+  <meta name="ogame-planet-name" content="Planeta Principal">
+  <meta name="ogame-planet-coordinates" content="2:289:4">
+  <meta name="ogame-planet-type" content="planet">
+  <link rel="stylesheet" type="text/css" href="./Css/General_Style.css" media="screen" />
+  
+  <link rel="shortcut icon" type="image/x-icon" href="Imagenes/Favicon.ico" />
+  <script src="./Scripts/General_Player.js"></script>
+  <script src="./Scripts/Description.js"></script>
+  <title>OGame</title>
+</head>
+<body id="defense">
+  <div class="contentBoxBody">
+    <div id="box"> <!-- TOP MENU -->
+      <div id="info" class="header normal">
+        <div id="clearAdvice"></div>
+        <div id="bar">
+          <ul>
+            <li id="playerName">Player: <span class="textBeefy"><a href="./Player.html" class="textBeefy">dturco</a></span></li>
+            <li><span>(2255)</span><a href="./Highscore.html">Highscore</a></li>
+            <li><a class="" href="./Vacas.html">Vacas</a></li>
+            <li><a class="" href="./Search.html">Search</a></li>
+            <li><a href="./Options.html">Options</a></li>
+            <li><a href="./GodMain.html">God Mode</a></li>
+            <li class="OGameClock">07.12.2019 16:17:18</li>
+          </ul>
+        </div>
+        <ul id="resources">
+    	    <li id="metal_box" class="metal">
+            <div class="resourceIcon metal"></div>
+            <span class="value"><span id="resources_metal" class="">500</span></span>
+          </li>
+    	    <li id="crystal_box" class="crystal">
+            <div class="resourceIcon crystal"></div>
+            <span class="value"><span id="resources_crystal" class="">500</span></span>
+          </li>
+    	    <li id="deuterium_box" class="deuterium">
+            <div class="resourceIcon deuterium"></div>
+            <span class="value"><span id="resources_deuterium" class="">200</span></span>
+          </li>
+    	    <li id="energy_box" class="energy">
+            <div class="resourceIcon energy"></div>
+            <span class="value"><span id="resources_energy" class="">31</span></span>
+          </li>
+    	    <li id="darkmatter_box" class="darkmatter dark_highlight_tablet">
+            <img src="./Imagenes/Dark_matter.gif">
+            <span class="value"><span id="resources_darkmatter" class="">0</span></span>
+          </li>
+        </ul>
+      <div id="message-wrapper"><!-- Notificaciones de mensajes y flotas -->
+        <a class="comm_menu messages" href="./Ogame_messages.html">
+          <span class="new_msg_count totalMessages noMessage news" data-new-messages="0">0</span> <!-- Mensajes -->
+        </a>
+        <a class="comm_menu chat" href="./Vacas.html">
+          <span class="new_msg_count totalChatMessages noMessage" data-new-messages="0">0</span> <!-- Chat -->
+        </a>
+        <div id="messages_collapsed">
+          <div id="eventboxFilled" class="eventToggle" style="display: none;">
+            <a id="js_eventDetailsClosed" class="" href="javascript:void(0);" title="More details"></a>
+            <a id="js_eventDetailsOpen" class="open" href="javascript:void(0);" title="Less detail"></a>
+          </div>
+          <div id="eventboxLoading" class="textCenter textBeefy" style="display: none;">
+            <img height="16" width="16" src="./Imagenes/Loading.gif">load...
+          </div>
+          <div id="eventboxBlank" class="textCenter" style="">No fleet movement</div>
+        </div>
+        <div id="attack_alert" class="eventToggle noAttack">
+          <!-- <a href="https://s163-en.ogame.gameforge.com/game/index.php?page=eventList"></a> -->
+          <a href="javascript:void(0);"></a>
+        </div>
+        <br class="clearfloat">
+      </div>
+      <div id="helper">
+        <a class="highlight  Close" href="./OGame_Reward.html">?</a>
+      </div>
+      <div id="selectedPlanetName" class="textCenter">Planeta Principal</div>
+    </div>
+    <div id="toolbarcomponent"><!-- LEFTMENU -->
+      <div id="links">
+        <ul id="menuTable" class="leftmenu">
+          <li>
+            <span class="menu_icon">
+              <a href="./Ogame_Reward.html" class="" target="_self">
+                <div class="menuImage overview"></div>
+              </a>
+            </span>
+            <a class="menubutton" href="./Ogame_Overview.html" target="_self">
+              <span class="textlabel">Overview</span>
+            </a>
+          </li>
+          <li>
+            <span class="menu_icon">
+              <a href="./Ogame_ResourceSetings.html" class="" target="_self">
+                <div class="menuImage resources"></div>
+              </a>
+            </span>
+            <a class="menubutton" href="./Ogame_Resources.html" target="_self">
+              <span class="textlabel">Resources</span>
+            </a>
+          </li>
+          <li>
+            <span class="menu_icon">
+              <div class="menuImage station"></div>
+            </span>
+            <a class="menubutton" href="./Ogame_Facilities.html" target="_self">
+              <span class="textlabel">Facilities</span>
+            </a>
+          </li>
+          <li>
+            <span class="menu_icon">
+              <a href="./Ogame_Tecnology.html" class="overlay Right" target="_blank">
+                <div class="menuImage research"></div>
+              </a>
+            </span>
+            <a class="menubutton " href="./Ogame_Research.html" target="_self">
+              <span class="textlabel">Research</span>
+            </a>
+          </li>
+          <li>
+            <span class="menu_icon">
+              <div class="menuImage shipyard"></div>
+            </span>
+            <a class="menubutton " href="./Ogame_Shipyard.html" target="_self">
+              <span class="textlabel">Shipyard</span>
+            </a>
+          </li>
+          <li>
+            <span class="menu_icon">
+              <div class="menuImage defense highlighted"></div>
+            </span>
+            <a class="menubutton selected" href="./Ogame_Defence.html" target="_self">
+              <span class="textlabel">Defence</span>
+            </a>
+          </li>
+          <li>
+            <span class="menu_icon">
+              <a href="./Ogame_Movement.html" class="" target="_self">
+                <div class="menuImage fleet1"></div>
+              </a>
+            </span>
+            <a class="menubutton " href="./Ogame_Fleet.html" target="_self">
+              <span class="textlabel">Fleet</span>
+            </a>
+          </li>
+          <li>
+            <span class="menu_icon">
+              <div class="menuImage galaxy"></div>
+            </span>
+            <a class="menubutton " href="./Ogame_Galaxy.html" target="_self">
+              <span class="textlabel">Galaxy</span>
+            </a>
+          </li>
+        </ul>
+        <br class="clearfloat">
+      </div>
+    </div>
+    <div id="contentWrapper"><!-- CONTENT AREA -->
+      <div id="inhalt">
+        <div id="planet" style="background-image:url(./Imagenes/Shipyard/Defence.jpg)">
+          <div id="header_text">
+            <h2>Defence - Planeta Principal</h2>
+          </div>
+          <form method="POST" action="" name="form">
+            <div id="detail" class="detail_screen">
+              <div id="defense_403_large" class="pic">
+                <a href="./Ogame_Tecnology.html" class="techtree_link tooltip overlay">
+                  <div class="techtree_img"></div>
+                  <span class="label">Techtree</span>
+                </a>
+              </div>
+              <div id="content">
+                <h2>Heavy Laser</h2>
+                <a id="close" class="close_details" href="javascript:void(0);" onClick="toggleDescription(-1);return false;"></a>
+                <span class="level">Number: 0<span class="undermark"></span></span>
+                <br class="clearfloat">
+                <ul class="production_info narrow">
+                  <li>
+                    Production duration<span class="time" id="buildDuration">4m 34s<span class="undermark"></span></span>
+                  </li>
+                  <li>
+                    Construction possible: <span class="time" id="possibleInTime">now</span>
+                  </li>
+                </ul>
+                <div class="enter">
+                  <p class="amount">Number:</p>
+                  <div class="clearfix maxlink_wrap">
+                    <input id="number" type="text" class="amount_input" pattern="[0-9,.]*" size="5" name="menge" value="">
+                    <div class="maxlink_arrow"></div>
+                    <a id="maxlink" class="tooltip" href="javascript:void(0);" onclick="document.forms['form'].menge.value = 4;">[max. 4]</a>
+                  </div>
+                </div>
+                <div class="costs_wrap">
+                  <p class="costs_info">Costs per piece:</p>
+                  <ul id="costs">
+                    <li class="metal tooltip">
+                      <div class="resourceIcon metal"></div>
+                      <div class="cost ">6.000</div>
+                    </li>
+                    <li class="crystal tooltip">
+                      <div class="resourceIcon crystal"></div>
+	                    <div class="cost ">2.000</div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="build-it_wrap">
+                  <div class="premium_info_placeholder"></div>
+                  <a class="build-it" href="javascript:void(0);">
+                    <span>Build</span>
+                  </a>
+                </div>
+              </div>
+              <br clear="all">
+              <div id="description">
+                <div class="txt_box  ">
+                  <a class="tooltip help overlay" href="./Ogame_Tecnology.html"></a>
+                  <p class="description_txt" style="width: 90%">The heavy laser is the logical development of the light laser.</p>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="c-left"></div>
+        <div class="c-right"></div>
+        <div id="buttonz">
+          <div class="header">
+            <h2>Defensive structures</h2>
+          </div>
+          <div class="content">
+            <ul id="defensebuilding">
+              <li id="defense1" class="on">
+                <div class="item_box defense401">
+                  <div class="buildingimg">
+                    <a class="detail_button tooltip slideIn" id="details401" onClick="toggleDescription(51);return false;" href="javascript:void(0);">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Rocket Launcher</span>0</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li id="defense2" class="on">
+                <div class="item_box defense402">
+                  <div class="buildingimg">
+                    <a class="detail_button tooltip slideIn" id="details402" onClick="toggleDescription(52);return false;" href="javascript:void(0);">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Light Laser</span>0</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li id="defense3" class="on">
+                <div class="item_box defense403">
+                  <div class="buildingimg">
+                    <a class="detail_button tooltip slideIn" id="details403" onClick="toggleDescription(53);return false;" href="javascript:void(0);">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Heavy Laser</span>0</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li id="defense4" class="on">
+                <div class="item_box defense404">
+                  <div class="buildingimg">
+                    <a class="detail_button tooltip slideIn" id="details404" onClick="toggleDescription(54);return false;" href="javascript:void(0);">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Gauss Cannon</span>0</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li id="defense5" class="on">
+                <div class="item_box defense405">
+                  <div class="buildingimg">
+                    <a class="detail_button tooltip slideIn" id="details405" onClick="toggleDescription(55);return false;" href="javascript:void(0);">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Ion Cannon</span>0</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li id="defense6" class="on">
+                <div class="item_box defense406">
+                  <div class="buildingimg">
+                    <a class="detail_button tooltip slideIn" id="details406" onClick="toggleDescription(56);return false;" href="javascript:void(0);">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Plasma Turret</span>0</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li id="defense7" class="on">
+                <div class="item_box defense407">
+                  <div class="buildingimg">
+                    <a class="detail_button tooltip slideIn" id="details407" onClick="toggleDescription(57);return false;" href="javascript:void(0);">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Small Shield Dome</span>0</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li id="defense8" class="on">
+                <div class="item_box defense408">
+                  <div class="buildingimg">
+                    <a class="detail_button tooltip slideIn" id="details408" onClick="toggleDescription(58);return false;" href="javascript:void(0);">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Large Shield Dome</span>0</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li id="defense9" class="on">
+                <div class="item_box defense502">
+                  <div class="buildingimg">
+                    <a class="detail_button tooltip slideIn" id="details502" onClick="toggleDescription(59);return false;" href="javascript:void(0);">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Anti-Ballistic Missiles</span>0</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li id="defense10" class="on">
+                <div class="item_box defense503">
+                  <div class="buildingimg">
+                    <a class="detail_button tooltip slideIn" id="details503" onClick="toggleDescription(60);return false;" href="javascript:void(0);">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Interplanetary Missiles</span>0</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <br class="clearfloat">
+            <div class="footer"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="rechts"><!-- RIGHTMENU -->
+      <div id="norm">
+        <div id="myWorlds">
+          <div id="countColonies">
+            <p class="textCenter"><span>1/1</span> Planets</p>
+          </div>
+          <div id="planetList">
+            <div class="smallplanet " id="planet-33655142">
+              <a href="https://s163-en.ogame.gameforge.com/game/index.php?page=overview&amp;cp=33655142" class="planetlink Right Close" >
+                <img class="planetPic js_replace2x" alt="Planet" src="./Imagenes/Planets/Planet_1.png" width="48" height="48">
+                <span class="planet-name ">Planeta Principal</span>
+                <span class="planet-koords ">[2:289:4]</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body></html>

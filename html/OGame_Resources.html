@@ -1,0 +1,370 @@
+<!DOCTYPE html><html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Language" content="en">
+  <meta name="ogame-timestamp" content="1572884151">
+  <meta name="ogame-universe-name" content="">
+  <meta name="ogame-universe-speed" content="6">
+  <meta name="ogame-universe-speed-fleet" content="2">
+  <meta name="ogame-language" content="en">
+  <meta name="ogame-donut-galaxy" content="1">
+  <meta name="ogame-donut-system" content="1">
+  <meta name="ogame-player-id" content="106077">
+  <meta name="ogame-player-name" content="dturco">
+  <meta name="ogame-planet-id" content="33655142">
+  <meta name="ogame-planet-name" content="Planeta Principal">
+  <meta name="ogame-planet-coordinates" content="2:289:4">
+  <meta name="ogame-planet-type" content="planet">
+  <link rel="stylesheet" type="text/css" href="./Css/General_Style.css" media="screen" />
+  <!-- ELIMINAR CSS NO SE USA -->
+  <link rel="shortcut icon" type="image/x-icon" href="Imagenes/Favicon.ico" />
+  <script src="./Scripts/General_Player.js"></script>
+  <script src="./Scripts/Description.js"></script>
+  <title>OGame</title>
+</head>
+<body id="resources">
+  <div class="contentBoxBody">
+    <div id="box"> <!-- TOP MENU -->
+      <div id="info" class="header normal">
+        <div id="clearAdvice"></div>
+        <div id="bar">
+          <ul>
+            <li id="playerName">Player: <span class="textBeefy"><a href="./Player.html" class="textBeefy">dturco</a></span></li>
+            <li><span>(2255)</span><a href="./Highscore.html">Highscore</a></li>
+            <li><a class="" href="./Vacas.html">Vacas</a></li>
+            <li><a class="" href="./Search.html">Search</a></li>
+            <li><a href="./Options.html">Options</a></li>
+            <li><a href="./GodMain.html">God Mode</a></li>
+            <li class="OGameClock">07.12.2019 16:17:18</li>
+          </ul>
+        </div>
+        <ul id="resources">
+    	    <li id="metal_box" class="metal">
+            <div class="resourceIcon metal"></div>
+            <span class="value"><span id="resources_metal" class="">500</span></span>
+          </li>
+    	    <li id="crystal_box" class="crystal">
+            <div class="resourceIcon crystal"></div>
+            <span class="value"><span id="resources_crystal" class="">500</span></span>
+          </li>
+    	    <li id="deuterium_box" class="deuterium">
+            <div class="resourceIcon deuterium"></div>
+            <span class="value"><span id="resources_deuterium" class="">200</span></span>
+          </li>
+    	    <li id="energy_box" class="energy">
+            <div class="resourceIcon energy"></div>
+            <span class="value"><span id="resources_energy" class="">31</span></span>
+          </li>
+    	    <li id="darkmatter_box" class="darkmatter dark_highlight_tablet">
+            <img src="./Imagenes/Dark_matter.gif">
+            <span class="value"><span id="resources_darkmatter" class="">0</span></span>
+          </li>
+        </ul>
+      <div id="message-wrapper"><!-- Notificaciones de mensajes y flotas -->
+        <a class="comm_menu messages" href="./Ogame_messages.html">
+          <span class="new_msg_count totalMessages noMessage news" data-new-messages="0">0</span> <!-- Mensajes -->
+        </a>
+        <a class="comm_menu chat" href="./Vacas.html">
+          <span class="new_msg_count totalChatMessages noMessage" data-new-messages="0">0</span> <!-- Chat -->
+        </a>
+        <div id="messages_collapsed">
+          <div id="eventboxFilled" class="eventToggle" style="display: none;">
+            <a id="js_eventDetailsClosed" class="" href="javascript:void(0);" title="More details"></a>
+            <a id="js_eventDetailsOpen" class="open" href="javascript:void(0);" title="Less detail"></a>
+          </div>
+          <div id="eventboxLoading" class="textCenter textBeefy" style="display: none;">
+            <img height="16" width="16" src="./Imagenes/Loading.gif">load...
+          </div>
+          <div id="eventboxBlank" class="textCenter" style="">No fleet movement</div>
+        </div>
+        <div id="attack_alert" class="eventToggle noAttack">
+          <!-- <a href="https://s163-en.ogame.gameforge.com/game/index.php?page=eventList"></a> -->
+          <a href="javascript:void(0);"></a>
+        </div>
+        <br class="clearfloat">
+      </div>
+      <div id="helper">
+        <a class="highlight  Close" href="./OGame_Reward.html">?</a>
+      </div>
+      <div id="selectedPlanetName" class="textCenter">Planeta Principal</div>
+    </div>
+    <div id="toolbarcomponent"><!-- LEFTMENU -->
+      <div id="links">
+        <ul id="menuTable" class="leftmenu">
+          <li>
+            <span class="menu_icon">
+              <a href="./Ogame_Reward.html" class="" target="_self">
+                <div class="menuImage overview"></div>
+              </a>
+            </span>
+            <a class="menubutton" href="./Ogame_Overview.html" target="_self">
+              <span class="textlabel">Overview</span>
+            </a>
+          </li>
+          <li>
+            <span class="menu_icon">
+              <a href="./Ogame_ResourceSetings.html" class="" target="_self">
+                <div class="menuImage resources highlighted"></div>
+              </a>
+            </span>
+            <a class="menubutton selected" href="./Ogame_Resources.html" target="_self">
+              <span class="textlabel">Resources</span>
+            </a>
+          </li>
+          <li>
+            <span class="menu_icon">
+              <div class="menuImage station"></div>
+            </span>
+            <a class="menubutton " href="./Ogame_Facilities.html" target="_self">
+              <span class="textlabel">Facilities</span>
+            </a>
+          </li>
+          <li>
+            <span class="menu_icon">
+              <a href="./Ogame_Tecnology.html" class="overlay Right" target="_blank">
+                <div class="menuImage research"></div>
+              </a>
+            </span>
+            <a class="menubutton " href="./Ogame_Research.html" target="_self">
+              <span class="textlabel">Research</span>
+            </a>
+          </li>
+          <li>
+            <span class="menu_icon">
+              <div class="menuImage shipyard"></div>
+            </span>
+            <a class="menubutton " href="./Ogame_Shipyard.html" target="_self">
+              <span class="textlabel">Shipyard</span>
+            </a>
+          </li>
+          <li>
+            <span class="menu_icon">
+              <div class="menuImage defense"></div>
+            </span>
+            <a class="menubutton " href="./Ogame_Defence.html" target="_self">
+              <span class="textlabel">Defence</span>
+            </a>
+          </li>
+          <li>
+            <span class="menu_icon">
+              <a href="./Ogame_Movement.html" class="" target="_self">
+                <div class="menuImage fleet1"></div>
+              </a>
+            </span>
+            <a class="menubutton " href="./Ogame_Fleet.html" target="_self">
+              <span class="textlabel">Fleet</span>
+            </a>
+          </li>
+          <li>
+            <span class="menu_icon">
+              <div class="menuImage galaxy"></div>
+            </span>
+            <a class="menubutton " href="./Ogame_Galaxy.html" target="_self">
+              <span class="textlabel">Galaxy</span>
+            </a>
+          </li>
+        </ul>
+        <br class="clearfloat">
+      </div>
+    </div>
+    <div id="contentWrapper"><!-- CONTENT AREA -->
+      <div id="inhalt">
+        <div id="planet" style="background-image:url(./Imagenes/Planets/Resources_Planet_1.jpg)">
+          <div id="header_text">
+            <h2>Resources - Planeta Principal</h2>
+          </div>
+          <div id="slot01" class="slot">
+            <a href="./Ogame_ResourceSetings.html">Resource settings</a>
+          </div>
+          <form method="POST" action="" name="form" onkeyup="sendBuildRequest(null, event, false);" onsubmit="return false;">
+            <div id="detail" class="detail_screen">
+              <div id="resources_3_large" class="pic">
+                <a href="./Ogame_Tecnology.html" class="techtree_link tooltip overlay">
+                  <div class="techtree_img_disabled"></div>
+                  <span class="label">Techtree</span>
+                </a>
+              </div>
+              <div id="content">
+                <h2>Deuterium Synthesizer</h2>
+                <a id="close" class="close_details" href="javascript:void(0);" onclick="toggleDescription(-1); return false;"></a>
+                <span class="level">Level 8 <span class="undermark"></span></span>
+                <br class="clearfloat">
+                <ul class="production_info ">
+                  <li>
+                    Production duration<span class="time" id="buildDuration">6m 9s<span class="undermark"></span></span>
+                  </li>
+                </ul>
+                <a class="demolish_link tooltip demolishDisabled" href="#demolish3" onclick="">
+                  <div class="demolish_img_disabled"></div>
+                  <span class="label">Tear down</span>
+                </a>
+                <div class="costs_wrap">
+                  <p class="costs_info">Required to improve to level 9:</p>
+                  <ul id="costs">
+                    <li class="metal tooltip">
+                      <div class="resourceIcon metal"></div>
+                      <div class="cost">5.766</div>
+                     </li>
+                     <li class="crystal tooltip">
+                       <div class="resourceIcon crystal"></div>
+                       <div class="cost">1.922</div>
+                     </li>
+                     <li class="energy tooltip">
+                       <div class="resourceIcon energy"></div>
+                       <div class="cost">82</div>
+                     </li>
+                   </ul>
+                 </div>
+                <div class="build-it_wrap">
+                  <a class="build-it" href="javascript:void(0);">
+                    <span>Improve</span>
+                  </a>
+                </div>
+              </div>
+              <br clear="all">
+              <div id="description">
+                <div class="txt_box ">
+                  <a class="tooltip help overlay" href="Ogame_Tecnology.html"></a>
+                  <p class="description_txt" style="width: 90%">Deuterium Synthesizers draw the trace Deuterium content from the water on a planet.</p>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="c-left"></div>
+        <div class="c-right"></div>
+        <div id="buttonz">
+          <div class="header">
+            <h2>Resource buildings</h2>
+          </div>
+          <div class="content">
+            <ul id="building">
+              <li id="button1" class="on"><!-- disable = rayado; on = prendido; off = blanco y negro-->
+                <div class="supply1">
+                  <div class="buildingimg">
+                    <a class="detail_button tooltip slideIn" id="details" href="#" onClick="toggleDescription(1);return false;">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Metal Mine</span>0</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li id="button2" class="on">
+                <div class="supply2">
+                  <div class="buildingimg">
+                    <a class="detail_button tooltip slideIn" id="details" href="#" onClick="toggleDescription(2);return false;">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Crystal Mine</span>0</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li id="button3" class="on">
+                <div class="supply3">
+                  <div class="buildingimg">
+                    <a class="detail_button tooltip slideIn" id="details" href="#" onClick="toggleDescription(3);return false;">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Deuterium Synthesizer</span>0</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li id="button4" class="on">
+                <div class="supply4">
+                  <div class="buildingimg">
+                    <a class="detail_button tooltip slideIn" id="details" href="#" onClick="toggleDescription(4);return false;">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Solar Plant</span>0</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li id="button5" class="on">
+                <div class="supply12">
+                  <div class="buildingimg">
+                    <a class="detail_button tooltip slideIn" id="details" href="#" onClick="toggleDescription(5);return false;">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Fusion Reactor</span>0</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li id="button6" class="on">
+                <div class="supply212">
+                  <div class="buildingimg">
+                    <a class="detail_button tooltip slideIn" id="details" href="#" onClick="toggleDescription(44);return false;">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Solar Satellite</span>0</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <ul id="storage">
+              <li id="button7" class="on">
+                <div class="supply22">
+                  <div class="buildingimg">
+                    <a class="tooltip slideIn" href="#" onClick="toggleDescription(6);return false;" id="details">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Metal Storage</span>0</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li id="button8" class="on">
+                <div class="supply23">
+                  <div class="buildingimg">
+                    <a class="tooltip slideIn" href="#" onClick="toggleDescription(7);return false;" id="details">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Crystal Storage</span>0</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li id="button9" class="on">
+                <div class="supply24">
+                  <div class="buildingimg">
+                    <a class="tooltip slideIn" href="#" onClick="toggleDescription(8);return false;" id="details">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Deuterium Tank</span>0</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <div class="footer"></div>
+            <br class="clearfloat">
+          </div>
+        </div>
+        </div>
+
+    </div>
+    <div id="rechts"><!-- RIGHTMENU -->
+      <div id="norm">
+        <div id="myWorlds">
+          <div id="countColonies">
+            <p class="textCenter"><span>1/1</span> Planets</p>
+          </div>
+          <div id="planetList">
+            <div class="smallplanet " id="planet-33655142">
+              <a href="https://s163-en.ogame.gameforge.com/game/index.php?page=overview&amp;cp=33655142" class="planetlink Right Close" >
+                <img class="planetPic js_replace2x" alt="Planet" src="./Imagenes/Planets/Planet_1.png" width="48" height="48">
+                <span class="planet-name ">Planeta Principal</span>
+                <span class="planet-koords ">[2:289:4]</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body></html>

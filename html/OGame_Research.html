@@ -1,0 +1,449 @@
+<!DOCTYPE html><html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Language" content="en">
+  <meta name="ogame-timestamp" content="1572884151">
+  <meta name="ogame-universe-name" content="">
+  <meta name="ogame-universe-speed" content="6">
+  <meta name="ogame-universe-speed-fleet" content="2">
+  <meta name="ogame-language" content="en">
+  <meta name="ogame-donut-galaxy" content="1">
+  <meta name="ogame-donut-system" content="1">
+  <meta name="ogame-player-id" content="106077">
+  <meta name="ogame-player-name" content="dturco">
+  <meta name="ogame-planet-id" content="33655142">
+  <meta name="ogame-planet-name" content="Planeta Principal">
+  <meta name="ogame-planet-coordinates" content="2:289:4">
+  <meta name="ogame-planet-type" content="planet">
+  <link rel="stylesheet" type="text/css" href="./Css/General_Style.css" media="screen" />
+  
+  <link rel="shortcut icon" type="image/x-icon" href="Imagenes/Favicon.ico" />
+  <script src="./Scripts/General_Player.js"></script>
+  <script src="./Scripts/Description.js"></script>
+  <title>OGame</title>
+</head>
+<body id="research">
+  <div class="contentBoxBody">
+    <div id="box"> <!-- TOP MENU -->
+      <div id="info" class="header normal">
+        <div id="clearAdvice"></div>
+        <div id="bar">
+          <ul>
+            <li id="playerName">Player: <span class="textBeefy"><a href="./Player.html" class="textBeefy">dturco</a></span></li>
+            <li><span>(2255)</span><a href="./Highscore.html">Highscore</a></li>
+            <li><a class="" href="./Vacas.html">Vacas</a></li>
+            <li><a class="" href="./Search.html">Search</a></li>
+            <li><a href="./Options.html">Options</a></li>
+            <li><a href="./GodMain.html">God Mode</a></li>
+            <li class="OGameClock">07.12.2019 16:17:18</li>
+          </ul>
+        </div>
+        <ul id="resources">
+    	    <li id="metal_box" class="metal">
+            <div class="resourceIcon metal"></div>
+            <span class="value"><span id="resources_metal" class="">500</span></span>
+          </li>
+    	    <li id="crystal_box" class="crystal">
+            <div class="resourceIcon crystal"></div>
+            <span class="value"><span id="resources_crystal" class="">500</span></span>
+          </li>
+    	    <li id="deuterium_box" class="deuterium">
+            <div class="resourceIcon deuterium"></div>
+            <span class="value"><span id="resources_deuterium" class="">200</span></span>
+          </li>
+    	    <li id="energy_box" class="energy">
+            <div class="resourceIcon energy"></div>
+            <span class="value"><span id="resources_energy" class="">31</span></span>
+          </li>
+    	    <li id="darkmatter_box" class="darkmatter dark_highlight_tablet">
+            <img src="./Imagenes/Dark_matter.gif">
+            <span class="value"><span id="resources_darkmatter" class="">0</span></span>
+          </li>
+        </ul>
+      <div id="message-wrapper"><!-- Notificaciones de mensajes y flotas -->
+        <a class="comm_menu messages" href="./Ogame_messages.html">
+          <span class="new_msg_count totalMessages noMessage news" data-new-messages="0">0</span> <!-- Mensajes -->
+        </a>
+        <a class="comm_menu chat" href="./Vacas.html">
+          <span class="new_msg_count totalChatMessages noMessage" data-new-messages="0">0</span> <!-- Chat -->
+        </a>
+        <div id="messages_collapsed">
+          <div id="eventboxFilled" class="eventToggle" style="display: none;">
+            <a id="js_eventDetailsClosed" class="" href="javascript:void(0);" title="More details"></a>
+            <a id="js_eventDetailsOpen" class="open" href="javascript:void(0);" title="Less detail"></a>
+          </div>
+          <div id="eventboxLoading" class="textCenter textBeefy" style="display: none;">
+            <img height="16" width="16" src="./Imagenes/Loading.gif">load...
+          </div>
+          <div id="eventboxBlank" class="textCenter" style="">No fleet movement</div>
+        </div>
+        <div id="attack_alert" class="eventToggle noAttack">
+          <!-- <a href="https://s163-en.ogame.gameforge.com/game/index.php?page=eventList"></a> -->
+          <a href="javascript:void(0);"></a>
+        </div>
+        <br class="clearfloat">
+      </div>
+      <div id="helper">
+        <a class="highlight  Close" href="./OGame_Reward.html">?</a>
+      </div>
+      <div id="selectedPlanetName" class="textCenter">Planeta Principal</div>
+    </div>
+    <div id="toolbarcomponent"><!-- LEFTMENU -->
+      <div id="links">
+        <ul id="menuTable" class="leftmenu">
+          <li>
+            <span class="menu_icon">
+              <a href="./Ogame_Reward.html" class="" target="_self">
+                <div class="menuImage overview"></div>
+              </a>
+            </span>
+            <a class="menubutton" href="./Ogame_Overview.html" target="_self">
+              <span class="textlabel">Overview</span>
+            </a>
+          </li>
+          <li>
+            <span class="menu_icon">
+              <a href="./Ogame_ResourceSetings.html" class="" target="_self">
+                <div class="menuImage resources"></div>
+              </a>
+            </span>
+            <a class="menubutton" href="./Ogame_Resources.html" target="_self">
+              <span class="textlabel">Resources</span>
+            </a>
+          </li>
+          <li>
+            <span class="menu_icon">
+              <div class="menuImage station"></div>
+            </span>
+            <a class="menubutton" href="./Ogame_Facilities.html" target="_self">
+              <span class="textlabel">Facilities</span>
+            </a>
+          </li>
+          <li>
+            <span class="menu_icon">
+              <a href="./Ogame_Tecnology.html" class="overlay Right" target="_blank">
+                <div class="menuImage research highlighted"></div>
+              </a>
+            </span>
+            <a class="menubutton selected" href="./Ogame_Research.html" target="_self">
+              <span class="textlabel">Research</span>
+            </a>
+          </li>
+          <li>
+            <span class="menu_icon">
+              <div class="menuImage shipyard"></div>
+            </span>
+            <a class="menubutton " href="./Ogame_Shipyard.html" target="_self">
+              <span class="textlabel">Shipyard</span>
+            </a>
+          </li>
+          <li>
+            <span class="menu_icon">
+              <div class="menuImage defense"></div>
+            </span>
+            <a class="menubutton " href="./Ogame_Defence.html" target="_self">
+              <span class="textlabel">Defence</span>
+            </a>
+          </li>
+          <li>
+            <span class="menu_icon">
+              <a href="./Ogame_Movement.html" class="" target="_self">
+                <div class="menuImage fleet1"></div>
+              </a>
+            </span>
+            <a class="menubutton " href="./Ogame_Fleet.html" target="_self">
+              <span class="textlabel">Fleet</span>
+            </a>
+          </li>
+          <li>
+            <span class="menu_icon">
+              <div class="menuImage galaxy"></div>
+            </span>
+            <a class="menubutton " href="./Ogame_Galaxy.html" target="_self">
+              <span class="textlabel">Galaxy</span>
+            </a>
+          </li>
+        </ul>
+        <br class="clearfloat">
+      </div>
+    </div>
+    <div id="contentWrapper"><!-- CONTENT AREA -->
+      <div id="inhalt">
+        <div id="planet" style="background-image: url(./Imagenes/Research/Research.jpg)">
+          <div id="header_text">
+            <h2>Research - Planeta Principal</h2>
+          </div>
+          <form method="POST" action="" name="form">
+            <div id="detail" class="detail_screen">
+              <div id="research_124_large" class="pic">
+                <a href="./Ogame_Tecnology.html" class="techtree_link tooltip overlay">
+                  <div class="techtree_img"></div>
+                  <span class="label">Techtree</span>
+                </a>
+              </div>
+              <div id="content">
+                <h2>Astrophysics</h2>
+                <a id="close" class="close_details" href="javascript:void(0);" onclick="toggleDescription(-1); return false;"></a>
+                <span class="level">Level 3<span class="undermark"></span></span>
+                <br class="clearfloat">
+                <ul class="production_info">
+                  <li>
+                    Research time:<span class="time" id="buildDuration">2h 40m 46s<span class="undermark"></span></span>
+                  </li>
+                </ul>
+                <div class="costs_wrap">
+                  <p class="costs_info">Required to improve to level 4:</p>
+                  <ul id="costs">
+                    <li class="metal tooltip">
+                      <div class="resourceIcon metal"></div>
+	                    <div class="cost overmark">21.400</div>
+                    </li>
+                    <li class="crystal tooltip">
+                      <div class="resourceIcon crystal"></div>
+                      <div class="cost overmark">42.900</div>
+                    </li>
+                    <li class="deuterium tooltip">
+                      <div class="resourceIcon deuterium"></div>
+                      <div class="cost overmark">21.400</div>
+	                  </li>
+                  </ul>
+                </div>
+                <div class="build-it_wrap">
+                  <a class="build-it_disabled" href="javascript:void(0);">
+                    <span>Research</span>
+                  </a>
+                </div>
+              </div>
+              <br clear="all">
+              <div id="description">
+                <div class="txt_box">
+                  <a class="tooltip help overlay" href="Ogame_Tecnology.html"></a>
+                  <p class="description_txt" style="width: 90%">With an astrophysics research module, ships can undertake long expeditions. Every second level of this technology will allow you to colonise an extra planet.</p>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="c-left"></div>
+        <div class="c-right"></div>
+        <div id="buttonz" class="wrapButtons">
+          <div id="wrapBattle" class="resLeft fleft">
+            <h2>Basic research</h2>
+            <ul id="base1" class="activate">
+              <li class="on">
+                <div class="item_box research113">
+                  <div class="buildingimg">
+                    <a href="#" onClick="toggleDescription(21);return false;" id="details113" class="detail_button tooltip slideIn">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Energy Technology </span>0</span class="undermark"></span></span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li class="on">
+                <div class="item_box research120">
+                  <div class="buildingimg">
+                    <a href="#" onClick="toggleDescription(22);return false;" id="details120" class="detail_button tooltip slideIn">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Laser Technology </span>0</span class="undermark"></span></span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li class="on">
+                <div class="item_box research121">
+                  <div class="buildingimg">
+                    <a href="#" onClick="toggleDescription(23);return false;" id="details121" class="detail_button tooltip slideIn">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Ion Technology </span>0</span class="undermark"></span></span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li class="on">
+                <div class="item_box research114">
+                  <div class="buildingimg">
+                    <a href="#" onClick="toggleDescription(24);return false;" id="details114" class="detail_button tooltip slideIn">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Hyperspace Technology </span>0</span class="undermark"></span></span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li class="on">
+                <div class="item_box research122">
+                  <div class="buildingimg">
+                    <a href="#" onClick="toggleDescription(25);return false;" id="details122" class="detail_button tooltip slideIn">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Plasma Technology </span>0</span class="undermark"></span></span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div id="wrapBattle" class="resRight fleft">
+            <h2>Drive research</h2>
+            <ul id="base2" class="activate">
+              <li class="on">
+                <div class="item_box research115">
+                  <div class="buildingimg">
+                    <a href="#" onClick="toggleDescription(26);return false;" id="details115" class="detail_button tooltip slideIn">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Combustion Drive </span>0</span class="undermark"></span></span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li class="on">
+                <div class="item_box research117">
+                  <div class="buildingimg">
+                    <a href="#" onClick="toggleDescription(27);return false;" id="details117" class="detail_button tooltip slideIn">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Impulse Drive </span>0</span class="undermark"></span></span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li class="on">
+                <div class="item_box research118">
+                  <div class="buildingimg">
+                    <a href="#" onClick="toggleDescription(28);return false;" id="details118" class="detail_button tooltip slideIn">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Hyperspace Drive </span>0</span class="undermark"></span></span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div id="wrapBattle" class="resLeft fleft">
+            <h2>Advanced researches</h2>
+            <ul id="base3" class="activate">
+              <li class="on">
+                <div class="item_box research106">
+                  <div class="buildingimg">
+                    <a href="#" onClick="toggleDescription(29);return false;" id="details106" class="detail_button tooltip slideIn">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Espionage Technology </span>0</span class="undermark"></span></span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li class="on">
+                <div class="item_box research108">
+                  <div class="buildingimg">
+                    <a href="#" onClick="toggleDescription(30);return false;" id="details108" class="detail_button tooltip slideIn">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Computer Technology </span>0</span class="undermark"></span></span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li class="on">
+                <div class="item_box research124">
+                  <div class="buildingimg">
+                    <a href="#" onClick="toggleDescription(31);return false;" id="details124" class="detail_button tooltip slideIn">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Astrophysics </span>0</span class="undermark"></span></span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li class="on">
+                <div class="item_box research123">
+                  <div class="buildingimg">
+                    <a href="#" onClick="toggleDescription(32);return false;" id="details123" class="detail_button tooltip slideIn">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Intergalactic Research Network </span>0</span class="undermark"></span></span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li class="on">
+                <div class="item_box research199">
+                  <div class="buildingimg">
+                    <a href="#" onClick="toggleDescription(33);return false;" id="details199" class="detail_button tooltip slideIn">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Graviton Technology </span>0</span class="undermark"></span></span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div id="wrapBattle" class="resRight fleft">
+            <h2>Combat research</h2>
+            <ul id="base4" class="activate">
+              <li class="on">
+                <div class="item_box research109">
+                  <div class="buildingimg">
+                    <a href="#" onClick="toggleDescription(34);return false;" id="details109" class="detail_button tooltip slideIn">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Weapons Technology </span>0</span class="undermark"></span></span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li class="on">
+                <div class="item_box research110">
+                  <div class="buildingimg">
+                    <a href="#" onClick="toggleDescription(35);return false;" id="details110" class="detail_button tooltip slideIn">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Shielding Technology </span>0</span class="undermark"></span></span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+              <li class="on">
+                <div class="item_box research111">
+                  <div class="buildingimg">
+                    <a href="#" onClick="toggleDescription(36);return false;" id="details111" class="detail_button tooltip slideIn">
+                      <span class="ecke">
+                        <span class="level"><span class="textlabel">Armour Technology </span>0</span class="undermark"></span></span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <br class="clearfloat">
+        </div>
+      </div>
+    </div>
+    <div id="rechts"><!-- RIGHTMENU -->
+      <div id="norm">
+        <div id="myWorlds">
+          <div id="countColonies">
+            <p class="textCenter"><span>1/1</span> Planets</p>
+          </div>
+          <div id="planetList">
+            <div class="smallplanet " id="planet-33655142">
+              <a href="https://s163-en.ogame.gameforge.com/game/index.php?page=overview&amp;cp=33655142" class="planetlink Right Close" >
+                <img class="planetPic js_replace2x" alt="Planet" src="./Imagenes/Planets/Planet_1.png" width="48" height="48">
+                <span class="planet-name ">Planeta Principal</span>
+                <span class="planet-koords ">[2:289:4]</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body></html>
