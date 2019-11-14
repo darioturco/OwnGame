@@ -1,11 +1,26 @@
+require('dotenv').config();
 var express = require('express');
-var router = express.Router();
 var uni = require('./universe');
+var router = express.Router();
 var pInfo = uni.getBasicInfo(1,1);
-
+var mongo = null;
+require('mongodb').MongoClient.connect(process.env.MONGO_URL, {useUnifiedTopology: true}, (err, db) => {
+  if(err) throw err;
+  console.log("Base de datos lista.");
+  mongo = db;
+});
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Ogame' });
+  //console.log(mongo);
+  var respuesta = "";
+  var cursor = mongo.db("test").collection("user-data").find();
+  cursor.forEach((doc, err) => {
+    respuesta += JSON.stringify(doc);
+  }, () => {
+    res.render('index', {title: 'Ogame', message: respuesta});
+  });
+  //res.render('index', {title: 'Ogame', message: respuesta});
+
 });
 
 router.get('/Highscore.html', function(req, res, next) {

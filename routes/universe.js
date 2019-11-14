@@ -1,3 +1,14 @@
+var mongo = require('mongodb').MongoClient;
+var objectId = require('mongodb').ObjectId;
+var mongo = null;
+require('mongodb').MongoClient.connect(process.env.MONGO_URL, {useUnifiedTopology: true}, (err, db) => {
+  if(err) throw err;
+  console.log("Base de datos lista.");
+  mongo = db;
+});
+
+console.log(process.env);
+
 module.exports = {
   getDate: function(dia) {
     return 0;
