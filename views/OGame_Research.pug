@@ -1,343 +1,190 @@
-doctype html
-head
-  meta(http-equiv='Content-Type' content='text/html; charset=UTF-8')
-  meta(http-equiv='Language' content='en')
-  meta(name='ogame-timestamp' content='1572884151')
-  meta(name='ogame-universe-name' content='')
-  meta(name='ogame-universe-speed' content='6')
-  meta(name='ogame-universe-speed-fleet' content='2')
-  meta(name='ogame-language' content='en')
-  meta(name='ogame-donut-galaxy' content='1')
-  meta(name='ogame-donut-system' content='1')
-  meta(name='ogame-player-id' content='106077')
-  meta(name='ogame-player-name' content='dturco')
-  meta(name='ogame-planet-id' content='33655142')
-  meta(name='ogame-planet-name' content='Planeta Principal')
-  meta(name='ogame-planet-coordinates' content='2:289:4')
-  meta(name='ogame-planet-type' content='planet')
-  link(rel='stylesheet' type='text/css' href='./Css/General_Style.css' media='screen')
-  link(rel='shortcut icon' type='image/x-icon' href='Imagenes/Favicon.ico')
-  script(src='./Scripts/General_Player.js')
-  script(src='./Scripts/Description.js')
-  title OGame
-body#research
-  .contentBoxBody
-    #box
-      // TOP MENU
-      #info.header.normal
-        #clearAdvice
-        #bar
-          ul
-            li#playerName
-              | Player:
-              span.textBeefy
-                a.textBeefy(href='./Player.html') dturco
-            li
-              span (2255)
-              a(href='./Highscore.html') Highscore
-            li
-              a(href='./Vacas.html') Vacas
-            li
-              a(href='./Search.html') Search
-            li
-              a(href='./Options.html') Options
-            li
-              a(href='./GodMain.html') God Mode
-            li.OGameClock 07.12.2019 16:17:18
-        ul#resources
-          li#metal_box.metal
-            .resourceIcon.metal
-            span.value
-              span#resources_metal 500
-          li#crystal_box.crystal
-            .resourceIcon.crystal
-            span.value
-              span#resources_crystal 500
-          li#deuterium_box.deuterium
-            .resourceIcon.deuterium
-            span.value
-              span#resources_deuterium 200
-          li#energy_box.energy
-            .resourceIcon.energy
-            span.value
-              span#resources_energy 31
-          li#darkmatter_box.darkmatter.dark_highlight_tablet
-            img(src='./Imagenes/Dark_matter.gif')
-            span.value
-              span#resources_darkmatter 0
-        #message-wrapper
-          // Notificaciones de mensajes y flotas
-          a.comm_menu.messages(href='./Ogame_messages.html')
-            span.new_msg_count.totalMessages.noMessage.news(data-new-messages='0') 0
-            // Mensajes
-          a.comm_menu.chat(href='./Vacas.html')
-            span.new_msg_count.totalChatMessages.noMessage(data-new-messages='0') 0
-            // Chat
-          #messages_collapsed
-            #eventboxFilled.eventToggle(style='display: none;')
-              a#js_eventDetailsClosed(href='javascript:void(0);' title='More details')
-              a#js_eventDetailsOpen.open(href='javascript:void(0);' title='Less detail')
-            #eventboxLoading.textCenter.textBeefy(style='display: none;')
-              img(height='16' width='16' src='./Imagenes/Loading.gif')
-              | load...
-            #eventboxBlank.textCenter(style='') No fleet movement
-          #attack_alert.eventToggle.noAttack
-            // <a href="https://s163-en.ogame.gameforge.com/game/index.php?page=eventList"></a>
-            a(href='javascript:void(0);')
-          br.clearfloat
-        #helper
-          a.highlight.Close(href='./OGame_Reward.html') ?
-        #selectedPlanetName.textCenter Planeta Principal
-      #toolbarcomponent
-        // LEFTMENU
-        #links
-          ul#menuTable.leftmenu
-            li
-              span.menu_icon
-                a(href='./Ogame_Reward.html' target='_self')
-                  .menuImage.overview
-              a.menubutton(href='./Ogame_Overview.html' target='_self')
-                span.textlabel Overview
-            li
-              span.menu_icon
-                a(href='./Ogame_ResourceSetings.html' target='_self')
-                  .menuImage.resources
-              a.menubutton(href='./Ogame_Resources.html' target='_self')
-                span.textlabel Resources
-            li
-              span.menu_icon
-                .menuImage.station
-              a.menubutton(href='./Ogame_Facilities.html' target='_self')
-                span.textlabel Facilities
-            li
-              span.menu_icon
-                a.overlay.Right(href='./Ogame_Tecnology.html' target='_blank')
-                  .menuImage.research.highlighted
-              a.menubutton.selected(href='./Ogame_Research.html' target='_self')
-                span.textlabel Research
-            li
-              span.menu_icon
-                .menuImage.shipyard
-              a.menubutton(href='./Ogame_Shipyard.html' target='_self')
-                span.textlabel Shipyard
-            li
-              span.menu_icon
-                .menuImage.defense
-              a.menubutton(href='./Ogame_Defence.html' target='_self')
-                span.textlabel Defence
-            li
-              span.menu_icon
-                a(href='./Ogame_Movement.html' target='_self')
-                  .menuImage.fleet1
-              a.menubutton(href='./Ogame_Fleet.html' target='_self')
-                span.textlabel Fleet
-            li
-              span.menu_icon
-                .menuImage.galaxy
-              a.menubutton(href='./Ogame_Galaxy.html' target='_self')
-                span.textlabel Galaxy
-          br.clearfloat
-      #contentWrapper
-        // CONTENT AREA
-        #inhalt
-          #planet(style='background-image: url(./Imagenes/Research/Research.jpg)')
-            #header_text
-              h2 Research - Planeta Principal
-            form(method='POST' action='' name='form')
-              #detail.detail_screen
-                #research_124_large.pic
-                  a.techtree_link.tooltip.overlay(href='./Ogame_Tecnology.html')
-                    .techtree_img
-                    span.label Techtree
-                #content
-                  h2 Astrophysics
-                  a#close.close_details(href='javascript:void(0);' onclick='toggleDescription(-1); return false;')
-                  span.level
-                    | Level 3
-                    span.undermark
-                  br.clearfloat
-                  ul.production_info
-                    li
-                      | Research time:
-                      span#buildDuration.time
-                        | 2h 40m 46s
-                        span.undermark
-                  .costs_wrap
-                    p.costs_info Required to improve to level 4:
-                    ul#costs
-                      li.metal.tooltip
-                        .resourceIcon.metal
-                        .cost.overmark 21.400
-                      li.crystal.tooltip
-                        .resourceIcon.crystal
-                        .cost.overmark 42.900
-                      li.deuterium.tooltip
-                        .resourceIcon.deuterium
-                        .cost.overmark 21.400
-                  .build-it_wrap
-                    a.build-it_disabled(href='javascript:void(0);')
-                      span Research
-                br(clear='all')
-                #description
-                  .txt_box
-                    a.tooltip.help.overlay(href='Ogame_Tecnology.html')
-                    p.description_txt(style='width: 90%')
-                      | With an astrophysics research module, ships can undertake long expeditions. Every second level of this technology will allow you to colonise an extra planet.
-          .c-left
-          .c-right
-          #buttonz.wrapButtons
-            #wrapBattle.resLeft.fleft
-              h2 Basic research
-              ul#base1.activate
-                li.on
-                  .item_box.research113
-                    .buildingimg
-                      a#details113.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(21);return false;')
-                        span.ecke
-                          span.level
-                            span.textlabel Energy Technology
-                            | 0
-                li.on
-                  .item_box.research120
-                    .buildingimg
-                      a#details120.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(22);return false;')
-                        span.ecke
-                          span.level
-                            span.textlabel Laser Technology
-                            | 0
-                li.on
-                  .item_box.research121
-                    .buildingimg
-                      a#details121.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(23);return false;')
-                        span.ecke
-                          span.level
-                            span.textlabel Ion Technology
-                            | 0
-                li.on
-                  .item_box.research114
-                    .buildingimg
-                      a#details114.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(24);return false;')
-                        span.ecke
-                          span.level
-                            span.textlabel Hyperspace Technology
-                            | 0
-                li.on
-                  .item_box.research122
-                    .buildingimg
-                      a#details122.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(25);return false;')
-                        span.ecke
-                          span.level
-                            span.textlabel Plasma Technology
-                            | 0
-            #wrapBattle.resRight.fleft
-              h2 Drive research
-              ul#base2.activate
-                li.on
-                  .item_box.research115
-                    .buildingimg
-                      a#details115.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(26);return false;')
-                        span.ecke
-                          span.level
-                            span.textlabel Combustion Drive
-                            | 0
-                li.on
-                  .item_box.research117
-                    .buildingimg
-                      a#details117.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(27);return false;')
-                        span.ecke
-                          span.level
-                            span.textlabel Impulse Drive
-                            | 0
-                li.on
-                  .item_box.research118
-                    .buildingimg
-                      a#details118.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(28);return false;')
-                        span.ecke
-                          span.level
-                            span.textlabel Hyperspace Drive
-                            | 0
-            #wrapBattle.resLeft.fleft
-              h2 Advanced researches
-              ul#base3.activate
-                li.on
-                  .item_box.research106
-                    .buildingimg
-                      a#details106.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(29);return false;')
-                        span.ecke
-                          span.level
-                            span.textlabel Espionage Technology
-                            | 0
-                li.on
-                  .item_box.research108
-                    .buildingimg
-                      a#details108.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(30);return false;')
-                        span.ecke
-                          span.level
-                            span.textlabel Computer Technology
-                            | 0
-                li.on
-                  .item_box.research124
-                    .buildingimg
-                      a#details124.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(31);return false;')
-                        span.ecke
-                          span.level
-                            span.textlabel Astrophysics
-                            | 0
-                li.on
-                  .item_box.research123
-                    .buildingimg
-                      a#details123.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(32);return false;')
-                        span.ecke
-                          span.level
-                            span.textlabel Intergalactic Research Network
-                            | 0
-                li.on
-                  .item_box.research199
-                    .buildingimg
-                      a#details199.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(33);return false;')
-                        span.ecke
-                          span.level
-                            span.textlabel Graviton Technology
-                            | 0
-            #wrapBattle.resRight.fleft
-              h2 Combat research
-              ul#base4.activate
-                li.on
-                  .item_box.research109
-                    .buildingimg
-                      a#details109.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(34);return false;')
-                        span.ecke
-                          span.level
-                            span.textlabel Weapons Technology
-                            | 0
-                li.on
-                  .item_box.research110
-                    .buildingimg
-                      a#details110.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(35);return false;')
-                        span.ecke
-                          span.level
-                            span.textlabel Shielding Technology
-                            | 0
-                li.on
-                  .item_box.research111
-                    .buildingimg
-                      a#details111.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(36);return false;')
-                        span.ecke
-                          span.level
-                            span.textlabel Armour Technology
-                            | 0
+extends Ogame_Layout
+block content
+  #inhalt
+    #planet(style='background-image: url(./Imagenes/Research/Research.jpg)')
+      #header_text
+        h2 Research - Planeta Principal
+      form(method='POST' action='' name='form')
+        #detail.detail_screen
+          #research_124_large.pic
+            a.techtree_link.tooltip.overlay(href='./Ogame_Tecnology.html')
+              .techtree_img
+              span.label Techtree
+          #content
+            h2 Astrophysics
+            a#close.close_details(href='javascript:void(0);' onclick='toggleDescription(-1); return false;')
+            span.level
+              | Level 3
+              span.undermark
             br.clearfloat
-      #rechts
-        // RIGHTMENU
-        #norm
-          #myWorlds
-            #countColonies
-              p.textCenter
-                span 1/1
-                |  Planets
-            #planetList
-              #planet-33655142.smallplanet
-                a.planetlink.Right.Close(href='https://s163-en.ogame.gameforge.com/game/index.php?page=overview&cp=33655142')
-                  img.planetPic.js_replace2x(alt='Planet' src='./Imagenes/Planets/Planet_1.png' width='48' height='48')
-                  span.planet-name Planeta Principal
-                  span.planet-koords [2:289:4]
+            ul.production_info
+              li
+                | Research time:
+                span#buildDuration.time
+                  | 2h 40m 46s
+                  span.undermark
+            .costs_wrap
+              p.costs_info Required to improve to level 4:
+              ul#costs
+                li.metal.tooltip
+                  .resourceIcon.metal
+                  .cost.overmark 21.400
+                li.crystal.tooltip
+                  .resourceIcon.crystal
+                  .cost.overmark 42.900
+                li.deuterium.tooltip
+                  .resourceIcon.deuterium
+                  .cost.overmark 21.400
+            .build-it_wrap
+              a.build-it_disabled(href='javascript:void(0);')
+                span Research
+          br(clear='all')
+          #description
+            .txt_box
+              a.tooltip.help.overlay(href='Ogame_Tecnology.html')
+              p.description_txt(style='width: 90%')
+                | With an astrophysics research module, ships can undertake long expeditions. Every second level of this technology will allow you to colonise an extra planet.
+    .c-left
+    .c-right
+    #buttonz.wrapButtons
+      #wrapBattle.resLeft.fleft
+        h2 Basic research
+        ul#base1.activate
+          li.on
+            .item_box.research113
+              .buildingimg
+                a#details113.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(21);return false;')
+                  span.ecke
+                    span.level
+                      span.textlabel Energy Technology
+                      | 0
+          li.on
+            .item_box.research120
+              .buildingimg
+                a#details120.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(22);return false;')
+                  span.ecke
+                    span.level
+                      span.textlabel Laser Technology
+                      | 0
+          li.on
+            .item_box.research121
+              .buildingimg
+                a#details121.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(23);return false;')
+                  span.ecke
+                    span.level
+                      span.textlabel Ion Technology
+                      | 0
+          li.on
+            .item_box.research114
+              .buildingimg
+                a#details114.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(24);return false;')
+                  span.ecke
+                    span.level
+                      span.textlabel Hyperspace Technology
+                      | 0
+          li.on
+            .item_box.research122
+              .buildingimg
+                a#details122.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(25);return false;')
+                  span.ecke
+                    span.level
+                      span.textlabel Plasma Technology
+                      | 0
+      #wrapBattle.resRight.fleft
+        h2 Drive research
+        ul#base2.activate
+          li.on
+            .item_box.research115
+              .buildingimg
+                a#details115.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(26);return false;')
+                  span.ecke
+                    span.level
+                      span.textlabel Combustion Drive
+                      | 0
+          li.on
+            .item_box.research117
+              .buildingimg
+                a#details117.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(27);return false;')
+                  span.ecke
+                    span.level
+                      span.textlabel Impulse Drive
+                      | 0
+          li.on
+            .item_box.research118
+              .buildingimg
+                a#details118.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(28);return false;')
+                  span.ecke
+                    span.level
+                      span.textlabel Hyperspace Drive
+                      | 0
+      #wrapBattle.resLeft.fleft
+        h2 Advanced researches
+        ul#base3.activate
+          li.on
+            .item_box.research106
+              .buildingimg
+                a#details106.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(29);return false;')
+                  span.ecke
+                    span.level
+                      span.textlabel Espionage Technology
+                      | 0
+          li.on
+            .item_box.research108
+              .buildingimg
+                a#details108.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(30);return false;')
+                  span.ecke
+                    span.level
+                      span.textlabel Computer Technology
+                      | 0
+          li.on
+            .item_box.research124
+              .buildingimg
+                a#details124.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(31);return false;')
+                  span.ecke
+                    span.level
+                      span.textlabel Astrophysics
+                      | 0
+          li.on
+            .item_box.research123
+              .buildingimg
+                a#details123.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(32);return false;')
+                  span.ecke
+                    span.level
+                      span.textlabel Intergalactic Research Network
+                      | 0
+          li.on
+            .item_box.research199
+              .buildingimg
+                a#details199.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(33);return false;')
+                  span.ecke
+                    span.level
+                      span.textlabel Graviton Technology
+                      | 0
+      #wrapBattle.resRight.fleft
+        h2 Combat research
+        ul#base4.activate
+          li.on
+            .item_box.research109
+              .buildingimg
+                a#details109.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(34);return false;')
+                  span.ecke
+                    span.level
+                      span.textlabel Weapons Technology
+                      | 0
+          li.on
+            .item_box.research110
+              .buildingimg
+                a#details110.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(35);return false;')
+                  span.ecke
+                    span.level
+                      span.textlabel Shielding Technology
+                      | 0
+          li.on
+            .item_box.research111
+              .buildingimg
+                a#details111.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(36);return false;')
+                  span.ecke
+                    span.level
+                      span.textlabel Armour Technology
+                      | 0
+      br.clearfloat

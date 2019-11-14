@@ -589,13 +589,18 @@ width:20px}#box{width:100%;
 margin:0 auto;
 text-align:left;
 position:relative;
-min-height:20px}#galaxyadv #box{width:auto;
+min-height:20px}
+#galaxyadv #box{width:auto;
 margin:auto;
 text-align:inherit;
 position:static;
 top:inherit;
-left:inherit}#links,#box #inhalt,#rechts,#scrollcontainer{background-color:transparent;
-float:left}#box #inhalt,#rechts,#scrollcontainer{overflow:hidden}#scrollcontainer{width:690px;
+left:inherit}
+#links,#box #inhalt,#rechts,#scrollcontainer{background-color:transparent;
+float:left}
+#box #inhalt,#rechts,#scrollcontainer{overflow:hidden}
+#scrollcontainer{
+  width:690px;
 overflow:hidden;
 position:absolute;
 left:170px;
@@ -2720,39 +2725,80 @@ color:#848484;
 -moz-border-radius:0;
 border-radius:0;
 padding:3px;
-line-height:17px}.markItUpOutpost a{height:24px;
-color:#848484!important;
-text-align:left;
-list-style-type:square;
-list-style-position:inside;
-margin:0;
-outline:0;
-height:24px}.markItUpOutpost a:link,.markItUpOutpost a:visited,.markItUpOutpost a:active{text-decoration:none;
-color:#fff}.markItUpOutpost a,.markItUpOutpost a:link{display:block;
+line-height:17px;
+}
+.markItUpOutpost a{
+  height:24px;
+  color:#848484!important;
+  text-align:left;
+  list-style-type:square;
+  list-style-position:inside;
+  margin:0;
+  outline:0;
+  height:24px;
+}
+.markItUpOutpost a:link,.markItUpOutpost a:visited,.markItUpOutpost a:active{
+  text-decoration:none;
+  color:#fff;
+}
+.markItUpOutpost a,.markItUpOutpost a:link{display:block;
 text-indent:0;
 width:auto;
 padding:2px 6px 2px 3px;
 background:0;
-color:#848484!important}.emoji{background: url("../Imagenes/Background.jpg");
-height:20px;
-width:20px;
-display:inline-block;
-margin:0 4px 0 0}.emoji.smile{background-position:-420px -380px}.emoji.lol{background-position:-320px -260px}.emoji.angry{background-position:-540px -140px}.emoji.sad{background-position:-320px -240px}.emoji.sleep{background-position:0 -320px}.emoji.sos{background-position:-40px 0}.emoji.cool{background-position:-320px 0}.emoji.moon{background-position:0 -80px}.emoji.kiss{background-position:-540px -180px}.emoji.coffee{background-position:-420px -40px}.emoji.cry{background-position:-540px -40px}.emoji.angel{background-position:-420px -220px}.emoji.skull{background-position:-440px -160px}.emoji.mad{background-position:-320px -160px}.emoji.eyes{background-position:-540px -200px}.emoji.pray{background-position:-540px -280px}.emoji.alarm{background-position:-100px -340px}.emoji.thumbup{background-position:-160px -380px}.emoji.thumbdown{background-position:-540px -360px}.emoji.poo{background-position:-40px -420px}.emoji.present{background-position:-400px -420px}.emoji.rocket{background-position:-300px -420px}.emoji.ghost{background-position:-440px -140px}.emoji.win{background-position:-320px -420px}.emoji.sheep{background-position:-140px -180px}#expeditionbutton:before,.galaxy_icons{background-image: url("../Imagenes/Background.jpg");
-background-repeat:no-repeat}#expeditionbutton:before,.galaxy_icons{float:left;
+color:#848484!important}
+.emoji{
+  background: url("../Imagenes/Background.jpg");
+  height:20px;
+  width:20px;
+  display:inline-block;
+  margin:0 4px 0 0;
+}
+.emoji.smile{background-position:-420px -380px}
+.emoji.lol{background-position:-320px -260px}
+.emoji.angry{background-position:-540px -140px}
+.emoji.sad{background-position:-320px -240px}
+.emoji.sleep{background-position:0 -320px}
+.emoji.sos{background-position:-40px 0}
+.emoji.cool{background-position:-320px 0}
+.emoji.moon{background-position:0 -80px}
+.emoji.kiss{background-position:-540px -180px}
+.emoji.coffee{background-position:-420px -40px}
+.emoji.cry{background-position:-540px -40px}
+.emoji.angel{background-position:-420px -220px}
+.emoji.skull{background-position:-440px -160px}
+.emoji.mad{background-position:-320px -160px}
+.emoji.eyes{background-position:-540px -200px}
+.emoji.pray{background-position:-540px -280px}
+.emoji.alarm{background-position:-100px -340px}
+.emoji.thumbup{background-position:-160px -380px}
+.emoji.thumbdown{background-position:-540px -360px}
+.emoji.poo{background-position:-40px -420px}
+.emoji.present{background-position:-400px -420px}
+.emoji.rocket{background-position:-300px -420px}
+.emoji.ghost{background-position:-440px -140px}
+.emoji.win{background-position:-320px -420px}
+.emoji.sheep{background-position:-140px -180px}
+#expeditionbutton:before,.galaxy_icons{
+  background-image: url("../Imagenes/Background.jpg");
+  background-repeat:no-repeat;
+}
+#expeditionbutton:before,.galaxy_icons{float:left;
 display:block;
 height:16px;
 margin:0 2px;
-width:16px}.galaxy_icons.prev{background-position:0 0}.galaxy_icons.next{background-position:0 -16px}.galaxy_icons.prev:hover{background-position:0 -32px}.galaxy_icons.next:hover{background-position:0 -48px}.galaxy_icons.galaxy{background-position:0 -65px}.galaxy_icons.solarsystem{background-position:0 -82px}.galaxy_icons.galaxy,.galaxy_icons.solarsystem{height:17px;
-width:18px}#galaxy #message-wrapper{background:transparent  url("../Imagenes/Background.jpg") no-repeat;
-height:52px;
-left:163px;
-padding:9px 0 0 22px;
-top:81px;
-width:665px}#galaxy .comm_menu{height:20px;
-width:60px}#galaxy #messages_collapsed{margin:2px 0 0 15px;
-width:435px}#galaxy #messages_collapsed a:link,#galaxy #messages_collapsed a:visited,#galaxy.no-touch #messages_collapsed a:hover,#messages_collapsed a:active{margin:-17px 1px 0 0}#galaxy #eventboxBlank,#galaxy #eventboxLoading{line-height:20px}#galaxyHeader{height:22px;
-margin:-24px 0 0 15px;
-width:567px}.solarsystem{margin:0 2px 0 56px}#galaxyHeader .btn_blue{display:block;
+width:16px}
+.galaxy_icons.prev{background-position:0 0}
+.galaxy_icons.next{background-position:0 -16px}
+.galaxy_icons.prev:hover{background-position:0 -32px}
+.galaxy_icons.next:hover{background-position:0 -48px}
+.galaxy_icons.galaxy{background-position:0 -65px}
+.galaxy_icons.solarsystem{background-position:0 -82px}
+.galaxy_icons.galaxy,.galaxy_icons.solarsystem{
+  height:17px;
+  width:18px;
+}
+#galaxyHeader .btn_blue{display:block;
 float:left;
 height:14px;
 line-height:13px;

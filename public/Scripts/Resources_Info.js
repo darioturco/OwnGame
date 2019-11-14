@@ -2,7 +2,7 @@ var selects = [];
 var controls = [];
 var open = [];
 
-function initial(){
+function resourcesInitial(){
   //carga los datos desde el servidor
   for(let i = 1 ; i<=6 ; i++){
     selects.push(document.getElementById("dropdown" + i));
