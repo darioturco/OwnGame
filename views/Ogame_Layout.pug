@@ -16,7 +16,7 @@ head
   meta(name='ogame-planet-coordinates' content='2:289:4')
   meta(name='ogame-planet-type' content='planet')
   link(rel='stylesheet' type='text/css' href='./Css/General_Style.css' media='screen')
-  link(rel='shortcut icon' type='image/x-icon' href='Imagenes/Favicon.ico')
+  link(rel='icon' type='image/x-icon' href='Imagenes/Favicon.ico')
   script(src='./Scripts/General_Player.js')
   if bodyId == "resources" || bodyId == "station" || bodyId == "research" || bodyId == "shipyard" || bodyId == "defense"
     script(src='./Scripts/Description.js')
@@ -36,7 +36,7 @@ body(id=bodyId onLoad=loadItem)
             li#playerName
               | Player:
               span.textBeefy
-                a.textBeefy(href='./Player.html') dturco
+                a.textBeefy(href='./Player.html') #{playerName}
             li
               span (#{highscore})
               a(href='./Highscore.html') Highscore
@@ -48,7 +48,7 @@ body(id=bodyId onLoad=loadItem)
               a(href='./Options.html') Options
             li
               a(href='./GodMain.html') God Mode
-            li.OGameClock 07.12.2019 16:17:18
+            li#Clock.OGameClock 07.12.2019 16:17:18
         ul#resources
           li#metal_box.metal
             .resourceIcon.metal
@@ -207,7 +207,7 @@ body(id=bodyId onLoad=loadItem)
           #myWorlds
             #countColonies
               p.textCenter
-                span 1/1
+                span #{cantPlanets}/#{maxPlanets}
                 |  Planets
             #planetList
               #planet-33655142.smallplanet
