@@ -2,9 +2,7 @@ require('dotenv').config();
 var express = require('express');
 var uni = require('./universe');
 var router = express.Router();
-var pInfo = {};//uni.getBasicInfo(1,1);
 var planeta = 0;
-
 
 console.log(new Date());
 router.all('/*', (req, res, next) => {

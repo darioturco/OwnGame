@@ -2643,17 +2643,27 @@ div.spoiler{border:1px dotted #a9a9a9}
   margin-top:3px;
   display:none;
 }
-.ui-colorpicker,.ui-dialog.ui-colorpicker{width:auto;
-white-space:nowrap;
--webkit-touch-callout:none;
--webkit-user-select:none;
--khtml-user-select:none;
--moz-user-select:none;
--ms-user-select:none;
-user-select:none;
-background:#0d1014}.ui-colorpicker-inline{position:static}.ui-colorpicker-buttonset{float:left;
-margin-left:.4em}.ui-colorpicker-buttonset .ui-button{margin:.5em 0 .5em 0;
-cursor:pointer}.ui-colorpicker-buttonpane{background-image:none;
+.ui-colorpicker,.ui-dialog.ui-colorpicker{
+  width:auto;
+  white-space:nowrap;
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  background:#0d1014;
+}
+.ui-colorpicker-inline{position:static}
+.ui-colorpicker-buttonset{
+  float:left;
+  margin-left:.4em;
+}
+.ui-colorpicker-buttonset .ui-button{
+  margin:.5em 0 .5em 0;
+  cursor:pointer;
+}
+.ui-colorpicker-buttonpane{background-image:none;
 margin:.7em 0 0 0;
 padding:0 .2em;
 border-left:0;
@@ -2663,13 +2673,29 @@ margin:.5em .2em .4em;
 cursor:pointer;
 padding:.2em .6em .3em .6em;
 width:auto;
-overflow:visible}.ui-colorpicker-buttonpane button.ui-colorpicker-current{float:left}.ui-colorpicker table{font-size:100%;
-margin:0}.ui-colorpicker table td{vertical-align:top}.ui-colorpicker-padding-left{padding-left:10px}.ui-colorpicker-padding-top{padding-top:10px}.ui-colorpicker-border{border:1px inset;
-display:inline-block}.ui-colorpicker-map>*,.ui-colorpicker-bar>*{position:absolute;
-cursor:crosshair}.ui-colorpicker-map-pointer,.ui-colorpicker-bar-pointer{position:absolute}.ui-colorpicker-map,.ui-colorpicker-map>*{display:block;
+overflow:visible}
+.ui-colorpicker-buttonpane button.ui-colorpicker-current{float:left}
+.ui-colorpicker table{
+  font-size:100%;
+  margin:0;
+}
+.ui-colorpicker table td{vertical-align:top}
+.ui-colorpicker-padding-left{padding-left:10px}
+.ui-colorpicker-padding-top{padding-top:10px}
+.ui-colorpicker-border{
+  border:1px inset;
+  display:inline-block;
+}
+.ui-colorpicker-map>*,.ui-colorpicker-bar>*{
+  position:absolute;
+  cursor:crosshair;
+}
+.ui-colorpicker-map-pointer,.ui-colorpicker-bar-pointer{position:absolute}.ui-colorpicker-map,.ui-colorpicker-map>*{display:block;
 width:256px;
 height:256px;
-overflow:hidden}.ui-colorpicker-map-layer-1,.ui-colorpicker-map-layer-2{background: url("../Imagenes/Background.jpg") no-repeat}.ui-colorpicker-map-layer-alpha{background: url("../Imagenes/Background.jpg")}.ui-colorpicker-map-pointer{display:inline-block;
+overflow:hidden;
+}
+.ui-colorpicker-map-layer-1,.ui-colorpicker-map-layer-2{background: url("../Imagenes/Background.jpg") no-repeat}.ui-colorpicker-map-layer-alpha{background: url("../Imagenes/Background.jpg")}.ui-colorpicker-map-pointer{display:inline-block;
 width:15px;
 height:15px;
 background: url("../Imagenes/Background.jpg") no-repeat}.ui-colorpicker-bar,.ui-colorpicker-bar>*{display:block;
