@@ -1,31 +1,23 @@
 doctype html
 head
   meta(http-equiv='Content-Type' content='text/html; charset=UTF-8')
-  meta(http-equiv='Language' content='en')
-  meta(name='ogame-timestamp' content='1572884151')
-  meta(name='ogame-universe-name' content='')
+  meta(name='ogame-universe-name' content='nombre')
   meta(name='ogame-universe-speed' content='6')
   meta(name='ogame-universe-speed-fleet' content='2')
-  meta(name='ogame-language' content='en')
   meta(name='ogame-donut-galaxy' content='1')
   meta(name='ogame-donut-system' content='1')
-  meta(name='ogame-player-id' content='106077')
-  meta(name='ogame-player-name' content='dturco')
+  meta(name='ogame-player-name' content=basic.playerName)
   meta(name='ogame-planet-id' content='33655142')
-  meta(name='ogame-planet-name' content='Planeta Principal')
-  meta(name='ogame-planet-coordinates' content='2:289:4')
+  meta(name='ogame-planet-name' content=basic.planets[basic.numPlanet].name)
+  meta(name='ogame-planet-coordinates' content=basic.planets[basic.numPlanet].coordinates.galaxy + ':' + basic.planets[basic.numPlanet].coordinates.system + ':' + basic.planets[basic.numPlanet].coordinates.pos)
   meta(name='ogame-planet-type' content='planet')
   link(rel='stylesheet' type='text/css' href='./Css/General_Style.css' media='screen')
   link(rel='icon' type='image/x-icon' href='Imagenes/Favicon.ico')
   script(src='./Scripts/General_Player.js')
-  if bodyId == "resources" || bodyId == "station" || bodyId == "research" || bodyId == "shipyard" || bodyId == "defense"
-    script(src='./Scripts/Description.js')
-  if bodyId == "resourceSettings"
-    script(src='./Scripts/Resources_Info.js')
-  script.
-    #{objInit}
+  each item in listScript
+    script(src=item)
   title OGame
-body(id=bodyId onLoad=loadItem)
+body(id=bodyId onLoad=basic.loadItem)
   .contentBoxBody
     #box
       // TOP MENU
@@ -36,9 +28,9 @@ body(id=bodyId onLoad=loadItem)
             li#playerName
               | Player:
               span.textBeefy
-                a.textBeefy(href='./Player.html') #{playerName}
+                a.textBeefy(href='./Player.html') #{basic.playerName}
             li
-              span (#{highscore})
+              span (#{basic.highscore})
               a(href='./Highscore.html') Highscore
             li
               a(href='./Vacas.html') Vacas
@@ -65,11 +57,11 @@ body(id=bodyId onLoad=loadItem)
           li#energy_box.energy
             .resourceIcon.energy
             span.value
-              span#resources_energy #{energy}
+              span#resources_energy #{basic.energy}
           li#darkmatter_box.darkmatter.dark_highlight_tablet
             img(src='./Imagenes/Dark_matter.gif')
             span.value
-              span#resources_darkmatter #{dark}
+              span#resources_darkmatter #{basic.dark}
         #message-wrapper
           // Notificaciones de mensajes y flotas
           a.comm_menu.messages(href='./Ogame_messages.html')
@@ -207,11 +199,13 @@ body(id=bodyId onLoad=loadItem)
           #myWorlds
             #countColonies
               p.textCenter
-                span #{cantPlanets}/#{maxPlanets}
+                span #{basic.cantPlanets}/#{basic.maxPlanets}
                 |  Planets
             #planetList
-              #planet-33655142.smallplanet
-                a.planetlink.Right.Close(href='#')
-                  img.planetPic.js_replace2x(alt='Planet' src='./Imagenes/Planets/Miniatures/Planet_7_1.gif' width='48' height='48')
-                  span.planet-name Planeta Principal
-                  span.planet-koords [2:289:4]
+              each item, index in basic.planets
+                #planet.smallplanet
+                  - var clase = (index == basic.numPlanet) ? 'active' : '';
+                  a.planetlink.Right.Close(class=clase href=url + '?planet=' + index)
+                    img.planetPic(alt='Planet' src="./Imagenes/Planets/Miniatures/Planet_" + item.type + "_" + item.color + ".gif" width='48' height='48')
+                    span.planet-name #{item.name}
+                    span.planet-koords [#{item.coordinates.galaxy}:#{item.coordinates.system}:#{item.coordinates.pos}]

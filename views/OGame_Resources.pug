@@ -1,9 +1,9 @@
 extends Ogame_Layout
 block content
   #inhalt
-    #planet(style='background-image:url(./Imagenes/Planets/Resources_Planet_1.jpg)')
+    #planet(style='background-image:url(./Imagenes/Planets/Resources_Planet_' + basic.planets[basic.numPlanet].type + '.jpg)')
       #header_text
-        h2 Resources - Planeta Principal
+        h2 Resources - #{basic.planets[basic.numPlanet].name}
       #slot01.slot
         a(href='./Ogame_ResourceSetings.html') Resource settings
       form(method='POST' action='' name='form' onkeyup='sendBuildRequest(null, event, false);' onsubmit='return false;')
@@ -64,7 +64,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Metal Mine
-                      | 0
+                      | #{info.buildings.metalMine}
           li#button2.on
             .supply2
               .buildingimg
@@ -72,7 +72,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Crystal Mine
-                      | 0
+                      | #{info.buildings.crystalMine}
           li#button3.on
             .supply3
               .buildingimg
@@ -80,7 +80,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Deuterium Synthesizer
-                      | 0
+                      | #{info.buildings.deuteriumMine}
           li#button4.on
             .supply4
               .buildingimg
@@ -88,7 +88,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Solar Plant
-                      | 0
+                      | #{info.buildings.solarPlant}
           li#button5.on
             .supply12
               .buildingimg
@@ -96,7 +96,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Fusion Reactor
-                      | 0
+                      | #{info.buildings.fusionReactor}
           li#button6.on
             .supply212
               .buildingimg
@@ -104,7 +104,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Solar Satellite
-                      | 0
+                      | #{info.solarSatellite}
         ul#storage
           li#button7.on
             .supply22
@@ -113,7 +113,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Metal Storage
-                      | 0
+                      | #{info.buildings.metalStorage}
           li#button8.on
             .supply23
               .buildingimg
@@ -121,7 +121,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Crystal Storage
-                      | 0
+                      | #{info.buildings.crystalStorage}
           li#button9.on
             .supply24
               .buildingimg
@@ -129,6 +129,6 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Deuterium Tank
-                      | 0
+                      | #{info.buildings.deuteriumStorage}
         .footer
         br.clearfloat
