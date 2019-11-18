@@ -1155,24 +1155,38 @@ div.detail_screen{
   position:absolute;
   top:0;
 }
-div.detail_screen.small{background-image: url("../Imagenes/Background.jpg")}.detail_screen #pic ul{list-style-type:none}.detail_screen #pic .textLabel{position:absolute;
-text-indent:-9999px}.detail_screen #content{width:450px;
-height:200px;
-overflow:hidden;
-float:left}#planet .detail_screen #content h2{font:bold 12px/22px Verdana,Arial,Helvetica,sans-serif;
-color:#d29d00;
-display:inline-block;
-float:left;
-height:22px;
-margin:0 0 0 25px;
-overflow:hidden;
-padding-top:0;
-width:auto}.detail_screen #content .level{color:#d29d00;
-float:right;
-font-size:11px;
-line-height:22px;
-height:22px;
-text-align:center}.detail_screen #wrapper{color:#848484;
+div.detail_screen.small{background-image: url("../Imagenes/Background.jpg")}
+.detail_screen #pic ul{list-style-type:none}
+.detail_screen #pic .textLabel{
+  position:absolute;
+  text-indent:-9999px;
+}
+.detail_screen #content{
+  width:450px;
+  height:200px;
+  overflow:hidden;
+  float:left;
+}
+#planet .detail_screen #content h2{
+  font:bold 12px/22px Verdana,Arial,Helvetica,sans-serif;
+  color:#d29d00;
+  display:inline-block;
+  float:left;
+  height:22px;
+  margin:0 0 0 25px;
+  overflow:hidden;
+  padding-top:0;
+  width:auto;
+}
+.detail_screen #content .level{
+  margin-right: 18px;
+  color:#d29d00;
+  float:right;
+  font-size:11px;
+  line-height:22px;
+  height:22px;
+  text-align:center;
+}.detail_screen #wrapper{color:#848484;
 font:normal 11px/14px Verdana,Arial,Helvetica,sans-serif;
 margin-top:30px;
 padding-left:17px}
@@ -4549,15 +4563,16 @@ div.detail_screen div.pic,#techinfo div.techwrapper div.leftcol.building img,#tu
   background-image: url("../Imagenes/Resources/Mines.jpg");
   background-repeat:no-repeat;
 }
-div.detail_screen div#resources_1_large,#techinfo div.techwrapper div.building.tech1 img,#tutorial-content div#aufgabentext.building.metalMine img{background-position:0 0}
-div.detail_screen div#resources_2_large,#techinfo div.techwrapper div.building.tech2 img{background-position:-200px 0}
-div.detail_screen div#resources_3_large,#techinfo div.techwrapper div.building.tech3 img,#tutorial-content div#aufgabentext.building.deuteriumMine img{background-position:-400px 0}
-div.detail_screen div#resources_4_large,#techinfo div.techwrapper div.building.tech4 img{background-position:-600px 0}
-div.detail_screen div#resources_12_large,#techinfo div.techwrapper div.building.tech12 img{background-position:-800px 0}
+div.detail_screen div#imgBlackInfo{background-position:200px 0}
+div.detail_screen div#metalMine,#techinfo div.techwrapper div.building.tech1 img{background-position:0 0}
+div.detail_screen div#crystalMine,#techinfo div.techwrapper div.building.tech2 img{background-position:-200px 0}
+div.detail_screen div#deuteriumMine,#techinfo div.techwrapper div.building.tech3 img{background-position:-400px 0}
+div.detail_screen div#solarPlant,#techinfo div.techwrapper div.building.tech4 img{background-position:-600px 0}
+div.detail_screen div#fusionReactor,#techinfo div.techwrapper div.building.tech12 img{background-position:-800px 0}
 div.detail_screen div#resources_212_large{background-position:-1000px 0}
-div.detail_screen div#resources_22_large,#techinfo div.techwrapper div.building.tech22 img{background-position:-1200px 0}
-div.detail_screen div#resources_23_large,#techinfo div.techwrapper div.building.tech23 img{background-position:-1400px 0}
-div.detail_screen div#resources_24_large,#techinfo div.techwrapper div.building.tech24 img{background-position:-1600px 0}
+div.detail_screen div#metalStorage,#techinfo div.techwrapper div.building.tech22 img{background-position:-1200px 0}
+div.detail_screen div#crystalStorage,#techinfo div.techwrapper div.building.tech23 img{background-position:-1400px 0}
+div.detail_screen div#deuteriumStorage,#techinfo div.techwrapper div.building.tech24 img{background-position:-1600px 0}
 div.detail_screen div#resources_25_large,#techinfo div.techwrapper div.building.tech25 img{background-position:-1800px 0}
 div.detail_screen div#resources_26_large,#techinfo div.techwrapper div.building.tech26 img{background-position:-2000px 0}
 div.detail_screen div#resources_27_large,#techinfo div.techwrapper div.building.tech27 img{background-position:-2200px 0}

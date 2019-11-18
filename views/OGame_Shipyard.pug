@@ -11,9 +11,9 @@ block content
               .techtree_img
               span.label Techtree
           #content
-            h2 Light Fighter
-            a#close.close_details(href='javascript:void(0);' onclick='toggleDescription(-1); return false;')
-            span.level
+            h2#nameText
+            a#close.close_details(href='javascript:void(0);' onclick='toggleDescription("void"); return false;')
+            span#levelText.level
               | Number: 0
               span.undermark
             br.clearfloat
@@ -21,7 +21,7 @@ block content
               li
                 | Production duration
                 span#buildDuration.time
-                  | 5m 20s
+                  | 0s
                   span.undermark
               li
                 | Construction possible:
@@ -37,10 +37,13 @@ block content
               ul#costs
                 li.metal.tooltip
                   .resourceIcon.metal
-                  .cost 3.000
+                  #cost1.cost -
                 li.crystal.tooltip
                   .resourceIcon.crystal
-                  .cost 1.000
+                  #cost2.cost -
+                li.deuterium.tooltip
+                  .resourceIcon.deuterium
+                  #cost3.cost -
             .build-it_wrap
               .premium_info_placeholder
               a.build-it(href='javascript:void(0);')
@@ -49,7 +52,7 @@ block content
           #description
             .txt_box
               a.tooltip.help.overlay(href='./Ogame_Tecnology.html')
-              p.description_txt(style='width: 90%')
+              p#descriptionText.description_txt(style='width: 90%')
                 | This is the first fighting ship all emperors will build. The light fighter is an agile ship, but vulnerable on its own. In mass numbers, they can become a great threat to any empire. They are the first to accompany small and large cargoes to hostile planets with minor defences.
     .c-left
     .c-right
@@ -64,7 +67,7 @@ block content
             li#button1.on
               .item_box.military204
                 .buildingimg
-                  a#details204.detail_button.tooltip.slideIn(onclick='toggleDescription(31);return false;' href='javascript:void(0);')
+                  a#details204.detail_button.tooltip.slideIn(onclick='toggleDescription("lightFighter");return false;' href='javascript:void(0);')
                     span.ecke
                       span.level
                         span.textlabel Light Fighter
@@ -72,7 +75,7 @@ block content
             li#button2.on
               .item_box.military205
                 .buildingimg
-                  a#details205.detail_button.tooltip.slideIn(onclick='toggleDescription(32);return false;' href='javascript:void(0);')
+                  a#details205.detail_button.tooltip.slideIn(onclick='toggleDescription("heavyFighter");return false;' href='javascript:void(0);')
                     span.ecke
                       span.level
                         span.textlabel Heavy Fighter
@@ -80,7 +83,7 @@ block content
             li#button3.on
               .item_box.military206
                 .buildingimg
-                  a#details206.detail_button.tooltip.slideIn(onclick='toggleDescription(33);return false;' href='javascript:void(0);')
+                  a#details206.detail_button.tooltip.slideIn(onclick='toggleDescription("cruiser");return false;' href='javascript:void(0);')
                     span.ecke
                       span.level
                         span.textlabel Cruiser
@@ -88,7 +91,7 @@ block content
             li#button4.on
               .item_box.military207
                 .buildingimg
-                  a#details207.detail_button.tooltip.slideIn(onclick='toggleDescription(34);return false;' href='javascript:void(0);')
+                  a#details207.detail_button.tooltip.slideIn(onclick='toggleDescription("battleship");return false;' href='javascript:void(0);')
                     span.ecke
                       span.level
                         span.textlabel Battleship
@@ -96,7 +99,7 @@ block content
             li#button5.on
               .item_box.military215
                 .buildingimg
-                  a#details215.detail_button.tooltip.slideIn(onclick='toggleDescription(35);return false;' href='javascript:void(0);')
+                  a#details215.detail_button.tooltip.slideIn(onclick='toggleDescription("battlecruiser");return false;' href='javascript:void(0);')
                     span.ecke
                       span.level
                         span.textlabel Battlecruiser
@@ -104,7 +107,7 @@ block content
             li#button6.on
               .item_box.military211
                 .buildingimg
-                  a#details211.detail_button.tooltip.slideIn(onclick='toggleDescription(36);return false;' href='javascript:void(0);')
+                  a#details211.detail_button.tooltip.slideIn(onclick='toggleDescription("bomber");return false;' href='javascript:void(0);')
                     span.ecke
                       span.level
                         span.textlabel Bomber
@@ -112,7 +115,7 @@ block content
             li#button7.on
               .item_box.military213
                 .buildingimg
-                  a#details213.detail_button.tooltip.slideIn(onclick='toggleDescription(37);return false;' href='javascript:void(0);')
+                  a#details213.detail_button.tooltip.slideIn(onclick='toggleDescription("destroyer");return false;' href='javascript:void(0);')
                     span.ecke
                       span.level
                         span.textlabel Destroyer
@@ -120,7 +123,7 @@ block content
             li#button8.on
               .item_box.military214
                 .buildingimg
-                  a#details214.detail_button.tooltip.slideIn(onclick='toggleDescription(38);return false;' href='javascript:void(0);')
+                  a#details214.detail_button.tooltip.slideIn(onclick='toggleDescription("deathstar");return false;' href='javascript:void(0);')
                     span.ecke
                       span.level
                         span.textlabel Deathstar
@@ -130,7 +133,7 @@ block content
             li#button1.on
               .item_box.civil202
                 .buildingimg
-                  a#details202.detail_button.tooltip.slideIn(onclick='toggleDescription(39);return false;' href='javascript:void(0);')
+                  a#details202.detail_button.tooltip.slideIn(onclick='toggleDescription("smallCargo");return false;' href='javascript:void(0);')
                     span.ecke
                       span.level
                         span.textlabel Small Cargo
@@ -138,7 +141,7 @@ block content
             li#button2.on
               .item_box.civil203
                 .buildingimg
-                  a#details203.detail_button.tooltip.slideIn(onclick='toggleDescription(40);return false;' href='javascript:void(0);')
+                  a#details203.detail_button.tooltip.slideIn(onclick='toggleDescription("largeCargo");return false;' href='javascript:void(0);')
                     span.ecke
                       span.level
                         span.textlabel Large Cargo
@@ -146,7 +149,7 @@ block content
             li#button3.on
               .item_box.civil208
                 .buildingimg
-                  a#details208.detail_button.tooltip.slideIn(onclick='toggleDescription(41);return false;' href='javascript:void(0);')
+                  a#details208.detail_button.tooltip.slideIn(onclick='toggleDescription("colony");return false;' href='javascript:void(0);')
                     span.ecke
                       span.level
                         span.textlabel Colony Ship
@@ -154,7 +157,7 @@ block content
             li#button4.on
               .item_box.civil209
                 .buildingimg
-                  a#details209.detail_button.tooltip.slideIn(onclick='toggleDescription(42);return false;' href='javascript:void(0);')
+                  a#details209.detail_button.tooltip.slideIn(onclick='toggleDescription("recycler");return false;' href='javascript:void(0);')
                     span.ecke
                       span.level
                         span.textlabel Recycler
@@ -162,7 +165,7 @@ block content
             li#button5.on
               .item_box.civil210
                 .buildingimg
-                  a#details210.detail_button.tooltip.slideIn(onclick='toggleDescription(43);return false;' href='javascript:void(0);')
+                  a#details210.detail_button.tooltip.slideIn(onclick='toggleDescription("espionageProbe");return false;' href='javascript:void(0);')
                     span.ecke
                       span.level
                         span.textlabel Espionage Probe
@@ -170,7 +173,7 @@ block content
             li#button6.on
               .item_box.civil212
                 .buildingimg
-                  a#details212.detail_button.tooltip.slideIn(onclick='toggleDescription(44);return false;' href='javascript:void(0);')
+                  a#details212.detail_button.tooltip.slideIn(onclick='toggleDescription("solarSatellite");return false;' href='javascript:void(0);')
                     span.ecke
                       span.level
                         span.textlabel Solar Satellite

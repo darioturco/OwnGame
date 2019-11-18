@@ -20,7 +20,7 @@ function initFunction(obj){
     deuterium_res.innerHTML = parseInt(deuterium_res.innerHTML) + deuterium;
     actualizaFecha();
   }, 1000);
-  document.body.removeAttribute("onload");
+  //document.body.removeAttribute("onload");
 }
 
 function actualizaFecha(){

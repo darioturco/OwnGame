@@ -15,7 +15,6 @@ router.all('/*', (req, res, next) => {
 router.get('/', (req, res, next) => {
   //uni.deleteCollection(process.env.UNIVERSE_NAME, ["jugadores", "universo"]);
   //uni.addNewPlayer("dturco", 1);
-
   uni.seeDataBase(res, process.env.UNIVERSE_NAME, process.env.JUGADORES);
 });
 
@@ -94,9 +93,9 @@ router.get('/OGame_Research.html', (req, res, next) => {
 
 router.get('/OGame_Resources.html', (req, res, next) => {
   res.render('OGame_Resources', {bodyId: "resources",
-  url: req._parsedOriginalUrl.pathname,
+    url: req._parsedOriginalUrl.pathname,
     info: uni.buildingsActualInfo(uni.planeta),
-    basic: uni.getActualBasicInfo(uni.planeta),
+    basic: uni.getActualBasicInfo(uni.planeta, "info="+JSON.stringify(this.info)+";"),
     listScript: ['./Scripts/Description.js']
   });
 });

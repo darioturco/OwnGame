@@ -11,9 +11,9 @@ block content
               .techtree_img
               span.label Techtree
           #content
-            h2 Heavy Laser
-            a#close.close_details(href='javascript:void(0);' onclick='toggleDescription(-1);return false;')
-            span.level
+            h2#nameText
+            a#close.close_details(href='javascript:void(0);' onclick='toggleDescription("void");return false;')
+            span#levelText.level
               | Number: 0
               span.undermark
             br.clearfloat
@@ -21,7 +21,7 @@ block content
               li
                 | Production duration
                 span#buildDuration.time
-                  | 4m 34s
+                  | 0s
                   span.undermark
               li
                 | Construction possible:
@@ -37,10 +37,13 @@ block content
               ul#costs
                 li.metal.tooltip
                   .resourceIcon.metal
-                  .cost 6.000
+                  #cost1.cost -
                 li.crystal.tooltip
                   .resourceIcon.crystal
-                  .cost 2.000
+                  #cost2.cost -
+                li.deuterium.tooltip
+                  .resourceIcon.deuterium
+                  #cost3.cost -
             .build-it_wrap
               .premium_info_placeholder
               a.build-it(href='javascript:void(0);')
@@ -49,7 +52,7 @@ block content
           #description
             .txt_box
               a.tooltip.help.overlay(href='./Ogame_Tecnology.html')
-              p.description_txt(style='width: 90%') The heavy laser is the logical development of the light laser.
+              p#descriptionText.description_txt(style='width: 90%') The heavy laser is the logical development of the light laser.
     .c-left
     .c-right
     #buttonz
@@ -60,7 +63,7 @@ block content
           li#defense1.on
             .item_box.defense401
               .buildingimg
-                a#details401.detail_button.tooltip.slideIn(onclick='toggleDescription(51);return false;' href='javascript:void(0);')
+                a#details401.detail_button.tooltip.slideIn(onclick='toggleDescription("rocketLauncher");return false;' href='javascript:void(0);')
                   span.ecke
                     span.level
                       span.textlabel Rocket Launcher
@@ -68,7 +71,7 @@ block content
           li#defense2.on
             .item_box.defense402
               .buildingimg
-                a#details402.detail_button.tooltip.slideIn(onclick='toggleDescription(52);return false;' href='javascript:void(0);')
+                a#details402.detail_button.tooltip.slideIn(onclick='toggleDescription("lightLaser");return false;' href='javascript:void(0);')
                   span.ecke
                     span.level
                       span.textlabel Light Laser
@@ -76,7 +79,7 @@ block content
           li#defense3.on
             .item_box.defense403
               .buildingimg
-                a#details403.detail_button.tooltip.slideIn(onclick='toggleDescription(53);return false;' href='javascript:void(0);')
+                a#details403.detail_button.tooltip.slideIn(onclick='toggleDescription("heavyLaser");return false;' href='javascript:void(0);')
                   span.ecke
                     span.level
                       span.textlabel Heavy Laser
@@ -84,7 +87,7 @@ block content
           li#defense4.on
             .item_box.defense404
               .buildingimg
-                a#details404.detail_button.tooltip.slideIn(onclick='toggleDescription(54);return false;' href='javascript:void(0);')
+                a#details404.detail_button.tooltip.slideIn(onclick='toggleDescription("gauss");return false;' href='javascript:void(0);')
                   span.ecke
                     span.level
                       span.textlabel Gauss Cannon
@@ -92,7 +95,7 @@ block content
           li#defense5.on
             .item_box.defense405
               .buildingimg
-                a#details405.detail_button.tooltip.slideIn(onclick='toggleDescription(55);return false;' href='javascript:void(0);')
+                a#details405.detail_button.tooltip.slideIn(onclick='toggleDescription("ion");return false;' href='javascript:void(0);')
                   span.ecke
                     span.level
                       span.textlabel Ion Cannon
@@ -100,7 +103,7 @@ block content
           li#defense6.on
             .item_box.defense406
               .buildingimg
-                a#details406.detail_button.tooltip.slideIn(onclick='toggleDescription(56);return false;' href='javascript:void(0);')
+                a#details406.detail_button.tooltip.slideIn(onclick='toggleDescription("plasma");return false;' href='javascript:void(0);')
                   span.ecke
                     span.level
                       span.textlabel Plasma Turret
@@ -108,7 +111,7 @@ block content
           li#defense7.on
             .item_box.defense407
               .buildingimg
-                a#details407.detail_button.tooltip.slideIn(onclick='toggleDescription(57);return false;' href='javascript:void(0);')
+                a#details407.detail_button.tooltip.slideIn(onclick='toggleDescription("smallShield");return false;' href='javascript:void(0);')
                   span.ecke
                     span.level
                       span.textlabel Small Shield Dome
@@ -116,7 +119,7 @@ block content
           li#defense8.on
             .item_box.defense408
               .buildingimg
-                a#details408.detail_button.tooltip.slideIn(onclick='toggleDescription(58);return false;' href='javascript:void(0);')
+                a#details408.detail_button.tooltip.slideIn(onclick='toggleDescription("largeShield");return false;' href='javascript:void(0);')
                   span.ecke
                     span.level
                       span.textlabel Large Shield Dome
@@ -124,7 +127,7 @@ block content
           li#defense9.on
             .item_box.defense502
               .buildingimg
-                a#details502.detail_button.tooltip.slideIn(onclick='toggleDescription(59);return false;' href='javascript:void(0);')
+                a#details502.detail_button.tooltip.slideIn(onclick='toggleDescription("antiballisticMissile");return false;' href='javascript:void(0);')
                   span.ecke
                     span.level
                       span.textlabel Anti-Ballistic Missiles
@@ -132,7 +135,7 @@ block content
           li#defense10.on
             .item_box.defense503
               .buildingimg
-                a#details503.detail_button.tooltip.slideIn(onclick='toggleDescription(60);return false;' href='javascript:void(0);')
+                a#details503.detail_button.tooltip.slideIn(onclick='toggleDescription("interplanetaryMissile");return false;' href='javascript:void(0);')
                   span.ecke
                     span.level
                       span.textlabel Interplanetary Missiles

@@ -8,38 +8,38 @@ block content
         a(href='./Ogame_ResourceSetings.html') Resource settings
       form(method='POST' action='' name='form' onkeyup='sendBuildRequest(null, event, false);' onsubmit='return false;')
         #detail.detail_screen
-          #resources_3_large.pic
+          #imgBlackInfo.pic
             a.techtree_link.tooltip.overlay(href='./Ogame_Tecnology.html')
               .techtree_img_disabled
               span.label Techtree
           #content
-            h2 Deuterium Synthesizer
-            a#close.close_details(href='javascript:void(0);' onclick='toggleDescription(-1); return false;')
-            span.level
-              | Level 8
+            h2#nameText
+            a#close.close_details(href='javascript:void(0);' onclick='toggleDescription("void"); return false;')
+            span#levelText.level
+              | Level 0
               span.undermark
             br.clearfloat
             ul.production_info
               li
-                | Production duration
+                | Production duration:
                 span#buildDuration.time
-                  | 6m 9s
+                  | 0s
                   span.undermark
             a.demolish_link.tooltip.demolishDisabled(href='#demolish3' onclick='')
               .demolish_img_disabled
               span.label Tear down
             .costs_wrap
-              p.costs_info Required to improve to level 9:
+              p.costs_info Required to improve to the next level:
               ul#costs
                 li.metal.tooltip
                   .resourceIcon.metal
-                  .cost 5.766
+                  #cost1.cost -
                 li.crystal.tooltip
                   .resourceIcon.crystal
-                  .cost 1.922
+                  #cost2.cost -
                 li.energy.tooltip
                   .resourceIcon.energy
-                  .cost 82
+                  #cost3.cost -
             .build-it_wrap
               a.build-it(href='javascript:void(0);')
                 span Improve
@@ -47,7 +47,7 @@ block content
           #description
             .txt_box
               a.tooltip.help.overlay(href='Ogame_Tecnology.html')
-              p.description_txt(style='width: 90%')
+              p#descriptionText.description_txt(style='width: 90%')
                 | Deuterium Synthesizers draw the trace Deuterium content from the water on a planet.
     .c-left
     .c-right
@@ -60,7 +60,7 @@ block content
             // disable = rayado; on = prendido; off = blanco y negro
             .supply1
               .buildingimg
-                a#details.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(1);return false;')
+                a#details.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("metalMine");return false;')
                   span.ecke
                     span.level
                       span.textlabel Metal Mine
@@ -68,7 +68,7 @@ block content
           li#button2.on
             .supply2
               .buildingimg
-                a#details.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(2);return false;')
+                a#details.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("crystalMine");return false;')
                   span.ecke
                     span.level
                       span.textlabel Crystal Mine
@@ -76,7 +76,7 @@ block content
           li#button3.on
             .supply3
               .buildingimg
-                a#details.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(3);return false;')
+                a#details.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("deuteriumMine");return false;')
                   span.ecke
                     span.level
                       span.textlabel Deuterium Synthesizer
@@ -84,7 +84,7 @@ block content
           li#button4.on
             .supply4
               .buildingimg
-                a#details.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(4);return false;')
+                a#details.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("solarPlant");return false;')
                   span.ecke
                     span.level
                       span.textlabel Solar Plant
@@ -92,7 +92,7 @@ block content
           li#button5.on
             .supply12
               .buildingimg
-                a#details.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(5);return false;')
+                a#details.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("fusionReactor");return false;')
                   span.ecke
                     span.level
                       span.textlabel Fusion Reactor
@@ -100,7 +100,7 @@ block content
           li#button6.on
             .supply212
               .buildingimg
-                a#details.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(44);return false;')
+                a#details.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("solarSatellite");return false;')
                   span.ecke
                     span.level
                       span.textlabel Solar Satellite
@@ -109,7 +109,7 @@ block content
           li#button7.on
             .supply22
               .buildingimg
-                a#details.tooltip.slideIn(href='#' onclick='toggleDescription(6);return false;')
+                a#details.tooltip.slideIn(href='#' onclick='toggleDescription("metalStorage");return false;')
                   span.ecke
                     span.level
                       span.textlabel Metal Storage
@@ -117,7 +117,7 @@ block content
           li#button8.on
             .supply23
               .buildingimg
-                a#details.tooltip.slideIn(href='#' onclick='toggleDescription(7);return false;')
+                a#details.tooltip.slideIn(href='#' onclick='toggleDescription("crystalStorage");return false;')
                   span.ecke
                     span.level
                       span.textlabel Crystal Storage
@@ -125,7 +125,7 @@ block content
           li#button9.on
             .supply24
               .buildingimg
-                a#details.tooltip.slideIn(href='#' onclick='toggleDescription(8);return false;')
+                a#details.tooltip.slideIn(href='#' onclick='toggleDescription("deuteriumStorage");return false;')
                   span.ecke
                     span.level
                       span.textlabel Deuterium Tank

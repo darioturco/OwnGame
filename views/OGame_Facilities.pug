@@ -11,17 +11,17 @@ block content
               .techtree_img_disabled
               span.label Techtree
           #content
-            h2 Deuterium Synthesizer
-            a#close.close_details(href='javascript:void(0);' onclick='toggleDescription(-1); return false;')
-            span.level
-              | Level 8
+            h2#nameText
+            a#close.close_details(href='javascript:void(0);' onclick='toggleDescription("void"); return false;')
+            span#levelText.level
+              | Level 0
               span.undermark
             br.clearfloat
             ul.production_info
               li
                 | Production duration
                 span#buildDuration.time
-                  | 6m 9s
+                  | 0s
                   span.undermark
             a.demolish_link.tooltip.demolishDisabled(href='#demolish3' onclick='')
               .demolish_img_disabled
@@ -31,13 +31,13 @@ block content
               ul#costs
                 li.metal.tooltip
                   .resourceIcon.metal
-                  .cost 5.766
+                  #cost1.cost -
                 li.crystal.tooltip
                   .resourceIcon.crystal
-                  .cost 1.922
+                  #cost2.cost -
                 li.energy.tooltip
                   .resourceIcon.energy
-                  .cost 82
+                  #cost3.cost -
             .build-it_wrap
               a.build-it(href='javascript:void(0);')
                 span Improve
@@ -45,7 +45,7 @@ block content
           #description
             .txt_box
               a.tooltip.help.overlay(href='Ogame_Tecnology.html')
-              p.description_txt(style='width: 90%')
+              p#descriptionText.description_txt(style='width: 90%')
                 | Deuterium Synthesizers draw the trace Deuterium content from the water on a planet.
     .c-left
     .c-right
@@ -58,7 +58,7 @@ block content
             // disable = rayado; on = prendido; off = blanco y negro
             .item_box.station14
               .stationlarge.buildingimg
-                a#details14.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(11);return false;')
+                a#details14.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("robotFactory");return false;')
                   span.ecke
                     span.level
                       span.textlabel Robotics Factory
@@ -66,7 +66,7 @@ block content
           li#button1.on
             .item_box.station21
               .stationlarge.buildingimg
-                a.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(12);return false;')
+                a.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("shipyard");return false;')
                   span.ecke
                     span.level
                       span.textlabel Shipyard
@@ -74,7 +74,7 @@ block content
           li#button2.on
             .item_box.station31
               .stationlarge.buildingimg
-                a.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(13);return false;')
+                a.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("researchLab");return false;')
                   span.ecke
                     span.level
                       span.textlabel Research Lab
@@ -82,7 +82,7 @@ block content
           li#button3.on
             .item_box.station34
               .stationlarge.buildingimg
-                a#details34.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(14);return false;')
+                a#details34.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("alliance");return false;')
                   span.ecke
                     span.level
                       span.textlabel Alliance Depot
@@ -90,7 +90,7 @@ block content
           li#button4.on
             .item_box.station44
               .stationlarge.buildingimg
-                a#details44.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(15);return false;')
+                a#details44.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("silo");return false;')
                   span.ecke
                     span.level
                       span.textlabel Missile Silo
@@ -98,7 +98,7 @@ block content
           li#button5.on
             .item_box.station15
               .stationlarge.buildingimg
-                a#details15.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(16);return false;')
+                a#details15.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("naniteFactory");return false;')
                   span.ecke
                     span.level
                       span.textlabel Nanite Factory
@@ -106,7 +106,7 @@ block content
           li#button6.on
             .item_box.station33
               .stationlarge.buildingimg
-                a#details33.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription(17);return false;')
+                a#details33.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("terraformer");return false;')
                   span.ecke
                     span.level
                       span.textlabel Terraformer
