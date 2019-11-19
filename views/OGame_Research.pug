@@ -6,7 +6,7 @@ block content
         h2 Research - Planeta Principal
       form(method='POST' action='' name='form')
         #detail.detail_screen
-          #research_124_large.pic
+          #imgBlackInfo.pic
             a.techtree_link.tooltip.overlay(href='./Ogame_Tecnology.html')
               .techtree_img
               span.label Techtree
@@ -24,19 +24,19 @@ block content
                   | 0s
                   span.undermark
             .costs_wrap
-              p.costs_info Required to improve to level 4:
+              p.costs_info Required to improve to the next level:
               ul#costs
                 li.metal.tooltip
-                  .resourceIcon.metal
+                  .resourceIcon.descriptionIcon.metal
                   #cost1.cost.overmark -
                 li.crystal.tooltip
-                  .resourceIcon.crystal
+                  .resourceIcon.descriptionIcon.crystal
                   #cost2.cost.overmark -
                 li.deuterium.tooltip
-                  .resourceIcon.deuterium
+                  .resourceIcon.descriptionIcon.deuterium
                   #cost3.cost.overmark -
             .build-it_wrap
-              a.build-it_disabled(href='javascript:void(0);')
+              a#build-it.build-it_disabled(href='javascript:void(0);')
                 span Research
           br(clear='all')
           #description
@@ -57,7 +57,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Energy Technology
-                      | 0
+                      | #{info.energy}
           li.on
             .item_box.research120
               .buildingimg
@@ -65,7 +65,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Laser Technology
-                      | 0
+                      | #{info.laser}
           li.on
             .item_box.research121
               .buildingimg
@@ -73,7 +73,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Ion Technology
-                      | 0
+                      | #{info.ion}
           li.on
             .item_box.research114
               .buildingimg
@@ -81,7 +81,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Hyperspace Technology
-                      | 0
+                      | #{info.hyperspace}
           li.on
             .item_box.research122
               .buildingimg
@@ -89,7 +89,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Plasma Technology
-                      | 0
+                      | #{info.plasma}
       #wrapBattle.resRight.fleft
         h2 Drive research
         ul#base2.activate
@@ -100,7 +100,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Combustion Drive
-                      | 0
+                      | #{info.combustion}
           li.on
             .item_box.research117
               .buildingimg
@@ -108,7 +108,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Impulse Drive
-                      | 0
+                      | #{info.impulse}
           li.on
             .item_box.research118
               .buildingimg
@@ -116,7 +116,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Hyperspace Drive
-                      | 0
+                      | #{info.hyperspace_drive}
       #wrapBattle.resLeft.fleft
         h2 Advanced researches
         ul#base3.activate
@@ -127,7 +127,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Espionage Technology
-                      | 0
+                      | #{info.espionage}
           li.on
             .item_box.research108
               .buildingimg
@@ -135,7 +135,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Computer Technology
-                      | 0
+                      | #{info.computer}
           li.on
             .item_box.research124
               .buildingimg
@@ -143,15 +143,15 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Astrophysics
-                      | 0
+                      | #{info.astrophysics}
           li.on
             .item_box.research123
               .buildingimg
-                a#details123.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("integalactic");return false;')
+                a#details123.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("intergalactic");return false;')
                   span.ecke
                     span.level
                       span.textlabel Intergalactic Research Network
-                      | 0
+                      | #{info.intergalactic}
           li.on
             .item_box.research199
               .buildingimg
@@ -159,7 +159,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Graviton Technology
-                      | 0
+                      | #{info.graviton}
       #wrapBattle.resRight.fleft
         h2 Combat research
         ul#base4.activate
@@ -170,7 +170,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Weapons Technology
-                      | 0
+                      | #{info.weapon}
           li.on
             .item_box.research110
               .buildingimg
@@ -178,7 +178,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Shielding Technology
-                      | 0
+                      | #{info.shielding}
           li.on
             .item_box.research111
               .buildingimg
@@ -186,5 +186,5 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Armour Technology
-                      | 0
+                      | #{info.armour}
       br.clearfloat

@@ -1,8 +1,9 @@
 var metal_res, crystal_res, deuterium_res, clock;
 var metal = 0, crystal = 0, deuterium = 0;
+var universeSpeed = 1;
 
 function initFunction(obj){
-  console.log(obj);
+  universeSpeed = obj.speedTime;
   clock = document.getElementById("Clock");
   metal_res = document.getElementById("resources_metal");
   crystal_res = document.getElementById("resources_crystal");

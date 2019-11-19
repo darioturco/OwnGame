@@ -6,7 +6,7 @@ block content
         h2 Shipyard - Planeta Principal
       form(method='POST' action='' name='form')
         #detail.detail_screen(style='height: 0px; display: block; overflow: hidden; margin-top: 0px;')
-          #shipyard_204_large.pic
+          #imgBlackInfo.pic
             a.techtree_link.tooltip.overlay(href='./Ogame_Tecnology.html')
               .techtree_img
               span.label Techtree
@@ -36,17 +36,17 @@ block content
               p.costs_info Costs per piece:
               ul#costs
                 li.metal.tooltip
-                  .resourceIcon.metal
+                  .resourceIcon.descriptionIcon.metal
                   #cost1.cost -
                 li.crystal.tooltip
-                  .resourceIcon.crystal
+                  .resourceIcon.descriptionIcon.crystal
                   #cost2.cost -
                 li.deuterium.tooltip
-                  .resourceIcon.deuterium
+                  .resourceIcon.descriptionIcon.deuterium
                   #cost3.cost -
             .build-it_wrap
               .premium_info_placeholder
-              a.build-it(href='javascript:void(0);')
+              a#build-it.build-it(href='javascript:void(0);')
                 span Build
           br(clear='all')
           #description

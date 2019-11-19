@@ -12,8 +12,11 @@ router.get('/universo', function(req, res, next) {
 });
 
 router.get('/buildings', function(req, res, next) {
-  //console.log(uni);
   res.send(uni.costBuildings(uni.planeta));
+});
+
+router.get('/research', function(req, res, next) {
+  res.send(uni.costResearch(uni.planeta));
 });
 
 module.exports = router;

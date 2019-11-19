@@ -10,7 +10,7 @@ block content
         #detail.detail_screen
           #imgBlackInfo.pic
             a.techtree_link.tooltip.overlay(href='./Ogame_Tecnology.html')
-              .techtree_img_disabled
+              .techtree_img
               span.label Techtree
           #content
             h2#nameText
@@ -32,16 +32,16 @@ block content
               p.costs_info Required to improve to the next level:
               ul#costs
                 li.metal.tooltip
-                  .resourceIcon.metal
+                  .resourceIcon.descriptionIcon.metal
                   #cost1.cost -
                 li.crystal.tooltip
-                  .resourceIcon.crystal
+                  .resourceIcon.descriptionIcon.crystal
                   #cost2.cost -
-                li.energy.tooltip
-                  .resourceIcon.energy
+                li.deuterium.tooltip
+                  .resourceIcon.descriptionIcon.energy
                   #cost3.cost -
             .build-it_wrap
-              a.build-it(href='javascript:void(0);')
+              a#build-it.build-it(href='javascript:void(0);')
                 span Improve
           br(clear='all')
           #description
@@ -57,7 +57,7 @@ block content
       .content
         ul#building
           li#button1.on
-            // disable = rayado; on = prendido; off = blanco y negro
+            // disabled = rayado; on = prendido; off = blanco y negro
             .supply1
               .buildingimg
                 a#details.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("metalMine");return false;')

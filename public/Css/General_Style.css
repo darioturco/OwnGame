@@ -1300,12 +1300,15 @@ border-bottom:17.5px solid transparent;
 border-right:17.5px solid #222f3d;
 float:left;
 height:0;
-width:0}a.abortNow{background:transparent  url("../Imagenes/Background.jpg") -208px -71px no-repeat;
-height:15px;
-position:absolute;
-width:15px;
-right:-4px;
-bottom:-4px}
+width:0}
+a.abortNow{
+  background:transparent  url("../Imagenes/Background.jpg") -208px -71px no-repeat;
+  height:15px;
+  position:absolute;
+  width:15px;
+  right:-4px;
+  bottom:-4px;
+}
 .costs_wrap{
   color:#848484;
   float:left;
@@ -1330,7 +1333,10 @@ bottom:-4px}
   text-align:center;
   width:70px;
 }
-#costs .resourceIcon{margin:0 11px 3px 11px}
+#costs .resourceIcon{
+  margin:0 11px 3px 11px;
+  background-position: 100px;
+}
 .build-it_wrap{
   float:right;
   margin:0 8px 0 0;
@@ -1349,10 +1355,11 @@ a.build-it,a.build-it_disabled{
 }
 a.build-it>span,a.build-it_disabled>span{
   display:inline-block;
-display:table-cell;
-vertical-align:middle;
-width:143px;
-height:54px;}
+  display:table-cell;
+  vertical-align:middle;
+  width:143px;
+  height:54px;
+}
 a.build-it_disabled{color:#848484}
 a.build-it:hover,a.build-it:active{
   background-position:0 -54px;
@@ -1360,6 +1367,7 @@ a.build-it:hover,a.build-it:active{
 a.build-it_disabled{
   background-position:0 -108px;
   cursor:default;
+  color: #848484 !important;
 }
 a.build-it_disabled:hover,a.build-it_disabled:active{background-position:0 -108px}
 #description .capacity_display{
@@ -2350,10 +2358,10 @@ figure.planetIcon.planet{display:none}
   height:20px;
   float:left
 }
-.resourceIcon.metal{background-position:0 -160px}
-.resourceIcon.crystal{background-position:-48px -160px}
-.resourceIcon.deuterium{background-position:-96px -160px}
-.resourceIcon.energy{background-position:-144px -160px}
+.resourceIcon.metal{background-position:0 -160px !important}
+.resourceIcon.crystal{background-position:-48px -160px !important}
+.resourceIcon.deuterium{background-position:-96px -160px !important}
+.resourceIcon.energy{background-position:-144px -160px !important}
 .resourceIcon.darkmatter{background-position:-192px -160px}
 .resourceIconSmall.metal{background-position:0 0}
 .resourceIconSmall.crystal{background-position:-30px 0}
@@ -2385,13 +2393,18 @@ vertical-align:middle}.rewardnotifyerror .rewardwarningtext{color:#ffcc45}.rewar
 background-color:#832222;
 background-color:#832222}.rewardnotifyclaimed{border-color:#71c274;
 background-color:#3e8a3e;
-background-color:rgba(62,138,62,0.8)}.rewardnotifyhidden{display:none}.rewardlist{background:#1f2630;
-background:-moz-linear-gradient(top,#1f2630 0,#111921 100%);
-background:-webkit-linear-gradient(top,#1f2630 0,#111921 100%);
-background:linear-gradient(to bottom,#1f2630 0,#111921 100%);
-border-radius:6px;
-margin:0 15px;
-padding:10px}.rewardlist>h3{font-weight:600;
+background-color:rgba(62,138,62,0.8)}
+.rewardnotifyhidden{display:none}
+.rewardlist{
+  background:#1f2630;
+  background:-moz-linear-gradient(top,#1f2630 0,#111921 100%);
+  background:-webkit-linear-gradient(top,#1f2630 0,#111921 100%);
+  background:linear-gradient(to bottom,#1f2630 0,#111921 100%);
+  border-radius:6px;
+  margin:0 15px;
+  padding:10px;
+}
+.rewardlist>h3{font-weight:600;
 margin:0 0 8px 2px}.rewardlist a.reward-button{background:transparent  url("../Imagenes/Background.jpg") 0 -188px no-repeat;
 bottom:15px;
 color:#fff;
@@ -3844,22 +3857,22 @@ position:relative}
   background-image: url("../Imagenes/Research/Tecnologies_All.jpg");
   background-repeat:no-repeat;
 }
-#research #research_106_large,#techinfo div.techwrapper div.research.tech106 img{background-position:-1600px 0}
-#research #research_108_large,#techinfo div.techwrapper div.research.tech108 img{background-position:-1800px 0}
-#research #research_109_large,#techinfo div.techwrapper div.research.tech109 img{background-position:-2800px 0}
-#research #research_110_large,#techinfo div.techwrapper div.research.tech110 img{background-position:-3000px 0}
-#research #research_111_large,#techinfo div.techwrapper div.research.tech111 img{background-position:-2600px 0}
-#research #research_113_large,#techinfo div.techwrapper div.research.tech113 img{background-position:0 0}
-#research #research_114_large,#techinfo div.techwrapper div.research.tech114 img{background-position:-600px 0}
-#research #research_115_large,#techinfo div.techwrapper div.research.tech115 img{background-position:-1000px 0}
-#research #research_117_large,#techinfo div.techwrapper div.research.tech117 img{background-position:-1200px 0}
-#research #research_118_large,#techinfo div.techwrapper div.research.tech118 img{background-position:-1400px 0}
-#research #research_120_large,#techinfo div.techwrapper div.research.tech120 img{background-position:-200px 0}
-#research #research_121_large,#techinfo div.techwrapper div.research.tech121 img{background-position:-400px 0}
-#research #research_122_large,#techinfo div.techwrapper div.research.tech122 img{background-position:-800px 0}
-#research #research_123_large,#techinfo div.techwrapper div.research.tech123 img,#tutorial-content div#aufgabentext.research.network img{background-position:-2200px 0}
-#research #research_124_large,#techinfo div.techwrapper div.research.tech124 img,#tutorial-content div#aufgabentext.research.astrophysics img{background-position:-2000px 0}
-#research #research_199_large,#techinfo div.techwrapper div.research.tech199 img{background-position:-2400px 0}
+#research #energy,#techinfo div.techwrapper div.research.tech113 img{background-position:0 0}
+#research #laser,#techinfo div.techwrapper div.research.tech120 img{background-position:-200px 0}
+#research #ion,#techinfo div.techwrapper div.research.tech121 img{background-position:-400px 0}
+#research #hyperspace,#techinfo div.techwrapper div.research.tech114 img{background-position:-600px 0}
+#research #plasma,#techinfo div.techwrapper div.research.tech122 img{background-position:-800px 0}
+#research #combustion,#techinfo div.techwrapper div.research.tech115 img{background-position:-1000px 0}
+#research #impulse,#techinfo div.techwrapper div.research.tech117 img{background-position:-1200px 0}
+#research #hyperspace_drive,#techinfo div.techwrapper div.research.tech118 img{background-position:-1400px 0}
+#research #espionage,#techinfo div.techwrapper div.research.tech106 img{background-position:-1600px 0}
+#research #computer,#techinfo div.techwrapper div.research.tech108 img{background-position:-1800px 0}
+#research #astrophysics,#techinfo div.techwrapper div.research.tech124 img{background-position:-2000px 0}
+#research #intergalactic,#techinfo div.techwrapper div.research.tech123 img{background-position:-2200px 0}
+#research #graviton,#techinfo div.techwrapper div.research.tech199 img{background-position:-2400px 0}
+#research #weapons,#techinfo div.techwrapper div.research.tech111 img{background-position:-2600px 0}
+#research #shielding,#techinfo div.techwrapper div.research.tech109 img{background-position:-2800px 0}
+#research #armour,#techinfo div.techwrapper div.research.tech110 img{background-position:-3000px 0}
 .techtree .graph ._jsPlumb_hover.label,.techtree .graph ._jsPlumb_hover.label.hasNotRequirements{
   z-index:5;
   color:black;
@@ -4391,24 +4404,27 @@ div.techImage.station.tech43.notBuilt a{background-position:-725px -162px}
   background-image: url("../Imagenes/Facilities/Faclities_Deatails.jpg");
   background-repeat:no-repeat;
 }
-#station .detail_screen #station_14_large,#station-moon .detail_screen #station_14_large,#techinfo div.techwrapper div.station.tech14 img{background-position:0 0}
-#station .detail_screen #station_15_large,#techinfo div.techwrapper div.station.tech15 img{background-position:-1000px 0}
-#station .detail_screen #station_21_large,#station-moon .detail_screen #station_21_large,#techinfo div.techwrapper div.station.tech21 img{background-position:-200px 0}
-#station .detail_screen #station_31_large,#techinfo div.techwrapper div.station.tech31 img{background-position:-400px 0}
-#station .detail_screen #station_33_large,#techinfo div.techwrapper div.station.tech33 img{background-position:-1200px 0}
-#station .detail_screen #station_34_large,#supplydepotlayer #inner>img,#techinfo div.techwrapper div.station.tech34 img{background-position:-600px 0}
-#station .detail_screen #station_44_large,#techinfo div.techwrapper div.station.tech44 img,#rocketsilo #inner img{background-position:-800px 0}
-#station .detail_screen #station_36_large,#techinfo div.techwrapper div.station.tech36 img,#repairdock #inner img{background-position:-2000px 0}
+#station .detail_screen #robotFactory,#station-moon .detail_screen #robotFactory,#techinfo div.techwrapper div.station.tech14 img{background-position:0 0}
+#station .detail_screen #shipyard,#station-moon .detail_screen #shipyard,#techinfo div.techwrapper div.station.tech21 img{background-position:-200px 0}
+#station .detail_screen #researchLab,#techinfo div.techwrapper div.station.tech31 img{background-position:-400px 0}
+#station .detail_screen #alliance,#supplydepotlayer #inner>img,#techinfo div.techwrapper div.station.tech34 img{background-position:-600px 0}
+#station .detail_screen #silo,#techinfo div.techwrapper div.station.tech44 img,#rocketsilo #inner img{background-position:-800px 0}
+#station .detail_screen #naniteFactory,#techinfo div.techwrapper div.station.tech15 img{background-position:-1000px 0}
+#station .detail_screen #terraformer,#techinfo div.techwrapper div.station.tech33 img{background-position:-1200px 0}
 #station-moon .detail_screen #station_41_large,#techinfo div.techwrapper div.station.tech41 img{background-position:-1400px 0}
 #station-moon .detail_screen #station_42_large,#techinfo div.techwrapper div.station.tech42 img{background-position:-1600px 0}
 #station-moon .detail_screen #station_43_large,#techinfo div.techwrapper div.station.tech43 img{background-position:-1800px 0}
+#station .detail_screen #station_36_large,#techinfo div.techwrapper div.station.tech36 img,#repairdock #inner img{background-position:-2000px 0}
 #jumpgate,#fleetTemplatesEdit #submit_std{
   color:#6f9fc8;
-overflow:hidden;
-background:transparent  url("../Imagenes/Background.jpg") repeat;
-background:rgba(0,0,0,0.6);
-padding:5px;
-width:630px}#jumpgate div.fright{width:300px}#jumpgate h4{background-color:#13181d;
+  overflow:hidden;
+  background:transparent  url("../Imagenes/Background.jpg") repeat;
+  background:rgba(0,0,0,0.6);
+  padding:5px;
+  width:630px;
+}
+#jumpgate div.fright{width:300px}
+#jumpgate h4{background-color:#13181d;
 border:1px solid #030303;
 font-weight:100;
 font-size:11px;

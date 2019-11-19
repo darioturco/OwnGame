@@ -6,9 +6,9 @@ block content
         h2 Facilities - Planeta Principal
       form(method='POST' action='' name='form')
         #detail.detail_screen
-          #resources_3_large.pic
+          #imgBlackInfo.pic
             a.techtree_link.tooltip.overlay(href='./Ogame_Tecnology.html')
-              .techtree_img_disabled
+              .techtree_img
               span.label Techtree
           #content
             h2#nameText
@@ -19,7 +19,7 @@ block content
             br.clearfloat
             ul.production_info
               li
-                | Production duration
+                | Production duration:
                 span#buildDuration.time
                   | 0s
                   span.undermark
@@ -27,19 +27,19 @@ block content
               .demolish_img_disabled
               span.label Tear down
             .costs_wrap
-              p.costs_info Required to improve to level 9:
+              p.costs_info Required to improve to the next level:
               ul#costs
                 li.metal.tooltip
-                  .resourceIcon.metal
+                  .resourceIcon.descriptionIcon.metal
                   #cost1.cost -
                 li.crystal.tooltip
-                  .resourceIcon.crystal
+                  .resourceIcon.descriptionIcon.crystal
                   #cost2.cost -
-                li.energy.tooltip
-                  .resourceIcon.energy
+                li.deuterium.tooltip
+                  .resourceIcon.descriptionIcon.energy
                   #cost3.cost -
             .build-it_wrap
-              a.build-it(href='javascript:void(0);')
+              a#build-it.build-it(href='javascript:void(0);')
                 span Improve
           br(clear='all')
           #description

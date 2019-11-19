@@ -86,6 +86,7 @@ router.get('/OGame_Overview.html', (req, res, next) => {
 router.get('/OGame_Research.html', (req, res, next) => {
   res.render('OGame_Research', {bodyId: "research",
     url: req._parsedOriginalUrl.pathname,
+    info: uni.player.research,
     basic: uni.getActualBasicInfo(uni.planeta),
     listScript: ['./Scripts/Description.js']
   });
