@@ -8,7 +8,7 @@ var level = "Number: ";
 var info = undefined;
 var size = "250";
 var elementList = ["metal", "crystal", "deuterium", "energy"];
-var descriptionText, resourcesText, resourcesIcon, timeText, nameText, levelText, imgInfo;
+var descriptionText, resourcesText, resourcesIcon, timeText, nameText, levelText, imgInfo, posibleText;
 setTimeout(initial, 0);
 
 function initial(){
@@ -29,6 +29,7 @@ function initial(){
   levelText = document.getElementById("levelText");
   imgInfo = document.getElementById("imgBlackInfo");
   colorButton = document.getElementById("build-it");
+  posibleText = document.getElementById("possibleInTime");
   url += getDireccionApi(body);
   loadJSON(url, (res) => {
     info = res;
@@ -63,18 +64,21 @@ function toggleDescription(id){
 }
 
 function setInfo(){
+  let totalRosources = [metal_res.innerHTML, crystal_res.innerHTML, deuterium_res.innerHTML, energyTotal];
   let resourcesList = [info[toggle].metal, info[toggle].crystal, info[toggle].deuterium, info[toggle].energy];
   let cont = 0;
   for(let i = 0 ; i<3 ; i++){//limpia los 3 mostradores de recursos
     for(let j = 0 ; j<4 ; j++){//no muestra la imagen
       resourcesIcon[i].classList.remove(elementList[j]);
     }
+    resourcesText[i].classList.remove("overmark");
     resourcesText[i].innerHTML = "";
   }
   for(let i = 0 ; i<4 && cont<3 ; i++){
     if(resourcesList[i] != 0){
       resourcesIcon[cont].classList.add(elementList[i]);
       resourcesText[cont].innerHTML = resourcesList[i];
+      if(resourcesList[i] > totalRosources[i]) resourcesText[cont].classList.add("overmark");// si no tenes los recursos lo escribe en rojo
       cont++;
     }
   }
@@ -83,9 +87,11 @@ function setInfo(){
   timeText.innerHTML = segundosATiempo(tiempoParaEdificios(info[toggle].metal + info[toggle].crystal));// tiene que ser calculado apartir de los recurso que usa y de las fabricas de robot/nanobots
   descriptionText.innerHTML = info[toggle].description;
   imgInfo.id = toggle;
-  if((info[toggle].tech == false) || (metal_res.innerHTML < info[toggle].metal) || (crystal_res.innerHTML < info[toggle].crystal) || (deuterium_res.innerHTML < info[toggle].deuterium)){
+  if((info[toggle].tech == false) || (totalRosources[0] < info[toggle].metal) || (totalRosources[1] < info[toggle].crystal) || (totalRosources[2] < info[toggle].deuterium)){
     colorButton.classList.add("build-it_disabled");
+    posibleText.innerHTML = segundosATiempo(minimoPara(totalRosources, resourcesList));
   }else{
+    posibleText.innerHTML = " now";
     colorButton.classList.remove("build-it_disabled");
   }
 }
@@ -102,6 +108,7 @@ function tiempoParaEdificios(recursos){// esta medido en segundos
 }
 
 function segundosATiempo(seg){
+  if(!isFinite(seg)) return " unknown";
   let time = (seg%60) + "s";
   seg = Math.floor(seg/60);
   if(seg != 0){
@@ -114,4 +121,16 @@ function segundosATiempo(seg){
     }
   }
   return " " + time;
+}
+
+function minimoPara(resources, objetivo){
+  let aumento = [metal, crystal, deuterium];
+  let min = Infinity;
+  let aux = 0;
+  for(let i = 0 ; i<3; i++){
+    if((objetivo[i] - resources[i]) > 0) aux = (objetivo[i] - resources[i])/aumento[i];
+    if(!isFinite(aux)) return Infinity;
+    if(aux < min) min = aux;
+  }
+  return min;
 }

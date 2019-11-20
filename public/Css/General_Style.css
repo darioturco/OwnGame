@@ -455,7 +455,8 @@ height:25px}#alliance #inhalt .tabsbelow li,#alliance #inhalt .tabsbelow li a,#m
 min-width:120px;
 width:auto}#alliance #contentWrapper .tabsbelow li a,#messages #contentWrapper #tabs .tabsbelow li a,#preferences #contentWrapper .tabsbelow li a,#tabs_example_one.subsection_tabs.inbox li a{padding:0 5px}#tabs_example_one.subsection_tabs.inbox li,#tabs_example_one.subsection_tabs.inbox li a{max-width:120px;
 min-width:80px;
-width:auto}.tabsbelow li.aktiv,.tabsbelow li.aktiv a,.messagebox .tabsbelow li.aktiv a.active,.messagebox .tabsbelow li.aktiv a:link,.messagebox .tabsbelow li.aktiv a:visited,.messagebox .tabsbelow li.ui-tabs-active,.messagebox .tabsbelow li.ui-tabs-active,#netz .contentz .tabsbelow li.ui-tabs-active a,#netz .contentz .tabsbelow li.ui-tabs-active a,.tabsbelow .ui-tabs-active a:link,.tabsbelow .ui-tabs-active a:visited,.tabsbelow .ui-tabs-active a:active,.subsection_tabs li a.active,#netz #tabs_example_one a.active,#netz #tabs_example_one .ui-tabs-active a,#netz #tabs_example_one .ui-tabs-active a{background:#262e39;
+width:auto}
+.tabsbelow li.aktiv,.tabsbelow li.aktiv a,.messagebox .tabsbelow li.aktiv a.active,.messagebox .tabsbelow li.aktiv a:link,.messagebox .tabsbelow li.aktiv a:visited,.messagebox .tabsbelow li.ui-tabs-active,.messagebox .tabsbelow li.ui-tabs-active,#netz .contentz .tabsbelow li.ui-tabs-active a,#netz .contentz .tabsbelow li.ui-tabs-active a,.tabsbelow .ui-tabs-active a:link,.tabsbelow .ui-tabs-active a:visited,.tabsbelow .ui-tabs-active a:active,.subsection_tabs li a.active,#netz #tabs_example_one a.active,#netz #tabs_example_one .ui-tabs-active a,#netz #tabs_example_one .ui-tabs-active a{background:#262e39;
 background:-moz-linear-gradient(top,#262e39 0,#181e26 50%,#0d1014 100%);
 background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#262e39),color-stop(50%,#181e26),color-stop(100%,#0d1014));
 background:-webkit-linear-gradient(top,#262e39 0,#181e26 50%,#0d1014 100%);
@@ -464,7 +465,9 @@ background:-ms-linear-gradient(top,#262e39 0,#181e26 50%,#0d1014 100%);
 background:linear-gradient(top,#262e39 0,#181e26 50%,#0d1014 100%);
 filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#262e39',endColorstr='#0d1014',GradientType=0);
 border-color:#35404f #0d1014 #0d1014 #0d1014;
-color:#fff}.big_tabs .big_tab,#shop .to_shop,#shop .to_inventory{position:relative;
+color:#fff}
+.big_tabs .big_tab,#shop .to_shop,#shop .to_inventory{
+  position:relative;
 display:inline-block;
 margin:13px 2px 0 0;
 border-radius:5px 5px 0 0;
@@ -521,29 +524,91 @@ line-height:28px;
 height:28px;
 text-align:center}.subtabs .txt_link{display:block}.subtabs a.txt_link{color:#848484;
 text-decoration:none}.subtabs .ui-state-hover a.txt_link,.subtabs .ui-tabs-active a.txt_link{color:#fff;
-text-decoration:none}.subtabs .ui-state-hover.first a.txt_link{background-position:0 -345px}.subtabs .ui-state-hover.last a.txt_link{background-position:100% -375px}.pagination{display:table;
-margin:10px auto}.pagination .p_li{display:table-cell;
+text-decoration:none}.subtabs .ui-state-hover.first a.txt_link{background-position:0 -345px}
+.subtabs .ui-state-hover.last a.txt_link{background-position:100% -375px}
+.pagination{display:table;
+margin:10px auto}
+.pagination .p_li{display:table-cell;
 float:left;
 line-height:16px;
 padding:0 5px;
 cursor:pointer;
-cursor:hand}.pagination .p_li a.active{color:#ff0}.pagination .icon{vertical-align:middle}.pagination .icon_fastforward{margin:0 0 0 5px}.pagination .icon_skip_back{margin:0 5px 0 0}.icon,.icon_link,.icon12px{background: url("../Imagenes/Background.jpg");
+cursor:hand;
+}
+.pagination .p_li a.active{color:#ff0}
+.pagination .icon{vertical-align:middle}
+.pagination .icon_fastforward{margin:0 0 0 5px}
+.pagination .icon_skip_back{margin:0 5px 0 0}
+.icon,.icon_link,.icon12px{background: url("../Imagenes/ListOptions.png");
 background-repeat:no-repeat;
 display:inline-block;
 height:16px;
-width:16px}#fleetTemplatesEdit .icon_link{background:0;
-padding:9px 9px 5px 2px}.icon_nf_link{height:26px;
-margin:0 7px 0 0;
-width:26px}.icon12px{height:12px;
-width:12px}.icon.float_left{margin-right:3px}.icon:hover{text-decoration:none}.icon.icon_adressbook{background-position:0 -945px}.icon.icon_arr_asc_desc{background-position:0 -736px}.icon.icon_arr_asc{background-position:0 -768px}.icon.icon_arr_desc{background-position:0 -784px}.icon.icon_against{background-position:0 -80px}.icon.icon_chat{background-position:0 -913px}.icon.icon_checkmark{background-position:0 -608px}.icon.icon_close{background-position:0 -704px}.icon.icon_combatunits{background-position:0 -16px}.icon.icon_edit{background-position:0 -336px}.icon.icon_eye{background-position:0 -112px}.icon.icon_fastforward{background-position:0 -432px}.icon.icon_fed_attack{background-position:0 -64px}.icon.icon_info{background-position:0 -544px}.icon.icon_lock{background-position:0 -272px}.icon.icon_mail{background-position:0 -176px}.icon.icon_missile{background-position:0 -144px}.support_icon.icon_mail,.support_icon:hover{background: url("../Imagenes/Background.jpg")!important;
-background-repeat:no-repeat;
-display:inline-block;
-height:16px;
-width:16px}.icon.icon_quit{background: url("../Imagenes/Background.jpg") -208px -71px no-repeat}.icon.icon_recall{background-position:0 -576px}.icon.icon_reload{background-position:0 -32px}.icon.icon_reply{background-position:0 -592px}.icon.icon_restore{background-position:0 -800px}.icon.icon_rewind{background-position:0 -368px}.icon.icon_skip{background-position:0 -464px}.icon.icon_skip_back{background-position:0 -480px}.icon.icon_delete,.icon.icon_trash{background-position:0 -304px}.icon.icon_user{background-position:0 -400px}.icon.icon_warning{background-position:0 -208px}.icon.icon_maximize,.hideReport .icon{background-position:0 -528px}.icon.icon_minimize,.shareReport .icon{background-position:0 -240px}.icon.icon_eye.disabled{background-position:0 -48px}.icon12px.icon_wrench{background-position:0 -672px}.icon12px.icon_wrench_red{background-position:0 -688px}.icon.icon_wreck_field{background: url("../Imagenes/Background.jpg");
+width:16px;
+}
+#fleetTemplatesEdit .icon_link{
+  background:0;
+  padding:9px 9px 5px 2px;
+}
+.icon_nf_link{
+  height:26px;
+  margin:0 7px 0 0;
+  width:26px;
+}
+.icon12px{
+  height:12px;
+  width:12px;
+}
+.icon.float_left{margin-right:3px}
+.icon:hover{text-decoration:none}
+.icon.icon_adressbook{background-position:0 -945px}
+.icon.icon_arr_asc_desc{background-position:0 -736px}
+.icon.icon_arr_asc{background-position:0 -768px}
+.icon.icon_arr_desc{background-position:0 -784px}
+.icon.icon_against{background-position:0 -80px}
+.icon.icon_chat{background-position:0 -913px}
+.icon.icon_checkmark{background-position:0 -608px}
+.icon.icon_close{background-position:0 -704px}
+.icon.icon_combatunits{background-position:0 -16px}
+.icon.icon_edit{background-position:0 -336px}
+.icon.icon_eye{background-position:0 -112px}
+.icon.icon_fastforward{background-position:0 -432px}
+.icon.icon_fed_attack{background-position:0 -64px}
+.icon.icon_info{background-position:0 -544px}
+.icon.icon_lock{background-position:0 -272px}
+.icon.icon_mail{background-position:0 -176px}
+.icon.icon_missile{background-position:0 -144px}
+.support_icon.icon_mail,.support_icon:hover{
+  background: url("../Imagenes/Background.jpg")!important;
+  background-repeat:no-repeat;
+  display:inline-block;
+  height:16px;
+  width:16px;
+}
+.icon.icon_quit{background: url("../Imagenes/Background.jpg") -208px -71px no-repeat}
+.icon.icon_recall{background-position:0 -576px}
+.icon.icon_reload{background-position:0 -32px}
+.icon.icon_reply{background-position:0 -592px}
+.icon.icon_restore{background-position:0 -800px}
+.icon.icon_rewind{background-position:0 -368px}
+.icon.icon_skip{background-position:0 -464px}
+.icon.icon_skip_back{background-position:0 -480px}
+.icon.icon_delete,.icon.icon_trash{background-position:0 -304px}
+.icon.icon_user{background-position:0 -400px}
+.icon.icon_warning{background-position:0 -208px}
+.icon.icon_maximize,.hideReport .icon{background-position:0 -528px}
+.icon.icon_minimize,.shareReport .icon{background-position:0 -240px}
+.icon.icon_eye.disabled{background-position:0 -48px}
+.icon12px.icon_wrench{background-position:0 -672px}
+.icon12px.icon_wrench_red{background-position:0 -688px}
+.icon.icon_wreck_field{
+  background: url("../Imagenes/Background.jpg");
 top:5px;
 left:20px;
 height:20px;
-width:20px}.icon.icon_wreck_field:hover{background-position:0 -20px}.icon.icon_break_rocket{background: url("../Imagenes/Background.jpg")}.ajax_load_shadow{background:#22313b  url("../Imagenes/Background.jpg") no-repeat 50%;
+width:20px}
+.icon.icon_wreck_field:hover{background-position:0 -20px}
+.icon.icon_break_rocket{background: url("../Imagenes/Background.jpg")}
+.ajax_load_shadow{background:#22313b  url("../Imagenes/Background.jpg") no-repeat 50%;
 clear:both;
 height:100px;
 margin:0 auto;
@@ -2845,7 +2910,7 @@ color:#848484!important}
 .emoji.win{background-position:-320px -420px}
 .emoji.sheep{background-position:-140px -180px}
 #expeditionbutton:before,.galaxy_icons{
-  background-image: url("../Imagenes/Background.jpg");
+  background-image: url("../Imagenes/GalaxyArrow.png");
   background-repeat:no-repeat;
 }
 #expeditionbutton:before,.galaxy_icons{float:left;
@@ -2863,13 +2928,20 @@ width:16px}
   height:17px;
   width:18px;
 }
-#galaxyHeader .btn_blue{display:block;
-float:left;
-height:14px;
-line-height:13px;
-margin:0 2px;
-min-width:0;
-padding:0 5px}#galaxy_input,#system_input{display:block;
+#galaxyHeader{
+  width: auto;
+  margin:0 22px;
+}
+#galaxyHeader .btn_blue{
+  display:block;
+  float:left;
+  height:14px;
+  line-height:13px;
+  margin:0 2px;
+  min-width:0;
+  padding:0 5px;
+}
+#galaxy_input,#system_input{display:block;
 float:left;
 height:14px;
 line-height:16px;
@@ -3870,9 +3942,9 @@ position:relative}
 #research #astrophysics,#techinfo div.techwrapper div.research.tech124 img{background-position:-2000px 0}
 #research #intergalactic,#techinfo div.techwrapper div.research.tech123 img{background-position:-2200px 0}
 #research #graviton,#techinfo div.techwrapper div.research.tech199 img{background-position:-2400px 0}
-#research #weapons,#techinfo div.techwrapper div.research.tech111 img{background-position:-2600px 0}
-#research #shielding,#techinfo div.techwrapper div.research.tech109 img{background-position:-2800px 0}
-#research #armour,#techinfo div.techwrapper div.research.tech110 img{background-position:-3000px 0}
+#research #armour,#techinfo div.techwrapper div.research.tech111 img{background-position:-2600px 0}
+#research #weapons,#techinfo div.techwrapper div.research.tech109 img{background-position:-2800px 0}
+#research #shielding,#techinfo div.techwrapper div.research.tech110 img{background-position:-3000px 0}
 .techtree .graph ._jsPlumb_hover.label,.techtree .graph ._jsPlumb_hover.label.hasNotRequirements{
   z-index:5;
   color:black;
@@ -4128,19 +4200,20 @@ div.techImage.ship.tech215.notBuilt a{background-position:-1042px -162px}
   background-image: url("../Imagenes/Shipyard/Shipyard_Nave.jpg");
   background-repeat:no-repeat;
 }
-#shipyard #shipyard_202_large,#techinfo div.techwrapper div.ship.tech202 img,#tutorial-content div#aufgabentext.ship.littleCargo img{background-position:-1600px 0}
-#shipyard #shipyard_203_large,#techinfo div.techwrapper div.ship.tech203 img,#tutorial-content div#aufgabentext.ship.largeCargo img{background-position:-1800px 0}
-#shipyard #shipyard_204_large,#techinfo div.techwrapper div.ship.tech204 img{background-position:0 0}#shipyard #shipyard_205_large,#techinfo div.techwrapper div.ship.tech205 img{background-position:-200px 0}
-#shipyard #shipyard_206_large,#techinfo div.techwrapper div.ship.tech206 img{background-position:-400px 0}
-#shipyard #shipyard_207_large,#techinfo div.techwrapper div.ship.tech207 img{background-position:-600px 0}
-#shipyard #shipyard_208_large,#techinfo div.techwrapper div.ship.tech208 img,#tutorial-content div#aufgabentext.ship.colony img{background-position:-2000px 0}
-#shipyard #shipyard_209_large,#techinfo div.techwrapper div.ship.tech209 img,#tutorial-content div#aufgabentext.ship.recycler img{background-position:-2200px 0}
-#shipyard #shipyard_210_large,#techinfo div.techwrapper div.ship.tech210 img,#tutorial-content div#aufgabentext.ship.espionage img{background-position:-2400px 0}
-#shipyard #shipyard_211_large,#techinfo div.techwrapper div.ship.tech211 img{background-position:-1000px 0}
-#shipyard #shipyard_212_large,#techinfo div.techwrapper div.ship.tech212 img{background-position:-2600px 0}
-#shipyard #shipyard_213_large,#techinfo div.techwrapper div.ship.tech213 img{background-position:-1200px 0}
-#shipyard #shipyard_214_large,#techinfo div.techwrapper div.ship.tech214 img{background-position:-1400px 0}
-#shipyard #shipyard_215_large,#techinfo div.techwrapper div.ship.tech215 img{background-position:-800px 0}
+#shipyard #lightFighter,#techinfo div.techwrapper div.ship.tech204 img{background-position:0 0}
+#shipyard #heavyFighter,#techinfo div.techwrapper div.ship.tech205 img{background-position:-200px 0}
+#shipyard #cruiser,#techinfo div.techwrapper div.ship.tech206 img{background-position:-400px 0}
+#shipyard #battleship,#techinfo div.techwrapper div.ship.tech207 img{background-position:-600px 0}
+#shipyard #battlecruiser,#techinfo div.techwrapper div.ship.tech215 img{background-position:-800px 0}
+#shipyard #bomber,#techinfo div.techwrapper div.ship.tech211 img{background-position:-1000px 0}
+#shipyard #destroyer,#techinfo div.techwrapper div.ship.tech213 img{background-position:-1200px 0}
+#shipyard #deathstar,#techinfo div.techwrapper div.ship.tech214 img{background-position:-1400px 0}
+#shipyard #smallCargo,#techinfo div.techwrapper div.ship.tech202 img{background-position:-1600px 0}
+#shipyard #largeCargo,#techinfo div.techwrapper div.ship.tech203 img{background-position:-1800px 0}
+#shipyard #colony,#techinfo div.techwrapper div.ship.tech208 img{background-position:-2000px 0}
+#shipyard #recycler,#techinfo div.techwrapper div.ship.tech209 img{background-position:-2200px 0}
+#shipyard #espionageProbe,#techinfo div.techwrapper div.ship.tech210 img{background-position:-2400px 0}
+#shipyard #solarSatellite,#techinfo div.techwrapper div.ship.tech212 img{background-position:-2600px 0}
 #shipyard div.detail_screen{
   height:250px;
   background-image: url("../Imagenes/Details_small.gif");
@@ -4256,16 +4329,16 @@ div.techImage.defense.tech503.notBuilt a{background-position:-802px -162px}
   background-image: url("../Imagenes/Shipyard/Defense_Build.jpg");
   background-repeat:no-repeat;
 }
-#defense #defense_401_large,#techinfo div.techwrapper div.defense.tech401 img,#tutorial-content div#aufgabentext.defense.launcher img{background-position:0 0}
-#defense #defense_402_large,#techinfo div.techwrapper div.defense.tech402 img{background-position:-200px 0}
-#defense #defense_403_large,#techinfo div.techwrapper div.defense.tech403 img{background-position:-400px 0}
-#defense #defense_404_large,#techinfo div.techwrapper div.defense.tech404 img{background-position:-600px 0}
-#defense #defense_405_large,#techinfo div.techwrapper div.defense.tech405 img{background-position:-800px 0}
-#defense #defense_406_large,#techinfo div.techwrapper div.defense.tech406 img{background-position:-1000px 0}
-#defense #defense_407_large,#techinfo div.techwrapper div.defense.tech407 img{background-position:-1200px 0}
-#defense #defense_408_large,#techinfo div.techwrapper div.defense.tech408 img{background-position:-1400px 0}
-#defense #defense_502_large,#techinfo div.techwrapper div.defense.tech502 img{background-position:-1600px 0}
-#defense #defense_503_large,#techinfo div.techwrapper div.defense.tech503 img{background-position:-1800px 0}
+#defense #rocketLauncher,#techinfo div.techwrapper div.defense.tech401 img{background-position:0 0}
+#defense #lightLaser,#techinfo div.techwrapper div.defense.tech402 img{background-position:-200px 0}
+#defense #heavyLaser,#techinfo div.techwrapper div.defense.tech403 img{background-position:-400px 0}
+#defense #gauss,#techinfo div.techwrapper div.defense.tech404 img{background-position:-600px 0}
+#defense #ion,#techinfo div.techwrapper div.defense.tech405 img{background-position:-800px 0}
+#defense #plasma,#techinfo div.techwrapper div.defense.tech406 img{background-position:-1000px 0}
+#defense #smallShield,#techinfo div.techwrapper div.defense.tech407 img{background-position:-1200px 0}
+#defense #largeShield,#techinfo div.techwrapper div.defense.tech408 img{background-position:-1400px 0}
+#defense #antiballisticMissile,#techinfo div.techwrapper div.defense.tech502 img{background-position:-1600px 0}
+#defense #interplanetaryMissile,#techinfo div.techwrapper div.defense.tech503 img{background-position:-1800px 0}
 #detailtable td{
   vertical-align:top;
   font-size:11px;

@@ -28,9 +28,9 @@ block content
               tr.alt
                 td.label(colspan='2') Basic Income
                 td.undermark.textRight
-                  span.tooltipCustom 180
+                  span.tooltipCustom #{info.basic.metal}
                 td.undermark.textRight
-                  span.tooltipCustom 90
+                  span.tooltipCustom #{info.basic.crystal}
                 td.normalmark.textRight
                   span.tooltipCustom 0
                 td.normalmark.textRight
@@ -40,7 +40,7 @@ block content
                 td.label Metal Mine (Level 19)
                 td
                 td.undermark
-                  span.tooltipCustom 20.916
+                  span.tooltipCustom #{info.mines.metal}
                 td.normalmark
                   span.tooltipCustom 0
                 td.normalmark
@@ -91,7 +91,7 @@ block content
                 td.normalmark
                   span.tooltipCustom 0
                 td.undermark
-                  span.tooltipCustom 8.822
+                  span.tooltipCustom #{info.mines.crystal}
                 td.normalmark
                   span.tooltipCustom 0
                 td.overmark
@@ -142,7 +142,7 @@ block content
                 td.normalmark
                   span.tooltipCustom 0
                 td.undermark
-                  span.tooltipCustom 1.774
+                  span.tooltipCustom #{info.mines.deuterium}
                 td.overmark
                   span.tooltipCustom 519/519
                 td
@@ -193,7 +193,7 @@ block content
                 td.normalmark
                   span.tooltipCustom 0
                 td.undermark
-                  span.tooltipCustom 2.324
+                  span.tooltipCustom #{info.mines.solar}
                 td
                   select.undermark.dropdownInitialized(name='last4' size='1' style='display: none;')
                     option.undermark(value='100' selected='') 100%
@@ -242,7 +242,7 @@ block content
                 td.overmark
                   span.tooltipCustom 0
                 td.normalmark
-                  span.tooltipCustom 0
+                  span.tooltipCustom #{info.mines.fusion}
                 td
                   select.overmark.dropdownInitialized(name='last12' size='1' style='display: none;')
                     option.undermark(value='100' selected='') 100%
@@ -257,7 +257,7 @@ block content
                     option.overmark(value='10') 10%
                     option.overmark(value='0' selected='') 0%
                   span.dropdown.currentlySelected.overmark(style='width: 67px;')
-                    a#downButton5.overmark(value='0' href='javascript:void(0);' onclick='clickSelect(5)') 0%
+                    a#downButton5.undermark(value='0' href='javascript:void(0);' onclick='clickSelect(5)') 100%
                   ul#dropdown5.dropdown.dropdownList.initialized(style='left: 568px; top: 286px; min-width: 67px; display:none;')
                     li
                       a.undermark(value='100' onclick='setDropdown(100, 5)') 100%
@@ -291,7 +291,7 @@ block content
                 td.normalmark
                   span.tooltipCustom 0
                 td.undermark
-                  span.tooltipCustom 280
+                  span.tooltipCustom #{info.mines.satillite}
                 td
                   select.undermark.dropdownInitialized(name='last212' size='1' style='display: none;')
                     option.undermark(value='100' selected='') 100%
@@ -331,14 +331,17 @@ block content
                     li
                       a.overmark(value='0' onclick='setDropdown(0, 6)') 0%
               tr
-                td.label Plasma Technology (Level 0)
+                td.label Plasma Technology (Level #{info.plasma})
                 td
+                - let metalPlasma = Math.floor(info.plasma*0.01*info.mines.metal);
+                - let crystalPlasma = Math.floor(info.plasma*0.00666*info.mines.crystal);
+                - let deuteriumPlasma = Math.floor(info.plasma*0.00333*info.mines.deuterium);
                 td.normalmark
-                  span.tooltipCustom 0
+                  span.tooltipCustom #{metalPlasma}
                 td.normalmark
-                  span.tooltipCustom 0
+                  span.tooltipCustom #{crystalPlasma}
                 td.normalmark
-                  span.tooltipCustom 0
+                  span.tooltipCustom #{deuteriumPlasma}
                 td.normalmark
                   span.tooltipCustom 0
                 td
@@ -353,14 +356,17 @@ block content
                 td -
                 td
               tr.summary.alt
+                - let metalHour = info.basic.metal + info.mines.metal + metalPlasma;
+                - let crystalHour = info.basic.crystal + info.mines.crystal + crystalPlasma;
+                - let deuteriumHour = info.mines.deuterium + deuteriumPlasma + info.mines.fusionDeuterium;
                 td.label(colspan='2')
                   em Total per hour:
                 td.undermark
-                  span.tooltipCustom 21.096
+                  span.tooltipCustom #{metalHour}
                 td.undermark
-                  span.tooltipCustom 8.912
+                  span.tooltipCustom #{crystalHour}
                 td.undermark
-                  span.tooltipCustom 1.774
+                  span.tooltipCustom #{deuteriumHour}
                 td.undermark
                   span.tooltipCustom 186
                 td
@@ -368,11 +374,11 @@ block content
                 td.label(colspan='2')
                   em Total per day:
                 td.undermark
-                  span.tooltipCustom 506.304
+                  span.tooltipCustom #{metalHour*24}
                 td.undermark
-                  span.tooltipCustom 213.888
+                  span.tooltipCustom #{crystalHour*24}
                 td.undermark
-                  span.tooltipCustom 42.576
+                  span.tooltipCustom #{deuteriumHour*24}
                 td.undermark
                   span.tooltipCustom 186
                 td
@@ -380,11 +386,11 @@ block content
                 td.label(colspan='2')
                   em Total per week:
                 td.undermark
-                  span.tooltipCustom 3.544M
+                  span.tooltipCustom #{metalHour*168}
                 td.undermark
-                  span.tooltipCustom 1.497M
+                  span.tooltipCustom #{crystalHour*168}
                 td.undermark
-                  span.tooltipCustom 298.032
+                  span.tooltipCustom #{deuteriumHour*168}
                 td.undermark
                   span.tooltipCustom 186
                 td

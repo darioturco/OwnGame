@@ -49,8 +49,12 @@ block content
                     span#renameContentField
                       input#renameInput(type="text")
           #planetOptions
+            .planetMoveStart.fleft(style='display: inline;')
+              a.tooltipLeft.dark_highlight_tablet.fleft(href='#')
+                span.planetMoveIcons.settings.planetMoveDefault.icon.fleft
+                span.planetMoveOverviewMoveLink Abandon
             a.dark_highlight_tablet.float_right.openPlanetRenameGiveupBox(href='./OGame_Overview.html')
-              span.planetMoveOverviewGivUpLink Abandon/Rename
+              span.planetMoveOverviewGivUpLink Rename
               span.planetMoveIcons.settings.planetMoveGiveUp.icon
     .c-left
     .c-right

@@ -11,7 +11,6 @@ router.all('/*', (req, res, next) => {
   uni.setPlayer(process.env.PLAYER, next);
 });
 
-/* GET pages. */
 router.get('/', (req, res, next) => {
   //uni.deleteCollection(process.env.UNIVERSE_NAME, ["jugadores", "universo"]);
   //uni.addNewPlayer("dturco", 1);
@@ -29,6 +28,7 @@ router.get('/Highscore.html', (req, res, next) => {
 router.get('/OGame_Defence.html', (req, res, next) => {
   res.render('OGame_Defence', {bodyId: "defense",
     url: req._parsedOriginalUrl.pathname,
+    info: uni.player.planets[uni.planeta].defense,
     basic: uni.getActualBasicInfo(uni.planeta),
     listScript: ['./Scripts/Description.js']
   });
@@ -104,6 +104,7 @@ router.get('/OGame_Resources.html', (req, res, next) => {
 router.get('/OGame_ResourceSetings.html', (req, res, next) => {
   res.render('OGame_ResourceSetings', {bodyId: "resourceSettings",
     url: req._parsedOriginalUrl.pathname,
+    info: uni.resourcesSetting(uni.planeta),
     basic: uni.getActualBasicInfo(uni.planeta, "resourcesInitial(); "),
     listScript: ['./Scripts/Resources_Info.js']
   });
@@ -120,6 +121,7 @@ router.get('/OGame_Reward.html', (req, res, next) => {
 router.get('/OGame_Shipyard.html', (req, res, next) => {
   res.render('OGame_Shipyard', {bodyId: "shipyard",
     url: req._parsedOriginalUrl.pathname,
+    info: uni.player.planets[uni.planeta].fleet,
     basic: uni.getActualBasicInfo(uni.planeta),
     listScript: ['./Scripts/Description.js']
   });

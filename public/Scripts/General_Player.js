@@ -1,5 +1,6 @@
 var metal_res, crystal_res, deuterium_res, clock;
 var metal = 0, crystal = 0, deuterium = 0;
+var energyTotal = 0;//guarda el total de la energia del planeta
 var universeSpeed = 1;
 
 function initFunction(obj){
@@ -15,6 +16,7 @@ function initFunction(obj){
   crystal_res.innerHTML = obj.resources.crystal;
   deuterium_res.innerHTML = obj.resources.deuterium;
   actualizaFecha();
+  //energyTotal = obj.energyTotal; agregar en obj
   setInterval(() => {
     metal_res.innerHTML = parseInt(metal_res.innerHTML) + metal;
     crystal_res.innerHTML = parseInt(crystal_res.innerHTML) + crystal;

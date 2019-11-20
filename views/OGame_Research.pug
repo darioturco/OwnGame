@@ -23,6 +23,9 @@ block content
                 span#buildDuration.time
                   | 0s
                   span.undermark
+              li
+                | Construction possible:
+                span#possibleInTime.time
             .costs_wrap
               p.costs_info Required to improve to the next level:
               ul#costs
@@ -170,7 +173,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Weapons Technology
-                      | #{info.weapon}
+                      | #{info.weapons}
           li.on
             .item_box.research110
               .buildingimg
