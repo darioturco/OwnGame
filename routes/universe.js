@@ -35,7 +35,7 @@ var exp = {
     return {idPlanet: Math.pow(500,2)*cord.galaxy + 500*cord.system + cord.pos,
       coordinates: cord,
       player: playerName,
-      name: planetName,
+      name: planetName, // maximo 23 caracteres
       type: typePlanet.type,
       color: typePlanet.color,
       temperature: typePlanet.temperature,
@@ -70,7 +70,7 @@ var exp = {
       movement: [],
       research: {energy: 0, laser: 0, ion: 0, hyperspace: 0, plasma: 0, espionage: 0, computer: 0, astrophysics: 0, intergalactic: 0, graviton: 0, combustion: 0, impulse: 0, hyperspace_drive: 0, weapons: 0, shielding: 0, armour: 0},
       lastVisit: 0,
-      type: "activo"
+      type: "activo"// activo inactivo InactivoFuerte fuerte debil
     };
     //aumenta en uno la cantidad de jugadores del universo
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").insertOne(newPlayer);//agrega al jugador a la lista de jugadores
@@ -236,6 +236,30 @@ var exp = {
             listInfo: ["rocketLauncher", "lightLaser", "heavyLaser", "gauss", "ion", "plasma", "smallShield", "largeShield", "antiballisticMissile", "interplanetaryMissile"],
             time: {mult: yard, elev: this.player.planets[planet].buildings.naniteFactory}
     };
+  },
+  galaxyInfo: function(planet){
+    return {};
+  },
+  systemInfo: function(gal, sys){
+    let res = {};
+    for(let i = 1 ; i<=15 ; i++){
+      let objaux = {active: true,
+                    player: "pepe",
+                    type: ((2+i)%7)+1,
+                    color: i%10+1,
+                    name: "Planeta Principal",
+                    moon: true,
+                    moonName: "",
+                    moonSize: 0,
+                    debris: true,
+                    metalDebris: 0,
+                    crystalDebris: 0,
+                    highscore: 2,
+                    estado: "activo"
+      };
+      res['pos' + i] = objaux;
+    }
+    return res;
   },
   normalRandom: (min, max, podaMin = -Infinity, podaMax = Infinity) => {// la esperanza es (max+min)/2
     var u = 0, v = 0;

@@ -53,8 +53,9 @@ router.get('/OGame_Fleet.html', (req, res, next) => {
 router.get('/OGame_Galaxy.html', (req, res, next) => {
   res.render('OGame_Galaxy', {bodyId: "galaxy",
     url: req._parsedOriginalUrl.pathname,
+    info: uni.galaxyInfo(uni.planeta),
     basic: uni.getActualBasicInfo(uni.planeta),
-    listScript: []
+    listScript: ['./Scripts/Galaxy.js']
   });
 });
 

@@ -27,4 +27,8 @@ router.get('/defense', function(req, res, next) {
   res.send(uni.costDefense(uni.planeta));
 });
 
+router.get('/galaxy', function(req, res, next) {
+  res.send(uni.systemInfo(req.query.galaxy, req.query.system));
+});
+
 module.exports = router;

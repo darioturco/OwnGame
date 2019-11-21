@@ -1,5 +1,5 @@
 var toggle = "void";
-var url = "http://localhost:3000/api/";
+var url = "./api/";
 var colorImg = [];
 var colorButton = null;
 var startImg = 0;

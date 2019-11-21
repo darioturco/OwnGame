@@ -30,3 +30,7 @@ function actualizaFecha(){
   let fecha = new Date();
   clock.innerHTML = fecha.getDate() + "." + (fecha.getMonth()+1) + "." + fecha.getFullYear() + " " + ((fecha.getHours() < 10) ? ('0'+fecha.getHours()) : (fecha.getHours())) + ":" + ((fecha.getMinutes() < 10) ? ('0'+fecha.getMinutes()) : (fecha.getMinutes())) + ":" + ((fecha.getSeconds() < 10) ? ('0'+fecha.getSeconds()) : (fecha.getSeconds()));
 }
+
+/*<div id="attack_alert" class="tooltip eventToggle soon" title="">
+              <a href="https://s163-en.ogame.gameforge.com/game/index.php?page=eventList"></a>
+                            </div>*/
