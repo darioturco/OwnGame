@@ -568,23 +568,37 @@ width:16px;
 }
 .icon.float_left{margin-right:3px}
 .icon:hover{text-decoration:none}
-.icon.icon_adressbook{background-position:0 -945px}
 .icon.icon_arr_asc_desc{background-position:0 -736px}
 .icon.icon_arr_asc{background-position:0 -768px}
 .icon.icon_arr_desc{background-position:0 -784px}
+.icon.icon_adressbook{background-position:0 -945px}
+.icon.icon_adressbook:hover{background-position:0 -961px}
 .icon.icon_against{background-position:0 -80px}
+.icon.icon_against:hover{background-position:0 -96px}
 .icon.icon_chat{background-position:0 -913px}
+.icon.icon_chat:hover{background-position:0 -929px}
 .icon.icon_checkmark{background-position:0 -608px}
+.icon.icon_checkmark:hover{background-position:0 -624px}
 .icon.icon_close{background-position:0 -704px}
+.icon.icon_close:hover{background-position:0 -720px}
 .icon.icon_combatunits{background-position:0 -16px}
+.icon.icon_combatunits:hover{background-position:0 -32px}
 .icon.icon_edit{background-position:0 -336px}
+.icon.icon_edit:hover{background-position:0 -352px}
 .icon.icon_eye{background-position:0 -112px}
+.icon.icon_eye:hover{background-position:0 -128px}
 .icon.icon_fastforward{background-position:0 -432px}
+.icon.icon_fastforward:hover{background-position:0 -448px}
 .icon.icon_fed_attack{background-position:0 -64px}
+.icon.icon_fed_attack:hover{background-position:0 -80px}
 .icon.icon_info{background-position:0 -544px}
+.icon.icon_info:hover{background-position:0 -560px}
 .icon.icon_lock{background-position:0 -272px}
+.icon.icon_lock:hover{background-position:0 -288px}
 .icon.icon_mail{background-position:0 -176px}
+.icon.icon_mail:hover{background-position:0 -192px}
 .icon.icon_missile{background-position:0 -144px}
+.icon.icon_missile:hover{background-position:0 -160px}
 .support_icon.icon_mail,.support_icon:hover{
   background: url("../Imagenes/Background.jpg")!important;
   background-repeat:no-repeat;
@@ -692,14 +706,22 @@ font-weight:700;
 line-height:15px;
 white-space:nowrap}.splitLine{background:#415866;
 height:1px;
-margin:4px 0 2px 0}.close-tooltip{background:transparent  url("../Imagenes/Background.jpg") -207px 0 no-repeat;
-cursor:pointer;
-height:16px;
-width:16px;
-float:right;
-right:-3px;
-position:relative;
-top:-3px}.close-tooltip:hover,.close-tooltip:active{background-position:-207px -17px}.visible{display:block}.hidden{display:none}.text_align_left{text-align:left}.text_align_right{text-align:right}
+margin:4px 0 2px 0}
+.close-tooltip{
+  background:transparent  url("../Imagenes/Buttons.png") -207px 0 no-repeat;
+  cursor:pointer;
+  height:16px;
+  width:16px;
+  float:right;
+  right:3px;
+  position:relative;
+  top:-3px;
+}
+.close-tooltip:hover,.close-tooltip:active{background-position:-207px -17px}
+.visible{display:block}
+.hidden{display:none}
+.text_align_left{text-align:left}
+.text_align_right{text-align:right}
 #info{
   background-image: url("../Imagenes/Header.jpg");
   background-position-y:1px;
@@ -2987,16 +3009,22 @@ text-align:center}#galaxytable{min-height:610px;
 height:610px;
 border:1px solid black}#galaxytable tbody{position:absolute;
 width:652px;
-border-spacing:5px 3px}#galaxytable tbody td{background-color:rgba(0,0,0,0.66);
-border-radius:6px;
-line-height:20px;
-height:20px}
+border-spacing:5px 3px}
+#galaxytable tbody td{
+  background-color:rgba(0,0,0,0.66);
+  border-radius:6px;
+  line-height:14px;
+  height:20px;
+}
 #galaxy #galaxytable td.microplanet,#galaxy #galaxytable td.moon,#galaxy #galaxytable td.debris,#galaxy #galaxytable td.action{
   border:0;
   background:0;
 }
-#galaxy #galaxytable .ListImage .planetTooltip,#galaxy #galaxytable tr.row td.moon img,#galaxy #galaxytable tr.row td.debris img{position:absolute;
-top:0}
+#galaxy #galaxytable .ListImage .planetTooltip,#galaxy #galaxytable tr.row td.moon img,#galaxy #galaxytable tr.row td.debris img{
+  position: absolute;
+  top: 54px;
+  right: 174px;
+}
 #galaxy #galaxytable .activeMoon{
   width:30px;
   height:30px;
@@ -3045,9 +3073,8 @@ height:30px}
 #galaxy #galaxytable td.microplanet1:hover{cursor:auto}#galaxy #galaxytable tr.row td.planetname,#galaxy #galaxytable tr.row td.planetname1{width:161px;
 vertical-align:middle}#galaxy #galaxytable td.planetname1:hover{cursor:auto}#galaxy #galaxytable td.moon{width:34px;
 text-align:center;
-position:relative}#galaxy #galaxytable td.moon a,#galaxy #galaxytable td.debris a{height:30px;
-width:30px;
-display:block}#galaxy #galaxytable td.spacer02{width:14px}#galaxy #galaxytable td.debris{vertical-align:top;
+position:relative}
+#galaxy #galaxytable td.spacer02{width:14px}#galaxy #galaxytable td.debris{vertical-align:top;
 width:38px;
 position:relative}
 #galaxy #galaxytable td.playername{
@@ -5767,6 +5794,37 @@ tr.alt td {
 #renameInput{
   height: 14px;
 }
-#{
-
+.canvasDebris{
+  position: absolute;
+  background: linear-gradient(#303A46, #0D1014);
+  left: 310px;
+  top: 76px;
+  padding: 8px;
+  display: block;
+  width: 210px;
+  height: 80px;
+  border-radius: 12px;
+  border: 1px solid #44576b;
+  text-align: center;
+}
+.DebrisMineButton{
+  width: auto;
+  height: 20px;
+  color: #17AADC;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.DebrisMineButton:hover{
+  color: gray;
+  text-decoration: none;
+}
+.DebrisMineButton::after{
+  content: "";
+  position: absolute;
+  top: 16%;
+  right: 100%;
+  margin-top: -10px;
+  border-width: 8px;
+  border-style: solid;
+  border-color: transparent #44576b transparent transparent;
 }

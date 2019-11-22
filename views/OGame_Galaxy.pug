@@ -2,7 +2,7 @@ extends Ogame_Layout
 block content
   #inhalt
     #galaxyHeader
-      form(action='https://s163-en.ogame.gameforge.com/game/index.php?page=galaxy' name='galaform' method='post')
+      form(action='' name='galaform' method='post')
         span.galaxy_icons.galaxy.tooltip(title='Galaxy')
         span.galaxy_icons.prev(onclick='submitOnKey(40);')
         input#galaxy_input.hideNumberSpin(maxlength='3' type='text' pattern='[0-9]*' value='2' name='galaxy' tabindex='2' onfocus='clearInput(this);' onkeyup='checkIntInput(this, 1, 5)' onkeypress='return submitOnEnter(event);')
@@ -23,16 +23,16 @@ block content
               th(colspan='11')
                 span#probes
                   | Esp.Probe:
-                  span#probeValue ???
+                  span#probeValue #{info.espionage}
                 span#recycler
                   | Recy.:
-                  span#recyclerValue ???
+                  span#recyclerValue #{info.recycler}
                 span#rockets
                   | IPM.:
-                  span#missileValue ???
+                  span#missileValue #{info.misil}
                 span#slots
                   | Used slots:
-                  span#slotValue 0/???
+                  span#slotValue #{info.slot}/#{info.maxSlot}
             tr#galaxyheadbg2.ct_head_row
               th.first(style='width: 70px; overflow: hidden;') Planet
               th(style='width: 129px; padding-right: 5px;') Name
@@ -56,27 +56,30 @@ block content
               td.planetname1(align='center')
                 span.planetName
               td.moon.js_moon1
-                #1_Moon.ListMoon
+                a(href='#' onclick='pressMoon(1); return false;')
+                  #1_Moon.ListMoon
               td.debris.js_debris1
-                #1_Debris.ListDebris
+                a(href='#' onclick='pressDebris(1); return false;')
+                  #1_Debris.ListDebris
               td.playername
                 span.status
               td.action
-                a.tooltip
+                a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_eye
-                a.tooltip
-                  span.icon.icon_chat
-                a.tooltip
-                  span.icon.icon_fed_attack
-                a.tooltip
-                  span.icon.icon_against
-                a.tooltip
-                  span.icon.icon_edit
-                a.tooltip
-                  span.icon.icon_checkmark
-                a.tooltip
+                  //espiar (se pone verdecito si ya lo estas espiando)
+                a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_adressbook
-                  
+                  // leer reporte de espionaje (esta negro si no tenes reporte de ese jugador)
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_missile
+                  // ataque personalisado
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_against
+                  // ataca como si fuera una vaca
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_mail
+                  // agrega a la lista de vacas
+
 
 
             tr.row
@@ -87,12 +90,27 @@ block content
               td.planetname1(align='center')
                 span.planetName
               td.moon.js_moon2
-                #2_Moon.ListMoon
+                a(href='#' onclick='pressMoon(2); return false;')
+                  #2_Moon.ListMoon
               td.debris.js_debris2
-                #2_Debris.ListDebris
+                a(href='#' onclick='pressDebris(2); return false;')
+                  #2_Debris.ListDebris
+
+
+
               td.playername
                 span.status
               td.action
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_eye
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_adressbook
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_missile
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_against
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_mail
 
 
 
@@ -104,13 +122,24 @@ block content
               td.planetname1(align='center')
                 span.planetName
               td.moon.js_moon3
-                #3_Moon.ListMoon
+                a(href='#' onclick='pressMoon(3); return false;')
+                  #3_Moon.ListMoon
               td.debris.js_debris3
-                #3_Debris.ListDebris
+                a(href='#' onclick='pressDebris(3); return false;')
+                  #3_Debris.ListDebris
               td.playername
                 span.status
               td.action
-
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_eye
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_adressbook
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_missile
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_against
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_mail
 
 
             tr.row
@@ -121,13 +150,24 @@ block content
               td.planetname1(align='center')
                 span.planetName
               td.moon.js_moon4
-                #4_Moon.ListMoon
-              td.debris.js_debris2
-                #4_Debris.ListDebris
+                a(href='#' onclick='pressMoon(4); return false;')
+                  #4_Moon.ListMoon
+              td.debris.js_debris4
+                a(href='#' onclick='pressDebris(4); return false;')
+                  #4_Debris.ListDebris
               td.playername
                 span.status
               td.action
-
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_eye
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_adressbook
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_missile
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_against
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_mail
 
 
             tr.row
@@ -138,13 +178,24 @@ block content
               td.planetname1(align='center')
                 span.planetName
               td.moon.js_moon5
-                #5_Moon.ListMoon
+                a(href='#' onclick='pressMoon(5); return false;')
+                  #5_Moon.ListMoon
               td.debris.js_debris5
-                #5_Debris.ListDebris
+                a(href='#' onclick='pressDebris(5); return false;')
+                  #5_Debris.ListDebris
               td.playername
                 span.status
               td.action
-
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_eye
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_adressbook
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_missile
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_against
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_mail
 
 
             tr.row
@@ -155,13 +206,24 @@ block content
               td.planetname1(align='center')
                 span.planetName
               td.moon.js_moon6
-                #6_Moon.ListMoon
+                a(href='#' onclick='pressMoon(6); return false;')
+                  #6_Moon.ListMoon
               td.debris.js_debris6
-                #6_Debris.ListDebris
+                a(href='#' onclick='pressDebris(6); return false;')
+                  #6_Debris.ListDebris
               td.playername
                 span.status
               td.action
-
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_eye
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_adressbook
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_missile
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_against
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_mail
 
 
             tr.row
@@ -172,13 +234,24 @@ block content
               td.planetname1(align='center')
                 span.planetName
               td.moon.js_moon7
-                #7_Moon.ListMoon
+                a(href='#' onclick='pressMoon(7); return false;')
+                  #7_Moon.ListMoon
               td.debris.js_debris7
-                #7_Debris.ListDebris
+                a(href='#' onclick='pressDebris(7); return false;')
+                  #7_Debris.ListDebris
               td.playername
                 span.status
               td.action
-
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_eye
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_adressbook
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_missile
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_against
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_mail
 
 
             tr.row
@@ -189,13 +262,24 @@ block content
               td.planetname1(align='center')
                 span.planetName
               td.moon.js_moon8
-                #8_Moon.ListMoon
+                a(href='#' onclick='pressMoon(8); return false;')
+                  #8_Moon.ListMoon
               td.debris.js_debris8
-                #8_Debris.ListDebris
+                a(href='#' onclick='pressDebris(8); return false;')
+                  #8_Debris.ListDebris
               td.playername
                 span.status
               td.action
-
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_eye
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_adressbook
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_missile
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_against
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_mail
 
 
             tr.row
@@ -206,13 +290,24 @@ block content
               td.planetname1(align='center')
                 span.planetName
               td.moon.js_moon9
-                #9_Moon.ListMoon
+                a(href='#' onclick='pressMoon(9); return false;')
+                  #9_Moon.ListMoon
               td.debris.js_debris9
-                #9_Debris.ListDebris
+                a(href='#' onclick='pressDebris(9); return false;')
+                  #9_Debris.ListDebris
               td.playername
                 span.status
               td.action
-
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_eye
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_adressbook
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_missile
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_against
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_mail
 
 
             tr.row
@@ -223,13 +318,24 @@ block content
               td.planetname1(align='center')
                 span.planetName
               td.moon.js_moon10
-                #10_Moon.ListMoon
+                a(href='#' onclick='pressMoon(10); return false;')
+                  #10_Moon.ListMoon
               td.debris.js_debris10
-                #10_Debris.ListDebris
+                a(href='#' onclick='pressDebris(10); return false;')
+                  #10_Debris.ListDebris
               td.playername
                 span.status
               td.action
-
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_eye
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_adressbook
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_missile
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_against
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_mail
 
 
             tr.row
@@ -240,13 +346,24 @@ block content
               td.planetname1(align='center')
                 span.planetName
               td.moon.js_moon11
-                #11_Moon.ListMoon
+                a(href='#' onclick='pressMoon(11); return false;')
+                  #11_Moon.ListMoon
               td.debris.js_debris11
-                #11_Debris.ListDebris
+                a(href='#' onclick='pressDebris(11); return false;')
+                  #11_Debris.ListDebris
               td.playername
                 span.status
               td.action
-
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_eye
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_adressbook
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_missile
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_against
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_mail
 
 
 
@@ -258,13 +375,24 @@ block content
               td.planetname1(align='center')
                 span.planetName
               td.moon.js_moon12
-                #12_Moon.ListMoon
+                a(href='#' onclick='pressMoon(12); return false;')
+                  #12_Moon.ListMoon
               td.debris.js_debris12
-                #12_Debris.ListDebris
+                a(href='#' onclick='pressDebris(12); return false;')
+                  #12_Debris.ListDebris
               td.playername
                 span.status
               td.action
-
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_eye
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_adressbook
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_missile
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_against
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_mail
 
 
             tr.row
@@ -275,13 +403,24 @@ block content
               td.planetname1(align='center')
                 span.planetName
               td.moon.js_moon13
-                #13_Moon.ListMoon
+                a(href='#' onclick='pressMoon(13); return false;')
+                  #13_Moon.ListMoon
               td.debris.js_debris13
-                #13_Debris.ListDebris
+                a(href='#' onclick='pressDebris(13); return false;')
+                  #13_Debris.ListDebris
               td.playername
                 span.status
               td.action
-
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_eye
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_adressbook
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_missile
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_against
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_mail
 
 
             tr.row
@@ -292,13 +431,24 @@ block content
               td.planetname1(align='center')
                 span.planetName
               td.moon.js_moon14
-                #14_Moon.ListMoon
+                a(href='#' onclick='pressMoon(14); return false;')
+                  #14_Moon.ListMoon
               td.debris.js_debris14
-                #14_Debris.ListDebris
+                a(href='#' onclick='pressDebris(14); return false;')
+                  #14_Debris.ListDebris
               td.playername
                 span.status
               td.action
-
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_eye
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_adressbook
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_missile
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_against
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_mail
 
 
             tr.row
@@ -309,10 +459,39 @@ block content
               td.planetname1(align='center')
                 span.planetName
               td.moon.js_moon15
-                #15_Moon.ListMoon
+                a(href='#' onclick='pressMoon(15); return false;')
+                  #15_Moon.ListMoon
               td.debris.js_debris15
-                #15_Debris.ListDebris
+                a(href='#' onclick='pressDebris(15); return false;')
+                  #15_Debris.ListDebris
               td.playername
                 span.status
               td.action
-                span
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_eye
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_adressbook
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_missile
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_against
+                a.tooltip(href='#' onclick='return false;')
+                  span.icon.icon_mail
+
+    #canvasDebris.canvasDebris
+      div(style='width: auto; height: auto;')
+        a.close-tooltip
+        div.htmlTooltip.galaxyTooltip
+          h1 debris field
+          .splitLine
+          ul.ListImage
+            li
+              span#DebrisCord [1:323:14]
+            li
+              img.debrisImg(src='../Imagenes/Planets/Miniatures/MiniDebris.gif' alt='debris' width='30' height='30')
+          ul.ListLinks
+            li#DebrisMetal Metal: 0
+            li#DebrisCrystal Crystal: 0
+            li#DebrisNeed Recyclers needed: 0
+            li
+              a.DebrisMineButton Mine

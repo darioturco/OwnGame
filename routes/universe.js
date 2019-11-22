@@ -238,7 +238,12 @@ var exp = {
     };
   },
   galaxyInfo: function(planet){
-    return {};
+    return {espionage: this.player.planets[planet].fleet.espionageProbe,
+            recycler: this.player.planets[planet].fleet.recycler,
+            misil: this.player.planets[planet].defense.interplanetaryMissile,
+            slot: 0, //es la cantidad de flotas volando (Cambiar)
+            maxSlot: this.player.research.computer + 1
+    };
   },
   systemInfo: function(gal, sys){
     let res = {};
@@ -248,7 +253,7 @@ var exp = {
                     type: ((2+i)%7)+1,
                     color: i%10+1,
                     name: "Planeta Principal",
-                    moon: true,
+                    moon: false,
                     moonName: "",
                     moonSize: 0,
                     debris: true,
