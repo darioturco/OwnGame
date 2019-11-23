@@ -1,7 +1,17 @@
 var planets = [];
+var galaxy = 1, system = 1;
 var playerName, planetName, moons, debris, actions;
-
+var debrisConteiner, debrisMetal, debrisCrystal, debrisNeed, debrisCord;
+var moonContainer;
+var debrisList;
+var debrisActive = -1, moonActive = -1;
 setTimeout(() => {
+  moonConteiner = document.getElementById('canvasMoon');
+  debrisConteiner = document.getElementById('canvasDebris');
+  debrisMetal = document.getElementById('DebrisMetal');
+  debrisCrystal = document.getElementById('DebrisCrystal');
+  debrisNeed = document.getElementById('DebrisNeed');
+  debrisCord = document.getElementById('DebrisCord');
   playerName = document.getElementsByClassName('status');
   planetName = document.getElementsByClassName('planetName');
   moons = document.getElementsByClassName('ListMoon');
@@ -14,8 +24,11 @@ setTimeout(() => {
 }, 0);
 
 function loadSystem(gal, sys){
+  galaxy = gal;
+  system = sys;
   loadJSON('./api/galaxy?gal=' + gal + '&sys=' + sys, (obj) => {
     console.log(obj);
+    debrisList = [];
     for(let i = 1 ; i<=15 ; i++){
       if(obj['pos'+i].active == true){
         planets[i-1].src = './Imagenes/Planets/Miniatures/Planet_' + obj['pos'+i].type + '_' + obj['pos'+i].color + '_Mini.gif';
@@ -34,6 +47,7 @@ function loadSystem(gal, sys){
         moons[i-1].classList.remove('activeMoon');
         debris[i-1].classList.remove('debrisField');
       }
+      debrisList.push({debris: obj['pos'+i].debris, metal: obj['pos'+i].metalDebris, crystal: obj['pos'+i].crystalDebris});
     }
   });
 }
@@ -49,9 +63,36 @@ function doExpedition(){
 }
 
 function pressMoon(num){
-
+  if(moonActive == num){
+    moonActive = -1;
+    moonConteiner.style.display = 'none';//cierra el div
+  }else{
+    moonActive = num;
+    if(num >= 0){
+      //actualiza datos de la luna
+      moonConteiner.style.top = ((num-1)*33+76) + 'px';
+      moonConteiner.style.display = 'block';
+    }else{
+      moonConteiner.style.display = 'none';
+    }
+  }
 }
 
 function pressDebris(num){
-
+  if(debrisActive == num){
+    debrisActive = -1;
+    debrisConteiner.style.display = 'none';//cierra el div
+  }else{
+    debrisActive = num;
+    if(num >= 0){
+      debrisMetal.innerHTML = 'Metal: ' + debrisList[num-1].metal;
+      debrisCrystal.innerHTML = 'Crystal: ' + debrisList[num-1].crystal;
+      debrisNeed.innerHTML = 'Recyclers needed: ' + Math.ceil((debrisList[num-1].metal + debrisList[num-1].crystal)/20000);
+      debrisCord.innerHTML = '['+galaxy+':'+system+':'+num+']';
+      debrisConteiner.style.top = ((num-1)*33+76) + 'px';
+      debrisConteiner.style.display = 'block';
+    }else{
+      debrisConteiner.style.display = 'none';
+    }
+  }
 }

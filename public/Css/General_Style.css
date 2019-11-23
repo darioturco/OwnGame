@@ -3206,7 +3206,10 @@ bottom:0;
 position:absolute;
 z-index:10}.fleetNormal{background: url("../Imagenes/Background.jpg") no-repeat}.fleetHostile{background: url("../Imagenes/Background.jpg") no-repeat}.fleetNeutral{background: url("../Imagenes/Background.jpg") no-repeat}#galaxy tr.info span#colonized{float:left}#galaxy #legend{float:right}#galaxy #legend a{height:16px;
 width:16px;
-display:block}.galaxyTooltip{min-width:220px}.galaxyTooltip h1{margin:0 16px 0 0}.galaxyTooltip ul{list-style:none}
+display:block}
+.galaxyTooltip{min-width:220px}
+.galaxyTooltip h1{margin:0 16px 0 0}
+.galaxyTooltip ul{list-style:none}
 .galaxyTooltip .ListImage{display:block;
 float:left}.galaxyTooltip .ListLinks{display:block;
 float:left;
@@ -5794,13 +5797,13 @@ tr.alt td {
 #renameInput{
   height: 14px;
 }
-.canvasDebris{
+.canvasDebris, .canvasMoon{
   position: absolute;
   background: linear-gradient(#303A46, #0D1014);
   left: 310px;
   top: 76px;
   padding: 8px;
-  display: block;
+  display: none;
   width: 210px;
   height: 80px;
   border-radius: 12px;
@@ -5818,7 +5821,7 @@ tr.alt td {
   color: gray;
   text-decoration: none;
 }
-.DebrisMineButton::after{
+.canvasMoon::after,.canvasDebris::after{
   content: "";
   position: absolute;
   top: 16%;

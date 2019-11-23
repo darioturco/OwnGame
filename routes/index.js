@@ -8,13 +8,14 @@ router.all('/*', (req, res, next) => {
   if(isFinite(req.query.planet)){
     uni.planeta = parseInt(req.query.planet);
   }
-  uni.setPlayer(process.env.PLAYER, next);
+  uni.getPlayer(process.env.PLAYER, next);
 });
 
 router.get('/', (req, res, next) => {
-  //uni.deleteCollection(process.env.UNIVERSE_NAME, ["jugadores", "universo"]);
+  //uni.createUniverse(process.env.UNIVERSE_NAME, 5, {name: "", inicio: 0,maxGalaxies: 9,donutGalaxy: true,donutSystem: true,speed: 1,speedFleet: 1,fleetDebris: 30,defenceDebris: 0,maxMoon: 20});
+  //uni.deleteCollection(process.env.UNIVERSE_NAME, ["jugadores", "galaxy", "universo"]);
   //uni.addNewPlayer("dturco", 1);
-  uni.seeDataBase(res, process.env.UNIVERSE_NAME, process.env.JUGADORES);
+  uni.seeDataBase(res, process.env.UNIVERSE_NAME, "jugadores");
 });
 
 router.get('/Highscore.html', (req, res, next) => {

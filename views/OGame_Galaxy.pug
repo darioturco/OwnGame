@@ -478,20 +478,39 @@ block content
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_mail
 
-    #canvasDebris.canvasDebris
+    #canvasMoon.canvasMoon(style='left: 264px')
       div(style='width: auto; height: auto;')
-        a.close-tooltip
+        a.close-tooltip(href="#" onclick='pressMoon(-1); return false;')
         div.htmlTooltip.galaxyTooltip
-          h1 debris field
+          h1.MoonName Muna
           .splitLine
           ul.ListImage
             li
-              span#DebrisCord [1:323:14]
+              span#MoonCord [ : : ]
             li
               img.debrisImg(src='../Imagenes/Planets/Miniatures/MiniDebris.gif' alt='debris' width='30' height='30')
           ul.ListLinks
-            li#DebrisMetal Metal: 0
-            li#DebrisCrystal Crystal: 0
-            li#DebrisNeed Recyclers needed: 0
+            li#MoonSize 8000km
             li
-              a.DebrisMineButton Mine
+              a.DebrisMineButton Espionage
+            li
+              a.DebrisMineButton Atack
+
+
+      #canvasDebris.canvasDebris
+        div(style='width: auto; height: auto;')
+          a.close-tooltip(href="#" onclick='pressDebris(-1); return false;')
+          div.htmlTooltip.galaxyTooltip
+            h1 Debris Field
+            .splitLine
+            ul.ListImage
+              li
+                span#DebrisCord [ : : ]
+              li
+                img.debrisImg(src='../Imagenes/Planets/Miniatures/MiniDebris.gif' alt='debris' width='30' height='30')
+            ul.ListLinks
+              li#DebrisMetal Metal: 0
+              li#DebrisCrystal Crystal: 0
+              li#DebrisNeed Recyclers needed: 0
+              li
+                a.DebrisMineButton Mine

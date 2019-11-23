@@ -2,15 +2,20 @@ var express = require('express');
 var router = express.Router();
 var uni = require('./universe');
 
-/* GET users listing. */
+/* Info */
 router.get('/universoInfo', function(req, res, next) {
   res.send(uni.universo);
 });
 
 router.get('/universo', function(req, res, next) {
-  res.send({uni});
+  res.send(uni);
 });
 
+router.get('/allPlanets', function(req, res, next) {
+  uni.seeJsonDataBase(res, process.env.UNIVERSE_NAME, "galaxy", "Planet");
+});
+
+/* Api */
 router.get('/buildings', function(req, res, next) {
   res.send(uni.costBuildings(uni.planeta));
 });

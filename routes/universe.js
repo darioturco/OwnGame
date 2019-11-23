@@ -2,27 +2,44 @@ var objectId = require('mongodb').ObjectId;
 var mongo = null;
 require('mongodb').MongoClient.connect(process.env.MONGO_URL, {useUnifiedTopology: true}, (err, db) => {
   if(err) throw err;
-  console.log('\x1b[32m%s\x1b[0m', "Base de datos lista.");
   mongo = db;
-  //carga los datos del universo
+  exp.getUniverseData(process.env.UNIVERSE_NAME);//carga los datos del universo
+  mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").countDocuments({}, function(err, cant) {exp.cantPlayers = cant});
+  exp.getListCord();
+  console.log('\x1b[32m%s\x1b[0m', "Base de datos lista.");
 });
 var exp = {
-  universo: {
-    name: "pepe",
-    inicio: 0,
-    maxGalaxies: 9,
-    donutGalaxy: true,
-    donutSystem: true,
-    speed: 1,
-    speedFleet: 1,
-    fleetDebris: 30,
-    defenceDebris: 0,
-    maxMoon: 20,
-    cantPlayers: 0
-  },
+  universo: null,
   player: null,
   planeta: 0,
-  setPlayer: function(player, f) {
+  cantPlayers: 0,
+  allCord: {},
+  createUniverse: function(name, cant, data){
+    this.setUniverseData(name, data);
+    for(let i = 0 ; i<cant ; i++){
+      this.addNewPlayer('bot_' + i, 2);
+    }
+  },
+  setUniverseData: function(name, data) {
+    data.name = name;
+    this.universo = data;
+    mongo.db(process.env.UNIVERSE_NAME).collection("universo").insertOne(data);// guarda la unfo del universo
+  },
+  getUniverseData: function(name){
+    let cursor = mongo.db(process.env.UNIVERSE_NAME).collection("universo").find();
+    cursor.forEach((doc, err) => {
+      if(err) throw err;
+      this.universo = doc;
+    });
+  },
+  getListCord: function(){
+    let cursor = mongo.db(process.env.UNIVERSE_NAME).collection("galaxy").find();
+    let obj = {};
+    cursor.forEach((doc, err) => {
+      obj[doc.coordinates.galaxy+'_'+doc.coordinates.system+'_'+doc.coordinates.pos] = doc.coordinates;
+    }, () => {this.allCord = obj;});
+  },
+  getPlayer: function(player, f) {
     mongo.db(process.env.UNIVERSE_NAME).collection(process.env.JUGADORES).findOne({name: player}, (err, res) => {
       if(err) throw err;
       this.player = res;
@@ -47,19 +64,19 @@ var exp = {
       buildings: {metalMine: 0, crystalMine: 0, deuteriumMine: 0, solarPlant: 0, fusionReactor: 0, metalStorage: 0, crystalStorage: 0, deuteriumStorage: 0, robotFactory: 0, shipyard: 0, researchLab: 0, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0},
       fleet: {lightFighter: 0, heavyFighter: 0, cruiser: 0, battleship: 0, battlecruiser: 0, bomber: 0, destroyer: 0, deathstar: 0, smallCargo: 0, largeCargo: 0, colony: 0, recycler: 0, espionageProbe: 0, solarSatellite: 0},
       defense: {rocketLauncher: 0, lightLaser: 0, heavyLaser: 0, gauss: 0, ion: 0, plasma: 0, smallShield: 0, largeShield: 0, antiballisticMissile: 0, interplanetaryMissile: 0},
-      moon: {active: false},
+      moon: {active: false, size: 0},
       debris: {active:false, metal:0, crystal: 0}
     };
   },
-  addNewPlayer: (name, styleGame) => {
+  addNewPlayer: function(name, styleGame) {
     var newPlanet = exp.createNewPlanet(exp.newCord(), "Planeta Principal", name);
-    var newPlanet1 = exp.createNewPlanet({galaxy: 1, system: 2, pos: 10}, "Colony1", name);//borrar solo tiene que crear un planeta
-    var newPlanet2 = exp.createNewPlanet({galaxy: 1, system: 3, pos: 12}, "Colony2", name);//borrar solo tiene que crear un planeta
+    //var newPlanet1 = exp.createNewPlanet({galaxy: 1, system: 2, pos: 10}, "Colony1", name);//borrar solo tiene que crear un planeta
+    //var newPlanet2 = exp.createNewPlanet({galaxy: 1, system: 3, pos: 12}, "Colony2", name);//borrar solo tiene que crear un planeta
     var newPlayer = {'name': name,
       'styleGame': styleGame,
-      planets: [newPlanet, newPlanet1, newPlanet2],//solo tiene que cargar un planeta
+      planets: [newPlanet],//[newPlanet, newPlanet1, newPlanet2],//solo tiene que cargar un planeta
       maxPlanets: 1,
-      highscore: exp.getHigscoreNewPlayer(),//get la ultima position
+      highscore: this.cantPlayers+1,//get la ultima position
       puntos: 0,
       puntosAcum: 0,
       vacas: [],
@@ -72,16 +89,23 @@ var exp = {
       lastVisit: 0,
       type: "activo"// activo inactivo InactivoFuerte fuerte debil
     };
-    //aumenta en uno la cantidad de jugadores del universo
+    this.cantPlayers++;//aumenta en uno la cantidad de jugadores del universo
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").insertOne(newPlayer);//agrega al jugador a la lista de jugadores
-    mongo.db(process.env.UNIVERSE_NAME).collection("universo").insertOne(newPlanet);//agrega el planeta a la lista de planetas de manera ordenada por id
+    mongo.db(process.env.UNIVERSE_NAME).collection("galaxy").insertOne(newPlanet);//agrega el planeta a la lista de planetas de manera ordenada por id
   },
-  getHigscoreNewPlayer: () => {
-    return 1;//cambiar
-  },
-  newCord: () => {
-    //Cambiar y hacer que seleccione una coordenada libre nueva
-    return {galaxy: 1, system: 1, pos: 4};
+  newCord: function(rand = true) {
+    for(let gal = 1 ; gal<=9; gal++){
+      for(let sys = 1 ; sys<=499; sys++){
+        for(let p = 4 ; p<=11; p++){
+          if(this.allCord[gal+'_'+sys+'_'+p] == undefined && ((Math.random() > 0.8) || rand == false)){
+            let obj = {galaxy: gal, system: sys, pos: p};
+            this.allCord[gal+'_'+sys+'_'+p] = obj;
+            return obj;
+          }
+        }
+      }
+    }
+    return this.newCord(false);
   },
   generateNewTypeOfPlanet: (pos, mod) => {
     let temp = 10, rango = 40, tipo = 1;
@@ -256,9 +280,9 @@ var exp = {
                     moon: false,
                     moonName: "",
                     moonSize: 0,
-                    debris: true,
-                    metalDebris: 0,
-                    crystalDebris: 0,
+                    debris: false,
+                    metalDebris: 500*i,
+                    crystalDebris: 100*i,
                     highscore: 2,
                     estado: "activo"
       };
@@ -278,12 +302,23 @@ var exp = {
     return num;
   },
   seeDataBase: (res, uni, name) => {
-    var respuesta = "";
-    var cursor = mongo.db(uni).collection(name).find();
+    let respuesta = "";
+    let cursor = mongo.db(uni).collection(name).find();
     cursor.forEach((doc, err) => {
       respuesta += JSON.stringify(doc);
     }, () => {
       res.render('index', {title: 'Ogame', message: respuesta});
+    });
+  },
+  seeJsonDataBase: (res, uni, name, objName = "item") => {
+    let cursor = mongo.db(uni).collection(name).find();
+    let obj = {};
+    let i = 1;
+    cursor.forEach((doc, err) => {
+      obj[objName+i] = doc;
+      i++;
+    }, () => {
+      res.send(obj);
     });
   },
   deleteRecord: (id, uni, name) => {
