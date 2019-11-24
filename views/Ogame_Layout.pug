@@ -204,7 +204,7 @@ body(id=bodyId onLoad=basic.loadItem)
                 |  Planets
             #planetList
               each item, index in basic.planets
-                #planet.smallplanet
+                .smallplanet
                   - var clase = (index == basic.numPlanet) ? 'active' : '';
                   a.planetlink.Right.Close(class=clase href=url + '?planet=' + index)
                     img.planetPic(alt='Planet' src="./Imagenes/Planets/Miniatures/Planet_" + item.type + "_" + item.color + ".gif" width='48' height='48')

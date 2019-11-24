@@ -33,7 +33,7 @@ router.get('/defense', function(req, res, next) {
 });
 
 router.get('/galaxy', function(req, res, next) {
-  res.send(uni.systemInfo(req.query.galaxy, req.query.system));
+  uni.systemInfo(res, req.query.gal, req.query.sys);
 });
 
 module.exports = router;

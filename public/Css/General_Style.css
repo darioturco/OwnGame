@@ -166,7 +166,7 @@ border:1px solid #000;
 border-radius:3px;
 box-shadow:inset 0 1px 1px rgba(62,81,100,0.4)}#buttonz .box_highlight .header{background:0;
 text-align:left}#buddyCopyOverlay{width:400px;
-overflow:auto}.disabled{color:grey}.title_txt,#eventboxBlank,.blue_txt{color:#6f9fc8}.premium_txt{color:#2cbef2}.bold{font-weight:700}.h2,#buttonz h2,#fleet3 #sendfleet h2,#movement h3 a,#statistics h3,#highscoreContent h2,#traderOverview .div_trader h2{color:#6f9fc8;
+overflow:auto}.disabled{color:grey}.title_txt,#eventboxBlank,.blue_txt{color:#6f9fc8}.premium_txt{color:#2cbef2}.bold{font-weight:700}.h2,#buttonz h2,#fleet #sendfleet h2,#movement h3 a,#statistics h3,#highscoreContent h2,#traderOverview .div_trader h2{color:#6f9fc8;
 font:700 12px/28px Verdana,Arial,Helvetica,sans-serif}.inset_box{background:#0d151b  url("../Imagenes/Background.jpg") 0 -590px repeat-x;
 border:1px solid #000;
 border-radius:3px;
@@ -404,7 +404,7 @@ padding:0 5px}
 border-top:1px solid #36495c;
 border-bottom:1px solid #0d141a;
 color:#fff}#feedback .dropdown a{width:150px}
-.input_replacement,input[type="text"],input[type="email"],input[type="password"],input[type="search"]{background-color:#b3c3cb;
+.input_replacement,input[type="text"],input[type="number"],input[type="email"],input[type="password"],input[type="search"]{background-color:#b3c3cb;
 border:1px solid #668599;
 border-bottom-color:#d3d9de;
 border-radius:3px;
@@ -416,8 +416,17 @@ line-height:20px;
 padding:2px 5px;
 -webkit-appearance:textfield;
 -webkit-box-sizing:content-box}.input_replacement{display:inline-block;
--webkit-appearance:inherit}::-webkit-input-placeholder{color:#666}:-moz-placeholder{color:#666}:focus::-webkit-input-placeholder{color:transparent}:focus::-moz-placeholder{color:transparent}input.hideNumberSpin::-webkit-outer-spin-button,input.hideNumberSpin::-webkit-inner-spin-button{-webkit-appearance:none}#fleet1 .content input[type="text"]{height:17px;
-line-height:17px}#alliance #inhalt input[type="text"]{width:170px}input.w50{width:50px}.ship_input_row input{width:70px}#alliance #inhalt input[type="text"].w290{width:290px}.input_replacement.focus,input[type="text"]:focus,input[type="email"]:focus,input[type="password"]:focus,input[type="search"]:focus{background-color:#f0f3f5;
+-webkit-appearance:inherit}::-webkit-input-placeholder{color:#666}:-moz-placeholder{color:#666}:focus::-webkit-input-placeholder{color:transparent}:focus::-moz-placeholder{color:transparent}
+input.hideNumberSpin::-webkit-outer-spin-button,input.hideNumberSpin::-webkit-inner-spin-button{-webkit-appearance:none}
+#fleet .content input[type="text"]{
+  height:17px;
+  line-height:17px;
+}
+#alliance #inhalt input[type="text"]{width:170px}
+input.w50{width:50px}
+.ship_input_row input{width:70px}
+#alliance #inhalt input[type="text"].w290{width:290px}
+.input_replacement.focus,input[type="text"]:focus,input[type="email"]:focus,input[type="password"]:focus,input[type="search"]:focus{background-color:#f0f3f5;
 border:1px solid #a3b6c2;
 border-bottom-color:#fff;
 box-shadow:inset 0 1px 3px 0 #5c6970}input[type="text"][readonly],input[type="text"][disabled],input[type="email"][disabled],input[type="password"][disabled],input[type="search"][disabled]{background-color:#424548;
@@ -867,7 +876,7 @@ margin:0 5px 0 0;
 white-space:nowrap;
 text-overflow:ellipsis}
 .openPlanetrenameGiveupBox img{margin:3px 0 0 0}
-#fleet1 #planet.shortHeader,#fleet2 #planet.shortHeader,#fleet3 #planet.shortHeader,#planet.shortHeader{
+#fleet #planet.shortHeader,#fleet #planet.shortHeader,#fleet #planet.shortHeader,#planet.shortHeader{
   background-color:transparent;
   background-repeat:no-repeat;
   height:40px!important;
@@ -879,9 +888,9 @@ text-overflow:ellipsis}
 #buddies #planet.shortHeader{background-image: url("../Imagenes/Background.jpg")}
 #resourceSettings #planet.shortHeader{background-image: url("../Imagenes/Resources/Resources_Settings.jpg")}
 #movement #planet.shortHeader{background-image: url("../Imagenes/Background.jpg")}
-#fleet1 #planet.shortHeader{background-image: url("../Imagenes/Background.jpg")}
-#fleet2 #planet.shortHeader{background-image: url("../Imagenes/Background.jpg")}
-#fleet3 #planet.shortHeader{background-image: url("../Imagenes/Background.jpg")}
+#fleet #planet.shortHeader{background-image: url("../Imagenes/Background.jpg")}
+#fleet #planet.shortHeader{background-image: url("../Imagenes/Background.jpg")}
+#fleet #planet.shortHeader{background-image: url("../Imagenes/Background.jpg")}
 #tutorial #planet.shortHeader{background-image: url("../Imagenes/Background.jpg")}
 #tutorial #planet.header{
   background-image: url("../Imagenes/Background.jpg");
@@ -1123,10 +1132,10 @@ border-radius:5px;
 border:1px solid black;
 padding:3px;
 top:32px;
-left:765px}#officers.one{border-color:#80868f}#officers.all{border-color:#e7ae46}#buttonz,#fleet3 #sendfleet{background:0;
+left:765px}#officers.one{border-color:#80868f}#officers.all{border-color:#e7ae46}#buttonz,#fleet #sendfleet{background:0;
 min-height:150px;
 margin:0 auto 1px auto;
-width:670px}#fleet3 #sendfleet{margin:13px auto 10px auto}
+width:670px}#fleet #sendfleet{margin:13px auto 10px auto}
 #eventHeader,#buttonz .header,#sendfleet .header,.header .c-left,.header .c-right{
   background-image: url("../Imagenes/Header.gif");
   background-repeat:no-repeat;
@@ -1135,14 +1144,14 @@ width:670px}#fleet3 #sendfleet{margin:13px auto 10px auto}
   height:28px;
   position:relative;
 }
-#buttonz .content,#fleet3 #sendfleet .content{
+#buttonz .content,#fleet #sendfleet .content{
   background: url("../Imagenes/Center.gif") repeat-y;
   margin:0 0 20px 0;
   min-height:115px;
   padding:10px 0 0;
   position:relative;
 }
-#buttonz .footer,#fleet3 #sendfleet .footer{
+#buttonz .footer,#fleet #sendfleet .footer{
   background: url("../Imagenes/Footer.png") no-repeat;
   bottom:-20px;
   height:50px;
@@ -1152,7 +1161,7 @@ width:670px}#fleet3 #sendfleet{margin:13px auto 10px auto}
   width:667px;
   z-index:1;
 }
-.detailsClosed .toggleDetails{background: url("../Imagenes/Background.jpg") no-repeat}.detailsOpened .toggleDetails{background: url("../Imagenes/Background.jpg") no-repeat}#eventContent .toggleDetails{width:18px}#buttonz h2,#fleet3 #sendfleet h2,#movement h3 a,#statistics h3,#highscoreContent h2{text-align:center}#buttonz ul#building{width:640px;
+.detailsClosed .toggleDetails{background: url("../Imagenes/Background.jpg") no-repeat}.detailsOpened .toggleDetails{background: url("../Imagenes/Background.jpg") no-repeat}#eventContent .toggleDetails{width:18px}#buttonz h2,#fleet #sendfleet h2,#movement h3 a,#statistics h3,#highscoreContent h2{text-align:center}#buttonz ul#building{width:640px;
 height:100px;
 margin:11px auto 0 17px;
 position:relative;
@@ -1496,7 +1505,7 @@ float:left;
 height:18px;
 margin:2px 5px 0 0;
 width:18px}
-#fleet1 a.help{margin:5px 5px 0 0}
+#fleet a.help{margin:5px 5px 0 0}
 #alliance a.help{
   margin:0 5px 0 0;
   float:right;
@@ -2309,7 +2318,7 @@ float:left;
 display:inline;
 height:43px;
 margin:3px 0 0 15px;
-width:46px}.fadeBox .success{background:transparent  url("../Imagenes/Background.jpg") no-repeat}.fadeBox .failed{background:transparent  url("../Imagenes/Background.jpg") no-repeat}#overview .fadeBox,#resources .fadeBox,#station .fadeBox,#station-moon .fadeBox{top:35%}#trader .fadeBox,#research .fadeBox,#shipyard .fadeBox,#defense .fadeBox,#empire .fadeBox,#premium .fadeBox{top:32%}#fleet1 .fadeBox,#messages .fadeBox{top:40%}#galaxy .fadeBox{top:50%}div#onet{background-color:#404040;
+width:46px}.fadeBox .success{background:transparent  url("../Imagenes/Background.jpg") no-repeat}.fadeBox .failed{background:transparent  url("../Imagenes/Background.jpg") no-repeat}#overview .fadeBox,#resources .fadeBox,#station .fadeBox,#station-moon .fadeBox{top:35%}#trader .fadeBox,#research .fadeBox,#shipyard .fadeBox,#defense .fadeBox,#empire .fadeBox,#premium .fadeBox{top:32%}#fleet .fadeBox,#messages .fadeBox{top:40%}#galaxy .fadeBox{top:50%}div#onet{background-color:#404040;
 color:#fff;
 font-family:Verdana,Arial,Helvetica,sans-serif;
 font-size:9px;
@@ -2379,7 +2388,9 @@ display:inline}.tipsPlayer{text-decoration:underline;
 color:white}#happyedit h2{margin-top:10px;
 margin-bottom:10px;
 font-size:1.5em}#happyedit .tabsbelow li,#happyedit .tabsbelow li a{width:100px}.searchMark{border-bottom:1px solid grey;
-font-weight:bold}.date{white-space:nowrap}a.advice,span.advice{cursor:help}button{border:0}
+font-weight:bold}
+.date{white-space:nowrap}
+button{border:0}
 #countColonies .lockPlanets{
   display:inline-block;
   height:16px;
@@ -2958,8 +2969,14 @@ display:block;
 height:16px;
 margin:0 2px;
 width:16px}
-.galaxy_icons.prev{background-position:0 0}
-.galaxy_icons.next{background-position:0 -16px}
+.galaxy_icons.prev{
+  background-position:0 0;
+  cursor: pointer;
+}
+.galaxy_icons.next{
+  background-position:0 -16px;
+  cursor: pointer;
+}
 .galaxy_icons.prev:hover{background-position:0 -32px}
 .galaxy_icons.next:hover{background-position:0 -48px}
 .galaxy_icons.galaxy{background-position:0 -65px}
@@ -3019,6 +3036,9 @@ border-spacing:5px 3px}
 #galaxy #galaxytable td.microplanet,#galaxy #galaxytable td.moon,#galaxy #galaxytable td.debris,#galaxy #galaxytable td.action{
   border:0;
   background:0;
+}
+#galaxy #galaxytable td.action{
+  display: none;
 }
 #galaxy #galaxytable .ListImage .planetTooltip,#galaxy #galaxytable tr.row td.moon img,#galaxy #galaxytable tr.row td.debris img{
   position: absolute;
@@ -3251,13 +3271,24 @@ float:left;
 width:0}.premium_bar{background-position:0 -32px;
 height:100%;
 float:left;
-width:0}.filllevel_undermark{background-position:0 -16px}.filllevel_middlemark{background-position:0 -8px}.filllevel_overmark{background-position:0 0}#fleet2 #planet,#fleet1 #planet,#fleet3 #planet{background-repeat:no-repeat;
+width:0}.filllevel_undermark{background-position:0 -16px}
+.filllevel_middlemark{background-position:0 -8px}
+.filllevel_overmark{background-position:0 0}
+#fleet #planet,#fleet #planet,#fleet #planet{background-repeat:no-repeat;
 height:250px;
 margin:0 auto;
 position:relative;
 width:654px;
-margin-bottom:3px}#fleet3 #planet{background-image: url("../Imagenes/Background.jpg")}#fleet2 #planet{background-image: url("../Imagenes/Background.jpg")}#fleet1 #planet{background-image: url("../Imagenes/Background.jpg")}#fleet1 .fleetStatus #movements{display:inline;
-margin-right:12px}#fleet1 .fleetStatus a,#fleet1 .fleetStatus a:link,#fleet2 .fleetStatus a,#fleet2 .fleetStatus a:link{color:#9c0;
+margin-bottom:3px}
+#fleet #planet{background-image: url("../Imagenes/Background.jpg")}
+#fleet #planet{background-image: url("../Imagenes/Background.jpg")}
+#fleet #planet{background-image: url("../Imagenes/Fleet.jpg")}
+#fleet .fleetStatus #movements{
+  display:inline;
+  margin-right:12px;
+}
+#fleet .fleetStatus a,#fleet .fleetStatus a:link,#fleet .fleetStatus a,#fleet .fleetStatus a:link{
+  color:#9c0;
 line-height:25px;
 text-decoration:none}.fleetStatus ul{list-style-type:none;
 margin-left:11px;
@@ -3265,84 +3296,118 @@ text-align:justify}.fleetStatus ul li{display:inline;
 margin:0 20px 0 0;
 line-height:15px}.fleetStatus span.title{color:#6f9fc8;
 font-weight:700}
-#fleet1 .fleetStatus a:hover span,#fleet2 .fleetStatus a:hover span{text-decoration:underline}
-#fleet1 .fleetStatus a img,#fleet2 .fleetStatus a img{
+#fleet .fleetStatus a:hover span,#fleet .fleetStatus a:hover span{text-decoration:underline}
+#fleet .fleetStatus a img,#fleet .fleetStatus a img{
   margin-right:7px;
   vertical-align:middle;
 }
-#fleet1 #slots a.disabled{color:#444}
-#fleet1 #inhalt .shortCorner,#fleet1 #inhalt .shortCorner,#fleet2 #inhalt .shortCorner,#fleet2 #inhalt .shortCorner,#fleet3 #inhalt .shortCorner,#fleet3 #inhalt .shortCorner,#movement #inhalt .shortCorner{top:4px}#fleet3 .c-left,#fleet3 .c-right,#fleet2 .c-left,#fleet2 .c-right,#fleet1 .c-left,#fleet1 .c-right{height:39px;
-width:28px;
-position:absolute;
-top:214px}#fleet3 #inhalt h3{color:#6f9fc8;
+#fleet #slots a.disabled{color:#444}
+#fleet #inhalt .shortCorner,#fleet #inhalt .shortCorner,#fleet #inhalt .shortCorner,#fleet #inhalt .shortCorner,#fleet #inhalt .shortCorner,#fleet #inhalt .shortCorner,#movement #inhalt .shortCorner{top:4px}
+#fleet .c-left,#fleet .c-right,#fleet .c-left,#fleet .c-right,#fleet .c-left,#fleet .c-right{
+  height:39px;
+  width:28px;
+  position:absolute;
+  top:214px;
+}
+#fleet #inhalt h3{color:#6f9fc8;
 margin:6px 0 3px;
-font-weight:700}#fleet2 #mission{width:640px;
-margin:-37px auto 0 auto}ul.fleetBriefing{margin:12px 0 12px 20px}ul#fleetBriefingPart1_2{margin-left:30px}ul.fleetBriefing{width:290px}#fleet2 #mission th{color:#6f9fc8;
+font-weight:700}#fleet #mission{width:640px;
+margin:-37px auto 0 auto}ul.fleetBriefing{margin:12px 0 12px 20px}ul#fleetBriefingPart1_2{margin-left:30px}ul.fleetBriefing{width:290px}#fleet #mission th{color:#6f9fc8;
 font-weight:bold;
-padding:7px 0 5px 10px}#fleet2 #buttonz{text-align:center}#fleet2 #start,#fleet2 #target,#fleet3 #roundup,#fleet3 #sendfleet #resources{background:#0d151b  url("../Imagenes/Background.jpg") 0 -1130px repeat-x;
+padding:7px 0 5px 10px}#fleet #buttonz{text-align:center}#fleet #start,#fleet #target,#fleet #roundup,#fleet #sendfleet #resources{background:#0d151b  url("../Imagenes/Background.jpg") 0 -1130px repeat-x;
 background:-moz-linear-gradient(top,#0d1014 0,#0d1014 48%,#192026 100%);
 background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#0d1014),color-stop(48%,#0d1014),color-stop(100%,#192026));
 background:-webkit-linear-gradient(top,#0d1014 0,#0d1014 48%,#192026 100%);
 background:-o-linear-gradient(top,#0d1014 0,#0d1014 48%,#192026 100%);
 background:-ms-linear-gradient(top,#0d1014 0,#0d1014 48%,#192026 100%);
-background:linear-gradient(top,#0d1014 0,#0d1014 48%,#192026 100%)}#fleet2 #start{width:170px}#fleet2 #distance{width:115px}#fleet2 #target{width:165px}#fleet2 #shortcuts{width:190px}#fleet2 #start a,#fleet2 #target a{display:block;
-float:left;
-height:36px;
-width:44px;
-background-repeat:no-repeat;
-background-image: url("../Imagenes/Background.jpg");
-background-color:transparent}#fleet2 #start a.planet,#fleet2 #start a.planet_source,#fleet2 #start a.planet_selected,#fleet2 #start a.planet_source_selected{margin-left:47px}#fleet2 #target a.planet,#fleet2 #target a.planet_source,#fleet2 #target a.planet_selected,#fleet2 #target a.planet_source_selected{margin-left:20px;
-padding:0}#fleet2 #mission a.planet,#fleet2 #mission a.planet_source{background-position:0 0}#fleet2 #mission a.planet:hover,#fleet2 #mission a.planet_selected,#fleet2 #mission a.planet_source_selected{background-position:0 -36px}#fleet2 #mission a.moon,#fleet2 #mission a.moon_source{background-position:-44px 0}#fleet2 #mission a.moon:hover,#fleet2 #mission a.moon_selected,#fleet2 #mission a.moon_source_selected{background-position:-44px -36px}#fleet2 #mission a.moon:hover,#fleet2 #mission a.planet:hover,#fleet2 #mission a.debris:hover{cursor:pointer}#fleet2 #mission a.debris{background-position:-88px 0}#fleet2 #mission a.debris:hover,#fleet2 #mission a.debris_selected{background-position:-88px -36px}#fleet2 .planetname{color:#a26d00;
-font-size:12px;
-font-weight:bold;
-height:17px;
-padding-top:7px;
-overflow:hidden;
-text-align:center;
-width:170px;
-text-overflow:ellipsis;
-white-space:nowrap}#fleet2 .target{padding:10px 0}#fleet2 #distanceValue{background: url("../Imagenes/Background.jpg") no-repeat;
+background:linear-gradient(top,#0d1014 0,#0d1014 48%,#192026 100%)}#fleet #start{width:170px}#fleet #distance{width:115px}#fleet #target{width:165px}#fleet #shortcuts{width:190px}
+#fleet #start a,#fleet #target a{
+  display:block;
+  float:left;
+  height:36px;
+  width:44px;
+  background-repeat:no-repeat;
+  background-image: url("../Imagenes/Planets/Miniatures/Icons.gif");
+  background-color:transparent;
+}
+#fleet #start a.planet,#fleet #start a.planet_source,#fleet #start a.planet_selected,#fleet #start a.planet_source_selected{margin-left:47px}#fleet #target a.planet,#fleet #target a.planet_source,#fleet #target a.planet_selected,#fleet #target a.planet_source_selected{margin-left:20px;
+padding:0}
+#fleet #mission a.planet,#fleet #mission a.planet_source{background-position:0 0}
+#fleet #mission a.planet:hover,#fleet #mission a.planet_selected,#fleet #mission a.planet_source_selected{background-position:0 -36px}
+#fleet #mission a.moon,#fleet #mission a.moon_source{background-position:-44px 0}
+#fleet #mission a.moon:hover,#fleet #mission a.moon_selected,#fleet #mission a.moon_source_selected{background-position:-44px -36px}
+#fleet #mission a.moon:hover,#fleet #mission a.planet:hover,#fleet #mission a.debris:hover{cursor:pointer}
+#fleet #mission a.debris{background-position:-88px 0}
+#fleet #mission a.debris:hover,#fleet #mission a.debris_selected{background-position:-88px -36px}
+#fleet .planetname{
+  color:#a26d00;
+  font-size:12px;
+  font-weight:bold;
+  height:17px;
+  padding-top:7px;
+  overflow:hidden;
+  text-align:center;
+  width:170px;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+#fleet .target{padding:10px 0}
+#fleet #distanceValue{background: url("../Imagenes/DobleArrow.png") no-repeat;
 height:36px;
 line-height:36px;
 margin:50px 0 0;
-width:115px}#fleet2 .coords{color:#848484;
+width:115px}#fleet .coords{color:#848484;
 font-size:11px;
-height:44px}#fleet2 #mission #shortcuts{color:#a1a1a1;
-font-size:11px}#fleet2 #mission #shortcuts a:link,#fleet2 #mission #shortcuts a:visited{text-decoration:none;
-color:#a1a1a1}#fleet2 #mission #shortcuts a:hover{text-decoration:underline;
-color:#a1a1a1}#fleet2 #mission #shortcuts div{text-align:left}#fleet2 #mission #shortcuts a:active,#fleet2 #mission #shortcuts a:focus{text-decoration:none;
-color:#a1a1a1}#fleet2 .planets,#fleet2 .combatunits,#fleet1 .combatunits{width:144px;
-overflow:hidden}#fleet2 .glow{-webkit-box-shadow:0 0 10px 3px #192026;
+height:44px}#fleet #mission #shortcuts{color:#a1a1a1;
+font-size:11px}#fleet #mission #shortcuts a:link,#fleet #mission #shortcuts a:visited{text-decoration:none;
+color:#a1a1a1}#fleet #mission #shortcuts a:hover{text-decoration:underline;
+color:#a1a1a1}#fleet #mission #shortcuts div{text-align:left}#fleet #mission #shortcuts a:active,#fleet #mission #shortcuts a:focus{text-decoration:none;
+color:#a1a1a1}#fleet .planets,#fleet .combatunits,#fleet .combatunits{width:144px;
+overflow:hidden}#fleet .glow{-webkit-box-shadow:0 0 10px 3px #192026;
 box-shadow:0 0 10px 3px #192026;
 display:inline-block;
-margin:5px 0 0}#fleet2 #mission #shortcuts #shortlinks,#fleet2 #mission #shortcuts #combatunits,#fleet1 #buttonz a#combatunits{height:18px;
+margin:5px 0 0}#fleet #mission #shortcuts #shortlinks,#fleet #mission #shortcuts #combatunits,#fleet #buttonz a#combatunits{height:18px;
 width:125px;
 display:inline-block;
-cursor:pointer}#fleet1 .icon_combatunits{margin:0 0 -4px 0}#fleet2 #mission #shortcuts #shortlinks:hover,#fleet1 #buttonz a#combatunits:hover{text-decoration:underline}#fleet2 #mission #shortcuts #combatunits{cursor:auto}#fleet2 #mission #shortcuts #shortlinks{width:125px}#fleet1 #buttonz a#combatunits,#fleet1 #buttonz a#combatunits:link{color:#6f9fc8;
-display:inline-block}#fleet1 #slots{margin-left:10px}#fleet1 #slots div{line-height:24px;
+cursor:pointer}#fleet .icon_combatunits{margin:0 0 -4px 0}
+#fleet #mission #shortcuts #shortlinks:hover,#fleet #buttonz a#combatunits:hover{text-decoration:underline}
+#fleet #mission #shortcuts #combatunits{cursor:auto}
+#fleet #mission #shortcuts #shortlinks{width:125px}
+#fleet #buttonz a#combatunits,#fleet #buttonz a#combatunits:link{
+  color:#6f9fc8;
+  display:inline-block;
+}
+#fleet #slots{margin-left:10px}#fleet #slots div{line-height:24px;
 margin-left:10px;
 display:inline-block;
-vertical-align:middle}#fleet1 #slots div img{padding-top:4px;
-vertical-align:top}#fleet2 #shortcuts{padding:23px 0 0 23px}#fleet1 #buttonz a:link,#fleet1 #buttonz a:visited,#fleet1 #buttonz a:hover,#fleet1 #buttonz a:active{color:#848484;
-text-decoration:none}#fleet1 #buttonz a:hover{text-decoration:underline}#fleet2 .coords .galaxy,#fleet2 .coords .system,#fleet2 .coords .planet{margin:3px 1px 1px 1px;
-padding:0;
-text-align:center;
-font-weight:700;
-width:40px}#fleet3 #buttonz ul#missions{width:648px;
+vertical-align:middle}#fleet #slots div img{padding-top:4px;
+vertical-align:top}#fleet #shortcuts{padding:23px 0 0 23px}#fleet #buttonz a:link,#fleet #buttonz a:visited,#fleet #buttonz a:hover,#fleet #buttonz a:active{color:#848484;
+text-decoration:none}#fleet #buttonz a:hover{text-decoration:underline}
+#fleet .coords .galaxy,#fleet .coords .system,#fleet .coords .planet{
+  margin:3px 1px 1px 1px;
+  padding:0;
+  text-align:center;
+  font-weight:700;
+  width:40px;
+}
+#fleet #buttonz ul#missions{width:648px;
 height:65px;
 margin:10px auto 0 15px;
 position:relative;
-list-style-type:none}#fleet3 #buttonz ul#missions div.buildingimg{height:54px}#fleet3 #buttonz ul#missions li.on a,#fleet3 #buttonz ul#missions li.on a:hover,#fleet3 #buttonz ul#missions li.on a.active,#fleet3 #buttonz ul#missions li.off a{background: url("../Imagenes/Background.jpg") no-repeat}#fleet3 #buttonz ul#missions li{width:54px;
+list-style-type:none}
+#fleet #buttonz ul#missions div.buildingimg{height:54px}
+#fleet #buttonz ul#missions li.on a,#fleet #buttonz ul#missions li.on a:hover,#fleet #buttonz ul#missions li.on a.active,#fleet #buttonz ul#missions li.off a{background: url("../Imagenes/MovementOptions.jpg") no-repeat}
+#fleet #buttonz ul#missions li{width:54px;
 height:54px;
 background-repeat:no-repeat;
 float:left;
-margin:0 5px}#fleet3 #buttonz ul#missions li a{display:block;
+margin:0 5px}#fleet #buttonz ul#missions li a{display:block;
 width:54px;
-height:54px}#fleet3 ul#missions span.textlabel,#fleet2 #mission span.textlabel{height:1px;
+height:54px}#fleet ul#missions span.textlabel,#fleet #mission span.textlabel{height:1px;
 left:-9999px;
 overflow:hidden;
 position:absolute;
-width:1px}#fleet2 #speedLinks>a.speed,#fleet2 #speedLinks>a.speed:link,#fleet2 #speedLinks>a.speed:visited,#fleet2 #speedLinks>a.speed:active{text-decoration:none;
+width:1px}#fleet #speedLinks>a.speed,#fleet #speedLinks>a.speed:link,#fleet #speedLinks>a.speed:visited,#fleet #speedLinks>a.speed:active{text-decoration:none;
 color:#6f9fc8;
 padding:2px 4px;
 display:inline-block;
@@ -3351,53 +3416,53 @@ border:1px solid transparent;
 -webkit-border-radius:3px;
 -moz-border-radius:3px;
 border-radius:3px}#speedLinks{margin-top:20px}
-#fleet2.no-touch #speedLinks>a.speed:hover,#fleet2 #speedLinks>a.speed:focus{border-color:black;
+#fleet.no-touch #speedLinks>a.speed:hover,#fleet #speedLinks>a.speed:focus{border-color:black;
 background-color:#181f26}
-#fleet2 #speedLinks>a.speed.selected:link{border-color:#ff9600}
-#fleet2 #speedLinks>a.speed.selected,#fleet2 #speedLinks>a.speed.selected:link,#fleet2.no-touch #speedLinks>a.speed:hover,#fleet2 #speedLinks>a.speed:focus{color:#9c0}
-#fleet2 #speedLinks>a.speed.middle.selected,#fleet2 #speedLinks>a.speed.middle.selected:link,#fleet2.no-touch #speedLinks>a.speed.middle:hover,#fleet2 #speedLinks>a.speed.middle:focus{color:#d29d00}
-#fleet2 #speedLinks>a.speed.low.selected,#fleet2 #speedLinks>a.speed.low.selected:link,#fleet2.no-touch #speedLinks>a.speed.low:hover,#fleet2 #speedLinks>a.speed.low:focus{color:#d43635}
-#fleet3 #buttonz ul#missions li#button15.on a:link,#fleet3 #buttonz ul#missions li#button15.on a:visited,#fleet3 #buttonz ul#missions li#button15.on a:active{background-position:0 0}
-#fleet3 #buttonz ul#missions li#button15.off a:link,#fleet3 #buttonz ul#missions li#button15.off a:visited,#fleet3 #buttonz ul#missions li#button15.off a:active{background-position:0 -108px}
-#fleet3 #buttonz ul#missions li#button15.on a:hover,#fleet3 #buttonz ul#missions li#button15.on a.selected{background-position:0 -54px}
-#fleet3 #buttonz ul#missions li#button15.off a:hover,#fleet3 #buttonz ul#missions li#button15.off a.selected{background-position:0 -161px}
-#fleet3 #buttonz ul#missions li#button7.on a:link,#fleet3 #buttonz ul#missions li#button7.on a:visited,#fleet3 #buttonz ul#missions li#button7.on a:active,#fleet3 #buttonz ul#missions li#button7.on a:focus{background-position:-108px 0}
-#fleet3 #buttonz ul#missions li#button7.off a:link,#fleet3 #buttonz ul#missions li#button7.off a:visited,#fleet3 #buttonz ul#missions li#button7.off a:active,#fleet3 #buttonz ul#missions li#button7.off a:focus{background-position:-108px -108px}
-#fleet3 #buttonz ul#missions li#button7.on a:hover,#fleet3 #buttonz ul#missions li#button7.on a.selected{background-position:-108px -54px}
-#fleet3 #buttonz ul#missions li#button7.off a:hover,#fleet3 #buttonz ul#missions li#button7.off a.selected{background-position:-108px -161px}
-#fleet3 #buttonz ul#missions li#button8.on a:link,#fleet3 #buttonz ul#missions li#button8.on a:visited,#fleet3 #buttonz ul#missions li#button8.on a:active,#fleet3 #buttonz ul#missions li#button8.on a:focus{background-position:-216px 0}
-#fleet3 #buttonz ul#missions li#button8.off a:link,#fleet3 #buttonz ul#missions li#button8.off a:visited,#fleet3 #buttonz ul#missions li#button8.off a:active,#fleet3 #buttonz ul#missions li#button8.off a:focus{background-position:-216px -108px}
-#fleet3 #buttonz ul#missions li#button8.on a:hover,#fleet3 #buttonz ul#missions li#button8.on a.selected{background-position:-216px -54px}
-#fleet3 #buttonz ul#missions li#button8.off a:hover,#fleet3 #buttonz ul#missions li#button8.off a.selected{background-position:-216px -161px}
-#fleet3 #buttonz ul#missions li#button3.on a:link,#fleet3 #buttonz ul#missions li#button3.on a:visited,#fleet3 #buttonz ul#missions li#button3.on a:active,#fleet3 #buttonz ul#missions li#button3.on a:focus{background-position:-270px 0}
-#fleet3 #buttonz ul#missions li#button3.off a:link,#fleet3 #buttonz ul#missions li#button3.off a:visited,#fleet3 #buttonz ul#missions li#button3.off a:active,#fleet3 #buttonz ul#missions li#button3.off a:focus{background-position:-270px -108px}
-#fleet3 #buttonz ul#missions li#button3.on a:hover,#fleet3 #buttonz ul#missions li#button3.on a.selected{background-position:-270px -54px}
-#fleet3 #buttonz ul#missions li#button3.off a:hover,#fleet3 #buttonz ul#missions li#button3.off a.selected{background-position:-270px -161px}
-#fleet3 #buttonz ul#missions li#button4.on a:link,#fleet3 #buttonz ul#missions li#button4.on a:visited,#fleet3 #buttonz ul#missions li#button4.on a:active,#fleet3 #buttonz ul#missions li#button4.on a:focus{background-position:-162px 0}
-#fleet3 #buttonz ul#missions li#button4.off a:link,#fleet3 #buttonz ul#missions li#button4.off a:visited,#fleet3 #buttonz ul#missions li#button4.off a:active,#fleet3 #buttonz ul#missions li#button4.off a:focus{background-position:-162px -108px}
-#fleet3 #buttonz ul#missions li#button4.on a:hover,#fleet3 #buttonz ul#missions li#button4.on a.selected{background-position:-162px -54px}
-#fleet3 #buttonz ul#missions li#button4.off a:hover,#fleet3 #buttonz ul#missions li#button4.off a.selected{background-position:-162px -161px}
-#fleet3 #buttonz ul#missions li#button6.on a:link,#fleet3 #buttonz ul#missions li#button6.on a:visited,#fleet3 #buttonz ul#missions li#button6.on a:active,#fleet3 #buttonz ul#missions li#button6.on a:focus{background-position:-324px 0}
-#fleet3 #buttonz ul#missions li#button6.off a:link,#fleet3 #buttonz ul#missions li#button6.off a:visited,#fleet3 #buttonz ul#missions li#button6.off a:active,#fleet3 #buttonz ul#missions li#button6.off a:focus{background-position:-324px -108px}
-#fleet3 #buttonz ul#missions li#button6.on a:hover,#fleet3 #buttonz ul#missions li#button6.on a.selected{background-position:-324px -54px}
-#fleet3 #buttonz ul#missions li#button6.off a:hover,#fleet3 #buttonz ul#missions li#button6.off a.selected{background-position:-324px -161px}
-#fleet3 #buttonz ul#missions li#button5.on a:link,#fleet3 #buttonz ul#missions li#button5.on a:visited,#fleet3 #buttonz ul#missions li#button5.on a:active,#fleet3 #buttonz ul#missions li#button5.on a:focus{background-position:-378px 0}
-#fleet3 #buttonz ul#missions li#button5.off a:link,#fleet3 #buttonz ul#missions li#button5.off a:visited,#fleet3 #buttonz ul#missions li#button5.off a:active,#fleet3 #buttonz ul#missions li#button5.off a:focus{background-position:-378px -108px}
-#fleet3 #buttonz ul#missions li#button5.on a:hover,#fleet3 #buttonz ul#missions li#button5.on a.selected{background-position:-378px -54px}
-#fleet3 #buttonz ul#missions li#button5.off a:hover,#fleet3 #buttonz ul#missions li#button5.off a.selected{background-position:-378px -161px}
-#fleet3 #buttonz ul#missions li#button1.on a:link,#fleet3 #buttonz ul#missions li#button1.on a:visited,#fleet3 #buttonz ul#missions li#button1.on a:active,#fleet3 #buttonz ul#missions li#button1.on a:focus{background-position:-432px 0}
-#fleet3 #buttonz ul#missions li#button1.off a:link,#fleet3 #buttonz ul#missions li#button1.off a:visited,#fleet3 #buttonz ul#missions li#button1.off a:active,#fleet3 #buttonz ul#missions li#button1.off a:focus{background-position:-432px -108px}
-#fleet3 #buttonz ul#missions li#button1.on a:hover,#fleet3 #buttonz ul#missions li#button1.on a.selected{background-position:-432px -54px}
-#fleet3 #buttonz ul#missions li#button1.off a:hover,#fleet3 #buttonz ul#missions li#button1.off a.selected{background-position:-432px -161px}
-#fleet3 #buttonz ul#missions li#button2.on a:link,#fleet3 #buttonz ul#missions li#button2.on a:visited,#fleet3 #buttonz ul#missions li#button2.on a:active,#fleet3 #buttonz ul#missions li#button2.on a:focus{background-position:-540px 0}
-#fleet3 #buttonz ul#missions li#button2.off a:link,#fleet3 #buttonz ul#missions li#button2.off a:visited,#fleet3 #buttonz ul#missions li#button2.off a:active,#fleet3 #buttonz ul#missions li#button2.off a:focus{background-position:-540px -108px}
-#fleet3 #buttonz ul#missions li#button2.on a:hover,#fleet3 #buttonz ul#missions li#button2.on a.selected{background-position:-540px -54px}
-#fleet3 #buttonz ul#missions li#button2.off a:hover,#fleet3 #buttonz ul#missions li#button2.off a.selected{background-position:-540px -161px}
-#fleet3 #buttonz ul#missions li#button9.on a:link,#fleet3 #buttonz ul#missions li#button9.on a:visited,#fleet3 #buttonz ul#missions li#button9.on a:active,#fleet3 #buttonz ul#missions li#button9.on a:focus{background-position:-486px 0}
-#fleet3 #buttonz ul#missions li#button9.off a:link,#fleet3 #buttonz ul#missions li#button9.off a:visited,#fleet3 #buttonz ul#missions li#button9.off a:active,#fleet3 #buttonz ul#missions li#button9.off a:focus{background-position:-486px -108px}
-#fleet3 #buttonz ul#missions li#button9.on a:hover,#fleet3 #buttonz ul#missions li#button9.on a.selected{background-position:-486px -54px}
-#fleet3 #buttonz ul#missions li#button9.off a:hover,#fleet3 #buttonz ul#missions li#button9.off a.selected{background-position:-486px -161px}
-#fleet2 .briefing{
+#fleet #speedLinks>a.speed.selected:link{border-color:#ff9600}
+#fleet #speedLinks>a.speed.selected,#fleet #speedLinks>a.speed.selected:link,#fleet.no-touch #speedLinks>a.speed:hover,#fleet #speedLinks>a.speed:focus{color:#9c0}
+#fleet #speedLinks>a.speed.middle.selected,#fleet #speedLinks>a.speed.middle.selected:link,#fleet.no-touch #speedLinks>a.speed.middle:hover,#fleet #speedLinks>a.speed.middle:focus{color:#d29d00}
+#fleet #speedLinks>a.speed.low.selected,#fleet #speedLinks>a.speed.low.selected:link,#fleet.no-touch #speedLinks>a.speed.low:hover,#fleet #speedLinks>a.speed.low:focus{color:#d43635}
+#fleet #buttonz ul#missions li#button15.on a:link,#fleet #buttonz ul#missions li#button15.on a:visited,#fleet #buttonz ul#missions li#button15.on a:active{background-position:0 0}
+#fleet #buttonz ul#missions li#button15.off a:link,#fleet #buttonz ul#missions li#button15.off a:visited,#fleet #buttonz ul#missions li#button15.off a:active{background-position:0 -108px}
+#fleet #buttonz ul#missions li#button15.on a:hover,#fleet #buttonz ul#missions li#button15.on a.selected{background-position:0 -54px}
+#fleet #buttonz ul#missions li#button15.off a:hover,#fleet #buttonz ul#missions li#button15.off a.selected{background-position:0 -161px}
+#fleet #buttonz ul#missions li#button7.on a:link,#fleet #buttonz ul#missions li#button7.on a:visited,#fleet #buttonz ul#missions li#button7.on a:active,#fleet #buttonz ul#missions li#button7.on a:focus{background-position:-108px 0}
+#fleet #buttonz ul#missions li#button7.off a:link,#fleet #buttonz ul#missions li#button7.off a:visited,#fleet #buttonz ul#missions li#button7.off a:active,#fleet #buttonz ul#missions li#button7.off a:focus{background-position:-108px -108px}
+#fleet #buttonz ul#missions li#button7.on a:hover,#fleet #buttonz ul#missions li#button7.on a.selected{background-position:-108px -54px}
+#fleet #buttonz ul#missions li#button7.off a:hover,#fleet #buttonz ul#missions li#button7.off a.selected{background-position:-108px -161px}
+#fleet #buttonz ul#missions li#button8.on a:link,#fleet #buttonz ul#missions li#button8.on a:visited,#fleet #buttonz ul#missions li#button8.on a:active,#fleet #buttonz ul#missions li#button8.on a:focus{background-position:-216px 0}
+#fleet #buttonz ul#missions li#button8.off a:link,#fleet #buttonz ul#missions li#button8.off a:visited,#fleet #buttonz ul#missions li#button8.off a:active,#fleet #buttonz ul#missions li#button8.off a:focus{background-position:-216px -108px}
+#fleet #buttonz ul#missions li#button8.on a:hover,#fleet #buttonz ul#missions li#button8.on a.selected{background-position:-216px -54px}
+#fleet #buttonz ul#missions li#button8.off a:hover,#fleet #buttonz ul#missions li#button8.off a.selected{background-position:-216px -161px}
+#fleet #buttonz ul#missions li#button3.on a:link,#fleet #buttonz ul#missions li#button3.on a:visited,#fleet #buttonz ul#missions li#button3.on a:active,#fleet #buttonz ul#missions li#button3.on a:focus{background-position:-270px 0}
+#fleet #buttonz ul#missions li#button3.off a:link,#fleet #buttonz ul#missions li#button3.off a:visited,#fleet #buttonz ul#missions li#button3.off a:active,#fleet #buttonz ul#missions li#button3.off a:focus{background-position:-270px -108px}
+#fleet #buttonz ul#missions li#button3.on a:hover,#fleet #buttonz ul#missions li#button3.on a.selected{background-position:-270px -54px}
+#fleet #buttonz ul#missions li#button3.off a:hover,#fleet #buttonz ul#missions li#button3.off a.selected{background-position:-270px -161px}
+#fleet #buttonz ul#missions li#button4.on a:link,#fleet #buttonz ul#missions li#button4.on a:visited,#fleet #buttonz ul#missions li#button4.on a:active,#fleet #buttonz ul#missions li#button4.on a:focus{background-position:-162px 0}
+#fleet #buttonz ul#missions li#button4.off a:link,#fleet #buttonz ul#missions li#button4.off a:visited,#fleet #buttonz ul#missions li#button4.off a:active,#fleet #buttonz ul#missions li#button4.off a:focus{background-position:-162px -108px}
+#fleet #buttonz ul#missions li#button4.on a:hover,#fleet #buttonz ul#missions li#button4.on a.selected{background-position:-162px -54px}
+#fleet #buttonz ul#missions li#button4.off a:hover,#fleet #buttonz ul#missions li#button4.off a.selected{background-position:-162px -161px}
+#fleet #buttonz ul#missions li#button6.on a:link,#fleet #buttonz ul#missions li#button6.on a:visited,#fleet #buttonz ul#missions li#button6.on a:active,#fleet #buttonz ul#missions li#button6.on a:focus{background-position:-324px 0}
+#fleet #buttonz ul#missions li#button6.off a:link,#fleet #buttonz ul#missions li#button6.off a:visited,#fleet #buttonz ul#missions li#button6.off a:active,#fleet #buttonz ul#missions li#button6.off a:focus{background-position:-324px -108px}
+#fleet #buttonz ul#missions li#button6.on a:hover,#fleet #buttonz ul#missions li#button6.on a.selected{background-position:-324px -54px}
+#fleet #buttonz ul#missions li#button6.off a:hover,#fleet #buttonz ul#missions li#button6.off a.selected{background-position:-324px -161px}
+#fleet #buttonz ul#missions li#button5.on a:link,#fleet #buttonz ul#missions li#button5.on a:visited,#fleet #buttonz ul#missions li#button5.on a:active,#fleet #buttonz ul#missions li#button5.on a:focus{background-position:-378px 0}
+#fleet #buttonz ul#missions li#button5.off a:link,#fleet #buttonz ul#missions li#button5.off a:visited,#fleet #buttonz ul#missions li#button5.off a:active,#fleet #buttonz ul#missions li#button5.off a:focus{background-position:-378px -108px}
+#fleet #buttonz ul#missions li#button5.on a:hover,#fleet #buttonz ul#missions li#button5.on a.selected{background-position:-378px -54px}
+#fleet #buttonz ul#missions li#button5.off a:hover,#fleet #buttonz ul#missions li#button5.off a.selected{background-position:-378px -161px}
+#fleet #buttonz ul#missions li#button1.on a:link,#fleet #buttonz ul#missions li#button1.on a:visited,#fleet #buttonz ul#missions li#button1.on a:active,#fleet #buttonz ul#missions li#button1.on a:focus{background-position:-432px 0}
+#fleet #buttonz ul#missions li#button1.off a:link,#fleet #buttonz ul#missions li#button1.off a:visited,#fleet #buttonz ul#missions li#button1.off a:active,#fleet #buttonz ul#missions li#button1.off a:focus{background-position:-432px -108px}
+#fleet #buttonz ul#missions li#button1.on a:hover,#fleet #buttonz ul#missions li#button1.on a.selected{background-position:-432px -54px}
+#fleet #buttonz ul#missions li#button1.off a:hover,#fleet #buttonz ul#missions li#button1.off a.selected{background-position:-432px -161px}
+#fleet #buttonz ul#missions li#button2.on a:link,#fleet #buttonz ul#missions li#button2.on a:visited,#fleet #buttonz ul#missions li#button2.on a:active,#fleet #buttonz ul#missions li#button2.on a:focus{background-position:-540px 0}
+#fleet #buttonz ul#missions li#button2.off a:link,#fleet #buttonz ul#missions li#button2.off a:visited,#fleet #buttonz ul#missions li#button2.off a:active,#fleet #buttonz ul#missions li#button2.off a:focus{background-position:-540px -108px}
+#fleet #buttonz ul#missions li#button2.on a:hover,#fleet #buttonz ul#missions li#button2.on a.selected{background-position:-540px -54px}
+#fleet #buttonz ul#missions li#button2.off a:hover,#fleet #buttonz ul#missions li#button2.off a.selected{background-position:-540px -161px}
+#fleet #buttonz ul#missions li#button9.on a:link,#fleet #buttonz ul#missions li#button9.on a:visited,#fleet #buttonz ul#missions li#button9.on a:active,#fleet #buttonz ul#missions li#button9.on a:focus{background-position:-486px 0}
+#fleet #buttonz ul#missions li#button9.off a:link,#fleet #buttonz ul#missions li#button9.off a:visited,#fleet #buttonz ul#missions li#button9.off a:active,#fleet #buttonz ul#missions li#button9.off a:focus{background-position:-486px -108px}
+#fleet #buttonz ul#missions li#button9.on a:hover,#fleet #buttonz ul#missions li#button9.on a.selected{background-position:-486px -54px}
+#fleet #buttonz ul#missions li#button9.off a:hover,#fleet #buttonz ul#missions li#button9.off a.selected{background-position:-486px -161px}
+#fleet .briefing{
   background:-moz-linear-gradient(top,#192026 0,#0d1014 13%,#0d1014 100%);
   background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#192026),color-stop(13%,#0d1014),color-stop(100%,#0d1014));
   background:-webkit-linear-gradient(top,#192026 0,#0d1014 13%,#0d1014 100%);
@@ -3412,74 +3477,125 @@ background-color:#181f26}
   width:637px;
   z-index:2;
 }
-body#fleet1{overflow:visible}
-#fleet1 #buttonz #battleships,#fleet1 #buttonz #spacer,#fleet1 #buttonz #civilships{
+body#fleet{overflow:visible}
+#fleet #buttonz #battleships,#fleet #buttonz #spacer,#fleet #buttonz #civilships{
   float:left;
   height:246px;
 }
-.h_battleships,.h_civilships,#fleet3 .h_half_w{display:inline-block}
+.h_battleships,.h_civilships,#fleet .h_half_w{display:inline-block}
 .h_battleships{
   background: url("../Imagenes/Shipyard/Shipyard_hader.gif") 100% 2px no-repeat;
   width:390px;
 }
-.h_civilships{width:275px}#fleet3 .h_half_w{width:315px}#fleet1 #buttonz #battleships{width:360px;
+.h_civilships{width:275px}#fleet .h_half_w{width:315px}#fleet #buttonz #battleships{width:360px;
 margin-left:10px;
-display:inline}#fleet1 #buttonz #spacer{width:21px}#fleet1 #buttonz #civilships{width:275px}#fleet1 #buttonz ul{position:relative;
-list-style-type:none;
-padding:0;
-height:220px}#fleet1 #buttonz li{background-repeat:no-repeat;
-height:107px;
-float:left;
-margin:0 5px 10px 5px;
-position:relative;
-width:80px}#fleet1 #buttonz input[type="text"]{left:4px;
-position:absolute;
-text-align:center;
-top:85px;
-width:60px}.shipImage{float:left;
+display:inline}
+#fleet #buttonz #spacer{width:21px}
+#fleet #buttonz #civilships{width:275px}
+#fleet #buttonz ul{
+  position:relative;
+  list-style-type:none;
+  padding:0;
+}
+#fleet #buttonz #military li, #fleet #buttonz #civil li{
+  background-repeat:no-repeat;
+  height:107px;
+  float:left;
+  margin:0 5px 10px 5px;
+  position:relative;
+  width:80px;
+}
+#fleet #buttonz .fleetValues[type="text"]{
+  left:4px;
+  position:absolute;
+  text-align:center;
+  top:85px;
+  width:60px;
+}
+.shipImage{float:left;
 width:28px;
-height:28px}.shipImage img{background:transparent  url("../Imagenes/Background.jpg") 0 0 no-repeat}.shipImage img.tech202{background-position:0 0}.shipImage img.tech203{background-position:-28px 0}.shipImage img.tech204{background-position:-56px 0}.shipImage img.tech205{background-position:-84px 0}.shipImage img.tech206{background-position:-112px 0}.shipImage img.tech207{background-position:-140px 0}.shipImage img.tech208{background-position:-168px 0}.shipImage img.tech209{background-position:-196px 0}.shipImage img.tech210{background-position:-224px 0}.shipImage img.tech211{background-position:-252px 0}.shipImage img.tech212{background:transparent  url("../Imagenes/Background.jpg") 0 0 no-repeat;
-background-position:-56px -140px}.shipImage img.tech213{background-position:-308px 0}.shipImage img.tech214{background-position:-336px 0}.shipImage img.tech215{background-position:-364px 0}.shipImage img.tech202.off{background-position:0 -56px}.shipImage img.tech203.off{background-position:-28px -56px}.shipImage img.tech204.off{background-position:-56px -56px}.shipImage img.tech205.off{background-position:-84px -56px}.shipImage img.tech206.off{background-position:-112px -56px}.shipImage img.tech207.off{background-position:-140px -56px}.shipImage img.tech208.off{background-position:-168px -56px}.shipImage img.tech209.off{background-position:-196px -56px}.shipImage img.tech210.off{background-position:-224px -56px}.shipImage img.tech211.off{background-position:-252px -56px}.shipImage img.tech213.off{background-position:-308px -56px}.shipImage img.tech214.off{background-position:-336px -56px}.shipImage img.tech215.off{background-position:-364px -56px}#fleet1 #buttonz ul li a,#div_traderScrap .image a,#div_traderScrap div.anythingWindow li div.buildingimg{display:block;
-width:80px;
-height:80px}#fleet1 #buttonz ul li a:link,#fleet1 #buttonz ul li a:visited,#div_traderScrap div.anythingWindow li a:link,#div_traderScrap div.anythingWindow li a:visited{background: url("../Imagenes/Background.jpg") no-repeat;
-color:#ff9600;
-text-decoration:none}#fleet1 #buttonz ul li a:hover,#fleet1 #buttonz ul li a:focus,#fleet1 #buttonz ul li a.active,#div_traderScrap div.anythingWindow li a:hover{background: url("../Imagenes/Background.jpg") no-repeat}#fleet1 #buttonz ul li a:active{background: url("../Imagenes/Background.jpg") no-repeat}#fleet1 #buttonz ul span.ecke,#rocketattack #number span.ecke{position:relative;
-float:left;
-top:65px;
-left:10px;
-width:60px;
-text-align:right}#fleet1 #buttonz ul span.level,#rocketattack #number span.level{color:#ff9600;
-font-size:11px}#fleet1 #buttonz ul span.textlabel{height:1px;
+height:28px}
+.shipImage img{background:transparent  url("../Imagenes/Background.jpg") 0 0 no-repeat}
+.shipImage img.tech202{background-position:0 0}
+.shipImage img.tech203{background-position:-28px 0}
+.shipImage img.tech204{background-position:-56px 0}
+.shipImage img.tech205{background-position:-84px 0}
+.shipImage img.tech206{background-position:-112px 0}
+.shipImage img.tech207{background-position:-140px 0}
+.shipImage img.tech208{background-position:-168px 0}
+.shipImage img.tech209{background-position:-196px 0}
+.shipImage img.tech210{background-position:-224px 0}
+.shipImage img.tech211{background-position:-252px 0}
+.shipImage img.tech212{background:transparent  url("../Imagenes/Background.jpg") 0 0 no-repeat;
+background-position:-56px -140px}
+.shipImage img.tech213{background-position:-308px 0}
+.shipImage img.tech214{background-position:-336px 0}
+.shipImage img.tech215{background-position:-364px 0}
+.shipImage img.tech202.off{background-position:0 -56px}
+.shipImage img.tech203.off{background-position:-28px -56px}
+.shipImage img.tech204.off{background-position:-56px -56px}
+.shipImage img.tech205.off{background-position:-84px -56px}
+.shipImage img.tech206.off{background-position:-112px -56px}
+.shipImage img.tech207.off{background-position:-140px -56px}
+.shipImage img.tech208.off{background-position:-168px -56px}
+.shipImage img.tech209.off{background-position:-196px -56px}
+.shipImage img.tech210.off{background-position:-224px -56px}
+.shipImage img.tech211.off{background-position:-252px -56px}
+.shipImage img.tech213.off{background-position:-308px -56px}
+.shipImage img.tech214.off{background-position:-336px -56px}
+.shipImage img.tech215.off{background-position:-364px -56px}
+#fleet #buttonz ul li .tooltip,#div_traderScrap .image a,#div_traderScrap div.anythingWindow li div.buildingimg{
+  display:block;
+  width:80px;
+  height:80px;
+}
+#fleet #buttonz ul li a:link,#fleet #buttonz ul li a:visited,#div_traderScrap div.anythingWindow li a:link,#div_traderScrap div.anythingWindow li a:visited{
+  background: url("../Imagenes/Select_Footer2.gif") no-repeat;
+  color:#ff9600;
+  text-decoration:none;
+}
+#fleet #buttonz ul li a:hover,#fleet #buttonz ul li a:focus,#fleet #buttonz ul li a.active,#div_traderScrap div.anythingWindow li a:hover{background: url("../Imagenes/Select_Footer2.gif") no-repeat}
+#fleet #buttonz ul li a:active{background: url("../Imagenes/Select_Footer2.gif") no-repeat}
+#fleet #buttonz ul span.ecke,#rocketattack #number span.ecke{
+  position:relative;
+  float:left;
+  top:65px;
+  left:10px;
+  width:60px;
+  text-align:right;
+}
+#fleet #buttonz ul span.level,#rocketattack #number span.level{color:#ff9600;
+font-size:11px}#fleet #buttonz ul span.textlabel{height:1px;
 left:-9999px;
 overflow:hidden;
 position:absolute;
-width:1px}#fleet1 #allornone,#div_traderScrap #allornone{text-align:left;
+width:1px}#fleet #allornone,#div_traderScrap #allornone{text-align:left;
 color:#a1a1a1;
 font-size:11px;
 padding-left:15px;
-z-index:2}#fleet1 #allornone .info{color:#848484;
-text-align:right}#fleet1 .allornonewrap{background:#13181d;
+z-index:2}#fleet #allornone .info{color:#848484;
+text-align:right}#fleet .allornonewrap{background:#13181d;
 border:1px solid #030303;
 padding:15px 7px;
-width:623px}#fleet1 .allornonewrap .secondcol,#div_traderScrap .allornonewrap{background:#13181d;
+width:623px}#fleet .allornonewrap .secondcol,#div_traderScrap .allornonewrap{background:#13181d;
 display:inline;
 margin-right:13px;
 padding:5px 10px;
 border:1px solid #030303;
-width:78px}#fleet1 #allornone img{vertical-align:middle}#fleet1 #sendfleet #options,#fleet3 #sendfleet #resources{float:left;
+width:78px}#fleet #allornone img{vertical-align:middle}#fleet #sendfleet #options,#fleet #sendfleet #resources{float:left;
 height:165px;
 width:305px;
 margin-left:20px;
-display:inline}#fleet3 #sendfleet #resources{float:left;
+display:inline}#fleet #sendfleet #resources{float:left;
 height:150px;
 margin:0 0 0 13px;
 padding:0 0 0 10px;
 position:relative;
-width:300px}#fleet1 #sendfleet #information{float:left;
+width:300px}#fleet #sendfleet #information{float:left;
 margin-left:25px;
-display:inline}#fleet2 #sendfleet #resources{margin-left:18px;
-position:relative}#fleet1 #sendfleet #options .content,#fleet1 #sendfleet #information .content{padding:25px 0 0 33px;
-line-height:15px}#fleet1 #planet .content span.value,#fleet1 #planet .content span.order,#fleet1 #planet .content span.destination,#fleet3 #planet span.value,#fleet2 #planet span.value,#fleet1 #planet span.value{color:#fff}#fleet3 #sendfleet #resources .res_wrap{background:#0d151b  url("../Imagenes/Background.jpg") 0 -60px repeat-x;
+display:inline}#fleet #sendfleet #resources{margin-left:18px;
+position:relative}#fleet #sendfleet #options .content,#fleet #sendfleet #information .content{padding:25px 0 0 33px;
+line-height:15px}#fleet #planet .content span.value,#fleet #planet .content span.order,#fleet #planet .content span.destination,#fleet #planet span.value,#fleet #planet span.value,#fleet #planet span.value{color:#fff}#fleet #sendfleet #resources .res_wrap{background:#0d151b  url("../Imagenes/Background.jpg") 0 -60px repeat-x;
 background:-moz-linear-gradient(top,#0d151b 0,#1f2a35 100%);
 background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#0d151b),color-stop(100%,#1f2a35));
 background:-webkit-linear-gradient(top,#0d151b 0,#1f2a35 100%);
@@ -3490,9 +3606,9 @@ border:1px solid #252f3a;
 height:32px;
 margin:5px 0 8px 0;
 padding:2px;
-width:132px}#fleet3 #sendfleet .res_img{margin:1px 0 0;
-position:absolute}#fleet3 #sendfleet .res{margin:0 0 0 50px;
-width:82px}#fleet3 #sendfleet .res input{height:17px;
+width:132px}#fleet #sendfleet .res_img{margin:1px 0 0;
+position:absolute}#fleet #sendfleet .res{margin:0 0 0 50px;
+width:82px}#fleet #sendfleet .res input{height:17px;
 margin:1px 0;
 width:76px;
 font-size:11px;
@@ -3503,19 +3619,19 @@ top:5px;
 left:160px;
 font-size:11px;
 width:139px;
-height:103px}#fleet2 #sendfleet #resources a.max{margin-left:48px}#fleet3 #sendfleet #resources a#allresources{display:block;
+height:103px}#fleet #sendfleet #resources a.max{margin-left:48px}#fleet #sendfleet #resources a#allresources{display:block;
 height:32px;
 width:32px;
 background: url("../Imagenes/Background.jpg") -374px -162px no-repeat;
 margin:10px auto;
 overflow:hidden;
-padding:0}#fleet3 #sendfleet #resources a#allresources:hover{background-position:-374px -194px}#loadRoom{font-size:11px;
+padding:0}#fleet #sendfleet #resources a#allresources:hover{background-position:-374px -194px}#loadRoom{font-size:11px;
 left:161px;
 position:absolute;
 text-align:center;
-top:92px}#fleet3 .bar_container{margin:3px 5px;
-width:130px}#fleet2 #sendfleet #summary{margin-top:50px}#fleet2 #sendfleet #summary img{vertical-align:middle;
-padding-bottom:5px}#fleet2 #sendfleet #summary .order,#fleet2 #sendfleet #summary .destination{color:#fff}#fleet3 a#start:link,#fleet3 a#start:visited,#fleet3 a#start:hover,#fleet3 a#start:active{display:block;
+top:92px}#fleet .bar_container{margin:3px 5px;
+width:130px}#fleet #sendfleet #summary{margin-top:50px}#fleet #sendfleet #summary img{vertical-align:middle;
+padding-bottom:5px}#fleet #sendfleet #summary .order,#fleet #sendfleet #summary .destination{color:#fff}#fleet a#start:link,#fleet a#start:visited,#fleet a#start:hover,#fleet a#start:active{display:block;
 float:right;
 cursor:pointer;
 width:276px;
@@ -3524,33 +3640,36 @@ background: url("../Imagenes/Background.jpg") no-repeat 0 -56px;
 color:#fff;
 text-decoration:none;
 font-weight:bold;
-margin:0 auto 0}#fleet3 a#start:hover{background: url("../Imagenes/Background.jpg") no-repeat}#fleet3 a#start.off:link,#fleet3 a#start.off:visited,#fleet3 a#start.off:hover,#fleet3 a#start.off:active{background: url("../Imagenes/Background.jpg") 0 -112px no-repeat}#fleet3 #roundup{float:left;
+margin:0 auto 0}#fleet a#start:hover{background: url("../Imagenes/Background.jpg") no-repeat}#fleet a#start.off:link,#fleet a#start.off:visited,#fleet a#start.off:hover,#fleet a#start.off:active{background: url("../Imagenes/Background.jpg") 0 -112px no-repeat}#fleet #roundup{float:left;
 min-height:150px;
 margin:0 0 0 20px;
-width:305px}#fleet3 #roundup ul{list-style-type:square;
+width:305px}#fleet #roundup ul{list-style-type:square;
 margin:5px 0 0 25px;
 font-size:11px;
 float:left;
 display:inline;
-width:280px}#fleet3 #roundup ul li{color:#6f9fc8;
+width:280px}#fleet #roundup ul li{color:#6f9fc8;
 font-weight:700;
 line-height:18px;
-text-align:left}#fleet3 #roundup ul li span.value{font-weight:100}#fleet1 a#continue:link,#fleet1 a#continue:visited,#fleet2 a#continue:link,#fleet2 a#continue:visited,#fleet2 a#back:link,#fleet2 a#back:visited,#fleet2 a#back:active,#fleet3 a#back:link,#fleet3 a#back:visited,#fleet3 a#back:active{display:block;
-width:104px;
-height:38px;
-background:transparent  url("../Imagenes/Background.jpg") 0 -240px;
-margin:0 10px 0 10px;
-float:right;
-overflow:hidden;
-padding:0;
-text-decoration:none}#fleet3 a#back:link,#fleet3 a#back:visited,#fleet3 a#back:active{float:left;
+text-align:left}#fleet #roundup ul li span.value{font-weight:100}
+#fleet a#continue:link,#fleet a#continue:visited,#fleet a#continue:link,#fleet a#continue:visited,#fleet a#back:link,#fleet a#back:visited,#fleet a#back:active,#fleet a#back:link,#fleet a#back:visited,#fleet a#back:active{
+  display:block;
+  width:104px;
+  height:38px;
+  background:transparent  url("../Imagenes/Buttons.png") 0 -240px;
+  margin:0 10px 0 10px;
+  float:right;
+  overflow:hidden;
+  padding:0;
+  text-decoration:none;
+}#fleet a#back:link,#fleet a#back:visited,#fleet a#back:active{float:left;
 margin:8px 0 0 0}#naviActions{padding:10px 20px;
 position:relative;
-z-index:2}#fleet1 a#continue:hover,#fleet1 a#continue:active,#fleet2 a#continue:hover,#fleet2 a#continue:active,#station #jumpgate a#continue:hover,#station-moon #jumpgate a#continue:hover{background-position:-104px -240px;
+z-index:2}#fleet a#continue:hover,#fleet a#continue:active,#fleet a#continue:hover,#fleet a#continue:active,#station #jumpgate a#continue:hover,#station-moon #jumpgate a#continue:hover{background-position:-104px -240px;
 cursor:pointer;
-text-decoration:none}#fleet2 a#back:link,#fleet2 a#back:visited,#fleet2 a#back:active,#fleet3 a#back:link,#fleet3 a#back:visited,#fleet3 a#back:active{background-position:0 -278px}#fleet2 a#back:hover,#fleet3 a#back:hover{background-position:-104px -278px;
+text-decoration:none}#fleet a#back:link,#fleet a#back:visited,#fleet a#back:active,#fleet a#back:link,#fleet a#back:visited,#fleet a#back:active{background-position:0 -278px}#fleet a#back:hover,#fleet a#back:hover{background-position:-104px -278px;
 cursor:pointer;
-text-decoration:none}#fleet1 a#continue.off:link,#fleet1 a#continue.off:visited,#fleet2 a#continue.off:link,#fleet2 a#continue.off:visited,#fleet3 a#continue.off:link,#fleet3 a#continue.off:visited{background-position:-206px -278px}#fleet1 a#continue.off:hover,#fleet1 a#continue.off:active,#fleet2 a#continue.off:hover,#fleet2 a#continue.off:active,#fleet3 a#continue.off:hover,#fleet3 a#continue.off:active{background-position:-206px -240px}#fleet1 a#continue span,#fleet2 a#continue span,#fleet3 a#continue span,#fleet3 a#start span,#fleet2 a#back span,#fleet3 a#back span,#fleet1 a#continue.on:link span,#fleet1 a#continue.off:link span,#fleet2 a#continue.on:link span,#fleet2 a#continue.off:link span,#fleet3 a#continue.on:link span,#fleet3 a#continue.off:link span{display:block;
+text-decoration:none}#fleet a#continue.off:link,#fleet a#continue.off:visited,#fleet a#continue.off:link,#fleet a#continue.off:visited,#fleet a#continue.off:link,#fleet a#continue.off:visited{background-position:-206px -278px}#fleet a#continue.off:hover,#fleet a#continue.off:active,#fleet a#continue.off:hover,#fleet a#continue.off:active,#fleet a#continue.off:hover,#fleet a#continue.off:active{background-position:-206px -240px}#fleet a#continue span,#fleet a#continue span,#fleet a#continue span,#fleet a#start span,#fleet a#back span,#fleet a#back span,#fleet a#continue.on:link span,#fleet a#continue.off:link span,#fleet a#continue.on:link span,#fleet a#continue.off:link span,#fleet a#continue.on:link span,#fleet a#continue.off:link span{display:block;
 color:#fff;
 text-align:center;
 height:38px;
@@ -3558,42 +3677,58 @@ line-height:38px;
 overflow:hidden;
 font-weight:bold;
 text-transform:uppercase;
-font-size:12px}#fleet2 a#start span{padding-top:20px}#fleet1 #planet #movements,#fleet1 #planet #slots{height:25px;
+font-size:12px}#fleet a#start span{padding-top:20px}#fleet #planet #movements,#fleet #planet #slots{height:25px;
 width:231px;
 position:absolute;
 right:3px;
 bottom:36px;
 text-align:center;
-font-size:11px}#fleet1 #planet #movements a:link,#fleet1 #planet #movements a:visited,#fleet1 #planet #movements a:hover,#fleet1 #planet #movements a:active{text-decoration:none}#fleet1 #planet #slots{background: url("../Imagenes/Background.jpg") -143px -162px no-repeat;
+font-size:11px}#fleet #planet #movements a:link,#fleet #planet #movements a:visited,#fleet #planet #movements a:hover,#fleet #planet #movements a:active{text-decoration:none}#fleet #planet #slots{background: url("../Imagenes/Background.jpg") -143px -162px no-repeat;
 bottom:9px;
 height:19px;
 font-size:11px;
 width:217px;
 padding:6px 7px 0 7px}#movement #planet #slots{position:absolute;
 right:3px;
-bottom:9px}#fleet1 #planet #movements img{vertical-align:middle;
+bottom:9px}#fleet #planet #movements img{vertical-align:middle;
 margin-right:5px}
-#fleet3 #buttonz ul#missions a:active,#fleet3 #buttonz ul#missions a:hover,#fleet3 #buttonz ul#missions a.selected{color:#f1f1f1}
-#fleet1 #planet div a:link,#fleet1 #planet div a:visited,#fleet1 #planet div a:active,#fleet1 #planet div{color:#848484;
-text-decoration:none}#fleet1 #planet div a:hover{text-decoration:underline}#fleet1 #warning,#fleet2 #warning,#movement #warning{height:150px;
+#fleet #buttonz ul#missions a:active,#fleet #buttonz ul#missions a:hover,#fleet #buttonz ul#missions a.selected{color:#f1f1f1}
+#fleet #planet div a:link,#fleet #planet div a:visited,#fleet #planet div a:active,#fleet #planet div{color:#848484;
+text-decoration:none}#fleet #planet div a:hover{text-decoration:underline}#fleet #warning,#fleet #warning,#movement #warning{height:150px;
 width:670px;
 background: url("../Imagenes/Background.jpg") no-repeat;
-margin:1px auto}#fleet1 #warning h3,#fleet2 #warning h3,#movement #warning h3{padding:7px 0}#fleet1 #warning p,#fleet2 #warning p,#movement #warning p{padding:15px}#fleet1 #warning p,#fleet2 #warning p,#fleet1 #warning h3,#fleet2 #warning h3,#movement #warning p,#movement #warning h3{text-align:center;
-font-weight:700;
-color:#b00000}#fleet1 #warning p img,#fleet2 #warning p img,#movement #warning p img{vertical-align:top;
-padding-right:5px}#fleet1 .icon_warning{margin:0 0 -3px 0}#fleet2 #buttonz ul{list-style-type:square;
-color:#848484;
-float:left;
-display:inline;
-text-align:left}#fleet2 #buttonz ul li{color:#6f9fc8;
-font:700 11px/15px Verdana,Arial,Helvetica,sans-serif}#fleet2 #buttonz ul li span{color:#6f9fc8;
-font-weight:100}#fleet2 #buttonz ul li span.value{float:right}#fleet1 a#continue.on:link,#fleet1 a#continue.off:link{margin:0;
+margin:1px auto}
+#fleet #warning h3,#fleet #warning h3,#movement #warning h3{padding:7px 0}
+#fleet #warning p,#fleet #warning p,#movement #warning p{padding:15px}
+#fleet #warning p,#fleet #warning p,#fleet #warning h3,#fleet #warning h3,#movement #warning p,#movement #warning h3{
+  text-align:center;
+  font-weight:700;
+  color:#b00000;
+}
+#fleet #warning p img,#fleet #warning p img,#movement #warning p img{vertical-align:top;
+padding-right:5px}
+#fleet .icon_warning{margin:0 0 -3px 0}
+#fleet #buttonz ul{
+  list-style-type:square;
+  color:#848484;
+  float:left;
+  display:inline;
+  text-align:left;
+}
+#fleet #buttonz ul li{
+  color:#6f9fc8;
+  font:700 11px/15px Verdana,Arial,Helvetica,sans-serif;
+  list-style-type: none;
+}
+#fleet #buttonz ul li span{color:#6f9fc8;
+font-weight:100}#fleet #buttonz ul li span.value{float:right}#fleet a#continue.on:link,#fleet a#continue.off:link{margin:0;
 padding:0;
 height:38px;
 width:104px;
 float:right;
 position:static;
-display:inline}#fleetTemplatesEdit .fleet_tpl_name{display:inline-block;
+display:inline}
+#fleetTemplatesEdit .fleet_tpl_name{display:inline-block;
 min-height:30px;
 padding:5px;
 text-align:right;
@@ -3607,14 +3742,14 @@ background-color:#274650;
 padding:2px 5px}#sftcontainer td input.textinput{height:13px;
 line-height:13px;
 padding:1px 3px;
-margin:0}#fleet1 #sftcontainer a.close{float:right;
+margin:0}#fleet #sftcontainer a.close{float:right;
 display:inline;
-margin-right:10px}#fleet3 #missionNameWrapper{color:#a26d00;
+margin-right:10px}#fleet #missionNameWrapper{color:#a26d00;
 font-size:18px;
 font-weight:bold;
 text-align:center;
 position:relative;
-z-index:2}#fleet3 .mission_description{font-weight:100}#fleet3 .briefing_overlay{
+z-index:2}#fleet .mission_description{font-weight:100}#fleet .briefing_overlay{
   background-color:#0c1014;
   background:rgba(12,16,20,0.95);
   color:#848484;
@@ -3626,24 +3761,34 @@ z-index:2}#fleet3 .mission_description{font-weight:100}#fleet3 .briefing_overlay
   width:630px;
   z-index:3;
 }
-#fleet1 #planet #slots img{float:left;
-margin:-3px 0 0 2px;
-display:inline}.send_all a{margin:0;
-float:left;
-display:block;
-width:32px;
-height:32px;
-overflow:hidden;
-background: url("../Imagenes/Background.jpg") -374px -162px no-repeat}.send_all a:hover{background-position:-374px -194px}.send_none{margin:0}.send_none a{float:right;
-display:block;
-margin:0;
-width:32px;
-height:32px;
-overflow:hidden;
-background: url("../Imagenes/Background.jpg") -406px -162px no-repeat}.send_none a:hover{background-position:-406px -194px}#fleet3 #remainingresources{float:none;
+#fleet #planet #slots img{
+  float:left;
+  margin:-3px 0 0 2px;
+  display:inline}.send_all a{margin:0;
+  float:left;
+  display:block;
+  width:32px;
+  height:32px;
+  overflow:hidden;
+  background: url("../Imagenes/Buttons.png") -374px -162px no-repeat;
+}
+.send_all a:hover{background-position:-374px -194px}
+.send_none{margin:0}
+.send_none a{
+  float:right;
+  display:block;
+  margin:0;
+  width:32px;
+  height:32px;
+  overflow:hidden;
+  background: url("../Imagenes/Buttons.png") -406px -162px no-repeat;
+}
+.send_none a:hover{background-position:-406px -194px}
+#fleet #remainingresources{float:none;
 margin:0 5px 0 0;
 text-align:center;
-width:100%}#fleet1 a#sendall:link,#fleet1 a#sendall:visited,#fleet1 a#sendall:hover,#fleet1 a#sendall:active{text-decoration:none}#sftcontainer a.close_details{margin:-1px 8px 0 0}#sftcontainer #fleetTemplatesEdit .shipDesc{padding:4px 5px}#sftcontainer #fleetTemplatesEdit .shipDesc img{float:left;
+width:100%}
+#fleet a#sendall:link,#fleet a#sendall:visited,#fleet a#sendall:hover,#fleet a#sendall:active{text-decoration:none}#sftcontainer a.close_details{margin:-1px 8px 0 0}#sftcontainer #fleetTemplatesEdit .shipDesc{padding:4px 5px}#sftcontainer #fleetTemplatesEdit .shipDesc img{float:left;
 margin:1px 10px 2px 0}#sftcontainer .fleetDesc a:link,#sftcontainer .fleetDesc a:visited,#sftcontainer .fleetDesc a:hover,#sftcontainer .fleetDesc a:active{display:block}#sftcontainer .fleetDesc-hover{background-color:#212933}#movement #planet{background-repeat:no-repeat;
 background-image: url("../Imagenes/Background.jpg");
 height:250px;
@@ -3718,7 +3863,7 @@ height:28px;
 padding:2px 3px 2px 1px;
 overflow:hidden;
 text-align:right}#movement #ships ul{margin-left:5px;
-padding:5px 0}#movement #ships ul li:hover{background-color:#1b1d1f}#movement #sftcontainer table#fleetTemplates{width:500px}#movement #sftcontainer{padding:8px 0 10px 0}#movement #sftcontainer h3,#fleet1 #sftcontainer h3{font-size:12px;
+padding:5px 0}#movement #ships ul li:hover{background-color:#1b1d1f}#movement #sftcontainer table#fleetTemplates{width:500px}#movement #sftcontainer{padding:8px 0 10px 0}#movement #sftcontainer h3,#fleet #sftcontainer h3{font-size:12px;
 color:#6f9fc8;
 font-weight:700;
 line-height:15px;
@@ -3753,7 +3898,8 @@ padding:5px}.wrap .col{float:left}#sftcontainer #h3{float:left;
 padding-bottom:15px}input.fix{height:18px;
 line-height:18px;
 width:150px}input.fix:focus{background-color:#1a2632;
-color:#848484}.eventboxHover{cursor:pointer}.fleetStatus{background:transparent  url("../Imagenes/Background.jpg") no-repeat;
+color:#848484}.eventboxHover{cursor:pointer}
+.fleetStatus{background:transparent  url("../Imagenes/Bar.gif") no-repeat;
 color:#7c8e9a;
 font:normal 10px Verdana,Arial,Helvetica,sans-serif;
 height:28px;
@@ -3906,13 +4052,13 @@ bottom:0;
 margin:10px;
 }
 #holdtimeline select,#expeditiontimeline select{width:45px}
-#fleet1 .allornonewrap .firstcol{width:300px}
-#fleet3 #buttonz ul#missions{height:75px;
+#fleet .allornonewrap .firstcol{width:300px}
+#fleet #buttonz ul#missions{height:75px;
   margin:0 15px;
 }
-#fleet3 #buttonz ul#missions li a{font-size:9px;
+#fleet #buttonz ul#missions li a{font-size:9px;
 text-align:center;
-text-decoration:none}#fleet3 ul#missions span.textlabel{
+text-decoration:none}#fleet ul#missions span.textlabel{
   display:inline-block;
   left:-3px;
   height:25px;
@@ -3921,13 +4067,13 @@ text-decoration:none}#fleet3 ul#missions span.textlabel{
   top:54px;
   width:60px;
 }
-#fleet3 #buttonz ul#missions a:active,#fleet3 #buttonz ul#missions a:hover,#fleet3 #buttonz ul#missions a.selected{color:#f1f1f1}#fleet3 #missionNameWrapper{
+#fleet #buttonz ul#missions a:active,#fleet #buttonz ul#missions a:hover,#fleet #buttonz ul#missions a.selected{color:#f1f1f1}#fleet #missionNameWrapper{
   font-size:12px;
   padding:10px 18px;
   text-align:left;
 }
-#fleet3 #missionNameWrapper .mission_description{font-weight:100}
-#fleet3 #missionNameWrapper.off{color:#848484}
+#fleet #missionNameWrapper .mission_description{font-weight:100}
+#fleet #missionNameWrapper.off{color:#848484}
 div.buildingimg{
   height:100%;
   width:100%;
@@ -4202,13 +4348,20 @@ z-index:3;
 left:-9999px;
 overflow:hidden;
 position:absolute;
-width:1px}#fleet1 #buttonz div.buildingimg{max-height:80px}.ship_list_28 .buildingimg{background-image: url("../Imagenes/Background.jpg");
-background-repeat:no-repeat;
-height:28px;
-width:28px}.ship_list_28 .defenseimg{background-image: url("../Imagenes/Background.jpg");
-background-repeat:no-repeat;
-height:28px;
-width:28px}
+width:1px}
+#fleet #buttonz div.buildingimg{max-height:80px}
+.ship_list_28 .buildingimg{
+  background-image: url("../Imagenes/Shipyard/Spacecraft.png");
+  background-repeat:no-repeat;
+  height:28px;
+  width:28px;
+}
+.ship_list_28 .defenseimg{
+  background-image: url("../Imagenes/Background.jpg");
+  background-repeat:no-repeat;
+  height:28px;
+  width:28px;
+}
 .ship_list_28 .civil202{background-position:0 0}
 .ship_list_28 .civil202.off{background-position:0 -56px}
 .ship_list_28 .civil203{background-position:-28px 0}
@@ -4237,59 +4390,59 @@ width:28px}
 .ship_list_28 .military215.off{background-position:-364px -56px}
 .ship_list_28 .civil212{background-position:-280px 0}
 .ship_list_28 .civil212.off{background-position:-280px -56px}
-.ship_list_80 .buildingimg,#shipyard .buildingimg,#div_traderScrap ul.ships .buildingimg,#fleet1 #buttonz div.buildingimg,div.techWrapper div.techImage.ship a,div.techtree ul.neededFor div.techImage.ship a{
+.ship_list_80 .buildingimg,#shipyard .buildingimg,#div_traderScrap ul.ships .buildingimg,#fleet #buttonz div.buildingimg,div.techWrapper div.techImage.ship a,div.techtree ul.neededFor div.techImage.ship a{
   background-image: url("../Imagenes/Shipyard/Spacecraft.png");
   background-repeat:no-repeat;
 }
 div.techImage.ship.tech202.built a{background-position:-2px -2px}
 div.techImage.ship.tech202.notBuilt a{background-position:-2px -162px}
-.ship_list_80 .civil202,#shipyard .civil202 .buildingimg,#div_traderScrap #button202 .buildingimg,#fleet1 #buttonz ul#civil li#button202 div.buildingimg{background-position:0 0}
-#shipyard .disabled .civil202 .buildingimg,#fleet1 #buttonz ul#civil li#button202.disabled div.buildingimg{background-position:0 -80px}
-.ship_list_80 .civil202.off,#shipyard .off .civil202 .buildingimg,#div_traderScrap .off#button202 .buildingimg,#fleet1 #buttonz ul#civil li#button202.off div.buildingimg{background-position:0 -160px}
+.ship_list_80 .civil202,#shipyard .civil202 .buildingimg,#div_traderScrap #button202 .buildingimg,#fleet #buttonz ul#civil li#button202 div.buildingimg{background-position:0 0}
+#shipyard .disabled .civil202 .buildingimg,#fleet #buttonz ul#civil li#button202.disabled div.buildingimg{background-position:0 -80px}
+.ship_list_80 .civil202.off,#shipyard .off .civil202 .buildingimg,#div_traderScrap .off#button202 .buildingimg,#fleet #buttonz ul#civil li#button202.off div.buildingimg{background-position:0 -160px}
 div.techImage.ship.tech203.built a{background-position:-82px -2px}
 div.techImage.ship.tech203.notBuilt a{background-position:-82px -162px}
-.ship_list_80 .civil203,#shipyard .civil203 .buildingimg,#div_traderScrap #button203 .buildingimg,#fleet1 #buttonz ul#civil li#button203 div.buildingimg{background-position:-80px 0}
-#shipyard .disabled .civil203 .buildingimg,#fleet1 #buttonz ul#civil li#button203.disabled div.buildingimg{background-position:-80px -80px}
-.ship_list_80 .civil203.off,#shipyard .off .civil203 .buildingimg,#div_traderScrap .off#button203 .buildingimg,#fleet1 #buttonz ul#civil li#button203.off div.buildingimg{background-position:-80px -160px}
+.ship_list_80 .civil203,#shipyard .civil203 .buildingimg,#div_traderScrap #button203 .buildingimg,#fleet #buttonz ul#civil li#button203 div.buildingimg{background-position:-80px 0}
+#shipyard .disabled .civil203 .buildingimg,#fleet #buttonz ul#civil li#button203.disabled div.buildingimg{background-position:-80px -80px}
+.ship_list_80 .civil203.off,#shipyard .off .civil203 .buildingimg,#div_traderScrap .off#button203 .buildingimg,#fleet #buttonz ul#civil li#button203.off div.buildingimg{background-position:-80px -160px}
 div.techImage.ship.tech204.built a{background-position:-162px -2px}
 div.techImage.ship.tech204.notBuilt a{background-position:-162px -162px}
-.ship_list_80 .military204,#shipyard .military204 .buildingimg,#div_traderScrap #button204 .buildingimg,#fleet1 #buttonz ul#military li#button204 div.buildingimg{background-position:-160px 0}
-#shipyard .disabled .military204 .buildingimg,#fleet1 #buttonz ul#military li#button204.disabled div.buildingimg{background-position:-160px -80px}
-.ship_list_80 .military204.off,#shipyard .off .military204 .buildingimg,#div_traderScrap .off#button204 .buildingimg,#fleet1 #buttonz ul#military li#button204.off div.buildingimg{background-position:-160px -160px}
+.ship_list_80 .military204,#shipyard .military204 .buildingimg,#div_traderScrap #button204 .buildingimg,#fleet #buttonz ul#military li#button204 div.buildingimg{background-position:-160px 0}
+#shipyard .disabled .military204 .buildingimg,#fleet #buttonz ul#military li#button204.disabled div.buildingimg{background-position:-160px -80px}
+.ship_list_80 .military204.off,#shipyard .off .military204 .buildingimg,#div_traderScrap .off#button204 .buildingimg,#fleet #buttonz ul#military li#button204.off div.buildingimg{background-position:-160px -160px}
 div.techImage.ship.tech205.built a{background-position:-242px -2px}
 div.techImage.ship.tech205.notBuilt a{background-position:-242px -162px}
-.ship_list_80 .military205,#shipyard .military205 .buildingimg,#div_traderScrap #button205 .buildingimg,#fleet1 #buttonz ul#military li#button205 div.buildingimg{background-position:-240px 0}
-#shipyard .disabled .military205 .buildingimg,#fleet1 #buttonz ul#military li#button205.disabled div.buildingimg{background-position:-240px -80px}
-.ship_list_80 .military205.off,#shipyard .off .military205 .buildingimg,#div_traderScrap .off#button205 .buildingimg,#fleet1 #buttonz ul#military li#button205.off div.buildingimg{background-position:-240px -160px}
+.ship_list_80 .military205,#shipyard .military205 .buildingimg,#div_traderScrap #button205 .buildingimg,#fleet #buttonz ul#military li#button205 div.buildingimg{background-position:-240px 0}
+#shipyard .disabled .military205 .buildingimg,#fleet #buttonz ul#military li#button205.disabled div.buildingimg{background-position:-240px -80px}
+.ship_list_80 .military205.off,#shipyard .off .military205 .buildingimg,#div_traderScrap .off#button205 .buildingimg,#fleet #buttonz ul#military li#button205.off div.buildingimg{background-position:-240px -160px}
 div.techImage.ship.tech206.built a{background-position:-322px -2px}
 div.techImage.ship.tech206.notBuilt a{background-position:-322px -162px}
-.ship_list_80 .military206,#shipyard .military206 .buildingimg,#div_traderScrap #button206 .buildingimg,#fleet1 #buttonz ul#military li#button206 div.buildingimg{background-position:-320px 0}
-#shipyard .disabled .military206 .buildingimg,#fleet1 #buttonz ul#military li#button206.disabled div.buildingimg{background-position:-320px -80px}
-.ship_list_80 .military206.off,#shipyard .off .military206 .buildingimg,#div_traderScrap .off#button206 .buildingimg,#fleet1 #buttonz ul#military li#button206.off div.buildingimg{background-position:-320px -160px}
+.ship_list_80 .military206,#shipyard .military206 .buildingimg,#div_traderScrap #button206 .buildingimg,#fleet #buttonz ul#military li#button206 div.buildingimg{background-position:-320px 0}
+#shipyard .disabled .military206 .buildingimg,#fleet #buttonz ul#military li#button206.disabled div.buildingimg{background-position:-320px -80px}
+.ship_list_80 .military206.off,#shipyard .off .military206 .buildingimg,#div_traderScrap .off#button206 .buildingimg,#fleet #buttonz ul#military li#button206.off div.buildingimg{background-position:-320px -160px}
 div.techImage.ship.tech207.built a{background-position:-402px -2px}
 div.techImage.ship.tech207.notBuilt a{background-position:-402px -162px}
-.ship_list_80 .military207,#shipyard .military207 .buildingimg,#div_traderScrap #button207 .buildingimg,#fleet1 #buttonz ul#military li#button207 div.buildingimg{background-position:-400px 0}
-#shipyard .disabled .military207 .buildingimg,#fleet1 #buttonz ul#military li#button207.disabled div.buildingimg{background-position:-400px -80px}
-.ship_list_80 .military207.off,#shipyard .off .military207 .buildingimg,#div_traderScrap .off#button207 .buildingimg,#fleet1 #buttonz ul#military li#button207.off div.buildingimg{background-position:-400px -160px}
+.ship_list_80 .military207,#shipyard .military207 .buildingimg,#div_traderScrap #button207 .buildingimg,#fleet #buttonz ul#military li#button207 div.buildingimg{background-position:-400px 0}
+#shipyard .disabled .military207 .buildingimg,#fleet #buttonz ul#military li#button207.disabled div.buildingimg{background-position:-400px -80px}
+.ship_list_80 .military207.off,#shipyard .off .military207 .buildingimg,#div_traderScrap .off#button207 .buildingimg,#fleet #buttonz ul#military li#button207.off div.buildingimg{background-position:-400px -160px}
 div.techImage.ship.tech208.built a{background-position:-482px -2px}
 div.techImage.ship.tech208.notBuilt a{background-position:-482px -162px}
-.ship_list_80 .civil208,#shipyard .civil208 .buildingimg,#div_traderScrap #button208 .buildingimg,#fleet1 #buttonz ul#civil li#button208 div.buildingimg{background-position:-480px 0}
-#shipyard .disabled .civil208 .buildingimg,#fleet1 #buttonz ul#civil li#button208.disabled div.buildingimg{background-position:-480px -80px}
-.ship_list_80 .civil208.off,#shipyard .off .civil208 .buildingimg,#div_traderScrap .off#button208 .buildingimg,#fleet1 #buttonz ul#civil li#button208.off div.buildingimg{background-position:-480px -160px}
+.ship_list_80 .civil208,#shipyard .civil208 .buildingimg,#div_traderScrap #button208 .buildingimg,#fleet #buttonz ul#civil li#button208 div.buildingimg{background-position:-480px 0}
+#shipyard .disabled .civil208 .buildingimg,#fleet #buttonz ul#civil li#button208.disabled div.buildingimg{background-position:-480px -80px}
+.ship_list_80 .civil208.off,#shipyard .off .civil208 .buildingimg,#div_traderScrap .off#button208 .buildingimg,#fleet #buttonz ul#civil li#button208.off div.buildingimg{background-position:-480px -160px}
 div.techImage.ship.tech209.built a{background-position:-562px -2px}
 div.techImage.ship.tech209.notBuilt a{background-position:-562px -162px}
-.ship_list_80 .civil209,#shipyard .civil209 .buildingimg,#div_traderScrap #button209 .buildingimg,#fleet1 #buttonz ul#civil li#button209 div.buildingimg{background-position:-560px 0}
-#shipyard .disabled .civil209 .buildingimg,#fleet1 #buttonz ul#civil li#button209.disabled div.buildingimg{background-position:-560px -80px}.ship_list_80 .civil209.off,#shipyard .off .civil209 .buildingimg,#div_traderScrap .off#button209 .buildingimg,#fleet1 #buttonz ul#civil li#button209.off div.buildingimg{background-position:-560px -160px}
+.ship_list_80 .civil209,#shipyard .civil209 .buildingimg,#div_traderScrap #button209 .buildingimg,#fleet #buttonz ul#civil li#button209 div.buildingimg{background-position:-560px 0}
+#shipyard .disabled .civil209 .buildingimg,#fleet #buttonz ul#civil li#button209.disabled div.buildingimg{background-position:-560px -80px}.ship_list_80 .civil209.off,#shipyard .off .civil209 .buildingimg,#div_traderScrap .off#button209 .buildingimg,#fleet #buttonz ul#civil li#button209.off div.buildingimg{background-position:-560px -160px}
 div.techImage.ship.tech210.built a{background-position:-642px -2px}
 div.techImage.ship.tech210.notBuilt a{background-position:-642px -162px}
-.ship_list_80 .civil210,#shipyard .civil210 .buildingimg,#div_traderScrap #button210 .buildingimg,#fleet1 #buttonz ul#civil li#button210 div.buildingimg{background-position:-640px 0}
-#shipyard .disabled .civil210 .buildingimg,#fleet1 #buttonz ul#civil li#button210.disabled div.buildingimg{background-position:-640px -80px}
-.ship_list_80 .civil210.off,#shipyard .off .civil210 .buildingimg,#div_traderScrap .off#button210 .buildingimg,#fleet1 #buttonz ul#civil li#button210.off div.buildingimg{background-position:-640px -160px}
+.ship_list_80 .civil210,#shipyard .civil210 .buildingimg,#div_traderScrap #button210 .buildingimg,#fleet #buttonz ul#civil li#button210 div.buildingimg{background-position:-640px 0}
+#shipyard .disabled .civil210 .buildingimg,#fleet #buttonz ul#civil li#button210.disabled div.buildingimg{background-position:-640px -80px}
+.ship_list_80 .civil210.off,#shipyard .off .civil210 .buildingimg,#div_traderScrap .off#button210 .buildingimg,#fleet #buttonz ul#civil li#button210.off div.buildingimg{background-position:-640px -160px}
 div.techImage.ship.tech211.built a{background-position:-722px -2px}
 div.techImage.ship.tech211.notBuilt a{background-position:-722px -162px}
-.ship_list_80 .military211,#shipyard .military211 .buildingimg,#div_traderScrap #button211 .buildingimg,#fleet1 #buttonz ul#military li#button211 div.buildingimg{background-position:-720px 0}
-#shipyard .disabled .military211 .buildingimg,#fleet1 #buttonz ul#military li#button211.disabled div.buildingimg{background-position:-720px -80px}
-.ship_list_80 .military211.off,#shipyard .off .military211 .buildingimg,#div_traderScrap .off#button211 .buildingimg,#fleet1 #buttonz ul#military li#button211.off div.buildingimg{background-position:-720px -160px}
+.ship_list_80 .military211,#shipyard .military211 .buildingimg,#div_traderScrap #button211 .buildingimg,#fleet #buttonz ul#military li#button211 div.buildingimg{background-position:-720px 0}
+#shipyard .disabled .military211 .buildingimg,#fleet #buttonz ul#military li#button211.disabled div.buildingimg{background-position:-720px -80px}
+.ship_list_80 .military211.off,#shipyard .off .military211 .buildingimg,#div_traderScrap .off#button211 .buildingimg,#fleet #buttonz ul#military li#button211.off div.buildingimg{background-position:-720px -160px}
 div.techImage.ship.tech212.built a{
   background-image: url("../Imagenes/Background.jpg");
   background-position:-802px -2px;
@@ -4303,19 +4456,19 @@ div.techImage.ship.tech212.notBuilt a{
 .ship_list_80 .civil212.off,#div_traderScrap .off#button212 .buildingimg,#shipyard .off .civil212 .buildingimg{background-position:-800px -160px}
 div.techImage.ship.tech213.built a{background-position:-882px -2px}
 div.techImage.ship.tech213.notBuilt a{background-position:-882px -162px}
-.ship_list_80 .military213,#shipyard .military213 .buildingimg,#div_traderScrap #button213 .buildingimg,#fleet1 #buttonz ul#military li#button213 div.buildingimg{background-position:-880px 0}
-#shipyard .disabled .military213 .buildingimg,#fleet1 #buttonz ul#military li#button213.disabled div.buildingimg{background-position:-880px -80px}
-.ship_list_80 .military213.off,#shipyard .off .military213 .buildingimg,#div_traderScrap .off#button213 .buildingimg,#fleet1 #buttonz ul#military li#button213.off div.buildingimg{background-position:-880px -160px}
+.ship_list_80 .military213,#shipyard .military213 .buildingimg,#div_traderScrap #button213 .buildingimg,#fleet #buttonz ul#military li#button213 div.buildingimg{background-position:-880px 0}
+#shipyard .disabled .military213 .buildingimg,#fleet #buttonz ul#military li#button213.disabled div.buildingimg{background-position:-880px -80px}
+.ship_list_80 .military213.off,#shipyard .off .military213 .buildingimg,#div_traderScrap .off#button213 .buildingimg,#fleet #buttonz ul#military li#button213.off div.buildingimg{background-position:-880px -160px}
 div.techImage.ship.tech214.built a{background-position:-962px -2px}
 div.techImage.ship.tech214.notBuilt a{background-position:-962px -162px}
-.ship_list_80 .military214,#shipyard .military214 .buildingimg,#div_traderScrap #button214 .buildingimg,#fleet1 #buttonz ul#military li#button214 div.buildingimg{background-position:-960px 0}
-#shipyard .disabled .military214 .buildingimg,#fleet1 #buttonz ul#military li#button214.disabled div.buildingimg{background-position:-960px -80px}
-.ship_list_80 .military214.off,#shipyard .off .military214 .buildingimg,#div_traderScrap .off#button214 .buildingimg,#fleet1 #buttonz ul#military li#button214.off div.buildingimg{background-position:-960px -160px}
+.ship_list_80 .military214,#shipyard .military214 .buildingimg,#div_traderScrap #button214 .buildingimg,#fleet #buttonz ul#military li#button214 div.buildingimg{background-position:-960px 0}
+#shipyard .disabled .military214 .buildingimg,#fleet #buttonz ul#military li#button214.disabled div.buildingimg{background-position:-960px -80px}
+.ship_list_80 .military214.off,#shipyard .off .military214 .buildingimg,#div_traderScrap .off#button214 .buildingimg,#fleet #buttonz ul#military li#button214.off div.buildingimg{background-position:-960px -160px}
 div.techImage.ship.tech215.built a{background-position:-1042px -2px}
 div.techImage.ship.tech215.notBuilt a{background-position:-1042px -162px}
-.ship_list_80 .military215,#shipyard .military215 .buildingimg,#div_traderScrap #button215 .buildingimg,#fleet1 #buttonz ul#military li#button215 div.buildingimg{background-position:-1040px 0}
-#shipyard .disabled .military215 .buildingimg,#fleet1 #buttonz ul#military li#button215.disabled div.buildingimg{background-position:-1040px -80px}
-.ship_list_80 .military215.off,#shipyard .off .military215 .buildingimg,#div_traderScrap .off#button215 .buildingimg,#fleet1 #buttonz ul#military li#button215.off div.buildingimg{background-position:-1040px -160px}
+.ship_list_80 .military215,#shipyard .military215 .buildingimg,#div_traderScrap #button215 .buildingimg,#fleet #buttonz ul#military li#button215 div.buildingimg{background-position:-1040px 0}
+#shipyard .disabled .military215 .buildingimg,#fleet #buttonz ul#military li#button215.disabled div.buildingimg{background-position:-1040px -80px}
+.ship_list_80 .military215.off,#shipyard .off .military215 .buildingimg,#div_traderScrap .off#button215 .buildingimg,#fleet #buttonz ul#military li#button215.off div.buildingimg{background-position:-1040px -160px}
 #shipyard .detail_screen div.pic{
   float:left;
   height:200px;
@@ -4639,13 +4792,13 @@ padding:3px 0}#jumpgate span.standardJumpGate a:link,#jumpgate span.standardJump
 color:#6f9fc8;
 text-decoration:none}#jumpgate span.standardJumpGate a:hover{font-size:11px;
 color:#9C0;
-text-decoration:underline}#fleet1 #sftcontainer #fleetTemplatesEdit table{margin:0 auto;
+text-decoration:underline}#fleet #sftcontainer #fleetTemplatesEdit table{margin:0 auto;
 width:600px}.ship_selection_table{width:616px;
 table-layout:fixed}.ship_selection_table .ship_txt_row{color:#848484;
 padding:5px;
 width:210px}.ship_selection_table .ship_txt_row p{line-height:25px;
 margin:0 0 0 35px}.ship_selection_table .ship_input_row{padding:3px 0;
-width:90px}#fleet1 #sftcontainer #fleetTemplatesEdit td{color:#848484;
+width:90px}#fleet #sftcontainer #fleetTemplatesEdit td{color:#848484;
 line-height:16px;
 overflow:visible}#jumpgateNotReady{background:#332126;
 background:-moz-linear-gradient(top,#332126 0,#0f080e 100%);
@@ -4686,9 +4839,17 @@ margin:0 0 0 10px;
 width:450px}#rocketsilo #inner table{width:100%;
 margin:10px auto}#rocketsilo #inner th{border-bottom:1px dotted #848484}#rocketsilo #inner th,#rocketsilo #inner td{padding:3px 5px}#rocketsilo #inner input.txt{font-size:12pt;
 text-align:center;
-width:70px}#resources #inhalt #planet #slots,#station #inhalt #planet #slots,#station-moon #inhalt #planet #slots{color:#848484}#slots a:link,#slots a:visited,#slots a:active,#slots2 a:link,#slots2 a:visited,#slots2 a:active{color:#848484;
-text-decoration:none}#slots a:hover,#slots a:hover,#slots2 a:hover,#slots a:hover,#slots2 a:hover{color:#a4a4a4;
-text-decoration:underline}#resources #RessLayer{width:669px;
+width:70px}
+#resources #inhalt #planet #slots,#station #inhalt #planet #slots,#station-moon #inhalt #planet #slots{color:#848484}
+#slots a:link,#slots a:visited,#slots a:active,#slots2 a:link,#slots2 a:visited,#slots2 a:active{
+  color:#848484;
+  text-decoration:none;
+}
+#slots a:hover,#slots a:hover,#slots2 a:hover,#slots a:hover,#slots2 a:hover{
+  color:#a4a4a4;
+  text-decoration:underline;
+}
+#resources #RessLayer{width:669px;
 height:375px;
 background:transparent  url("../Imagenes/Background.jpg") no-repeat;
 color:#848484;
@@ -5740,7 +5901,7 @@ position:relative}
 .menu_icon .menuImage.research{background-position:-216px 0}
 .menu_icon .menuImage.shipyard{background-position:-270px 0}
 .menu_icon .menuImage.defense{background-position:-27px 0}
-.menu_icon .menuImage.fleet1{background-position:-108px 0}
+.menu_icon .menuImage.fleet{background-position:-108px 0}
 .menu_icon .menuImage.galaxy{background-position:-135px 0}
 .menu_icon .menuImage.empire{background-position:-54px 0}
 .menu_icon .menuImage.alliance{background-position:-0px 0}
@@ -5748,7 +5909,7 @@ position:relative}
 .menu_icon .menuImage.shop{background-position:-82px 0}
 .menu_icon a:hover .menuImage.overview,.menu_icon a:active .menuImage.overview,.menu_icon .menuImage.active.overview{background-position:-162px -54px}
 .menu_icon .menuImage.active.station{background-position:-297px -54px}
-.menu_icon a:hover .menuImage.fleet1,.menu_icon a:active .menuImage.fleet1,.menu_icon .menuImage.active.fleet1{background-position:-108px -54px}
+.menu_icon a:hover .menuImage.fleet,.menu_icon a:active .menuImage.fleet,.menu_icon .menuImage.active.fleet{background-position:-108px -54px}
 .menu_icon a:hover .menuImage.resources,.menu_icon a:active .menuImage.resources{background-position:-243px -54px}
 .menu_icon a:hover .menuImage.traderOverview,.menu_icon a:active .menuImage.traderOverview{background-position:-324px -54px}
 .menu_icon a:hover .menuImage.alliance,.menu_icon a:active .menuImage.alliance,.menu_icon a:hover .menuImage.highlighted.alliance{background-position:-0px -54px}
@@ -5761,7 +5922,7 @@ position:relative}
 .menu_icon .menuImage.highlighted.research{background-position:-216px -27px}
 .menu_icon .menuImage.highlighted.shipyard{background-position:-270px -27px}
 .menu_icon .menuImage.highlighted.defense{background-position:-27px -27px}
-.menu_icon a:hover .menuImage.active.fleet1,.menu_icon a:active .menuImage.active.fleet1,.menu_icon .menuImage.highlighted.fleet1{background-position:-108px -27px}
+.menu_icon a:hover .menuImage.active.fleet,.menu_icon a:active .menuImage.active.fleet,.menu_icon .menuImage.highlighted.fleet{background-position:-108px -27px}
 .menu_icon .menuImage.highlighted.galaxy{background-position:-135px -27px}
 .menu_icon .menuImage.highlighted.empire{background-position:-54px -27px}
 .menu_icon .menuImage.highlighted.alliance{background-position:-0px -27px}

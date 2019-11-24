@@ -14,6 +14,7 @@ var exp = {
   planeta: 0,
   cantPlayers: 0,
   allCord: {},
+  comienzoBusquedaNewConrd: 1,
   createUniverse: function(name, cant, data){
     this.setUniverseData(name, data);
     for(let i = 0 ; i<cant ; i++){
@@ -47,11 +48,13 @@ var exp = {
       f();
     });
   },
-  createNewPlanet: function(cord, planetName, playerName) {
+  createNewPlanet: function(cord, planetName, playerName, plyerTypeNew) {
     var typePlanet = this.generateNewTypeOfPlanet(cord.pos, cord.system % 2);
     return {idPlanet: Math.pow(500,2)*cord.galaxy + 500*cord.system + cord.pos,
       coordinates: cord,
+      coordinatesCod: cord.galaxy+'_'+cord.system,
       player: playerName,
+      playerType: plyerTypeNew,
       name: planetName, // maximo 23 caracteres
       type: typePlanet.type,
       color: typePlanet.color,
@@ -69,7 +72,7 @@ var exp = {
     };
   },
   addNewPlayer: function(name, styleGame) {
-    var newPlanet = exp.createNewPlanet(exp.newCord(), "Planeta Principal", name);
+    var newPlanet = exp.createNewPlanet(exp.newCord(), "Planeta Principal", name, 'activo');
     //var newPlanet1 = exp.createNewPlanet({galaxy: 1, system: 2, pos: 10}, "Colony1", name);//borrar solo tiene que crear un planeta
     //var newPlanet2 = exp.createNewPlanet({galaxy: 1, system: 3, pos: 12}, "Colony2", name);//borrar solo tiene que crear un planeta
     var newPlayer = {'name': name,
@@ -94,9 +97,9 @@ var exp = {
     mongo.db(process.env.UNIVERSE_NAME).collection("galaxy").insertOne(newPlanet);//agrega el planeta a la lista de planetas de manera ordenada por id
   },
   newCord: function(rand = true) {
-    for(let gal = 1 ; gal<=9; gal++){
+    for(let gal = this.comienzoBusquedaNewConrd ; gal<=9; gal++){
       for(let sys = 1 ; sys<=499; sys++){
-        for(let p = 4 ; p<=11; p++){
+        for(let p = 5 ; p<=10; p++){
           if(this.allCord[gal+'_'+sys+'_'+p] == undefined && ((Math.random() > 0.8) || rand == false)){
             let obj = {galaxy: gal, system: sys, pos: p};
             this.allCord[gal+'_'+sys+'_'+p] = obj;
@@ -261,6 +264,14 @@ var exp = {
             time: {mult: yard, elev: this.player.planets[planet].buildings.naniteFactory}
     };
   },
+  fleetInfo: function(planet){
+    return {fleets: this.player.planets[planet].fleet,
+            expeditions: 0, //es la cantidad de expediciones realizadas en ese momento
+            maxExpeditions: Math.floor(Math.sqrt(this.player.research.astrophysics)),
+            slot: 0, //es la cantidad de flotas volando (Cambiar)
+            maxSlot: this.player.research.computer + 1
+    };
+  },
   galaxyInfo: function(planet){
     return {espionage: this.player.planets[planet].fleet.espionageProbe,
             recycler: this.player.planets[planet].fleet.recycler,
@@ -269,33 +280,25 @@ var exp = {
             maxSlot: this.player.research.computer + 1
     };
   },
-  systemInfo: function(gal, sys){
-    let res = {};
+  systemInfo: function(res, gal, sys){
+    let respuesta = {};
+    let cursor = mongo.db(process.env.UNIVERSE_NAME).collection("galaxy").find({coordinatesCod: gal+'_'+sys});
     for(let i = 1 ; i<=15 ; i++){
-      let objaux = {active: true,
-                    player: "pepe",
-                    type: ((2+i)%7)+1,
-                    color: i%10+1,
-                    name: "Planeta Principal",
-                    moon: false,
-                    moonName: "",
-                    moonSize: 0,
-                    debris: false,
-                    metalDebris: 500*i,
-                    crystalDebris: 100*i,
-                    highscore: 2,
-                    estado: "activo"
-      };
-      res['pos' + i] = objaux;
+      respuesta['pos' + i] = {active: false};
     }
-    return res;
+    cursor.forEach((doc, err) => {
+      let pos = doc.coordinates.pos;
+      respuesta['pos' + pos] = {active: true, player: doc.player, type: doc.type, color: doc.color, name: doc.name, moon: false, moonName: "", moonSize: 0, debris: false, metalDebris: 500, crystalDebris: 100, estado: "activo"};
+    }, () => {
+      res.send(respuesta);
+    });
   },
   normalRandom: (min, max, podaMin = -Infinity, podaMax = Infinity) => {// la esperanza es (max+min)/2
     var u = 0, v = 0;
     while(u == 0) u = Math.random(); //Converting [0,1) to (0,1)
     let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v); // Box–Muller transform
     num = num / 10.0 + 0.5; // Translate to 0 -> 1
-    if (num > 1 || num < 0) num = randn_bm(min, max, podaMin, podaMax); // resample between 0 and 1 if out of range
+    if (num > 1 || num < 0) num = Math.random(); // resample between 0 and 1 if out of range
     num *= max - min; // Stretch to fill range
     num += min; // offset to min
     if (num > podaMax || num < podaMin) num = Math.random()*(podaMax-podaMin)+(podaMin);

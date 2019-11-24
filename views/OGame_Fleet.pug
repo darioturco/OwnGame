@@ -1,2 +1,351 @@
 extends Ogame_Layout
 block content
+  #inhalt(onkeypress='return submitOnEnter(event);')
+    #planet
+      h2 Fleet Dispatch I - #{planetName}
+    .fleetStatus
+      #slots.fleft
+        .fleft
+          span.tooltip.advice
+            span Fleets :
+            |  #{info.slot}/#{info.maxSlot}
+        .fleft
+          span.tooltip.advice
+            span Expeditions:
+            |  #{info.expeditions}/#{info.maxExpeditions}
+        br.clearfloat
+      #movements.fright
+        a.tooltip.dark_highlight_tablet(href='Ogame_Movement.html')
+          img(src='./Imagenes/MiniFleet.gif')
+          span Fleet movement
+      br.clearfloat
+    .c-left
+    .c-right
+    #buttonz
+      .header
+        h2
+          span.h_battleships Combat ships
+          span.h_civilships Civil ships
+      .content
+        #battleships
+          ul#military
+            li#button204.off
+              .buildingimg
+                a.tooltip(href='javascript:void(0);' title='')
+                  span.ecke
+                    span.level
+                      span.textlabel Light Fighter
+                      | 0
+              input#ship_204.fleetValues(name='am204' tabindex='1' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='' readonly='readonly' disabled='')
+            li#button205.off
+              .buildingimg
+                a.tooltip(href='javascript:void(0);' title='Heavy Fighter (0)')
+                  span.ecke
+                    span.level
+                      span.textlabel Heavy Fighter
+                      | 0
+              input#ship_205.fleetValues(name='am205' tabindex='2' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='' readonly='readonly' disabled='')
+            li#button206.off
+              .buildingimg
+                a.tooltip(href='javascript:void(0);' title='Cruiser (0)')
+                  span.ecke
+                    span.level
+                      span.textlabel Cruiser
+                      | 0
+              input#ship_206.fleetValues(name='am206' tabindex='3' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='' readonly='readonly' disabled='')
+            li#button207.on
+              .buildingimg
+                a.tooltip(href='javascript:void(0);' title='' onclick='toggleMaxShips("#shipsChosen", 207,31); checkIntInput("#ship_207", 0, 31); checkShips("shipsChosen"); return false;')
+                  span.ecke
+                    span.level
+                      span.textlabel Battleship
+                      | 0
+              input#ship_207.fleetValues(name='am207' tabindex='4' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 31); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 31); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='')
+            li#button215.off
+              .buildingimg
+                a.tooltip(href='javascript:void(0);' title='')
+                  span.ecke
+                    span.level
+                      span.textlabel Battlecruiser
+                      | 0
+              input#ship_215.fleetValues(name='am215' tabindex='5' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='' readonly='readonly' disabled='')
+            li#button211.off
+              .buildingimg
+                a.tooltip(href='javascript:void(0);' title='Bomber (0)')
+                  span.ecke
+                    span.level
+                      span.textlabel Bomber
+                      | 0
+              input#ship_211.fleetValues(name='am211' tabindex='6' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='' readonly='readonly' disabled='')
+            li#button213.off
+              .buildingimg
+                a.tooltip(href='javascript:void(0);' title='')
+                  span.ecke
+                    span.level
+                      span.textlabel Destroyer
+                      | 0
+              input#ship_213.fleetValues(name='am213' tabindex='7' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='' readonly='readonly' disabled='')
+            li#button214.off
+              .buildingimg
+                a.tooltip(href='javascript:void(0);' title='')
+                  span.ecke
+                    span.level
+                      span.textlabel Deathstar
+                      | 0
+              input#ship_214.fleetValues(name='am214' tabindex='8' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='' readonly='readonly' disabled='')
+        #spacer
+        #civilships
+          ul#civil
+            li#button202.off
+              .buildingimg
+                a.tooltip(href='javascript:void(0);' title='Small Cargo (0)')
+                  span.ecke
+                    span.level
+                      span.textlabel Small Cargo
+                      | 0
+              input#ship_202.fleetValues(name='am202' tabindex='9' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='' readonly='readonly' disabled='')
+            li#button203.on
+              .buildingimg
+                a.tooltip(href='javascript:void(0);' title='Large Cargo (10)' onclick='toggleMaxShips("#shipsChosen", 203,10); checkIntInput("#ship_203", 0, 10); checkShips("shipsChosen"); return false;')
+                  span.ecke
+                    span.level
+                      span.textlabel Large Cargo
+                      | 0
+              input#ship_203.fleetValues(name='am203' tabindex='10' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 10); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 10); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='')
+            li#button208.off
+              .buildingimg
+                a.tooltip(href='javascript:void(0);' title='Colony Ship (0)')
+                  span.ecke
+                    span.level
+                      span.textlabel Colony Ship
+                      | 0
+              input#ship_208.fleetValues(name='am208' tabindex='11' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='' readonly='readonly' disabled='')
+            li#button209.off
+              .buildingimg
+                a.tooltip(href='javascript:void(0);' title='Recycler (0)')
+                  span.ecke
+                    span.level
+                      span.textlabel Recycler
+                      | 0
+              input#ship_209.fleetValues(name='am209' tabindex='12' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='' readonly='readonly' disabled='')
+            li#button210.off
+              .buildingimg
+                a.tooltip(href='javascript:void(0);' title='Espionage Probe (0)')
+                  span.ecke
+                    span.level
+                      span.textlabel Espionage Probe
+                      | 0
+              input#ship_210.fleetValues(name='am210' tabindex='13' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='' readonly='readonly' disabled='')
+        .clearfloat
+        #allornone(style='position:relative')
+          .allornonewrap
+            .secondcol.fleft
+              span.send_all
+                a#sendall.tooltip(href='javascript:void(0);' title='' onclick='setMaxIntInput("form[name=shipsChosen]", {"203":10,"207":31}); checkShips("shipsChosen"); $("#continue").focus(); return false;')
+              span.send_none
+                a.tooltip(href='javascript:void(0);' title='Reset choice' onclick="resetForm(); checkShips('shipsChosen'); return false;")
+              .clearfloat
+            a#continue.off(href='' onclick='')
+              span Next
+            .clearfloat
+        .footer
+    #buttonz
+      .header
+      .content
+        table#mission(cellpadding='0' cellspacing='0')
+          tbody
+            tr
+              th Take off location:
+              th
+              th Destination:
+              th
+            tr
+              td#start.border5px
+                .planetname Melany
+                .target
+                  a.planet_source_selected
+                    span.textlabel Planet
+                  a.moon_source
+                    span.textlabel Moon
+                  br.clearfloat
+                .coords
+                  | Coordinates:
+                  span(style='color:#ffffff; font-weight:bold') 3:212:5
+              td#distance
+                #distanceValue 5
+                .coords Distance
+              td#target.border5px
+                #targetPlanetName.planetname Melany
+                .target
+                  a#pbutton.planet_selected(href='javascript:void(0);' onclick='setTType(1); modifyPlanetName(); checkOk(); focusContinueButton(); return false;')
+                    span.textlabel Planet
+                  a#mbutton.moon(href='javascript:void(0);' onclick='setTType(3); modifyPlanetName(); checkOk(); focusContinueButton(); return false;')
+                    span.textlabel Moon
+                  a#dbutton.debris(href='javascript:void(0);' onclick='setTType(2); modifyPlanetName(); checkOk(); focusContinueButton(); return false;')
+                    span.textlabel debris field
+                  br.clearfloat
+                .coords
+                  | Coordinates:
+                  br
+                  input#galaxy.galaxy.hideNumberSpin(name='galaxy' type='text' pattern='[0-9]*' size='1' value='3' onchange='updateVariables();' onkeyup='updateVariables();' onclick='clearInput(this);')
+                  input#system.system.hideNumberSpin(name='system' type='text' pattern='[0-9]*' size='3' value='212' onchange='updateVariables();' onkeyup='updateVariables();' onfocus='clearInput(this);')
+                  input#position.planet.hideNumberSpin(name='position' type='text' pattern='[0-9]*' size='2' value='5' onchange='updateVariables();' onkeyup='updateVariables();' onfocus='clearInput(this);')
+              td#shortcuts
+                div
+                  span(id='shortlinks tips') Shortcuts:
+                  .glow
+                    select#slbox.planets.dropdownInitialized(size='1' onchange='shortLinkChange();updateVariables();' style='display: none;')
+                      option(value='-') -
+                      option(value='2#289#4#1#Planeta Principal' data-html-prepend='<figure class="planetIcon planet tooltip js_hideTipOnMobile" title="Planet"></figure>')
+                        | Planeta Principal [2:289:4]
+                      option(value='2#289#4#3#Moon' data-html-prepend='<figure class="planetIcon moon tooltip js_hideTipOnMobile" title="Moon"></figure>')
+                        | Moon [2:289:4]
+                      option(value='2#290#5#1#Volcancito' data-html-prepend='<figure class="planetIcon planet tooltip js_hideTipOnMobile" title="Planet"></figure>')
+                        | Volcancito [2:290:5]
+                      option(value='1#413#5#1#need moon' data-html-prepend='<figure class="planetIcon planet tooltip js_hideTipOnMobile" title="Planet"></figure>')
+                        | need moon [1:413:5]
+                      option(value='2#286#3#1#Desierto' data-html-prepend='<figure class="planetIcon planet tooltip js_hideTipOnMobile" title="Planet"></figure>')
+                        | Desierto [2:286:3]
+                    span.dropdown.currentlySelected.planets(rel='dropdown662' style='width: 144px;')
+                      a.undefined(data-value='-' rel='dropdown662' href='javascript:void(0);') -
+                div(style='padding-top:12px;')
+                  span(id='combatunits tips') Combat forces:
+                  .glow
+                    select#aksbox.combatunits.dropdownInitialized(size='1' name='acsValues' onchange='shortLinkChange(true);updateVariables();handleUnion()' style='display: none;')
+                      option(value='-') -
+                    span.dropdown.currentlySelected.combatunits(rel='dropdown6' style='width: 144px;')
+                      a.undefined(data-value='-' rel='dropdown6' href='javascript:void(0);') -
+        .briefing.border5px
+          h2 Briefing
+          ul#fleetBriefingPart1.fleetBriefing
+            li
+              | Duration of flight (one way):
+              span#duration.value 0:01:23 h
+            li
+              | Deuterium consumption:
+              span.value
+                span#consumption
+                  span.undermark 1 (1%)
+            li
+              input#speed(type='hidden' name='speed' value='10')
+              |                    Speed: (max.
+              span#maxspeed 25.000
+              | ):
+              #speedLinks
+                a.dark_highlight_tablet.speed.low(href='javascript:void(0);' data-value='1') 10
+                a.dark_highlight_tablet.speed.low(href='javascript:void(0);' data-value='2') 20
+                a.dark_highlight_tablet.speed.low(href='javascript:void(0);' data-value='3') 30
+                a.dark_highlight_tablet.speed.middle(href='javascript:void(0);' data-value='4') 40
+                a.dark_highlight_tablet.speed.middle(href='javascript:void(0);' data-value='5') 50
+                a.dark_highlight_tablet.speed.middle(href='javascript:void(0);' data-value='6') 60
+                a.dark_highlight_tablet.speed.high(href='javascript:void(0);' data-value='7') 70
+                a.dark_highlight_tablet.speed.high(href='javascript:void(0);' data-value='8') 80
+                a.dark_highlight_tablet.speed.high(href='javascript:void(0);' data-value='9') 90
+                a.dark_highlight_tablet.speed.high.selected(href='javascript:void(0);' data-value='10') 100
+                |                        %
+          ul#fleetBriefingPart1_2.fleetBriefing
+            li
+              | Arrival:
+              span.value
+                span#arrivalTime 24.11.19 3:48:35
+                |  Clock
+            li
+              | Return:
+              span.value
+                span#returnTime 24.11.19 3:49:58
+                |  Clock
+            li
+              | Empty cargobays:
+              span#storage.value
+                span.undermark 5.625
+        .footer
+    #buttonz
+      .header
+        h2 Select mission for target:
+      .content
+        ul#missions
+          li#button15.off
+            a#missionButton15(href='javascript:void(0);' onclick='setSelected(15);\
+            updateMission(\
+            "Expedition",\
+            "Send your ships into the final frontier of space to encounter thrilling quests.",\
+            "off",\
+            15                               );')
+              span.textlabel Expedition
+          li#button7.off
+            a#missionButton7(href='javascript:void(0);' onclick='setSelected(7);\
+            updateMission(\
+            "Colonisation",\
+            "Colonizes a new planet.",\
+            "off",\
+            7                               );')
+              span.textlabel Colonisation
+          li#button8.off
+            a#missionButton8(href='javascript:void(0);' onclick='setSelected(8);\
+            updateMission(\
+            "Recycle debris field",\
+            "Send your recyclers to a debris field to collect the resources floating around there.",\
+            "off",\
+            8                               );')
+              span.textlabel Recycle debris field
+          li#button3.on
+            a#missionButton3.selected(href='javascript:void(0);' onclick='setSelected(3);\
+            updateMission(\
+            "Transport",\
+            "Transports your resources to other planets.",\
+            "on",\
+            3                               );')
+              span.textlabel Transport
+          li#button4.on
+            a#missionButton4(href='javascript:void(0);' onclick='setSelected(4);\
+            updateMission(\
+            "Deployment",\
+            "Sends your fleet permanently to another planet of your empire.",\
+            "on",\
+            4                               );')
+              span.textlabel Deployment
+          li#button6.off
+            a#missionButton6(href='javascript:void(0);' onclick='setSelected(6);\
+            updateMission(\
+            "Espionage",\
+            "Spy the worlds of foreign emperors.",\
+            "off",\
+            6                               );')
+              span.textlabel Espionage
+          li#button5.off
+            a#missionButton5(href='javascript:void(0);' onclick='setSelected(5);\
+            updateMission(\
+            "ACS Defend",\
+            "Defend the planet of your team-mate.",\
+            "off",\
+            5                               );')
+              span.textlabel ACS Defend
+          li#button1.off
+            a#missionButton1(href='javascript:void(0);' onclick='setSelected(1);\
+            updateMission(\
+            "Attack",\
+            "Attacks the fleet and defence of your opponent.",\
+            "off",\
+            1                               );')
+              span.textlabel Attack
+          li#button2.off
+            a#missionButton2(href='javascript:void(0);' onclick='setSelected(2);\
+            updateMission(\
+            "ACS Attack",\
+            "Honourable battles can become dishonourable battles if strong players enter through ACS. The attacker`s sum of total military points in comparison to the defender`s sum of total military points is the decisive factor here.",\
+            "off",\
+            2                               );')
+              span.textlabel ACS Attack
+          li#button9.off
+            a#missionButton9(href='javascript:void(0);' onclick='setSelected(9);\
+            updateMission(\
+            "Moon Destruction",\
+            "Destroys the moon of your enemy.",\
+            "off",\
+            9                               );')
+              span.textlabel Moon Destruction
+        #missionNameWrapper
+          | Mission:
+          span#missionName.missionName Transport
+          p.mission_description Transports your resources to other planets.
+        .footer

@@ -12,8 +12,8 @@ router.all('/*', (req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
-  //uni.createUniverse(process.env.UNIVERSE_NAME, 5, {name: "", inicio: 0,maxGalaxies: 9,donutGalaxy: true,donutSystem: true,speed: 1,speedFleet: 1,fleetDebris: 30,defenceDebris: 0,maxMoon: 20});
   //uni.deleteCollection(process.env.UNIVERSE_NAME, ["jugadores", "galaxy", "universo"]);
+  //uni.createUniverse(process.env.UNIVERSE_NAME, 5, {name: "", inicio: 0,maxGalaxies: 9,donutGalaxy: true,donutSystem: true,speed: 1,speedFleet: 1,fleetDebris: 30,defenceDebris: 0,maxMoon: 20});
   //uni.addNewPlayer("dturco", 1);
   uni.seeDataBase(res, process.env.UNIVERSE_NAME, "jugadores");
 });
@@ -46,6 +46,7 @@ router.get('/OGame_Facilities.html', (req, res, next) => {
 router.get('/OGame_Fleet.html', (req, res, next) => {
   res.render('OGame_Fleet', {bodyId: "fleet",
     url: req._parsedOriginalUrl.pathname,
+    info: uni.fleetInfo(uni.planeta),
     basic: uni.getActualBasicInfo(uni.planeta),
     listScript: []
   });

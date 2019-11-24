@@ -2,22 +2,21 @@ extends Ogame_Layout
 block content
   #inhalt
     #galaxyHeader
-      form(action='' name='galaform' method='post')
-        span.galaxy_icons.galaxy.tooltip(title='Galaxy')
-        span.galaxy_icons.prev(onclick='submitOnKey(40);')
-        input#galaxy_input.hideNumberSpin(maxlength='3' type='text' pattern='[0-9]*' value='2' name='galaxy' tabindex='2' onfocus='clearInput(this);' onkeyup='checkIntInput(this, 1, 5)' onkeypress='return submitOnEnter(event);')
-        span.galaxy_icons.next(onclick='submitOnKey(38);')
-        span.galaxy_icons.solarsystem.tooltip(title='System')
-        span.galaxy_icons.prev(onclick='submitOnKey(37);')
-        input#system_input.hideNumberSpin(maxlength='3' type='text' pattern='[0-9]*' value='289' tabindex='2' name='system' onfocus='clearInput(this);' onkeyup='checkIntInput(this, 1, 499)' onkeypress='return submitOnEnter(event);')
-        span.galaxy_icons.next(onclick='submitOnKey(39);')
-        .btn_blue(onclick='submitForm();')
-          | Go!
-        #expeditionbutton.btn_blue.float_right(onclick='doExpedition();')
-          | Expedition
+      span.galaxy_icons.galaxy.tooltip(title='Galaxy')
+      span.galaxy_icons.prev(onclick='galaxyChange(-1);')
+      input#galaxy_input.hideNumberSpin(maxlength='1' type='number' value='1' tabindex='2')
+      span.galaxy_icons.next(onclick='galaxyChange(1);')
+      span.galaxy_icons.solarsystem.tooltip(title='System')
+      span.galaxy_icons.prev(onclick='systemChange(-1);')
+      input#system_input.hideNumberSpin(maxlength='3' type='number' value='1' tabindex='2')
+      span.galaxy_icons.next(onclick='systemChange(1);')
+      .btn_blue(onclick='pressGo();' onkeydown='pressGo();')
+        | Go!
+      #expeditionbutton.btn_blue.float_right(onclick='doExpedition();')
+        | Expedition
     #galaxyContent
       #mobileDiv
-        table#galaxytable(cellpadding='0' cellspacing='0' border='0' data-galaxy='2' data-system='289')
+        table#galaxytable(cellpadding='0' cellspacing='0' border='0')
           thead
             tr.info.info_header.ct_head_row
               th(colspan='11')
@@ -45,8 +44,7 @@ block content
               td#fleetstatusrow.ct_foot_row(colspan='11')
             tr.info.ct_foot_row
               td(colspan='11')
-                span#colonized - Planets colonised
-                br.clearfloat
+                span#colonized
           tbody
             tr.row
               td.position 1
@@ -495,22 +493,20 @@ block content
               a.DebrisMineButton Espionage
             li
               a.DebrisMineButton Atack
-
-
-      #canvasDebris.canvasDebris
-        div(style='width: auto; height: auto;')
-          a.close-tooltip(href="#" onclick='pressDebris(-1); return false;')
-          div.htmlTooltip.galaxyTooltip
-            h1 Debris Field
-            .splitLine
-            ul.ListImage
-              li
-                span#DebrisCord [ : : ]
-              li
-                img.debrisImg(src='../Imagenes/Planets/Miniatures/MiniDebris.gif' alt='debris' width='30' height='30')
-            ul.ListLinks
-              li#DebrisMetal Metal: 0
-              li#DebrisCrystal Crystal: 0
-              li#DebrisNeed Recyclers needed: 0
-              li
-                a.DebrisMineButton Mine
+    #canvasDebris.canvasDebris
+      div(style='width: auto; height: auto;')
+        a.close-tooltip(href="#" onclick='pressDebris(-1); return false;')
+        div.htmlTooltip.galaxyTooltip
+          h1 Debris Field
+          .splitLine
+          ul.ListImage
+            li
+              span#DebrisCord [ : : ]
+            li
+              img.debrisImg(src='../Imagenes/Planets/Miniatures/MiniDebris.gif' alt='debris' width='30' height='30')
+          ul.ListLinks
+            li#DebrisMetal Metal: 0
+            li#DebrisCrystal Crystal: 0
+            li#DebrisNeed Recyclers needed: 0
+            li
+              a.DebrisMineButton Mine
