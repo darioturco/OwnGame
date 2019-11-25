@@ -288,6 +288,7 @@ var exp = {
     }
     cursor.forEach((doc, err) => {
       let pos = doc.coordinates.pos;
+      //siempre da que luna y debris es falso (cambiar)
       respuesta['pos' + pos] = {active: true, player: doc.player, type: doc.type, color: doc.color, name: doc.name, moon: false, moonName: "", moonSize: 0, debris: false, metalDebris: 500, crystalDebris: 100, estado: "activo"};
     }, () => {
       res.send(respuesta);
@@ -304,6 +305,28 @@ var exp = {
     if (num > podaMax || num < podaMin) num = Math.random()*(podaMax-podaMin)+(podaMin);
     return num;
   },
+  updatePlanetsOfPlayer: function(pla){
+    let list = [];
+    let cursor = mongo.db(process.env.UNIVERSE_NAME).collection("galaxy").find({player: pla});
+    cursor.forEach((doc, err) => {
+      console.log("pass");
+      list.push(doc);
+    }, () => {
+      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: pla}, {$set: {planets: list}});
+    });
+  },
+  setPlanetDataDev: function(cord, player){
+    console.log(cord);
+    let building = {metalMine: 0, crystalMine: 0, deuteriumMine: 0, solarPlant: 0, fusionReactor: 0, metalStorage: 0, crystalStorage: 0, deuteriumStorage: 0, robotFactory: 0, shipyard: 0, researchLab: 0, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0};
+    let fleet = {lightFighter: 10, heavyFighter: 0, cruiser: 1, battleship: 0, battlecruiser: 0, bomber: 0, destroyer: 0, deathstar: 0, smallCargo: 0, largeCargo: 0, colony: 0, recycler: 0, espionageProbe: 0, solarSatellite: 0};
+    let defenses = {rocketLauncher: 500, lightLaser: 0, heavyLaser: 0, gauss: 0, ion: 0, plasma: 0, smallShield: 0, largeShield: 0, antiballisticMissile: 0, interplanetaryMissile: 0};
+    let moon = {active: false, size: 0};
+    let debris = {active: true, metal:3000, crystal: 1000};
+    mongo.db(process.env.UNIVERSE_NAME).collection("galaxy").updateOne({coordinates: {galaxy: cord.galaxy, system: cord.system, pos: cord.pos}}, {$set: {'buildings': building, 'fleet': fleet, 'defense': defenses,'moon': moon, 'debris': debris}}, () => {
+      console.log("actualiza");
+      this.updatePlanetsOfPlayer(player);
+    });
+  },
   seeDataBase: (res, uni, name) => {
     let respuesta = "";
     let cursor = mongo.db(uni).collection(name).find();
@@ -313,8 +336,8 @@ var exp = {
       res.render('index', {title: 'Ogame', message: respuesta});
     });
   },
-  seeJsonDataBase: (res, uni, name, objName = "item") => {
-    let cursor = mongo.db(uni).collection(name).find();
+  seeJsonDataBase: (res, uni, name, objName = "item", filtro = {}) => {
+    let cursor = mongo.db(uni).collection(name).find(filtro);
     let obj = {};
     let i = 1;
     cursor.forEach((doc, err) => {

@@ -1,8 +1,8 @@
 extends Ogame_Layout
 block content
-  #inhalt(onkeypress='return submitOnEnter(event);')
-    #planet
-      h2 Fleet Dispatch I - #{planetName}
+  #inhalt
+    #planet.shortHeader
+      h2 Fleet Dispatch - #{basic.planets[basic.numPlanet].name}
     .fleetStatus
       #slots.fleft
         .fleft
@@ -26,128 +26,117 @@ block content
         h2
           span.h_battleships Combat ships
           span.h_civilships Civil ships
-      .content
+      #selectNaves.content
         #battleships
           ul#military
-            li#button204.off
+            li#button204(class=((info.fleets.lightFighter > 0) ? 'on' : 'off'))
               .buildingimg
-                a.tooltip(href='javascript:void(0);' title='')
+                a.tooltip(href='javascript:void(0);' onClick='selectAllNave(0);')
                   span.ecke
                     span.level
-                      span.textlabel Light Fighter
-                      | 0
-              input#ship_204.fleetValues(name='am204' tabindex='1' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='' readonly='readonly' disabled='')
-            li#button205.off
+                      span.textlabel
+                      | #{info.fleets.lightFighter}
+              input#ship_204.fleetValues(name='' tabindex='1' type='text' pattern='[0-9,.]*' value='' )
+            li#button205(class=((info.fleets.heavyFighter > 0) ? 'on' : 'off'))
               .buildingimg
-                a.tooltip(href='javascript:void(0);' title='Heavy Fighter (0)')
+                a.tooltip(href='javascript:void(0);' onClick='selectAllNave(1);')
                   span.ecke
                     span.level
-                      span.textlabel Heavy Fighter
-                      | 0
-              input#ship_205.fleetValues(name='am205' tabindex='2' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='' readonly='readonly' disabled='')
-            li#button206.off
+                      span.textlabel
+                      | #{info.fleets.heavyFighter}
+              input#ship_205.fleetValues(name='' tabindex='2' type='text' pattern='[0-9,.]*' value='')
+            li#button206(class=((info.fleets.cruiser > 0) ? 'on' : 'off'))
               .buildingimg
-                a.tooltip(href='javascript:void(0);' title='Cruiser (0)')
+                a.tooltip(href='javascript:void(0);' onClick='selectAllNave(2);')
                   span.ecke
                     span.level
-                      span.textlabel Cruiser
-                      | 0
-              input#ship_206.fleetValues(name='am206' tabindex='3' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='' readonly='readonly' disabled='')
-            li#button207.on
+                      span.textlabel
+                      | #{info.fleets.cruiser}
+              input#ship_206.fleetValues(name='' tabindex='3' type='text' pattern='[0-9,.]*' value='')
+            li#button207(class=((info.fleets.battleship > 0) ? 'on' : 'off'))
               .buildingimg
-                a.tooltip(href='javascript:void(0);' title='' onclick='toggleMaxShips("#shipsChosen", 207,31); checkIntInput("#ship_207", 0, 31); checkShips("shipsChosen"); return false;')
+                a.tooltip(href='javascript:void(0);' onClick='selectAllNave(3);')
                   span.ecke
                     span.level
-                      span.textlabel Battleship
-                      | 0
-              input#ship_207.fleetValues(name='am207' tabindex='4' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 31); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 31); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='')
-            li#button215.off
+                      span.textlabel
+                      | #{info.fleets.battleship}
+              input#ship_207.fleetValues(name='' tabindex='4' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 31); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 31); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='')
+            li#button215(class=((info.fleets.battlecruiser > 0) ? 'on' : 'off'))
               .buildingimg
-                a.tooltip(href='javascript:void(0);' title='')
+                a.tooltip(href='javascript:void(0);' onClick='selectAllNave(4);')
                   span.ecke
                     span.level
-                      span.textlabel Battlecruiser
-                      | 0
-              input#ship_215.fleetValues(name='am215' tabindex='5' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='' readonly='readonly' disabled='')
-            li#button211.off
+                      span.textlabel
+                      | #{info.fleets.battlecruiser}
+              input#ship_215.fleetValues(name='' tabindex='5' type='text' pattern='[0-9,.]*' value='')
+            li#button211(class=((info.fleets.bomber > 0) ? 'on' : 'off'))
               .buildingimg
-                a.tooltip(href='javascript:void(0);' title='Bomber (0)')
+                a.tooltip(href='javascript:void(0);' onClick='selectAllNave(5);')
                   span.ecke
                     span.level
-                      span.textlabel Bomber
-                      | 0
-              input#ship_211.fleetValues(name='am211' tabindex='6' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='' readonly='readonly' disabled='')
-            li#button213.off
+                      span.textlabel
+                      | #{info.fleets.bomber}
+              input#ship_211.fleetValues(name='' tabindex='6' type='text' pattern='[0-9,.]*' value='')
+            li#button213(class=((info.fleets.destroyer > 0) ? 'on' : 'off'))
               .buildingimg
-                a.tooltip(href='javascript:void(0);' title='')
+                a.tooltip(href='javascript:void(0);' onClick='selectAllNave(6);')
                   span.ecke
                     span.level
-                      span.textlabel Destroyer
-                      | 0
-              input#ship_213.fleetValues(name='am213' tabindex='7' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='' readonly='readonly' disabled='')
-            li#button214.off
+                      span.textlabel
+                      | #{info.fleets.destroyer}
+              input#ship_213.fleetValues(name='' tabindex='7' type='text' pattern='[0-9,.]*' value='')
+            li#button214(class=((info.fleets.deathstar > 0) ? 'on' : 'off'))
               .buildingimg
-                a.tooltip(href='javascript:void(0);' title='')
+                a.tooltip(href='javascript:void(0);' onClick='selectAllNave(7);')
                   span.ecke
                     span.level
-                      span.textlabel Deathstar
-                      | 0
-              input#ship_214.fleetValues(name='am214' tabindex='8' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='' readonly='readonly' disabled='')
+                      span.textlabel
+                      | #{info.fleets.deathstar}
+              input#ship_214.fleetValues(name='' tabindex='8' type='text' pattern='[0-9,.]*' value='')
         #spacer
         #civilships
           ul#civil
-            li#button202.off
+            li#button202(class=((info.fleets.smallCargo > 0) ? 'on' : 'off'))
               .buildingimg
-                a.tooltip(href='javascript:void(0);' title='Small Cargo (0)')
+                a.tooltip(href='javascript:void(0);' onClick='selectAllNave(8);')
                   span.ecke
                     span.level
-                      span.textlabel Small Cargo
-                      | 0
-              input#ship_202.fleetValues(name='am202' tabindex='9' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='' readonly='readonly' disabled='')
-            li#button203.on
+                      span.textlabel
+                      | #{info.fleets.smallCargo}
+              input#ship_202.fleetValues(name='' tabindex='9' type='text' pattern='[0-9,.]*' value='')
+            li#button203(class=((info.fleets.largeCargo > 0) ? 'on' : 'off'))
               .buildingimg
-                a.tooltip(href='javascript:void(0);' title='Large Cargo (10)' onclick='toggleMaxShips("#shipsChosen", 203,10); checkIntInput("#ship_203", 0, 10); checkShips("shipsChosen"); return false;')
+                a.tooltip(href='javascript:void(0);' onClick='selectAllNave(9);')
                   span.ecke
                     span.level
-                      span.textlabel Large Cargo
-                      | 0
-              input#ship_203.fleetValues(name='am203' tabindex='10' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 10); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 10); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='')
-            li#button208.off
+                      span.textlabel
+                      | #{info.fleets.largeCargo}
+              input#ship_203.fleetValues(name='' tabindex='10' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 10); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 10); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='')
+            li#button208(class=((info.fleets.colony > 0) ? 'on' : 'off'))
               .buildingimg
-                a.tooltip(href='javascript:void(0);' title='Colony Ship (0)')
+                a.tooltip(href='javascript:void(0);' onClick='selectAllNave(10);')
                   span.ecke
                     span.level
-                      span.textlabel Colony Ship
-                      | 0
-              input#ship_208.fleetValues(name='am208' tabindex='11' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='' readonly='readonly' disabled='')
-            li#button209.off
+                      span.textlabel
+                      | #{info.fleets.colony}
+              input#ship_208.fleetValues(name='' tabindex='11' type='text' pattern='[0-9,.]*' value='')
+            li#button209(class=((info.fleets.recycler > 0) ? 'on' : 'off'))
               .buildingimg
-                a.tooltip(href='javascript:void(0);' title='Recycler (0)')
+                a.tooltip(href='javascript:void(0);' onClick='selectAllNave(11);')
                   span.ecke
                     span.level
-                      span.textlabel Recycler
-                      | 0
-              input#ship_209.fleetValues(name='am209' tabindex='12' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='' readonly='readonly' disabled='')
-            li#button210.off
+                      span.textlabel
+                      | #{info.fleets.recycler}
+              input#ship_209.fleetValues(name='' tabindex='12' type='text' pattern='[0-9,.]*' value='')
+            li#button210(class=((info.fleets.espionageProbe > 0) ? 'on' : 'off'))
               .buildingimg
-                a.tooltip(href='javascript:void(0);' title='Espionage Probe (0)')
+                a.tooltip(href='javascript:void(0);' onClick='selectAllNave(12);')
                   span.ecke
                     span.level
-                      span.textlabel Espionage Probe
-                      | 0
-              input#ship_210.fleetValues(name='am210' tabindex='13' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 0); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='' readonly='readonly' disabled='')
+                      span.textlabel
+                      | #{info.fleets.espionageProbe}
+              input#ship_210.fleetValues(name='' tabindex='13' type='text' pattern='[0-9,.]*' value='')
         .clearfloat
-        #allornone(style='position:relative')
-          .allornonewrap
-            .secondcol.fleft
-              span.send_all
-                a#sendall.tooltip(href='javascript:void(0);' title='' onclick='setMaxIntInput("form[name=shipsChosen]", {"203":10,"207":31}); checkShips("shipsChosen"); $("#continue").focus(); return false;')
-              span.send_none
-                a.tooltip(href='javascript:void(0);' title='Reset choice' onclick="resetForm(); checkShips('shipsChosen'); return false;")
-              .clearfloat
-            a#continue.off(href='' onclick='')
-              span Next
-            .clearfloat
         .footer
     #buttonz
       .header
@@ -161,7 +150,7 @@ block content
               th
             tr
               td#start.border5px
-                .planetname Melany
+                .planetname #{basic.planets[basic.numPlanet].name}
                 .target
                   a.planet_source_selected
                     span.textlabel Planet
@@ -170,26 +159,23 @@ block content
                   br.clearfloat
                 .coords
                   | Coordinates:
-                  span(style='color:#ffffff; font-weight:bold') 3:212:5
+                  span(style='color:#ffffff; font-weight:bold') #{basic.planets[basic.numPlanet].coordinates.galaxy}:#{basic.planets[basic.numPlanet].coordinates.system}:#{basic.planets[basic.numPlanet].coordinates.pos}
               td#distance
                 #distanceValue 5
                 .coords Distance
               td#target.border5px
-                #targetPlanetName.planetname Melany
+                #targetPlanetName.planetname Planet
                 .target
-                  a#pbutton.planet_selected(href='javascript:void(0);' onclick='setTType(1); modifyPlanetName(); checkOk(); focusContinueButton(); return false;')
-                    span.textlabel Planet
-                  a#mbutton.moon(href='javascript:void(0);' onclick='setTType(3); modifyPlanetName(); checkOk(); focusContinueButton(); return false;')
-                    span.textlabel Moon
-                  a#dbutton.debris(href='javascript:void(0);' onclick='setTType(2); modifyPlanetName(); checkOk(); focusContinueButton(); return false;')
-                    span.textlabel debris field
+                  a#pbutton.planet_selected(href='javascript:void(0);' onclick='pressPlanetMoonDebris(1); return false;')
+                  a#mbutton.moon(href='javascript:void(0);' onclick='pressPlanetMoonDebris(2); return false;')
+                  a#dbutton.debris(href='javascript:void(0);' onclick='pressPlanetMoonDebris(3); return false;')
                   br.clearfloat
                 .coords
                   | Coordinates:
                   br
-                  input#galaxy.galaxy.hideNumberSpin(name='galaxy' type='text' pattern='[0-9]*' size='1' value='3' onchange='updateVariables();' onkeyup='updateVariables();' onclick='clearInput(this);')
-                  input#system.system.hideNumberSpin(name='system' type='text' pattern='[0-9]*' size='3' value='212' onchange='updateVariables();' onkeyup='updateVariables();' onfocus='clearInput(this);')
-                  input#position.planet.hideNumberSpin(name='position' type='text' pattern='[0-9]*' size='2' value='5' onchange='updateVariables();' onkeyup='updateVariables();' onfocus='clearInput(this);')
+                  input#galaxy.galaxy.hideNumberSpin(name='galaxy' type='text' pattern='[0-9]*' size='1' value=objCord.galaxy)
+                  input#system.system.hideNumberSpin(name='system' type='text' pattern='[0-9]*' size='3' value=objCord.system)
+                  input#position.planet.hideNumberSpin(name='position' type='text' pattern='[0-9]*' size='2' value=objCord.pos)
               td#shortcuts
                 div
                   span(id='shortlinks tips') Shortcuts:
@@ -227,8 +213,7 @@ block content
                 span#consumption
                   span.undermark 1 (1%)
             li
-              input#speed(type='hidden' name='speed' value='10')
-              |                    Speed: (max.
+              | Speed: (max.
               span#maxspeed 25.000
               | ):
               #speedLinks
@@ -257,7 +242,7 @@ block content
             li
               | Empty cargobays:
               span#storage.value
-                span.undermark 5.625
+                span.undermark 0
         .footer
     #buttonz
       .header
@@ -265,87 +250,89 @@ block content
       .content
         ul#missions
           li#button15.off
-            a#missionButton15(href='javascript:void(0);' onclick='setSelected(15);\
-            updateMission(\
-            "Expedition",\
-            "Send your ships into the final frontier of space to encounter thrilling quests.",\
-            "off",\
-            15                               );')
+            a#missionButton15(href='javascript:void(0);' onclick='pressButtonMision();')
               span.textlabel Expedition
           li#button7.off
-            a#missionButton7(href='javascript:void(0);' onclick='setSelected(7);\
-            updateMission(\
-            "Colonisation",\
-            "Colonizes a new planet.",\
-            "off",\
-            7                               );')
+            a#missionButton7(href='javascript:void(0);' onclick='pressButtonMision();')
               span.textlabel Colonisation
           li#button8.off
-            a#missionButton8(href='javascript:void(0);' onclick='setSelected(8);\
-            updateMission(\
-            "Recycle debris field",\
-            "Send your recyclers to a debris field to collect the resources floating around there.",\
-            "off",\
-            8                               );')
+            a#missionButton8(href='javascript:void(0);' onclick='pressButtonMision();')
               span.textlabel Recycle debris field
           li#button3.on
-            a#missionButton3.selected(href='javascript:void(0);' onclick='setSelected(3);\
-            updateMission(\
-            "Transport",\
-            "Transports your resources to other planets.",\
-            "on",\
-            3                               );')
+            a#missionButton3.selected(href='javascript:void(0);' onclick='pressButtonMision();')
               span.textlabel Transport
           li#button4.on
-            a#missionButton4(href='javascript:void(0);' onclick='setSelected(4);\
-            updateMission(\
-            "Deployment",\
-            "Sends your fleet permanently to another planet of your empire.",\
-            "on",\
-            4                               );')
+            a#missionButton4(href='javascript:void(0);' onclick='pressButtonMision();')
               span.textlabel Deployment
           li#button6.off
-            a#missionButton6(href='javascript:void(0);' onclick='setSelected(6);\
-            updateMission(\
-            "Espionage",\
-            "Spy the worlds of foreign emperors.",\
-            "off",\
-            6                               );')
+            a#missionButton6(href='javascript:void(0);' onclick='pressButtonMision();')
               span.textlabel Espionage
           li#button5.off
-            a#missionButton5(href='javascript:void(0);' onclick='setSelected(5);\
-            updateMission(\
-            "ACS Defend",\
-            "Defend the planet of your team-mate.",\
-            "off",\
-            5                               );')
+            a#missionButton5(href='javascript:void(0);' onclick='pressButtonMision();')
               span.textlabel ACS Defend
           li#button1.off
-            a#missionButton1(href='javascript:void(0);' onclick='setSelected(1);\
-            updateMission(\
-            "Attack",\
-            "Attacks the fleet and defence of your opponent.",\
-            "off",\
-            1                               );')
+            a#missionButton1(href='javascript:void(0);' onclick='pressButtonMision();')
               span.textlabel Attack
           li#button2.off
-            a#missionButton2(href='javascript:void(0);' onclick='setSelected(2);\
-            updateMission(\
-            "ACS Attack",\
-            "Honourable battles can become dishonourable battles if strong players enter through ACS. The attacker`s sum of total military points in comparison to the defender`s sum of total military points is the decisive factor here.",\
-            "off",\
-            2                               );')
+            a#missionButton2(href='javascript:void(0);' onclick='pressButtonMision();')
               span.textlabel ACS Attack
           li#button9.off
-            a#missionButton9(href='javascript:void(0);' onclick='setSelected(9);\
-            updateMission(\
-            "Moon Destruction",\
-            "Destroys the moon of your enemy.",\
-            "off",\
-            9                               );')
+            a#missionButton9(href='javascript:void(0);' onclick='pressButtonMision();')
               span.textlabel Moon Destruction
         #missionNameWrapper
           | Mission:
           span#missionName.missionName Transport
           p.mission_description Transports your resources to other planets.
+        .footer
+    #sendfleet
+      .header
+        h2
+          span.h_half_w Send Fleet
+          span.h_half_w Load resources
+      .content
+        form(name='sendForm' method='post' action='')
+          #wrap
+            #resources.border5px
+              .res_wrap.border3px
+                .resourceIcon.metal.tooltip
+                .res
+                  input#metal.checkThousandSeparator.hideNumberSpin(type='text' pattern='[0-9,.]*' name='metal' tabindex='1' value='0' onblur='updateVariables();' onkeyup="checkRessourceByType('metal'); updateVariables();" onkeypress='return submitOnEnter(event);')
+                  a.min(href='javascript:void(0);' onclick="resetByRessourceType('metal'); return false;")
+                    img(src='../Imagenes/LeftMiniArrow.gif')
+                  a.max(href='javascript:void(0);' onclick='maxMetal();updateVariables(); return false;')
+                    img(src='../Imagenes/RightMiniArrow.gif')
+              .res_wrap.border3px
+                .resourceIcon.crystal.tooltip
+                .res
+                  input#crystal.checkThousandSeparator.hideNumberSpin(type='text' pattern='[0-9,.]*' name='crystal' value='0' tabindex='2' onblur='updateVariables();' onkeyup="checkRessourceByType('crystal'); updateVariables();" onkeypress='return submitOnEnter(event);')
+                  a.min(href='javascript:void(0);' onclick="resetByRessourceType('crystal'); return false;")
+                    img(src='../Imagenes/LeftMiniArrow.gif')
+                  a.max(href='javascript:void(0);' onclick='maxCrystal();updateVariables(); return false;')
+                    img(src='../Imagenes/RightMiniArrow.gif')
+              .res_wrap.border3px
+                .resourceIcon.deuterium.tooltip
+                .res
+                  input#deuterium.checkThousandSeparator.hideNumberSpin(type='text' pattern='[0-9,.]*' name='deuterium' value='0' tabindex='3' onblur='updateVariables();' onkeyup="checkRessourceByType('deuterium'); updateVariables();" onkeypress='return submitOnEnter(event);')
+                  a.min(href='javascript:void(0);' onclick="resetByRessourceType('deuterium');return false;")
+                    img(src='../Imagenes/LeftMiniArrow.gif')
+                  a.max(href='javascript:void(0);' onclick='maxDeuterium();updateVariables();return false;')
+                    img(src='../Imagenes/RightMiniArrow.gif')
+              #loadAllResources
+                a#allresources(href='javascript:void(0);' onclick='loadAllResources()')
+                |                             all resources
+              #loadRoom
+                | cargo bay:
+                .fleft.bar_container(data-current-amount='0' data-capacity='31250')
+                  .filllevel_bar.filllevel_undermark(style='width: 0%;')
+                .tooltip(title='Available space / Max. cargo space')
+                  span#remainingresources
+                    span.undermark 31.250
+                  |                                 /
+                  span#maxresources 31.250
+
+            #roundup.border5px
+              a#start.on(href='' onclick='trySubmit();return false;')
+                span(style='padding-top:9px;') Send fleet
+              br.clearfloat
+          br.clearfloat
         .footer

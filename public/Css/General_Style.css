@@ -884,13 +884,9 @@ text-overflow:ellipsis}
   width:654px;
 }
 #messages #planet.shortHeader{background-image: url("../Imagenes/Background.jpg")}
-#chat #planet.shortHeader{background-image: url("../Imagenes/Background.jpg")}
-#buddies #planet.shortHeader{background-image: url("../Imagenes/Background.jpg")}
 #resourceSettings #planet.shortHeader{background-image: url("../Imagenes/Resources/Resources_Settings.jpg")}
 #movement #planet.shortHeader{background-image: url("../Imagenes/Background.jpg")}
-#fleet #planet.shortHeader{background-image: url("../Imagenes/Background.jpg")}
-#fleet #planet.shortHeader{background-image: url("../Imagenes/Background.jpg")}
-#fleet #planet.shortHeader{background-image: url("../Imagenes/Background.jpg")}
+#fleet #planet.shortHeader{background-image: url("../Imagenes/Fleet.jpg")}
 #tutorial #planet.shortHeader{background-image: url("../Imagenes/Background.jpg")}
 #tutorial #planet.header{
   background-image: url("../Imagenes/Background.jpg");
@@ -1150,6 +1146,9 @@ width:670px}#fleet #sendfleet{margin:13px auto 10px auto}
   min-height:115px;
   padding:10px 0 0;
   position:relative;
+}
+#fleet #buttonz #selectNaves{
+  height: 256px;
 }
 #buttonz .footer,#fleet #sendfleet .footer{
   background: url("../Imagenes/Footer.png") no-repeat;
@@ -1481,7 +1480,9 @@ height:52px;
 line-height:18px;
 margin:0 0 3px 0;
 text-align:center;
-width:200px}#description .bar_container{margin:2px auto;
+width:200px}
+#description .bar_container{
+  margin:2px auto;
 width:160px}#description .fill_capacity_info{background-color:#293742;
 float:left;
 height:52px;
@@ -3247,7 +3248,34 @@ background-repeat:no-repeat;
 }
 #galaxyContent .ListImage{display: flex}
 #galaxyContent .ListImage img{margin: auto}
-#galaxyContent td.microplanet.desert_1,.ListImage img.planetTooltip.desert_1{background-position:0 0}#galaxyContent td.microplanet.desert_2,.ListImage img.planetTooltip.desert_2{background-position:-38px 0}#galaxyContent td.microplanet.desert_3,.ListImage img.planetTooltip.desert_3{background-position:-76px 0}#galaxyContent td.microplanet.desert_4,.ListImage img.planetTooltip.desert_4{background-position:-114px 0}#galaxyContent td.microplanet.desert_5,.ListImage img.planetTooltip.desert_5{background-position:-152px 0}#galaxyContent td.microplanet.desert_6,.ListImage img.planetTooltip.desert_6{background-position:-190px 0}#galaxyContent td.microplanet.desert_7,.ListImage img.planetTooltip.desert_7{background-position:-228px 0}#galaxyContent td.microplanet.desert_8,.ListImage img.planetTooltip.desert_8{background-position:-266px 0}#galaxyContent td.microplanet.desert_9,.ListImage img.planetTooltip.desert_9{background-position:-304px 0}#galaxyContent td.microplanet.desert_10,.ListImage img.planetTooltip.desert_10{background-position:-342px 0}#galaxyContent td.microplanet.dry_1,.ListImage img.planetTooltip.dry_1{background-position:0 -33px}#galaxyContent td.microplanet.dry_2,.ListImage img.planetTooltip.dry_2{background-position:-38px -33px}#galaxyContent td.microplanet.dry_3,.ListImage img.planetTooltip.dry_3{background-position:-76px -33px}#galaxyContent td.microplanet.dry_4,.ListImage img.planetTooltip.dry_4{background-position:-114px -33px}#galaxyContent td.microplanet.dry_5,.ListImage img.planetTooltip.dry_5{background-position:-152px -33px}#galaxyContent td.microplanet.dry_6,.ListImage img.planetTooltip.dry_6{background-position:-190px -33px}#galaxyContent td.microplanet.dry_7,.ListImage img.planetTooltip.dry_7{background-position:-228px -33px}#galaxyContent td.microplanet.dry_8,.ListImage img.planetTooltip.dry_8{background-position:-266px -33px}#galaxyContent td.microplanet.dry_9,.ListImage img.planetTooltip.dry_9{background-position:-304px -33px}#galaxyContent td.microplanet.dry_10,.ListImage img.planetTooltip.dry_10{background-position:-342px -33px}#galaxyContent td.microplanet.gas_1,.ListImage img.planetTooltip.gas_1{background-position:0 -66px}#galaxyContent td.microplanet.gas_2,.ListImage img.planetTooltip.gas_2{background-position:-38px -66px}#galaxyContent td.microplanet.gas_3,.ListImage img.planetTooltip.gas_3{background-position:-76px -66px}#galaxyContent td.microplanet.gas_4,.ListImage img.planetTooltip.gas_4{background-position:-114px -66px}#galaxyContent td.microplanet.gas_5,.ListImage img.planetTooltip.gas_5{background-position:-152px -66px}#galaxyContent td.microplanet.gas_6,.ListImage img.planetTooltip.gas_6{background-position:-190px -66px}#galaxyContent td.microplanet.gas_7,.ListImage img.planetTooltip.gas_7{background-position:-228px -66px}#galaxyContent td.microplanet.gas_8,.ListImage img.planetTooltip.gas_8{background-position:-266px -66px}#galaxyContent td.microplanet.gas_9,.ListImage img.planetTooltip.gas_9{background-position:-304px -66px}#galaxyContent td.microplanet.gas_10,.ListImage img.planetTooltip.gas_10{background-position:-342px -66px}#galaxyContent td.microplanet.ice_1,.ListImage img.planetTooltip.ice_1{background-position:0 -99px}#galaxyContent td.microplanet.ice_2,.ListImage img.planetTooltip.ice_2{background-position:-38px -99px}#galaxyContent td.microplanet.ice_3,.ListImage img.planetTooltip.ice_3{background-position:-76px -99px}#galaxyContent td.microplanet.ice_4,.ListImage img.planetTooltip.ice_4{background-position:-114px -99px}#galaxyContent td.microplanet.ice_5,.ListImage img.planetTooltip.ice_5{background-position:-152px -99px}#galaxyContent td.microplanet.ice_6,.ListImage img.planetTooltip.ice_6{background-position:-190px -99px}#galaxyContent td.microplanet.ice_7,.ListImage img.planetTooltip.ice_7{background-position:-228px -99px}#galaxyContent td.microplanet.ice_8,.ListImage img.planetTooltip.ice_8{background-position:-266px -99px}#galaxyContent td.microplanet.ice_9,.ListImage img.planetTooltip.ice_9{background-position:-304px -99px}#galaxyContent td.microplanet.ice_10,.ListImage img.planetTooltip.ice_10{background-position:-342px -99px}#galaxyContent td.microplanet.jungle_1,.ListImage img.planetTooltip.jungle_1{background-position:0 -132px}#galaxyContent td.microplanet.jungle_2,.ListImage img.planetTooltip.jungle_2{background-position:-38px -132px}#galaxyContent td.microplanet.jungle_3,.ListImage img.planetTooltip.jungle_3{background-position:-76px -132px}#galaxyContent td.microplanet.jungle_4,.ListImage img.planetTooltip.jungle_4{background-position:-114px -132px}#galaxyContent td.microplanet.jungle_5,.ListImage img.planetTooltip.jungle_5{background-position:-152px -132px}#galaxyContent td.microplanet.jungle_6,.ListImage img.planetTooltip.jungle_6{background-position:-190px -132px}#galaxyContent td.microplanet.jungle_7,.ListImage img.planetTooltip.jungle_7{background-position:-228px -132px}#galaxyContent td.microplanet.jungle_8,.ListImage img.planetTooltip.jungle_8{background-position:-266px -132px}#galaxyContent td.microplanet.jungle_9,.ListImage img.planetTooltip.jungle_9{background-position:-304px -132px}#galaxyContent td.microplanet.jungle_10,.ListImage img.planetTooltip.jungle_10{background-position:-342px -132px}#galaxyContent td.microplanet.normal_1,.ListImage img.planetTooltip.normal_1{background-position:0 -165px}#galaxyContent td.microplanet.normal_2,.ListImage img.planetTooltip.normal_2{background-position:-38px -165px}#galaxyContent td.microplanet.normal_3,.ListImage img.planetTooltip.normal_3{background-position:-76px -165px}#galaxyContent td.microplanet.normal_4,.ListImage img.planetTooltip.normal_4{background-position:-114px -165px}#galaxyContent td.microplanet.normal_5,.ListImage img.planetTooltip.normal_5{background-position:-152px -165px}#galaxyContent td.microplanet.normal_6,.ListImage img.planetTooltip.normal_6{background-position:-190px -165px}#galaxyContent td.microplanet.normal_7,.ListImage img.planetTooltip.normal_7{background-position:-228px -165px}#galaxyContent td.microplanet.normal_8,.ListImage img.planetTooltip.normal_8{background-position:-266px -165px}#galaxyContent td.microplanet.normal_9,.ListImage img.planetTooltip.normal_9{background-position:-304px -165px}#galaxyContent td.microplanet.normal_10,.ListImage img.planetTooltip.normal_10{background-position:-342px -165px}#galaxyContent td.microplanet.water_1,.ListImage img.planetTooltip.water_1{background-position:0 -198px}#galaxyContent td.microplanet.water_2,.ListImage img.planetTooltip.water_2{background-position:-38px -198px}#galaxyContent td.microplanet.water_3,.ListImage img.planetTooltip.water_3{background-position:-76px -198px}#galaxyContent td.microplanet.water_4,.ListImage img.planetTooltip.water_4{background-position:-114px -198px}#galaxyContent td.microplanet.water_5,.ListImage img.planetTooltip.water_5{background-position:-152px -198px}#galaxyContent td.microplanet.water_6,.ListImage img.planetTooltip.water_6{background-position:-190px -198px}#galaxyContent td.microplanet.water_7,.ListImage img.planetTooltip.water_7{background-position:-228px -198px}#galaxyContent td.microplanet.water_8,.ListImage img.planetTooltip.water_8{background-position:-266px -198px}#galaxyContent td.microplanet.water_9,.ListImage img.planetTooltip.water_9{background-position:-304px -198px}#galaxyContent td.microplanet.water_10,.ListImage img.planetTooltip.water_10{background-position:-342px -198px}#galaxy #galaxyContent td.moon div.activity{margin-left:-3px}#galaxy #galaxyContent td.moon div.fleetAction{margin-left:21px}#galaxytable span.filter{width:16px;
+#galaxyContent td.microplanet.desert_1,.ListImage img.planetTooltip.desert_1{background-position:0 0}
+#galaxyContent td.microplanet.desert_2,.ListImage img.planetTooltip.desert_2{background-position:-38px 0}
+#galaxyContent td.microplanet.desert_3,.ListImage img.planetTooltip.desert_3{background-position:-76px 0}
+#galaxyContent td.microplanet.desert_4,.ListImage img.planetTooltip.desert_4{background-position:-114px 0}
+#galaxyContent td.microplanet.desert_5,.ListImage img.planetTooltip.desert_5{background-position:-152px 0}
+#galaxyContent td.microplanet.desert_6,.ListImage img.planetTooltip.desert_6{background-position:-190px 0}
+#galaxyContent td.microplanet.desert_7,.ListImage img.planetTooltip.desert_7{background-position:-228px 0}
+#galaxyContent td.microplanet.desert_8,.ListImage img.planetTooltip.desert_8{background-position:-266px 0}
+#galaxyContent td.microplanet.desert_9,.ListImage img.planetTooltip.desert_9{background-position:-304px 0}
+#galaxyContent td.microplanet.desert_10,.ListImage img.planetTooltip.desert_10{background-position:-342px 0}
+#galaxyContent td.microplanet.dry_1,.ListImage img.planetTooltip.dry_1{background-position:0 -33px}
+#galaxyContent td.microplanet.dry_2,.ListImage img.planetTooltip.dry_2{background-position:-38px -33px}#galaxyContent td.microplanet.dry_3,.ListImage img.planetTooltip.dry_3{background-position:-76px -33px}#galaxyContent td.microplanet.dry_4,.ListImage img.planetTooltip.dry_4{background-position:-114px -33px}#galaxyContent td.microplanet.dry_5,.ListImage img.planetTooltip.dry_5{background-position:-152px -33px}
+#galaxyContent td.microplanet.dry_6,.ListImage img.planetTooltip.dry_6{background-position:-190px -33px}#galaxyContent td.microplanet.dry_7,.ListImage img.planetTooltip.dry_7{background-position:-228px -33px}#galaxyContent td.microplanet.dry_8,.ListImage img.planetTooltip.dry_8{background-position:-266px -33px}#galaxyContent td.microplanet.dry_9,.ListImage img.planetTooltip.dry_9{background-position:-304px -33px}#galaxyContent td.microplanet.dry_10,.ListImage img.planetTooltip.dry_10{background-position:-342px -33px}
+#galaxyContent td.microplanet.gas_1,.ListImage img.planetTooltip.gas_1{background-position:0 -66px}#galaxyContent td.microplanet.gas_2,.ListImage img.planetTooltip.gas_2{background-position:-38px -66px}#galaxyContent td.microplanet.gas_3,.ListImage img.planetTooltip.gas_3{background-position:-76px -66px}#galaxyContent td.microplanet.gas_4,.ListImage img.planetTooltip.gas_4{background-position:-114px -66px}#galaxyContent td.microplanet.gas_5,.ListImage img.planetTooltip.gas_5{background-position:-152px -66px}
+#galaxyContent td.microplanet.gas_6,.ListImage img.planetTooltip.gas_6{background-position:-190px -66px}#galaxyContent td.microplanet.gas_7,.ListImage img.planetTooltip.gas_7{background-position:-228px -66px}#galaxyContent td.microplanet.gas_8,.ListImage img.planetTooltip.gas_8{background-position:-266px -66px}#galaxyContent td.microplanet.gas_9,.ListImage img.planetTooltip.gas_9{background-position:-304px -66px}#galaxyContent td.microplanet.gas_10,.ListImage img.planetTooltip.gas_10{background-position:-342px -66px}
+#galaxyContent td.microplanet.ice_1,.ListImage img.planetTooltip.ice_1{background-position:0 -99px}#galaxyContent td.microplanet.ice_2,.ListImage img.planetTooltip.ice_2{background-position:-38px -99px}#galaxyContent td.microplanet.ice_3,.ListImage img.planetTooltip.ice_3{background-position:-76px -99px}#galaxyContent td.microplanet.ice_4,.ListImage img.planetTooltip.ice_4{background-position:-114px -99px}#galaxyContent td.microplanet.ice_5,.ListImage img.planetTooltip.ice_5{background-position:-152px -99px}
+#galaxyContent td.microplanet.ice_6,.ListImage img.planetTooltip.ice_6{background-position:-190px -99px}#galaxyContent td.microplanet.ice_7,.ListImage img.planetTooltip.ice_7{background-position:-228px -99px}#galaxyContent td.microplanet.ice_8,.ListImage img.planetTooltip.ice_8{background-position:-266px -99px}#galaxyContent td.microplanet.ice_9,.ListImage img.planetTooltip.ice_9{background-position:-304px -99px}#galaxyContent td.microplanet.ice_10,.ListImage img.planetTooltip.ice_10{background-position:-342px -99px}
+#galaxyContent td.microplanet.jungle_1,.ListImage img.planetTooltip.jungle_1{background-position:0 -132px}#galaxyContent td.microplanet.jungle_2,.ListImage img.planetTooltip.jungle_2{background-position:-38px -132px}#galaxyContent td.microplanet.jungle_3,.ListImage img.planetTooltip.jungle_3{background-position:-76px -132px}#galaxyContent td.microplanet.jungle_4,.ListImage img.planetTooltip.jungle_4{background-position:-114px -132px}#galaxyContent td.microplanet.jungle_5,.ListImage img.planetTooltip.jungle_5{background-position:-152px -132px}
+#galaxyContent td.microplanet.jungle_6,.ListImage img.planetTooltip.jungle_6{background-position:-190px -132px}#galaxyContent td.microplanet.jungle_7,.ListImage img.planetTooltip.jungle_7{background-position:-228px -132px}
+#galaxyContent td.microplanet.jungle_8,.ListImage img.planetTooltip.jungle_8{background-position:-266px -132px}#galaxyContent td.microplanet.jungle_9,.ListImage img.planetTooltip.jungle_9{background-position:-304px -132px}#galaxyContent td.microplanet.jungle_10,.ListImage img.planetTooltip.jungle_10{background-position:-342px -132px}#galaxyContent td.microplanet.normal_1,.ListImage img.planetTooltip.normal_1{background-position:0 -165px}#galaxyContent td.microplanet.normal_2,.ListImage img.planetTooltip.normal_2{background-position:-38px -165px}
+#galaxyContent td.microplanet.normal_3,.ListImage img.planetTooltip.normal_3{background-position:-76px -165px}#galaxyContent td.microplanet.normal_4,.ListImage img.planetTooltip.normal_4{background-position:-114px -165px}#galaxyContent td.microplanet.normal_5,.ListImage img.planetTooltip.normal_5{background-position:-152px -165px}#galaxyContent td.microplanet.normal_6,.ListImage img.planetTooltip.normal_6{background-position:-190px -165px}
+#galaxyContent td.microplanet.normal_7,.ListImage img.planetTooltip.normal_7{background-position:-228px -165px}#galaxyContent td.microplanet.normal_8,.ListImage img.planetTooltip.normal_8{background-position:-266px -165px}#galaxyContent td.microplanet.normal_9,.ListImage img.planetTooltip.normal_9{background-position:-304px -165px}#galaxyContent td.microplanet.normal_10,.ListImage img.planetTooltip.normal_10{background-position:-342px -165px}#galaxyContent td.microplanet.water_1,.ListImage img.planetTooltip.water_1{background-position:0 -198px}
+#galaxyContent td.microplanet.water_2,.ListImage img.planetTooltip.water_2{background-position:-38px -198px}#galaxyContent td.microplanet.water_3,.ListImage img.planetTooltip.water_3{background-position:-76px -198px}#galaxyContent td.microplanet.water_4,.ListImage img.planetTooltip.water_4{background-position:-114px -198px}#galaxyContent td.microplanet.water_5,.ListImage img.planetTooltip.water_5{background-position:-152px -198px}
+#galaxyContent td.microplanet.water_6,.ListImage img.planetTooltip.water_6{background-position:-190px -198px}#galaxyContent td.microplanet.water_7,.ListImage img.planetTooltip.water_7{background-position:-228px -198px}#galaxyContent td.microplanet.water_8,.ListImage img.planetTooltip.water_8{background-position:-266px -198px}#galaxyContent td.microplanet.water_9,.ListImage img.planetTooltip.water_9{background-position:-304px -198px}#galaxyContent td.microplanet.water_10,.ListImage img.planetTooltip.water_10{background-position:-342px -198px}
+#galaxy #galaxyContent td.moon div.activity{margin-left:-3px}
+#galaxy #galaxyContent td.moon div.fleetAction{margin-left:21px}
+#galaxytable span.filter{
+  width:16px;
 height:16px;
 margin-left:2px;
 cursor:pointer;
@@ -3257,9 +3285,20 @@ background:linear-gradient(#6e899e,#829caf);
 color:#fff;
 font-size:14px;
 font-weight:bold;
-text-align:center}.filtered_filter_empty{opacity:.2}.filtered_filter_inactive{opacity:.2}.filtered_filter_newbie{opacity:.2}.filtered_filter_strong{opacity:.2}.filtered_filter_vacation{opacity:.2}#galaxytable span.filter_active{background:linear-gradient(#561f1f,#7d4747)}#filter_empty{background-position:0 0}#filter_inactive{background-position:-16px 0}#filter_newbie{background-position:-32px 0}#filter_strong{background-position:-48px 0}#filter_vacation{background-position:-64px 0}.debris .fleetAction{margin-left:21px}.pulsate{animation:pulsate 3s ease-out;
-animation-iteration-count:infinite}@keyframes pulsate{0%{filter:brightness(1)}50%{filter:brightness(1.3)}100%{filter:brightness(1)}}.bar_container,.filllevel_bar,.filllevel_undermark,.filllevel_middlemark,.filllevel_overmark,.premium_bar{background-image: url("../Imagenes/Background.jpg");
-background-repeat:repeat-x}.bar_container{background-position:0 -24px;
+text-align:center}
+.filtered_filter_empty{opacity:.2}
+.filtered_filter_inactive{opacity:.2}
+.filtered_filter_newbie{opacity:.2}
+.filtered_filter_strong{opacity:.2}
+.filtered_filter_vacation{opacity:.2}
+#galaxytable span.filter_active{background:linear-gradient(#561f1f,#7d4747)}#filter_empty{background-position:0 0}#filter_inactive{background-position:-16px 0}#filter_newbie{background-position:-32px 0}#filter_strong{background-position:-48px 0}#filter_vacation{background-position:-64px 0}.debris .fleetAction{margin-left:21px}.pulsate{animation:pulsate 3s ease-out;
+animation-iteration-count:infinite}
+@keyframes pulsate{0%{filter:brightness(1)}50%{filter:brightness(1.3)}100%{filter:brightness(1)}}
+.bar_container,.filllevel_bar,.filllevel_undermark,.filllevel_middlemark,.filllevel_overmark,.premium_bar{
+  background-image: url("../Imagenes/ProgresBar.png");
+  background-repeat:repeat-x;
+}
+.bar_container{background-position:0 -24px;
 height:8px;
 width:290px;
 border:1px solid black;
@@ -3330,8 +3369,11 @@ background:linear-gradient(top,#0d1014 0,#0d1014 48%,#192026 100%)}#fleet #start
   background-image: url("../Imagenes/Planets/Miniatures/Icons.gif");
   background-color:transparent;
 }
-#fleet #start a.planet,#fleet #start a.planet_source,#fleet #start a.planet_selected,#fleet #start a.planet_source_selected{margin-left:47px}#fleet #target a.planet,#fleet #target a.planet_source,#fleet #target a.planet_selected,#fleet #target a.planet_source_selected{margin-left:20px;
-padding:0}
+#fleet #start a.planet,#fleet #start a.planet_source,#fleet #start a.planet_selected,#fleet #start a.planet_source_selected{margin-left:47px}
+#fleet #target a.planet,#fleet #target a.planet_source,#fleet #target a.planet_selected,#fleet #target a.planet,#fleet #target a.planet_source_selected{
+  margin-left:20px;
+  padding:0;
+}
 #fleet #mission a.planet,#fleet #mission a.planet_source{background-position:0 0}
 #fleet #mission a.planet:hover,#fleet #mission a.planet_selected,#fleet #mission a.planet_source_selected{background-position:0 -36px}
 #fleet #mission a.moon,#fleet #mission a.moon_source{background-position:-44px 0}
@@ -3403,11 +3445,15 @@ background-repeat:no-repeat;
 float:left;
 margin:0 5px}#fleet #buttonz ul#missions li a{display:block;
 width:54px;
-height:54px}#fleet ul#missions span.textlabel,#fleet #mission span.textlabel{height:1px;
-left:-9999px;
-overflow:hidden;
-position:absolute;
-width:1px}#fleet #speedLinks>a.speed,#fleet #speedLinks>a.speed:link,#fleet #speedLinks>a.speed:visited,#fleet #speedLinks>a.speed:active{text-decoration:none;
+height:54px}
+#fleet ul#missions span.textlabel,#fleet #mission span.textlabel{
+  height:1px;
+  left:-9999px;
+  overflow:hidden;
+  position:absolute;
+  width:1px;
+}
+#fleet #speedLinks>a.speed,#fleet #speedLinks>a.speed:link,#fleet #speedLinks>a.speed:visited,#fleet #speedLinks>a.speed:active{text-decoration:none;
 color:#6f9fc8;
 padding:2px 4px;
 display:inline-block;
@@ -3582,16 +3628,20 @@ display:inline;
 margin-right:13px;
 padding:5px 10px;
 border:1px solid #030303;
-width:78px}#fleet #allornone img{vertical-align:middle}#fleet #sendfleet #options,#fleet #sendfleet #resources{float:left;
+width:78px}#fleet #allornone img{vertical-align:middle}#fleet #sendfleet #options,#fleet #sendfleet #resources{
+  float:left;
 height:165px;
 width:305px;
 margin-left:20px;
-display:inline}#fleet #sendfleet #resources{float:left;
-height:150px;
-margin:0 0 0 13px;
-padding:0 0 0 10px;
-position:relative;
-width:300px}#fleet #sendfleet #information{float:left;
+display:inline}#fleet #sendfleet #resources{
+  float:left;
+  height:180px;
+  margin:0 0 0 13px;
+  padding:0 0 0 10px;
+  position:relative;
+  width:300px;
+}
+#fleet #sendfleet #information{float:left;
 margin-left:25px;
 display:inline}#fleet #sendfleet #resources{margin-left:18px;
 position:relative}#fleet #sendfleet #options .content,#fleet #sendfleet #information .content{padding:25px 0 0 33px;
@@ -3612,35 +3662,55 @@ width:82px}#fleet #sendfleet .res input{height:17px;
 margin:1px 0;
 width:76px;
 font-size:11px;
-padding:0 2px}#loadAllResources{background: url("../Imagenes/Background.jpg") no-repeat;
-text-align:center;
-position:absolute;
-top:5px;
-left:160px;
-font-size:11px;
-width:139px;
-height:103px}#fleet #sendfleet #resources a.max{margin-left:48px}#fleet #sendfleet #resources a#allresources{display:block;
-height:32px;
-width:32px;
-background: url("../Imagenes/Background.jpg") -374px -162px no-repeat;
-margin:10px auto;
-overflow:hidden;
-padding:0}#fleet #sendfleet #resources a#allresources:hover{background-position:-374px -194px}#loadRoom{font-size:11px;
-left:161px;
-position:absolute;
-text-align:center;
-top:92px}#fleet .bar_container{margin:3px 5px;
-width:130px}#fleet #sendfleet #summary{margin-top:50px}#fleet #sendfleet #summary img{vertical-align:middle;
-padding-bottom:5px}#fleet #sendfleet #summary .order,#fleet #sendfleet #summary .destination{color:#fff}#fleet a#start:link,#fleet a#start:visited,#fleet a#start:hover,#fleet a#start:active{display:block;
-float:right;
-cursor:pointer;
-width:276px;
-height:56px;
-background: url("../Imagenes/Background.jpg") no-repeat 0 -56px;
-color:#fff;
-text-decoration:none;
-font-weight:bold;
-margin:0 auto 0}#fleet a#start:hover{background: url("../Imagenes/Background.jpg") no-repeat}#fleet a#start.off:link,#fleet a#start.off:visited,#fleet a#start.off:hover,#fleet a#start.off:active{background: url("../Imagenes/Background.jpg") 0 -112px no-repeat}#fleet #roundup{float:left;
+padding:0 2px}
+#loadAllResources{
+  background: url("../Imagenes/Resources/Box.png") no-repeat;
+  text-align:center;
+  position:absolute;
+  top:5px;
+  left:160px;
+  font-size:11px;
+  width:139px;
+  height:103px;
+}
+#fleet #sendfleet #resources a.max{margin-left:48px}
+#fleet #sendfleet #resources a#allresources{
+  display:block;
+  height:32px;
+  width:32px;
+  background: url("../Imagenes/Buttons.png") -374px -162px no-repeat;
+  margin:10px auto;
+  overflow:hidden;
+  padding:0;
+}
+#fleet #sendfleet #resources a#allresources:hover{background-position:-374px -194px}
+#loadRoom{
+  font-size:11px;
+  left:161px;
+  position:absolute;
+  text-align:center;
+  top:92px;
+}
+#fleet .bar_container{margin:3px 5px;
+width:130px}
+#fleet #sendfleet #summary{margin-top:50px}
+#fleet #sendfleet #summary img{vertical-align:middle;
+padding-bottom:5px}
+#fleet #sendfleet #summary .order,#fleet #sendfleet #summary .destination{color:#fff}
+#fleet a#start:link,#fleet a#start:visited,#fleet a#start:hover,#fleet a#start:active{
+  display:block;
+  cursor:pointer;
+  width:276px;
+  height:56px;
+  background: url("../Imagenes/SendFleet.jpg") no-repeat 0 -56px;
+  color:#fff;
+  text-decoration:none;
+  font-weight:bold;
+  margin: auto;
+}
+#fleet a#start:hover{background: url("../Imagenes/SendFleet.jpg") no-repeat}
+#fleet a#start.off:link,#fleet a#start.off:visited,#fleet a#start.off:hover,#fleet a#start.off:active{background: url("../Imagenes/Background.jpg") 0 -112px no-repeat}
+#fleet #roundup{float:left;
 min-height:150px;
 margin:0 0 0 20px;
 width:305px}#fleet #roundup ul{list-style-type:square;
@@ -4053,15 +4123,17 @@ margin:10px;
 }
 #holdtimeline select,#expeditiontimeline select{width:45px}
 #fleet .allornonewrap .firstcol{width:300px}
-#fleet #buttonz ul#missions{height:75px;
+#fleet #buttonz ul#missions{
+  height:80px;
   margin:0 15px;
 }
 #fleet #buttonz ul#missions li a{font-size:9px;
 text-align:center;
-text-decoration:none}#fleet ul#missions span.textlabel{
+text-decoration:none}
+#fleet ul#missions span.textlabel{
   display:inline-block;
   left:-3px;
-  height:25px;
+  height:28px;
   position:relative;
   text-overflow:ellipsis;
   top:54px;
@@ -5812,11 +5884,14 @@ max-width:248px;
 width:248px}
 .chat_box .chat_msg{color:#848484;
 line-height:14px;
-margin:5px 0 5px 10px}.chat_box .chat_msg.odd{margin:5px 10px 5px 0}#buddies #buttonz .content{padding:10px 15px 0}#buddies .link_ignored{position:absolute;
-right:38px;
-font-size:11px;
-font-weight:normal}
-
+margin:5px 0 5px 10px}.chat_box .chat_msg.odd{margin:5px 10px 5px 0}
+#buddies #buttonz .content{padding:10px 15px 0}
+#buddies .link_ignored{
+  position:absolute;
+  right:38px;
+  font-size:11px;
+  font-weight:normal;
+}
 .menu_icon .menuImage{
   background:transparent  url("../Imagenes/Menu_right.png") 0 0 no-repeat;
   width:27px;

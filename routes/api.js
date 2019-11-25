@@ -15,6 +15,10 @@ router.get('/allPlanets', function(req, res, next) {
   uni.seeJsonDataBase(res, process.env.UNIVERSE_NAME, "galaxy", "Planet");
 });
 
+router.get('/collection', function(req, res, next) {
+  uni.seeJsonDataBase(res, process.env.UNIVERSE_NAME, req.query.collection, "Item", req.query.filtro);
+});
+
 /* Api */
 router.get('/buildings', function(req, res, next) {
   res.send(uni.costBuildings(uni.planeta));
