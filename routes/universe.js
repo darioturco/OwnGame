@@ -266,6 +266,7 @@ var exp = {
   },
   fleetInfo: function(planet){
     return {fleets: this.player.planets[planet].fleet,
+            misil: this.player.planets[planet].defense.interplanetaryMissile,
             expeditions: 0, //es la cantidad de expediciones realizadas en ese momento
             maxExpeditions: Math.floor(Math.sqrt(this.player.research.astrophysics)),
             slot: 0, //es la cantidad de flotas volando (Cambiar)

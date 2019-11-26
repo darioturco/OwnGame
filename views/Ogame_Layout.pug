@@ -4,12 +4,15 @@ head
   meta(name='ogame-universe-name' content='nombre')
   meta(name='ogame-universe-speed' content='6')
   meta(name='ogame-universe-speed-fleet' content='2')
-  meta(name='ogame-donut-galaxy' content='1')
-  meta(name='ogame-donut-system' content='1')
+  meta(name='ogame-donut-galaxy' content='true')
+  meta(name='ogame-donut-system' content='true')
   meta(name='ogame-player-name' content=basic.playerName)
   meta(name='ogame-planet-id' content='33655142')
   meta(name='ogame-planet-name' content=basic.planets[basic.numPlanet].name)
   meta(name='ogame-planet-coordinates' content=basic.planets[basic.numPlanet].coordinates.galaxy + ':' + basic.planets[basic.numPlanet].coordinates.system + ':' + basic.planets[basic.numPlanet].coordinates.pos)
+  meta(name='ogame-planet-galaxy' content=basic.planets[basic.numPlanet].coordinates.galaxy)
+  meta(name='ogame-planet-system' content=basic.planets[basic.numPlanet].coordinates.system)
+  meta(name='ogame-planet-position' content=basic.planets[basic.numPlanet].coordinates.pos)
   meta(name='ogame-planet-type' content='planet')
   link(rel='stylesheet' type='text/css' href='./Css/General_Style.css' media='screen')
   link(rel='icon' type='image/x-icon' href='Imagenes/Favicon.ico')
@@ -169,9 +172,9 @@ body(id=bodyId onLoad=basic.loadItem)
               span.menu_icon
                 a(href='./Ogame_Movement.html' target='_self')
                   if bodyId == "fleet"
-                    .menuImage.fleet1.highlighted
+                    .menuImage.fleet.highlighted
                   else
-                    .menuImage.fleet1
+                    .menuImage.fleet
               if bodyId == "fleet"
                 a.menubutton.selected(href='./Ogame_Fleet.html' target='_self')
                   span.textlabel Fleet

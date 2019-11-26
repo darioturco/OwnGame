@@ -418,7 +418,7 @@ padding:2px 5px;
 -webkit-box-sizing:content-box}.input_replacement{display:inline-block;
 -webkit-appearance:inherit}::-webkit-input-placeholder{color:#666}:-moz-placeholder{color:#666}:focus::-webkit-input-placeholder{color:transparent}:focus::-moz-placeholder{color:transparent}
 input.hideNumberSpin::-webkit-outer-spin-button,input.hideNumberSpin::-webkit-inner-spin-button{-webkit-appearance:none}
-#fleet .content input[type="text"]{
+#fleet .content input[type="text"], #fleet .content input[type="number"]{
   height:17px;
   line-height:17px;
 }
@@ -3551,12 +3551,15 @@ display:inline}
   position:relative;
   width:80px;
 }
-#fleet #buttonz .fleetValues[type="text"]{
+#fleet #buttonz .fleetValues[type="text"],#fleet #buttonz .fleetValues[type="number"]{
   left:4px;
   position:absolute;
   text-align:center;
   top:85px;
   width:60px;
+}
+#fleet #buttonz .fleetValues[type="number"]::-webkit-inner-spin-button{
+  -webkit-appearance: none;
 }
 .shipImage{float:left;
 width:28px;
@@ -4616,7 +4619,7 @@ div.techImage.ship.tech215.notBuilt a{background-position:-1042px -162px}
   text-align:right;
 }
 #defensebuilding .buildingimg{position:relative}
-.building_list_80 .buildingimg,#defensebuilding .buildingimg,#div_traderScrap ul.defenders .buildingimg,#rocketattack .buildingimg,div.techImage.defense a{
+.building_list_80 .buildingimg,#defensebuilding .buildingimg,#div_traderScrap ul.defenders .buildingimg,#rocketattack .buildingimg,div.techImage.defense a, #fleet ul .misilFleetImg{
   background-image: url("../Imagenes/Shipyard/Defense_Menu.png");
   background-repeat:no-repeat;
 }
@@ -4667,9 +4670,9 @@ div.techImage.defense.tech502.notBuilt a{background-position:-722px -162px}
 .building_list_80 .defense502.off,.off>.defense502 .buildingimg,#div_traderScrap #button502.off .buildingimg{background-position:-720px -160px}
 div.techImage.defense.tech503.built a{background-position:-802px -2px}
 div.techImage.defense.tech503.notBuilt a{background-position:-802px -162px}
-.building_list_80 .defense503,.defense503 .buildingimg,#div_traderScrap #button503 .buildingimg{background-position:-800px 0}
+.building_list_80 .defense503,.defense503 .buildingimg,#div_traderScrap #button503 .buildingimg, #fleet ul li .misilFleetImg{background-position:-800px 0}
 .disabled>.defense503 .buildingimg{background-position:-800px -80px}
-.building_list_80 .defense503.off,.off>.defense503 .buildingimg,#div_traderScrap #button503.off .buildingimg{background-position:-800px -160px}
+.building_list_80 .defense503.off,.off>.defense503 .buildingimg,#div_traderScrap #button503.off .buildingimg, #fleet ul li.off .misilFleetImg{background-position:-800px -160px}
 #defense .detail_screen div.pic{
   float:left;
   height:200px;
@@ -6066,4 +6069,7 @@ tr.alt td {
   border-width: 8px;
   border-style: solid;
   border-color: transparent #44576b transparent transparent;
+}
+#fleet ul .misilFleetImg{
+
 }

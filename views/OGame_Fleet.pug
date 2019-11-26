@@ -36,7 +36,7 @@ block content
                     span.level
                       span.textlabel
                       | #{info.fleets.lightFighter}
-              input#ship_204.fleetValues(name='' tabindex='1' type='text' pattern='[0-9,.]*' value='' )
+              input.fleetValues(name='' tabindex='1' type='number' pattern='[0-9,.]*' value='' onchange='changeFleet();')
             li#button205(class=((info.fleets.heavyFighter > 0) ? 'on' : 'off'))
               .buildingimg
                 a.tooltip(href='javascript:void(0);' onClick='selectAllNave(1);')
@@ -44,7 +44,7 @@ block content
                     span.level
                       span.textlabel
                       | #{info.fleets.heavyFighter}
-              input#ship_205.fleetValues(name='' tabindex='2' type='text' pattern='[0-9,.]*' value='')
+              input.fleetValues(name='' tabindex='2' type='number' pattern='[0-9,.]*' value='' onchange='changeFleet();')
             li#button206(class=((info.fleets.cruiser > 0) ? 'on' : 'off'))
               .buildingimg
                 a.tooltip(href='javascript:void(0);' onClick='selectAllNave(2);')
@@ -52,7 +52,7 @@ block content
                     span.level
                       span.textlabel
                       | #{info.fleets.cruiser}
-              input#ship_206.fleetValues(name='' tabindex='3' type='text' pattern='[0-9,.]*' value='')
+              input.fleetValues(name='' tabindex='3' type='number' pattern='[0-9,.]*' value='' onchange='changeFleet();')
             li#button207(class=((info.fleets.battleship > 0) ? 'on' : 'off'))
               .buildingimg
                 a.tooltip(href='javascript:void(0);' onClick='selectAllNave(3);')
@@ -60,7 +60,7 @@ block content
                     span.level
                       span.textlabel
                       | #{info.fleets.battleship}
-              input#ship_207.fleetValues(name='' tabindex='4' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 31); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 31); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='')
+              input.fleetValues(name='' tabindex='4' type='number' pattern='[0-9,.]*' value='' onchange='changeFleet();')
             li#button215(class=((info.fleets.battlecruiser > 0) ? 'on' : 'off'))
               .buildingimg
                 a.tooltip(href='javascript:void(0);' onClick='selectAllNave(4);')
@@ -68,7 +68,7 @@ block content
                     span.level
                       span.textlabel
                       | #{info.fleets.battlecruiser}
-              input#ship_215.fleetValues(name='' tabindex='5' type='text' pattern='[0-9,.]*' value='')
+              input.fleetValues(name='' tabindex='5' type='number' pattern='[0-9,.]*' value='' onchange='changeFleet();')
             li#button211(class=((info.fleets.bomber > 0) ? 'on' : 'off'))
               .buildingimg
                 a.tooltip(href='javascript:void(0);' onClick='selectAllNave(5);')
@@ -76,7 +76,7 @@ block content
                     span.level
                       span.textlabel
                       | #{info.fleets.bomber}
-              input#ship_211.fleetValues(name='' tabindex='6' type='text' pattern='[0-9,.]*' value='')
+              input.fleetValues(name='' tabindex='6' type='number' pattern='[0-9,.]*' value='' onchange='changeFleet();')
             li#button213(class=((info.fleets.destroyer > 0) ? 'on' : 'off'))
               .buildingimg
                 a.tooltip(href='javascript:void(0);' onClick='selectAllNave(6);')
@@ -84,7 +84,7 @@ block content
                     span.level
                       span.textlabel
                       | #{info.fleets.destroyer}
-              input#ship_213.fleetValues(name='' tabindex='7' type='text' pattern='[0-9,.]*' value='')
+              input.fleetValues(name='' tabindex='7' type='number' pattern='[0-9,.]*' value='' onchange='changeFleet();')
             li#button214(class=((info.fleets.deathstar > 0) ? 'on' : 'off'))
               .buildingimg
                 a.tooltip(href='javascript:void(0);' onClick='selectAllNave(7);')
@@ -92,7 +92,7 @@ block content
                     span.level
                       span.textlabel
                       | #{info.fleets.deathstar}
-              input#ship_214.fleetValues(name='' tabindex='8' type='text' pattern='[0-9,.]*' value='')
+              input.fleetValues(name='' tabindex='8' type='number' pattern='[0-9,.]*' value='' onchange='changeFleet();')
         #spacer
         #civilships
           ul#civil
@@ -103,7 +103,7 @@ block content
                     span.level
                       span.textlabel
                       | #{info.fleets.smallCargo}
-              input#ship_202.fleetValues(name='' tabindex='9' type='text' pattern='[0-9,.]*' value='')
+              input.fleetValues(name='' tabindex='9' type='number' pattern='[0-9,.]*' value='' onchange='changeFleet();')
             li#button203(class=((info.fleets.largeCargo > 0) ? 'on' : 'off'))
               .buildingimg
                 a.tooltip(href='javascript:void(0);' onClick='selectAllNave(9);')
@@ -111,7 +111,7 @@ block content
                     span.level
                       span.textlabel
                       | #{info.fleets.largeCargo}
-              input#ship_203.fleetValues(name='' tabindex='10' type='text' pattern='[0-9,.]*' onchange="checkIntInput(this, 0, 10); checkShips('shipsChosen'); return false;" onkeyup="checkIntInput(this, 0, 10); checkShips('shipsChosen'); return false;" onkeypress='return submitOnEnter(event);' onfocus='clearInput(this); return false;' value='')
+              input.fleetValues(name='' tabindex='10' type='number' pattern='[0-9,.]*' value='' onchange='changeFleet();')
             li#button208(class=((info.fleets.colony > 0) ? 'on' : 'off'))
               .buildingimg
                 a.tooltip(href='javascript:void(0);' onClick='selectAllNave(10);')
@@ -119,7 +119,7 @@ block content
                     span.level
                       span.textlabel
                       | #{info.fleets.colony}
-              input#ship_208.fleetValues(name='' tabindex='11' type='text' pattern='[0-9,.]*' value='')
+              input.fleetValues(name='' tabindex='11' type='number' pattern='[0-9,.]*' value='' onchange='changeFleet();')
             li#button209(class=((info.fleets.recycler > 0) ? 'on' : 'off'))
               .buildingimg
                 a.tooltip(href='javascript:void(0);' onClick='selectAllNave(11);')
@@ -127,7 +127,7 @@ block content
                     span.level
                       span.textlabel
                       | #{info.fleets.recycler}
-              input#ship_209.fleetValues(name='' tabindex='12' type='text' pattern='[0-9,.]*' value='')
+              input.fleetValues(name='' tabindex='12' type='number' pattern='[0-9,.]*' value='' onchange='changeFleet();')
             li#button210(class=((info.fleets.espionageProbe > 0) ? 'on' : 'off'))
               .buildingimg
                 a.tooltip(href='javascript:void(0);' onClick='selectAllNave(12);')
@@ -135,7 +135,15 @@ block content
                     span.level
                       span.textlabel
                       | #{info.fleets.espionageProbe}
-              input#ship_210.fleetValues(name='' tabindex='13' type='text' pattern='[0-9,.]*' value='')
+              input.fleetValues(name='' tabindex='13' type='number' pattern='[0-9,.]*' value='' onchange='changeFleet();')
+            li#misilFleet(class=((info.misil > 0) ? 'on' : 'off'))
+              .misilFleetImg
+                a.tooltip(href='javascript:void(0);' onClick='selectAllNave(13);')
+                  span.ecke
+                    span.level
+                      span.textlabel
+                      | #{info.misil}
+              input.fleetValues(name='' tabindex='14' type='number' pattern='[0-9,.]*' value='' onchange='changeFleet();')
         .clearfloat
         .footer
     #buttonz
@@ -166,41 +174,44 @@ block content
               td#target.border5px
                 #targetPlanetName.planetname Planet
                 .target
-                  a#pbutton.planet_selected(href='javascript:void(0);' onclick='pressPlanetMoonDebris(1); return false;')
-                  a#mbutton.moon(href='javascript:void(0);' onclick='pressPlanetMoonDebris(2); return false;')
-                  a#dbutton.debris(href='javascript:void(0);' onclick='pressPlanetMoonDebris(3); return false;')
+                  a#pbutton.planet_selected(href='javascript:void(0);' onclick='pressPlanetMoonDebris(1);return false;')
+                  a#mbutton.moon(href='javascript:void(0);' onclick='pressPlanetMoonDebris(2);return false;')
+                  a#dbutton.debris(href='javascript:void(0);' onclick='pressPlanetMoonDebris(3);return false;')
                   br.clearfloat
                 .coords
                   | Coordinates:
                   br
-                  input#galaxy.galaxy.hideNumberSpin(name='galaxy' type='text' pattern='[0-9]*' size='1' value=objCord.galaxy)
-                  input#system.system.hideNumberSpin(name='system' type='text' pattern='[0-9]*' size='3' value=objCord.system)
-                  input#position.planet.hideNumberSpin(name='position' type='text' pattern='[0-9]*' size='2' value=objCord.pos)
+                  input#galaxy.galaxy.hideNumberSpin(name='galaxy' type='number' value=objCord.galaxy onchange='calculaDistancia();')
+                  input#system.system.hideNumberSpin(name='system' type='number' value=objCord.system onchange='calculaDistancia();')
+                  input#position.planet.hideNumberSpin(name='position' type='number' value=objCord.pos onchange='calculaDistancia();')
               td#shortcuts
                 div
-                  span(id='shortlinks tips') Shortcuts:
+                  span Shortcuts:
                   .glow
-                    select#slbox.planets.dropdownInitialized(size='1' onchange='shortLinkChange();updateVariables();' style='display: none;')
+                    select.planets.dropdownInitialized(style='display: none;')
                       option(value='-') -
-                      option(value='2#289#4#1#Planeta Principal' data-html-prepend='<figure class="planetIcon planet tooltip js_hideTipOnMobile" title="Planet"></figure>')
+                      option(value='2#289#4#1#Planeta Principal')
                         | Planeta Principal [2:289:4]
-                      option(value='2#289#4#3#Moon' data-html-prepend='<figure class="planetIcon moon tooltip js_hideTipOnMobile" title="Moon"></figure>')
-                        | Moon [2:289:4]
-                      option(value='2#290#5#1#Volcancito' data-html-prepend='<figure class="planetIcon planet tooltip js_hideTipOnMobile" title="Planet"></figure>')
-                        | Volcancito [2:290:5]
-                      option(value='1#413#5#1#need moon' data-html-prepend='<figure class="planetIcon planet tooltip js_hideTipOnMobile" title="Planet"></figure>')
-                        | need moon [1:413:5]
-                      option(value='2#286#3#1#Desierto' data-html-prepend='<figure class="planetIcon planet tooltip js_hideTipOnMobile" title="Planet"></figure>')
-                        | Desierto [2:286:3]
+
                     span.dropdown.currentlySelected.planets(rel='dropdown662' style='width: 144px;')
-                      a.undefined(data-value='-' rel='dropdown662' href='javascript:void(0);') -
-                div(style='padding-top:12px;')
-                  span(id='combatunits tips') Combat forces:
+                      a.undefined(data-value='-' href='javascript:void(0);') -
+
+                div
+                  span Combat forces:
                   .glow
-                    select#aksbox.combatunits.dropdownInitialized(size='1' name='acsValues' onchange='shortLinkChange(true);updateVariables();handleUnion()' style='display: none;')
+                    select.combatunits.dropdownInitialized(style='display: none;')
                       option(value='-') -
-                    span.dropdown.currentlySelected.combatunits(rel='dropdown6' style='width: 144px;')
-                      a.undefined(data-value='-' rel='dropdown6' href='javascript:void(0);') -
+                    span.dropdown.currentlySelected.combatunits(style='width: 144px;')
+                      a.undefined(data-value='-' href='javascript:void(0);') -
+
+                div
+                  span Vacas:
+                  .glow
+                    select.combatunits.dropdownInitialized(style='display: none;')
+                      option(value='-') -
+                    span.dropdown.currentlySelected.combatunits(style='width: 144px;')
+                      a.undefined(data-value='-' href='javascript:void(0);') -
+
         .briefing.border5px
           h2 Briefing
           ul#fleetBriefingPart1.fleetBriefing
@@ -217,17 +228,17 @@ block content
               span#maxspeed 25.000
               | ):
               #speedLinks
-                a.dark_highlight_tablet.speed.low(href='javascript:void(0);' data-value='1') 10
-                a.dark_highlight_tablet.speed.low(href='javascript:void(0);' data-value='2') 20
-                a.dark_highlight_tablet.speed.low(href='javascript:void(0);' data-value='3') 30
-                a.dark_highlight_tablet.speed.middle(href='javascript:void(0);' data-value='4') 40
-                a.dark_highlight_tablet.speed.middle(href='javascript:void(0);' data-value='5') 50
-                a.dark_highlight_tablet.speed.middle(href='javascript:void(0);' data-value='6') 60
-                a.dark_highlight_tablet.speed.high(href='javascript:void(0);' data-value='7') 70
-                a.dark_highlight_tablet.speed.high(href='javascript:void(0);' data-value='8') 80
-                a.dark_highlight_tablet.speed.high(href='javascript:void(0);' data-value='9') 90
-                a.dark_highlight_tablet.speed.high.selected(href='javascript:void(0);' data-value='10') 100
-                |                        %
+                a.dark_highlight_tablet.speed.low(href='javascript:void(0);' onclick='changeSpeed(1)' data-value='1') 10
+                a.dark_highlight_tablet.speed.low(href='javascript:void(0);' onclick='changeSpeed(2)' data-value='2') 20
+                a.dark_highlight_tablet.speed.low(href='javascript:void(0);' onclick='changeSpeed(3)' data-value='3') 30
+                a.dark_highlight_tablet.speed.middle(href='javascript:void(0);' onclick='changeSpeed(4)' data-value='4') 40
+                a.dark_highlight_tablet.speed.middle(href='javascript:void(0);' onclick='changeSpeed(5)' data-value='5') 50
+                a.dark_highlight_tablet.speed.middle(href='javascript:void(0);' onclick='changeSpeed(6)' data-value='6') 60
+                a.dark_highlight_tablet.speed.high(href='javascript:void(0);' onclick='changeSpeed(7)' data-value='7') 70
+                a.dark_highlight_tablet.speed.high(href='javascript:void(0);' onclick='changeSpeed(8)' data-value='8') 80
+                a.dark_highlight_tablet.speed.high(href='javascript:void(0);' onclick='changeSpeed(9)' data-value='9') 90
+                a.dark_highlight_tablet.speed.high.selected(href='javascript:void(0);' onclick='changeSpeed(10)' data-value='10') 100
+                | %
           ul#fleetBriefingPart1_2.fleetBriefing
             li
               | Arrival:
@@ -241,8 +252,7 @@ block content
                 |  Clock
             li
               | Empty cargobays:
-              span#storage.value
-                span.undermark 0
+              span#storage.value.undermark 0
         .footer
     #buttonz
       .header
@@ -287,8 +297,8 @@ block content
     #sendfleet
       .header
         h2
-          span.h_half_w Send Fleet
           span.h_half_w Load resources
+          span.h_half_w Send Fleet
       .content
         form(name='sendForm' method='post' action='')
           #wrap
@@ -329,7 +339,6 @@ block content
                     span.undermark 31.250
                   |                                 /
                   span#maxresources 31.250
-
             #roundup.border5px
               a#start.on(href='' onclick='trySubmit();return false;')
                 span(style='padding-top:9px;') Send fleet
