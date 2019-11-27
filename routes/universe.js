@@ -266,6 +266,7 @@ var exp = {
   },
   fleetInfo: function(planet){
     return {fleets: this.player.planets[planet].fleet,
+            speed: this.getListSpeed(),
             misil: this.player.planets[planet].defense.interplanetaryMissile,
             expeditions: 0, //es la cantidad de expediciones realizadas en ese momento
             maxExpeditions: Math.floor(Math.sqrt(this.player.research.astrophysics)),
@@ -294,6 +295,14 @@ var exp = {
     }, () => {
       res.send(respuesta);
     });
+  },
+  getListSpeed: function(){
+    let com = this.player.research.combustion;
+    let imp = this.player.research.impulse;
+    let hyp = this.player.research.hyperspace_drive;
+    let bomb = (hyp >= 8) ? 1200*hyp : 800*imp;
+    let tran = (imp >= 5) ? 1000*imp : 500*com;
+    return [12500+1250*com, 10000+2000*imp, 15000+3000*imp, 10000+3000*hyp, 10000+3000*hyp, 4000+bomb, 5000+1500*hyp, 100+30*hyp, 5000+tran, 7500+1500*imp, 2500+500*imp, 2000+400*imp, 100000000+10000000*com, 1000000*100000+imp];
   },
   normalRandom: (min, max, podaMin = -Infinity, podaMax = Infinity) => {// la esperanza es (max+min)/2
     var u = 0, v = 0;

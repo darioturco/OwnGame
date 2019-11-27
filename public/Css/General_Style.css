@@ -404,18 +404,20 @@ padding:0 5px}
 border-top:1px solid #36495c;
 border-bottom:1px solid #0d141a;
 color:#fff}#feedback .dropdown a{width:150px}
-.input_replacement,input[type="text"],input[type="number"],input[type="email"],input[type="password"],input[type="search"]{background-color:#b3c3cb;
-border:1px solid #668599;
-border-bottom-color:#d3d9de;
-border-radius:3px;
-box-shadow:inset 0 1px 3px 0 #454f54;
-color:#000;
-font-size:12px;
-height:20px;
-line-height:20px;
-padding:2px 5px;
--webkit-appearance:textfield;
--webkit-box-sizing:content-box}.input_replacement{display:inline-block;
+.input_replacement,input[type="text"],input[type="number"],input[type="email"],input[type="password"],input[type="search"]{
+  background-color:#b3c3cb;
+  border:1px solid #668599;
+  border-bottom-color:#d3d9de;
+  border-radius:3px;
+  box-shadow:inset 0 1px 3px 0 #454f54;
+  color:#000;
+  font-size:12px;
+  height:20px;
+  line-height:20px;
+  padding:2px 5px;
+  -webkit-appearance:textfield;
+  -webkit-box-sizing:content-box;
+}.input_replacement{display:inline-block;
 -webkit-appearance:inherit}::-webkit-input-placeholder{color:#666}:-moz-placeholder{color:#666}:focus::-webkit-input-placeholder{color:transparent}:focus::-moz-placeholder{color:transparent}
 input.hideNumberSpin::-webkit-outer-spin-button,input.hideNumberSpin::-webkit-inner-spin-button{-webkit-appearance:none}
 #fleet .content input[type="text"], #fleet .content input[type="number"]{
@@ -429,10 +431,14 @@ input.w50{width:50px}
 .input_replacement.focus,input[type="text"]:focus,input[type="email"]:focus,input[type="password"]:focus,input[type="search"]:focus{background-color:#f0f3f5;
 border:1px solid #a3b6c2;
 border-bottom-color:#fff;
-box-shadow:inset 0 1px 3px 0 #5c6970}input[type="text"][readonly],input[type="text"][disabled],input[type="email"][disabled],input[type="password"][disabled],input[type="search"][disabled]{background-color:#424548;
-border:1px solid #44484b;
-border-bottom-color:#575c60;
-box-shadow:inset 0 1px 3px 0 #27292b}textarea{width:310px;
+box-shadow:inset 0 1px 3px 0 #5c6970}
+input[type="text"][readonly],input[type="text"][disabled],input[type="number"][readonly],input[type="number"][disabled],input[type="email"][disabled],input[type="password"][disabled],input[type="search"][disabled]{
+  background-color:#424548;
+  border:1px solid #44484b;
+  border-bottom-color:#575c60;
+  box-shadow:inset 0 1px 3px 0 #27292b;
+}
+textarea{width:310px;
 background-color:#b3c3cb;
 border:1px solid #668599;
 border-bottom-color:#d3d9de;
@@ -3353,13 +3359,17 @@ margin:6px 0 3px;
 font-weight:700}#fleet #mission{width:640px;
 margin:-37px auto 0 auto}ul.fleetBriefing{margin:12px 0 12px 20px}ul#fleetBriefingPart1_2{margin-left:30px}ul.fleetBriefing{width:290px}#fleet #mission th{color:#6f9fc8;
 font-weight:bold;
-padding:7px 0 5px 10px}#fleet #buttonz{text-align:center}#fleet #start,#fleet #target,#fleet #roundup,#fleet #sendfleet #resources{background:#0d151b  url("../Imagenes/Background.jpg") 0 -1130px repeat-x;
+padding:7px 0 5px 10px}#fleet #buttonz{text-align:center}
+#fleet #start,#fleet #target,#fleet #roundup,#fleet #sendfleet #resources{
+  background:#0d151b  url("../Imagenes/Background.jpg") 0 -1130px repeat-x;
 background:-moz-linear-gradient(top,#0d1014 0,#0d1014 48%,#192026 100%);
 background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#0d1014),color-stop(48%,#0d1014),color-stop(100%,#192026));
 background:-webkit-linear-gradient(top,#0d1014 0,#0d1014 48%,#192026 100%);
 background:-o-linear-gradient(top,#0d1014 0,#0d1014 48%,#192026 100%);
 background:-ms-linear-gradient(top,#0d1014 0,#0d1014 48%,#192026 100%);
-background:linear-gradient(top,#0d1014 0,#0d1014 48%,#192026 100%)}#fleet #start{width:170px}#fleet #distance{width:115px}#fleet #target{width:165px}#fleet #shortcuts{width:190px}
+background:linear-gradient(top,#0d1014 0,#0d1014 48%,#192026 100%)}
+#fleet #start{width:170px}#fleet #distance{width:115px}
+#fleet #target{width:165px}#fleet #shortcuts{width:190px}
 #fleet #start a,#fleet #target a{
   display:block;
   float:left;
@@ -3465,9 +3475,9 @@ border-radius:3px}#speedLinks{margin-top:20px}
 #fleet.no-touch #speedLinks>a.speed:hover,#fleet #speedLinks>a.speed:focus{border-color:black;
 background-color:#181f26}
 #fleet #speedLinks>a.speed.selected:link{border-color:#ff9600}
-#fleet #speedLinks>a.speed.selected,#fleet #speedLinks>a.speed.selected:link,#fleet.no-touch #speedLinks>a.speed:hover,#fleet #speedLinks>a.speed:focus{color:#9c0}
-#fleet #speedLinks>a.speed.middle.selected,#fleet #speedLinks>a.speed.middle.selected:link,#fleet.no-touch #speedLinks>a.speed.middle:hover,#fleet #speedLinks>a.speed.middle:focus{color:#d29d00}
-#fleet #speedLinks>a.speed.low.selected,#fleet #speedLinks>a.speed.low.selected:link,#fleet.no-touch #speedLinks>a.speed.low:hover,#fleet #speedLinks>a.speed.low:focus{color:#d43635}
+#fleet #speedLinks>a.speed.selected,#fleet #speedLinks>a.speed.selected:link,#fleet #speedLinks>a.speed:hover,#fleet #speedLinks>a.speed:focus{color:#9c0}
+#fleet #speedLinks>a.speed.middle.selected,#fleet #speedLinks>a.speed.middle.selected:link,#fleet #speedLinks>a.speed.middle:hover,#fleet #speedLinks>a.speed.middle:focus{color:#d29d00}
+#fleet #speedLinks>a.speed.low.selected,#fleet #speedLinks>a.speed.low.selected:link,#fleet #speedLinks>a.speed.low:hover,#fleet #speedLinks>a.speed.low:focus{color:#d43635}
 #fleet #buttonz ul#missions li#button15.on a:link,#fleet #buttonz ul#missions li#button15.on a:visited,#fleet #buttonz ul#missions li#button15.on a:active{background-position:0 0}
 #fleet #buttonz ul#missions li#button15.off a:link,#fleet #buttonz ul#missions li#button15.off a:visited,#fleet #buttonz ul#missions li#button15.off a:active{background-position:0 -108px}
 #fleet #buttonz ul#missions li#button15.on a:hover,#fleet #buttonz ul#missions li#button15.on a.selected{background-position:0 -54px}
@@ -3558,7 +3568,7 @@ display:inline}
   top:85px;
   width:60px;
 }
-#fleet #buttonz .fleetValues[type="number"]::-webkit-inner-spin-button{
+input[type="number"]::-webkit-inner-spin-button{
   -webkit-appearance: none;
 }
 .shipImage{float:left;
@@ -3676,7 +3686,7 @@ padding:0 2px}
   width:139px;
   height:103px;
 }
-#fleet #sendfleet #resources a.max{margin-left:48px}
+#fleet #sendfleet #resources a.max{margin-left:12px}
 #fleet #sendfleet #resources a#allresources{
   display:block;
   height:32px;
@@ -3694,11 +3704,15 @@ padding:0 2px}
   text-align:center;
   top:92px;
 }
-#fleet .bar_container{margin:3px 5px;
-width:130px}
+#fleet .bar_container{
+  margin:3px 5px;
+  width:130px;
+}
 #fleet #sendfleet #summary{margin-top:50px}
-#fleet #sendfleet #summary img{vertical-align:middle;
-padding-bottom:5px}
+#fleet #sendfleet #summary img{
+  vertical-align:middle;
+  padding-bottom:5px;
+}
 #fleet #sendfleet #summary .order,#fleet #sendfleet #summary .destination{color:#fff}
 #fleet a#start:link,#fleet a#start:visited,#fleet a#start:hover,#fleet a#start:active{
   display:block;
@@ -3713,18 +3727,28 @@ padding-bottom:5px}
 }
 #fleet a#start:hover{background: url("../Imagenes/SendFleet.jpg") no-repeat}
 #fleet a#start.off:link,#fleet a#start.off:visited,#fleet a#start.off:hover,#fleet a#start.off:active{background: url("../Imagenes/Background.jpg") 0 -112px no-repeat}
-#fleet #roundup{float:left;
-min-height:150px;
-margin:0 0 0 20px;
-width:305px}#fleet #roundup ul{list-style-type:square;
-margin:5px 0 0 25px;
-font-size:11px;
-float:left;
-display:inline;
-width:280px}#fleet #roundup ul li{color:#6f9fc8;
-font-weight:700;
-line-height:18px;
-text-align:left}#fleet #roundup ul li span.value{font-weight:100}
+#fleet #roundup{
+  padding-top: 30px;
+  float:left;
+  height:150px;
+  margin:0 0 0 20px;
+  width:305px;
+}
+#fleet #roundup ul{
+  list-style-type:square;
+  margin:5px 0 0 25px;
+  font-size:11px;
+  float:left;
+  display:inline;
+  width:280px;
+}
+#fleet #roundup ul li{
+  color:#6f9fc8;
+  font-weight:700;
+  line-height:18px;
+  text-align:left;
+}
+#fleet #roundup ul li span.value{font-weight:100}
 #fleet a#continue:link,#fleet a#continue:visited,#fleet a#continue:link,#fleet a#continue:visited,#fleet a#back:link,#fleet a#back:visited,#fleet a#back:active,#fleet a#back:link,#fleet a#back:visited,#fleet a#back:active{
   display:block;
   width:104px;
@@ -3742,29 +3766,48 @@ z-index:2}#fleet a#continue:hover,#fleet a#continue:active,#fleet a#continue:hov
 cursor:pointer;
 text-decoration:none}#fleet a#back:link,#fleet a#back:visited,#fleet a#back:active,#fleet a#back:link,#fleet a#back:visited,#fleet a#back:active{background-position:0 -278px}#fleet a#back:hover,#fleet a#back:hover{background-position:-104px -278px;
 cursor:pointer;
-text-decoration:none}#fleet a#continue.off:link,#fleet a#continue.off:visited,#fleet a#continue.off:link,#fleet a#continue.off:visited,#fleet a#continue.off:link,#fleet a#continue.off:visited{background-position:-206px -278px}#fleet a#continue.off:hover,#fleet a#continue.off:active,#fleet a#continue.off:hover,#fleet a#continue.off:active,#fleet a#continue.off:hover,#fleet a#continue.off:active{background-position:-206px -240px}#fleet a#continue span,#fleet a#continue span,#fleet a#continue span,#fleet a#start span,#fleet a#back span,#fleet a#back span,#fleet a#continue.on:link span,#fleet a#continue.off:link span,#fleet a#continue.on:link span,#fleet a#continue.off:link span,#fleet a#continue.on:link span,#fleet a#continue.off:link span{display:block;
-color:#fff;
-text-align:center;
-height:38px;
-line-height:38px;
-overflow:hidden;
-font-weight:bold;
-text-transform:uppercase;
-font-size:12px}#fleet a#start span{padding-top:20px}#fleet #planet #movements,#fleet #planet #slots{height:25px;
-width:231px;
-position:absolute;
-right:3px;
-bottom:36px;
-text-align:center;
-font-size:11px}#fleet #planet #movements a:link,#fleet #planet #movements a:visited,#fleet #planet #movements a:hover,#fleet #planet #movements a:active{text-decoration:none}#fleet #planet #slots{background: url("../Imagenes/Background.jpg") -143px -162px no-repeat;
-bottom:9px;
-height:19px;
-font-size:11px;
-width:217px;
-padding:6px 7px 0 7px}#movement #planet #slots{position:absolute;
-right:3px;
-bottom:9px}#fleet #planet #movements img{vertical-align:middle;
-margin-right:5px}
+text-decoration:none}
+#fleet a#continue.off:link,#fleet a#continue.off:visited,#fleet a#continue.off:link,#fleet a#continue.off:visited,#fleet a#continue.off:link,#fleet a#continue.off:visited{background-position:-206px -278px}
+#fleet a#continue.off:hover,#fleet a#continue.off:active,#fleet a#continue.off:hover,#fleet a#continue.off:active,#fleet a#continue.off:hover,#fleet a#continue.off:active{background-position:-206px -240px}
+#fleet a#continue span,#fleet a#continue span,#fleet a#continue span,#fleet a#start span,#fleet a#back span,#fleet a#back span,#fleet a#continue.on:link span,#fleet a#continue.off:link span,#fleet a#continue.on:link span,#fleet a#continue.off:link span,#fleet a#continue.on:link span,#fleet a#continue.off:link span{
+  display:block;
+  color:#fff;
+  text-align:center;
+  height:38px;
+  line-height:38px;
+  overflow:hidden;
+  font-weight:bold;
+  text-transform:uppercase;
+  font-size:12px;
+}
+#fleet a#start span{padding-top:20px}
+#fleet #planet #movements,#fleet #planet #slots{
+  height:25px;
+  width:231px;
+  position:absolute;
+  right:3px;
+  bottom:36px;
+  text-align:center;
+  font-size:11px;
+}
+#fleet #planet #movements a:link,#fleet #planet #movements a:visited,#fleet #planet #movements a:hover,#fleet #planet #movements a:active{text-decoration:none}
+#fleet #planet #slots{
+  background: url("../Imagenes/Background.jpg") -143px -162px no-repeat;
+  bottom:9px;
+  height:19px;
+  font-size:11px;
+  width:217px;
+  padding:6px 7px 0 7px;
+}
+#movement #planet #slots{
+  position:absolute;
+  right:3px;
+  bottom:9px;
+}
+#fleet #planet #movements img{
+  vertical-align:middle;
+  margin-right:5px;
+}
 #fleet #buttonz ul#missions a:active,#fleet #buttonz ul#missions a:hover,#fleet #buttonz ul#missions a.selected{color:#f1f1f1}
 #fleet #planet div a:link,#fleet #planet div a:visited,#fleet #planet div a:active,#fleet #planet div{color:#848484;
 text-decoration:none}#fleet #planet div a:hover{text-decoration:underline}#fleet #warning,#fleet #warning,#movement #warning{height:150px;
@@ -6070,6 +6113,8 @@ tr.alt td {
   border-style: solid;
   border-color: transparent #44576b transparent transparent;
 }
-#fleet ul .misilFleetImg{
-
+#fleet li #speedText {
+  display: inline;
+  float: right;
+  font-weight: 100;
 }

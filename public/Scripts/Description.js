@@ -107,22 +107,6 @@ function tiempoParaEdificios(recursos){// esta medido en segundos
   return Math.floor(60*recursos/divisor);
 }
 
-function segundosATiempo(seg){
-  if(!isFinite(seg)) return " unknown";
-  let time = (seg%60) + "s";
-  seg = Math.floor(seg/60);
-  if(seg != 0){
-    time = (seg%60) + "m " + time;
-    seg = Math.floor(seg/60);
-    if(seg != 0){
-      time = (seg%24) + "h " + time;
-      seg = Math.floor(seg/24);
-      if(seg != 0) time = seg + "d " + time;
-    }
-  }
-  return " " + time;
-}
-
 function minimoPara(resources, objetivo){
   let aumento = [metal, crystal, deuterium];
   let min = Infinity;
