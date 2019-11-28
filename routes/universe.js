@@ -169,7 +169,7 @@ var exp = {
       temperature: this.player.planets[planet].temperature,
       camposMax: cam,
       campos: this.player.planets[planet].campos,
-      cantPlayers: this.universo.cantPlayers,
+      cantPlayers: this.cantPlayers,
       points: this.player.points
     };
   },
@@ -302,7 +302,7 @@ var exp = {
     let hyp = this.player.research.hyperspace_drive;
     let bomb = (hyp >= 8) ? 1200*hyp : 800*imp;
     let tran = (imp >= 5) ? 1000*imp : 500*com;
-    return [12500+1250*com, 10000+2000*imp, 15000+3000*imp, 10000+3000*hyp, 10000+3000*hyp, 4000+bomb, 5000+1500*hyp, 100+30*hyp, 5000+tran, 7500+1500*imp, 2500+500*imp, 2000+400*imp, 100000000+10000000*com, 1000000*100000+imp];
+    return [12500+1250*com, 10000+2000*imp, 15000+3000*imp, 10000+3000*hyp, 10000+3000*hyp, 4000+bomb, 5000+1500*hyp, 100+30*hyp, 5000+tran, 7500+1500*imp, 2500+500*imp, 2000+400*imp, 100000000+10000000*com, 1000000+100000*imp];
   },
   normalRandom: (min, max, podaMin = -Infinity, podaMax = Infinity) => {// la esperanza es (max+min)/2
     var u = 0, v = 0;
@@ -325,11 +325,10 @@ var exp = {
       mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: pla}, {$set: {planets: list}});
     });
   },
-  setPlanetDataDev: function(cord, player){
-    console.log(cord);
+  setPlanetData: function(cord, player){
     let building = {metalMine: 0, crystalMine: 0, deuteriumMine: 0, solarPlant: 0, fusionReactor: 0, metalStorage: 0, crystalStorage: 0, deuteriumStorage: 0, robotFactory: 0, shipyard: 0, researchLab: 0, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0};
-    let fleet = {lightFighter: 10, heavyFighter: 0, cruiser: 1, battleship: 0, battlecruiser: 0, bomber: 0, destroyer: 0, deathstar: 0, smallCargo: 0, largeCargo: 0, colony: 0, recycler: 0, espionageProbe: 0, solarSatellite: 0};
-    let defenses = {rocketLauncher: 500, lightLaser: 0, heavyLaser: 0, gauss: 0, ion: 0, plasma: 0, smallShield: 0, largeShield: 0, antiballisticMissile: 0, interplanetaryMissile: 0};
+    let fleet = {lightFighter: 10, heavyFighter: 0, cruiser: 1, battleship: 10, battlecruiser: 0, bomber: 3, destroyer: 100, deathstar: 1, smallCargo: 20, largeCargo: 200, colony: 1, recycler: 10, espionageProbe: 30, solarSatellite: 0};
+    let defenses = {rocketLauncher: 500, lightLaser: 0, heavyLaser: 0, gauss: 0, ion: 0, plasma: 0, smallShield: 0, largeShield: 0, antiballisticMissile: 0, interplanetaryMissile: 10};
     let moon = {active: false, size: 0};
     let debris = {active: true, metal:3000, crystal: 1000};
     mongo.db(process.env.UNIVERSE_NAME).collection("galaxy").updateOne({coordinates: {galaxy: cord.galaxy, system: cord.system, pos: cord.pos}}, {$set: {'buildings': building, 'fleet': fleet, 'defense': defenses,'moon': moon, 'debris': debris}}, () => {

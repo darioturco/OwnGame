@@ -301,13 +301,22 @@ height:10px;
 left:9px;
 margin:2px 0 0 0;
 position:absolute;
-width:10px}.odd{background-color:#121b23}.over{background-color:#212a33}.content_table{border-collapse:collapse;
-border-left:2px solid #000;
-border-right:2px solid #000;
-border-bottom:2px solid #000;
-margin:5px 0;
-width:100%}.ignorelist{margin:0;
-width:630px}
+width:10px;
+}
+.odd{background-color:#121b23}
+.over{background-color:#212a33}
+.content_table{
+  border-collapse:collapse;
+  border-left:2px solid #000;
+  border-right:2px solid #000;
+  border-bottom:2px solid #000;
+  margin:5px 0;
+  width:100%;
+}
+.ignorelist{
+  margin:auto;
+  width:90%;
+}
 .ct_sortable_title,.ct_head_row,.ct_foot_row{
   padding-bottom: 2px;
   background:#050101;
@@ -320,14 +329,19 @@ width:630px}
 .ct_head_row>th{
   padding-bottom: 2px!important;
 }
-.ct_th{border:1px solid #000;
-height:26px;
-padding:0 3px;
-position:relative}.ct_sortable_title{background-position:100% -774px;
-background-repeat:no-repeat;
-color:#fff;
-cursor:pointer;
-margin:0 18px 0 0}.ct_sort_asc{background-position:100% -834px}.ct_sort_desc{background-position:100% -864px}.ct_th.first{padding:0 3px 0 6px}.ct_td{border:1px solid #000;
+.ct_th{
+  border:1px solid #000;
+  height:26px;
+  padding:0 3px;
+  position:relative;
+}
+.ct_sortable_title{
+  background-position:100% -774px;
+  background-repeat:no-repeat;
+  color:#fff;
+  margin:0 18px 0 0;
+}
+.ct_sort_asc{background-position:100% -834px}.ct_sort_desc{background-position:100% -864px}.ct_th.first{padding:0 3px 0 6px}.ct_td{border:1px solid #000;
 padding:2px}select,select option{background-color:black;
 color:#848484;
 font-size:11px;
@@ -954,20 +968,54 @@ z-index:1;
 -moz-border-radius:7px 0 0 7px;
 -webkit-border-radius:7px 0 0 7px;
 -khtml-border-radius:7px 0 0 7px;
-border-radius:7px 0 0 7px}.ui-dialog .ui-dialog-content.overlayDiv,#popupContent.overlayDiv,.bbcodepreview.showAtallianceBroadcast{background:#000  url("../Imagenes/Background.jpg") -100px -100px no-repeat}div#planetDetails table{z-index:2;
-position:absolute}div#planetOptions{z-index:2;
-position:relative;
-height:20px;
-margin:2px}div#planetDetails{height:100px}.planetMoveGalaxyCooldown{line-height:17px}.planetMoveOk,.planetMoveDefault,.planetMoveBreakup,.planetMoveInactive{margin-right:0;
-font-weight:bold}#moveCountdown{width:80px;
-height:17px;
-line-height:17px;
-margin-left:2px;
-float:left}.planetMoveOverviewGivUpLink,.planetMoveOverviewMoveLink{padding:0 5px;
-line-height:17px;
-height:17px}.planetMoveDefault{background-position:-51px}.planetMoveBreakup{background-position:-17px}.planetMoveOk{background-position:-34px}.planetMoveInactive{background-position:-68px}.planetMoveOverviewGivUpLink,.planetMoveGiveUp,#planetdata{float:right}.cancelMove img{float:left}#planetOptions .planetMoveBreakup,#planetOptions .planetMoveInactive,#planetOptions .planetMoveOk{float:left}.settings{margin-right:2px}.colonize-active{background-position:-102px}.colonize-inactive{background-position:-119px}#planetdata td{padding:2px 5px}#planetdata .date{font-weight:700}#planetdata .date,td.desc{color:#6f9fc8}#planetdata td.desc{font-weight:700}#planetdata .data{text-align:right}#planetdata a:link,#planetdata a:visited,#planetdata a:hover,#planetdata a:active{color:#fff;
-cursor:pointer;
-text-decoration:none}#planetdata a:hover{text-decoration:underline}#overview #planet #moon{left:30px;
+border-radius:7px 0 0 7px}
+.ui-dialog .ui-dialog-content.overlayDiv,#popupContent.overlayDiv,.bbcodepreview.showAtallianceBroadcast{background:#000  url("../Imagenes/Background.jpg") -100px -100px no-repeat}
+div#planetDetails table{
+  z-index:2;
+  position:absolute;
+}
+div#planetOptions{
+  z-index:2;
+  position:relative;
+  height:20px;
+  margin:2px;
+}
+div#planetDetails{height:100px}
+.planetMoveGalaxyCooldown{line-height:17px}
+.planetMoveOk,.planetMoveDefault,.planetMoveBreakup,.planetMoveInactive{margin-right:0;
+font-weight:bold}
+#moveCountdown{
+  width:80px;
+  height:17px;
+  line-height:17px;
+  margin-left:2px;
+  float:left;
+}
+.planetMoveOverviewGivUpLink,.planetMoveOverviewMoveLink{
+  padding:0 5px;
+  line-height:17px;
+  height:17px;
+}
+.planetMoveDefault{background-position:-51px}.planetMoveBreakup{background-position:-17px}.planetMoveOk{background-position:-34px}.planetMoveInactive{background-position:-68px}
+.planetMoveOverviewGivUpLink,.planetMoveGiveUp,#planetdata{float:right}
+.planetMoveOverviewGivUpLink:hover{text-decoration: underline}
+.cancelMove img{float:left}
+#planetOptions .planetMoveBreakup,#planetOptions .planetMoveInactive,#planetOptions .planetMoveOk{float:left}
+.settings{margin-right:2px}
+.colonize-active{background-position:-102px}
+.colonize-inactive{background-position:-119px}
+#planetdata td{padding:2px 5px}
+#planetdata .date{font-weight:700}
+#planetdata .date,td.desc{color:#6f9fc8}
+#planetdata td.desc{font-weight:700}
+#planetdata .data{text-align:right}
+#planetdata a:link,#planetdata a:visited,#planetdata a:hover,#planetdata a:active{
+  color:#fff;
+  cursor:pointer;
+  text-decoration:none;
+}
+#planetdata a:hover{text-decoration:underline}
+#overview #planet #moon{left:30px;
 position:absolute;
 top:15px}#overview #planet #planet_as_moon{left:0;
 position:absolute;
@@ -3348,7 +3396,7 @@ font-weight:700}
 }
 #fleet #slots a.disabled{color:#444}
 #fleet #inhalt .shortCorner,#fleet #inhalt .shortCorner,#fleet #inhalt .shortCorner,#fleet #inhalt .shortCorner,#fleet #inhalt .shortCorner,#fleet #inhalt .shortCorner,#movement #inhalt .shortCorner{top:4px}
-#fleet .c-left,#fleet .c-right,#fleet .c-left,#fleet .c-right,#fleet .c-left,#fleet .c-right{
+#fleet .c-left,#fleet .c-right{
   height:39px;
   width:28px;
   position:absolute;
@@ -3858,14 +3906,20 @@ background-color:#274650;
 padding:2px 5px}#sftcontainer td input.textinput{height:13px;
 line-height:13px;
 padding:1px 3px;
-margin:0}#fleet #sftcontainer a.close{float:right;
-display:inline;
-margin-right:10px}#fleet #missionNameWrapper{color:#a26d00;
-font-size:18px;
-font-weight:bold;
-text-align:center;
-position:relative;
-z-index:2}#fleet .mission_description{font-weight:100}#fleet .briefing_overlay{
+margin:0}#fleet #sftcontainer a.close{
+  float:right;
+  display:inline;
+  margin-right:10px;
+}
+#fleet #missionNameWrapper{
+  color:#a26d00;
+  font-size:18px;
+  font-weight:bold;
+  text-align:center;
+  z-index:2;
+}
+#fleet .mission_description{font-weight:100}
+#fleet .briefing_overlay{
   background-color:#0c1014;
   background:rgba(12,16,20,0.95);
   color:#848484;
@@ -4380,10 +4434,14 @@ height:80px;
   position:absolute;
   width:1px;
 }
-#shipyard #planet{height:250px}#shipyard .c-left,#shipyard .c-right{top:214px}#shipyard #battleships,#shipyard #civilships{float:left;
-height:205px;
-position:relative;
-z-index:2}
+#vacas #planet,#shipyard #planet{height:250px}
+#vacas .c-left,#vacas .c-right,#shipyard .c-left,#shipyard .c-right{top:214px}
+#shipyard #battleships,#shipyard #civilships{
+  float:left;
+  height:205px;
+  position:relative;
+  z-index:2;
+}
 #shipyard #battleships{width:360px;
 margin-left:10px}
 #shipyard #civilships{margin:0 0 0 20px;
@@ -5153,7 +5211,8 @@ background: url("../Imagenes/Background.jpg") no-repeat 0 -46px}#tutorial .pagin
 cursor:default;
 color:#929292;
 border-color:#929292;
-font-weight:normal!important}.pagination a.prevnext{font-weight:bold}#tutorial #inhalt .shortCorner{top:4px}#tutorial .c-left,#tutorial .c-right{height:39px;
+font-weight:normal!important}.pagination a.prevnext{font-weight:bold}#tutorial #inhalt .shortCorner{top:4px}
+#tutorial .c-left,#tutorial .c-right{height:39px;
 position:absolute;
 top:214px;
 width:28px}#tutorial .boxWrapper .content div{padding:0}#tutorial div.pic{background:0;
@@ -6117,4 +6176,11 @@ tr.alt td {
   display: inline;
   float: right;
   font-weight: 100;
+}
+#vacas #vacaslist{
+  text-align: center;
+}
+#vacas #vacaslist tbody tr{
+  text-align: center;
+  height: 24px;
 }

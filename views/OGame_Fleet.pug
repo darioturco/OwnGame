@@ -258,41 +258,40 @@ block content
         h2 Select mission for target:
       .content
         ul#missions
-          li#button15.off
-            a#missionButton15(href='javascript:void(0);' onclick='pressButtonMision();')
+          li#button15.ButtonMision.off.on
+            a#missionButton15(href='javascript:void(0);' onclick='pressButtonMision(0);')
               span.textlabel Expedition
-          li#button7.off
-            a#missionButton7(href='javascript:void(0);' onclick='pressButtonMision();')
+          li#button7.ButtonMision.off.on
+            a#missionButton7(href='javascript:void(0);' onclick='pressButtonMision(1);')
               span.textlabel Colonisation
-          li#button8.off
-            a#missionButton8(href='javascript:void(0);' onclick='pressButtonMision();')
+          li#button8.ButtonMision.off.on
+            a#missionButton8(href='javascript:void(0);' onclick='pressButtonMision(2);')
               span.textlabel Recycle debris field
-          li#button3.on
-            a#missionButton3.selected(href='javascript:void(0);' onclick='pressButtonMision();')
+          li#button3.ButtonMision.off.on
+            a#missionButton3(href='javascript:void(0);' onclick='pressButtonMision(3);')
               span.textlabel Transport
-          li#button4.on
-            a#missionButton4(href='javascript:void(0);' onclick='pressButtonMision();')
+          li#button4.ButtonMision.off.on
+            a#missionButton4(href='javascript:void(0);' onclick='pressButtonMision(4);')
               span.textlabel Deployment
-          li#button6.off
-            a#missionButton6(href='javascript:void(0);' onclick='pressButtonMision();')
+          li#button6.ButtonMision.off.on
+            a#missionButton6(href='javascript:void(0);' onclick='pressButtonMision(5);')
               span.textlabel Espionage
-          li#button5.off
-            a#missionButton5(href='javascript:void(0);' onclick='pressButtonMision();')
+          li#button5.ButtonMision.off.on
+            a#missionButton5(href='javascript:void(0);' onclick='pressButtonMision(6);')
               span.textlabel ACS Defend
-          li#button1.off
-            a#missionButton1(href='javascript:void(0);' onclick='pressButtonMision();')
+          li#button1.ButtonMision.off.on
+            a#missionButton1(href='javascript:void(0);' onclick='pressButtonMision(7);')
               span.textlabel Attack
-          li#button2.off
-            a#missionButton2(href='javascript:void(0);' onclick='pressButtonMision();')
+          li#button2.ButtonMision.off.on
+            a#missionButton2(href='javascript:void(0);' onclick='pressButtonMision(8);')
               span.textlabel ACS Attack
-          li#button9.off
-            a#missionButton9(href='javascript:void(0);' onclick='pressButtonMision();')
+          li#button9.ButtonMision.off.on
+            a#missionButton9(href='javascript:void(0);' onclick='pressButtonMision(9);')
               span.textlabel Moon Destruction
         #missionNameWrapper
           | Mission:
           span#missionName.missionName Transport
           p.mission_description Transports your resources to other planets.
-        .footer
     #sendfleet
       .header
         h2
@@ -340,6 +339,7 @@ block content
                   span#maxresources 0
             #roundup.border5px
               a#start.on(href='' onclick='')
+                //enviar el formulario por post a la api porque son muchos datos
                 span(style='padding-top:9px;') Send fleet
               br.clearfloat
           br.clearfloat

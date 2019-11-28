@@ -1,2 +1,35 @@
 extends Ogame_Layout
 block content
+  #inhalt
+    #planet(style='background-image:url(./Imagenes/Shipyard/Vacas.jpg)')
+      #header_text
+        h2 Vacas - #{basic.planets[basic.numPlanet].name}
+    .c-left
+    .c-right
+    #buttonz
+      .header
+        h2 Vaca List
+      .content
+        table#vacaslist.content_table.ignorelist
+          colgroup
+            col(span='1' style='width: 20px;')
+            col(span='1' style='width: 120px;')
+            col(span='1' style='width: 120px;')
+            col(span='1' style='width: 60px;')
+            col(span='1' style='width: 60px;')
+          thead
+            tr.ct_head_row
+              th.no.ct_th.first ID
+              th.ct_th.ct_sortable_title Player
+              th.ct_th.ct_sortable_title Planet
+              th.ct_th.ct_sortable_title Coordinates
+              th.ct_th.textCenter Actions
+          tbody
+            // crae un tr por cada vaca en la lista con toda la info
+            tr
+              th 1
+              th dturco
+              th Kracatoa
+              th [1:1:6]
+              th acciones
+              //atacar enviarFlota espiar reporteDeEspionaje Eliminar

@@ -1,9 +1,11 @@
 const cargaList = [50,100,800,1500,750,500,2000,1000000,5000,25000,7500,20000,0,0];
 const deuteriumList = [10, 20, 150, 250, 120, 500, 500, 1, 5, 25, 500, 150, 0, 0]
-var inputsFleets, cantFleets, speeds, cargeInputs;
+const missionNameList = ['Expedition', 'Colonisation', 'Recycle', 'Transport', 'Deployment', 'Espionage', 'ACS Defend', 'Attack', 'ACS Attack', 'Moon Destruction'];
+const missionDescriptionList = ['Send your ships into the final frontier of space to encounter thrilling quests.', 'Colonizes a new planet.', 'Send your recyclers to a debris field to collect the resources floating around there.', 'Transports your resources to other planets.', 'Sends your fleet permanently to another planet.', 'Spy the worlds of foreign emperors.', 'Defend a planet.', 'Attacks the fleet and defence of your opponent.', 'Make a group attack.', 'Destroys the moon of your enemy.'];
+var inputsFleets, cantFleets, speeds, cargeInputs, buttonsMision;
 var targetPlanetName, destinationImgPlanet, destinationImgMoon, destinationImgDebris, cargeBar;
 var distanceText, cargaText, durationText, arrivalText, returnText, speedText, consumText, cargeResources, cargeResourcesMax;
-var galaxy, system, position, speedActive = 10, dis = 5, minSpeed = 0, time = Infinity;
+var galaxy, system, position, destination = 1, speedActive = 10, dis = 5, minSpeed = 0, time = Infinity, missionSelected = -1;
 var galVal, sysVal, posVal;
 var systemDonut, galaxyDonut, fleetUniverseSpeed;
 setTimeout(() => {
@@ -11,6 +13,7 @@ setTimeout(() => {
   cantFleets = document.getElementsByClassName('level');
   speeds = document.getElementsByClassName('speed');
   cargeInputs = document.getElementsByClassName('inputCarge');
+  buttonsMision = document.getElementsByClassName('ButtonMision');
   targetPlanetName = document.getElementById('targetPlanetName');
   destinationImgPlanet = document.getElementById('pbutton');
   destinationImgMoon = document.getElementById('mbutton');
@@ -53,6 +56,7 @@ function selectAllNave(num){
 }
 
 function pressPlanetMoonDebris(cla){
+  destination = cla;
   if(cla == 1){
     targetPlanetName.innerText = 'Planet';
     destinationImgPlanet.classList.add('planet_selected');
@@ -77,9 +81,16 @@ function pressPlanetMoonDebris(cla){
       destinationImgMoon.classList.add('moon');
     }
   }
+  changeButtonMision();//cambia las misiones
 }
 
 function calculaDistancia(){//distancia desde {gal, sys, pos} hasta {galaxy, system, position}(posicion actual)
+  if(galVal.value < 1) galVal.value = 1;
+  if(sysVal.value < 1) sysVal.value = 1;
+  if(posVal.value < 1) posVal.value = 1;
+  if(galVal.value > 9) galVal.value = 9;
+  if(sysVal.value > 499) sysVal.value = 499;
+  if(posVal.value > 16) posVal.value = 15;
   let gal = parseInt(galVal.value);
   let sys = parseInt(sysVal.value);
   let pos = parseInt(posVal.value);
@@ -106,6 +117,7 @@ function calculaDistancia(){//distancia desde {gal, sys, pos} hasta {galaxy, sys
   }
   distanceText.innerText = dis;
   updateSpeedPanel();//actualiza los datos
+  changeButtonMision();//cambia las misiones
 }
 
 function changeSpeed(num){
@@ -123,23 +135,25 @@ function changeFleet(){
     let aux = parseInt(inputsFleets[i].value);
     if(isNaN(aux)) aux = 0;
     carga += aux*cargaList[i];
-    consumDeu += Math.floor(aux*deuteriumList[i]*dis*Math.pow(1+speedActive/100,2)/40000);
-    if(aux > 0 && inputsFleets[i].dataset.vel < newMin){
-      newMin = inputsFleets[i].dataset.vel;
+    consumDeu += Math.floor(aux*deuteriumList[i]*dis*Math.pow(0.7+speedActive/100,2)/40000);
+
+    if(aux > 0 && parseInt(inputsFleets[i].dataset.vel) < newMin){
+      newMin = parseInt(inputsFleets[i].dataset.vel);
     }
   };
   if(newMin == Infinity) newMin = 0;
-  minSpeed = parseInt(newMin);
+  minSpeed = newMin;
   speedText.innerText = minSpeed;
   consumText.innerText = consumDeu + ' (' + (Math.floor(consumDeu*100/((carga > 0) ? carga : 1))) + '%)';
   cargaText.innerText = carga;
   cargeResourcesMax.innerText = carga;
   clearAllResourcesFunction();
   updateSpeedPanel();//actualiza los datos
+  changeButtonMision();//cambia las misiones
 }
 
 function updateSpeedPanel(){
-  let fechaFleet;
+  let fechaFleet, consumDeu = 0;
   dis = parseInt(distanceText.innerText);
   if(isNaN(dis)) dis = 0;
   time = Math.ceil((10+(35000/speedActive)*Math.sqrt(10*dis/minSpeed))/fleetUniverseSpeed);
@@ -154,6 +168,12 @@ function updateSpeedPanel(){
     arrivalText.innerText = '-';
     returnText.innerText = '-';
   }
+  for(let i = 0 ; i<inputsFleets.length ; i++){//updatea el consumo de deuterio
+    let aux = parseInt(inputsFleets[i].value);
+    if(isNaN(aux)) aux = 0;
+    consumDeu += Math.floor(aux*deuteriumList[i]*dis*Math.pow(0.68+speedActive/100,2)/40000);
+  };
+  consumText.innerText = consumDeu + ' (' + (Math.floor(consumDeu*100/((parseInt(cargaText.innerText) > 0) ? parseInt(cargaText.innerText) : 1))) + '%)';
 }
 
 function changeResourcesInputFunction(num){
@@ -213,5 +233,56 @@ function clearAllResourcesFunction(){
   cargeBar.style.width = '0%';
   for(let i = 0 ; i<3 ; i++){
     cargeInputs[i].value = 0;
+  }
+}
+
+function changeButtonMision(){
+  let emptyFleet = true;
+  for(let i = 0 ; i<inputsFleets.length && emptyFleet == true ; i++){
+    let aux = parseInt(inputsFleets[i].value);
+    if(isNaN(aux)) aux = 0;
+    if(aux > 0) emptyFleet = false;
+  }
+  if(emptyFleet == true){
+    //elimina el selected
+    for(let i = 0 ; i<buttonsMision.length ; i++){
+      buttonsMision[i].classList.add('off');
+    }
+  }else{
+    prendeButtonMision(posVal.value == 16, 0); //expedicion
+    if(galVal.value > 0 && sysVal.value > 0 && posVal.value > 0 && galVal.value < 16 && sysVal.value < 16 && posVal.value < 16){
+      prendeButtonMision(inputsFleets[10].value > 0 && destination == 1, 1); //colonizacion
+      prendeButtonMision(inputsFleets[11].value > 0 && destination == 3, 2); //reciclaje
+      prendeButtonMision(destination != 3 && cargaText.innerText > 0, 3); //transporte
+      prendeButtonMision(destination != 3, 4); //despliege
+      prendeButtonMision(destination != 3 && inputsFleets[12].value > 0, 5); //espionaje
+      prendeButtonMision(destination != 3, 6); //defend
+      prendeButtonMision(destination != 3, 7); //ataque
+      prendeButtonMision(false, 8); //ACS atack(cambiar)(fijarse si las cordenadas coinciden con alguna flota que este atacando)
+      prendeButtonMision(destination == 2 && inputsFleets[7].value > 0, 9); //destruir luna
+    }else{
+      for(let i = 1 ; i<=9 ; i++){
+        prendeButtonMision(false, i);
+      }
+    }
+  }
+}
+
+function prendeButtonMision(val, num){
+  if(val == true){
+    buttonsMision[num].classList.remove('off');
+  }else{
+    buttonsMision[num].classList.add('off');
+  }
+}
+
+function pressButtonMision(num){
+  if(num == missionSelected){
+    buttonsMision[num].children[0].classList.remove('selected');
+    missionSelected = -1;
+  }else{
+    if(missionSelected != -1) buttonsMision[missionSelected].children[0].classList.remove('selected')
+    buttonsMision[num].children[0].classList.add('selected');
+    missionSelected = num;
   }
 }
