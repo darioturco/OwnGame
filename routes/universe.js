@@ -304,6 +304,22 @@ var exp = {
     let tran = (imp >= 5) ? 1000*imp : 500*com;
     return [12500+1250*com, 10000+2000*imp, 15000+3000*imp, 10000+3000*hyp, 10000+3000*hyp, 4000+bomb, 5000+1500*hyp, 100+30*hyp, 5000+tran, 7500+1500*imp, 2500+500*imp, 2000+400*imp, 100000000+10000000*com, 1000000+100000*imp];
   },
+  toggleVaca: function(res, query){
+    let elimino = false;
+    for(let i = 0 ; i<this.player.vacas.length ; i++){
+      if(this.player.vacas[i].coordinates.galaxy == query.coor.galaxy && this.player.vacas[i].coordinates.system == query.coor.system && this.player.vacas[i].coordinates.pos == query.coor.pos){
+        elimino = true;
+        this.player.vacas.splice(i,1);
+        i--;
+      }
+    }
+    if(elimino == false){
+      this.player.vacas.push({coordinates:{galaxy: query.coor.galaxy, system: query.coor.system, pos: query.coor.pos}, playerName: query.playerName, planetName: query.planetName, estado: query.estado});
+    }
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: this.player.name}, {$set: {vacas: this.player.vacas}}, (err) => {
+      res.send({ok: (err == null) ? true : err, deleted: elimino});
+    });
+  },
   normalRandom: (min, max, podaMin = -Infinity, podaMax = Infinity) => {// la esperanza es (max+min)/2
     var u = 0, v = 0;
     while(u == 0) u = Math.random(); //Converting [0,1) to (0,1)
@@ -319,10 +335,15 @@ var exp = {
     let list = [];
     let cursor = mongo.db(process.env.UNIVERSE_NAME).collection("galaxy").find({player: pla});
     cursor.forEach((doc, err) => {
-      console.log("pass");
       list.push(doc);
     }, () => {
       mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: pla}, {$set: {planets: list}});
+    });
+  },
+  setPlanetName: function(cord, newName){
+    this.player.planets[this.planeta].name = newName;
+    mongo.db(process.env.UNIVERSE_NAME).collection("galaxy").updateOne({coordinates: {galaxy: cord.galaxy, system: cord.system, pos: cord.pos}}, {$set: {name: newName}}, () => {
+      this.updatePlanetsOfPlayer(this.player.name);
     });
   },
   setPlanetData: function(cord, player){

@@ -49,10 +49,10 @@ block content
                       input#renameInput(type="text")
           #planetOptions
             .planetMoveStart.fleft(style='display: inline;')
-              a.tooltipLeft.dark_highlight_tablet.fleft(href='#')
+              a.tooltipLeft.dark_highlight_tablet.fleft(href='#' onclick='let im=document.getElementById("renameInput"); if(im.value == "abandon"){window.location.href="./Ogame_Overview.html?newName=abandon&abaNdon=si";}else{im.value="abandon"}')
                 span.planetMoveIcons.settings.planetMoveDefault.icon.fleft
                 span.planetMoveOverviewMoveLink Abandon
-            a.dark_highlight_tablet.float_right.openPlanetRenameGiveupBox(href='./OGame_Overview.html')
+            a.dark_highlight_tablet.float_right.openPlanetRenameGiveupBox(href='#' onclick='window.location.href="./Ogame_Overview.html?newName="+document.getElementById("renameInput").value;')
               span.planetMoveOverviewGivUpLink Rename
               span.planetMoveIcons.settings.planetMoveGiveUp.icon
     .c-left

@@ -6184,3 +6184,6 @@ tr.alt td {
   text-align: center;
   height: 24px;
 }
+#vacas tbody .action a{
+  margin: 0 2px;
+}

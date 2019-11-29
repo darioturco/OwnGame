@@ -1,4 +1,4 @@
-var planets = [];
+var planets = [], estados = [];
 var galaxy = 1, system = 1;
 var galaxyText, systemText;
 var playerName, planetName, moons, debris, actions, colonized;
@@ -38,8 +38,9 @@ function loadSystem(gal, sys){
     console.log(obj);
     let cont = 0;
     debrisList = [];
+    estados = [];
     pressMoon(-1);//apaga el carten de la luna
-    pressDebris(-1)//apaga el cartel de los escombros
+    pressDebris(-1);//apaga el cartel de los escombros
     for(let i = 1 ; i<=15 ; i++){
       if(obj['pos'+i].active == true){
         cont++;
@@ -59,6 +60,7 @@ function loadSystem(gal, sys){
         moons[i-1].classList.remove('activeMoon');
         debris[i-1].classList.remove('debrisField');
       }
+      estados.push(obj['pos'+i].estado);
       debrisList.push({debris: obj['pos'+i].debris, metal: obj['pos'+i].metalDebris, crystal: obj['pos'+i].crystalDebris});
     }
     colonized.innerHTML = cont + " Planets colonised";
@@ -123,4 +125,10 @@ function pressGo(){
 }
 function doExpedition(){
 
+}
+
+function addVaca(pos){
+  loadJSON('./api/set/addVaca?coor={"galaxy":' + galaxy + ',"system":' + system + ',"pos":' + pos + '}&playerName=' + playerName[pos-1].innerText + '&planetName=' + planetName[pos-1].innerText + '&estado=' + estados[pos-1], (obj) => {
+    console.log(obj);
+  });
 }

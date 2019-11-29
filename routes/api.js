@@ -40,4 +40,11 @@ router.get('/galaxy', function(req, res, next) {
   uni.systemInfo(res, req.query.gal, req.query.sys);
 });
 
+//Se usa set para las direcciones que cambian cosas en la base de datos
+
+router.get('/set/addVaca', function(req, res, next) {
+  req.query.coor = JSON.parse(req.query.coor);
+  uni.toggleVaca(res, req.query);
+});
+
 module.exports = router;

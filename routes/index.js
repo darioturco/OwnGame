@@ -83,6 +83,13 @@ router.get('/OGame_Movement.html', (req, res, next) => {
 });
 
 router.get('/OGame_Overview.html', (req, res, next) => {
+  if(req.query.newName != undefined && req.query.newName != ""){
+    uni.setPlanetName(uni.player.planets[uni.planeta].coordinates, req.query.newName);//cambia el nombre al planeta
+  }
+  if(req.query.newName == "abandon" && req.query.abaNdon == "si"){
+    //se fija que no sea su unico planeta y elimina el planeta
+    console.log("Despedite de tu planeta");
+  }
   res.render('OGame_Overview', {bodyId: "overview",
     url: req._parsedOriginalUrl.pathname,
     info: uni.overviewActualInfo(uni.planeta),
@@ -170,6 +177,7 @@ router.get('/Search.html', (req, res, next) => {
 router.get('/Vacas.html', (req, res, next) => {
   res.render('Vacas', {bodyId: "vacas",
     url: req._parsedOriginalUrl.pathname,
+    vacas: uni.player.vacas,
     basic: uni.getActualBasicInfo(uni.planeta),
     listScript: []
   });

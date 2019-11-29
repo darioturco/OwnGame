@@ -13,10 +13,10 @@ block content
         table#vacaslist.content_table.ignorelist
           colgroup
             col(span='1' style='width: 20px;')
-            col(span='1' style='width: 120px;')
-            col(span='1' style='width: 120px;')
+            col(span='1' style='width: 110px;')
+            col(span='1' style='width: 110px;')
             col(span='1' style='width: 60px;')
-            col(span='1' style='width: 60px;')
+            col(span='1' style='width: 80px;')
           thead
             tr.ct_head_row
               th.no.ct_th.first ID
@@ -25,11 +25,25 @@ block content
               th.ct_th.ct_sortable_title Coordinates
               th.ct_th.textCenter Actions
           tbody
-            // crae un tr por cada vaca en la lista con toda la info
-            tr
-              th 1
-              th dturco
-              th Kracatoa
-              th [1:1:6]
-              th acciones
-              //atacar enviarFlota espiar reporteDeEspionaje Eliminar
+            each item, index in vacas
+              tr
+                th #{index + 1}
+                th #{item.playerName}
+                th #{item.planetName}
+                th [#{item.coordinates.galaxy}:#{item.coordinates.system}:#{item.coordinates.pos}]
+                th.action
+                  a.tooltip(href='#' onclick='return false;')
+                    span.icon.icon_eye
+                    //espiar (se pone verdecito si ya lo estas espiando)
+                  a.tooltip(href='#' onclick='return false;')
+                    span.icon.icon_adressbook
+                    // leer reporte de espionaje (esta negro si no tenes reporte de ese jugador)
+                  a.tooltip(href='#' onclick='return false;')
+                    span.icon.icon_missile
+                    // ataque personalisado
+                  a.tooltip(href='#' onclick='return false;')
+                    span.icon.icon_against
+                    // ataca como si fuera una vaca
+                  a.tooltip(href='#' onclick='return false;')
+                    span.icon.icon_mail
+                    // agrega a la lista de vacas
