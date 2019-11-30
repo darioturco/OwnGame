@@ -1,13 +1,12 @@
 doctype html
 head
   meta(http-equiv='Content-Type' content='text/html; charset=UTF-8')
-  meta(name='ogame-universe-name' content='nombre')
-  meta(name='ogame-universe-speed' content='6')
-  meta(name='ogame-universe-speed-fleet' content='2')
-  meta(name='ogame-donut-galaxy' content='true')
-  meta(name='ogame-donut-system' content='true')
+  meta(name='ogame-universe-name' content=basic.name)
+  meta(name='ogame-universe-speed' content=basic.speed)
+  meta(name='ogame-universe-speed-fleet' content=basic.speedFleet)
+  meta(name='ogame-donut-galaxy' content=basic.donutGalaxy)
+  meta(name='ogame-donut-system' content=basic.donutSystem)
   meta(name='ogame-player-name' content=basic.playerName)
-  meta(name='ogame-planet-id' content='33655142')
   meta(name='ogame-planet-name' content=basic.planets[basic.numPlanet].name)
   meta(name='ogame-planet-coordinates' content=basic.planets[basic.numPlanet].coordinates.galaxy + ':' + basic.planets[basic.numPlanet].coordinates.system + ':' + basic.planets[basic.numPlanet].coordinates.pos)
   meta(name='ogame-planet-galaxy' content=basic.planets[basic.numPlanet].coordinates.galaxy)
@@ -68,11 +67,11 @@ body(id=bodyId onLoad=basic.loadItem)
               span#resources_darkmatter #{basic.dark}
         #message-wrapper
           // Notificaciones de mensajes y flotas
-          a.comm_menu.messages(href='./Ogame_messages.html')
-            span.new_msg_count.totalMessages.noMessage.news(data-new-messages='0') 0
+          a.comm_menu.messages(href='./Ogame_messages.html' class=(bodyId == 'messages') ? 'selected': '')
+            span.new_msg_count.totalMessages.noMessage.news 0
             // Mensajes
-          a.comm_menu.chat(href='./Vacas.html')
-            span.new_msg_count.totalChatMessages.noMessage(data-new-messages='0') 0
+          a.comm_menu.chat(href='./Vacas.html' class=(bodyId == 'vacas') ? 'selected': '')
+            span.new_msg_count.totalChatMessages.noMessage 0
             // Chat
           #messages_collapsed
             #eventboxFilled.eventToggle(style='display: none;')
@@ -96,103 +95,47 @@ body(id=bodyId onLoad=basic.loadItem)
             li
               span.menu_icon
                 a(href='./Ogame_Reward.html' target='_self')
-                  if bodyId == "overview"
-                    .menuImage.overview.highlighted
-                  else
-                    .menuImage.overview
-              if bodyId == "overview"
-                a.menubutton.selected(href='./Ogame_Overview.html' target='_self')
-                  span.textlabel Overview
-              else
-              a.menubutton(href='./Ogame_Overview.html' target='_self')
+                  .menuImage.overview(class=(bodyId == "overview")?'highlighted':'')
+              a.menubutton(href='./Ogame_Overview.html' target='_self' class=(bodyId == "overview")?'selected':'')
                 span.textlabel Overview
             li
               span.menu_icon
                 a(href='./Ogame_ResourceSetings.html' target='_self')
-                  if bodyId == "resources" || bodyId == "resourceSettings"
-                    .menuImage.resources.highlighted
-                  else
-                    .menuImage.resources
-              if bodyId == "resources" || bodyId == "resourceSettings"
-                a.menubutton.selected(href='./Ogame_Resources.html' target='_self')
-                  span.textlabel Resources
-              else
-                a.menubutton(href='./Ogame_Resources.html' target='_self')
-                  span.textlabel Resources
+                  .menuImage.resources(class=(bodyId == "resources" || bodyId == "resourceSettings")?'highlighted':'')
+              a.menubutton(href='./Ogame_Resources.html' target='_self' class=(bodyId == "resources" || bodyId == "resourceSettings")?'selected':'')
+                span.textlabel Resources
             li
               span.menu_icon
-                if bodyId == "station"
-                  .menuImage.station.highlighted
-                else
-                  .menuImage.station
-              if bodyId == "station"
-                a.menubutton.selected(href='./Ogame_Facilities.html' target='_self')
-                  span.textlabel Facilities
-              else
-                a.menubutton(href='./Ogame_Facilities.html' target='_self')
-                  span.textlabel Facilities
+                .menuImage.station(class=(bodyId == "station")?'highlighted':'')
+              a.menubutton(href='./Ogame_Facilities.html' target='_self' class=(bodyId == "station")?'selected':'')
+                span.textlabel Facilities
             li
               span.menu_icon
                 a.overlay.Right(href='./Ogame_Tecnology.html' target='_self')
-                  if bodyId == "research" || bodyId == "tecnology"
-                    .menuImage.research.highlighted
-                  else
-                    .menuImage.research
-              if bodyId == "research" || bodyId == "tecnology"
-                a.menubutton.selected(href='./Ogame_Research.html' target='_self')
-                  span.textlabel Research
-              else
-                a.menubutton(href='./Ogame_Research.html' target='_self')
-                  span.textlabel Research
+                  .menuImage.research(class=(bodyId == "research" || bodyId == "tecnology")?'highlighted':'')
+              a.menubutton(href='./Ogame_Research.html' target='_self' class=(bodyId == "research" || bodyId == "tecnology")?'selected':'')
+                span.textlabel Research
             li
               span.menu_icon
-                if bodyId == "shipyard"
-                  .menuImage.shipyard.highlighted
-                else
-                  .menuImage.shipyard
-              if bodyId == "shipyard"
-                a.menubutton.selected(href='./Ogame_Shipyard.html' target='_self')
-                  span.textlabel Shipyard
-              else
-                a.menubutton(href='./Ogame_Shipyard.html' target='_self')
-                  span.textlabel Shipyard
+                .menuImage.shipyard(class=(bodyId == "shipyard")?'highlighted':'')
+              a.menubutton(href='./Ogame_Shipyard.html' target='_self' class=(bodyId == "shipyard")?'selected':'')
+                span.textlabel Shipyard
             li
               span.menu_icon
-                if bodyId == "defense"
-                  .menuImage.defense.highlighted
-                else
-                  .menuImage.defense
-              if bodyId == "defense"
-                a.menubutton.selected(href='./Ogame_Defence.html' target='_self')
-                  span.textlabel Defence
-              else
-                a.menubutton(href='./Ogame_Defence.html' target='_self')
-                  span.textlabel Defence
+                .menuImage.defense(class=(bodyId == "defense")?'highlighted':'')
+              a.menubutton(href='./Ogame_Defence.html' target='_self' class=(bodyId == "defense")?'selected':'')
+                span.textlabel Defence
             li
               span.menu_icon
                 a(href='./Ogame_Movement.html' target='_self')
-                  if bodyId == "fleet"
-                    .menuImage.fleet.highlighted
-                  else
-                    .menuImage.fleet
-              if bodyId == "fleet"
-                a.menubutton.selected(href='./Ogame_Fleet.html' target='_self')
-                  span.textlabel Fleet
-              else
-                a.menubutton(href='./Ogame_Fleet.html' target='_self')
-                  span.textlabel Fleet
+                  .menuImage.fleet(class=(bodyId == "fleet" || bodyId == "movement")?'highlighted':'')
+              a.menubutton(href='./Ogame_Fleet.html' target='_self' class=(bodyId == "fleet" || bodyId == "movement")?'selected':'')
+                span.textlabel Fleet
             li
               span.menu_icon
-                if bodyId == "galaxy"
-                  .menuImage.galaxy.highlighted
-                else
-                  .menuImage.galaxy
-              if bodyId == "galaxy"
-                a.menubutton.selected(href='./Ogame_Galaxy.html' target='_self')
-                  span.textlabel Galaxy
-              else
-                a.menubutton(href='./Ogame_Galaxy.html' target='_self')
-                  span.textlabel Galaxy
+                .menuImage.galaxy(class=(bodyId == "galaxy")?'highlighted':'')
+              a.menubutton(href='./Ogame_Galaxy.html?gal=' + basic.planets[basic.numPlanet].coordinates.galaxy + '&sys=' + basic.planets[basic.numPlanet].coordinates.system target='_self' class=(bodyId == "galaxy")?'selected':'')
+                span.textlabel Galaxy
           br.clearfloat
       #contentWrapper
         // CONTENT AREA

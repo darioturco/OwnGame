@@ -30,7 +30,10 @@ block content
                 th #{index + 1}
                 th #{item.playerName}
                 th #{item.planetName}
-                th [#{item.coordinates.galaxy}:#{item.coordinates.system}:#{item.coordinates.pos}]
+                th
+                  div.coordinatesDiv
+                    a.coordinatesLink(href='./Ogame_Galaxy.html?gal=' + item.coordinates.galaxy + '&sys=' + item.coordinates.system target='_self')
+                      p [#{item.coordinates.galaxy}:#{item.coordinates.system}:#{item.coordinates.pos}]
                 th.action
                   a.tooltip(href='#' onclick='return false;')
                     span.icon.icon_eye

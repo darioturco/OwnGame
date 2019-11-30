@@ -58,8 +58,11 @@ router.get('/OGame_Fleet.html', (req, res, next) => {
 });
 
 router.get('/OGame_Galaxy.html', (req, res, next) => {
+  let galInit = (req.query.gal == undefined) ? 1 : req.query.gal;
+  let sysInit = (req.query.sys == undefined) ? 1 : req.query.sys;
   res.render('OGame_Galaxy', {bodyId: "galaxy",
     url: req._parsedOriginalUrl.pathname,
+    coorInit: {gal: galInit, sys: sysInit},
     info: uni.galaxyInfo(uni.planeta),
     basic: uni.getActualBasicInfo(uni.planeta),
     listScript: ['./Scripts/Galaxy.js']
@@ -75,7 +78,7 @@ router.get('/OGame_Messages.html', (req, res, next) => {
 });
 
 router.get('/OGame_Movement.html', (req, res, next) => {
-  res.render('OGame_Movement', {bodyId: "resources",
+  res.render('OGame_Movement', {bodyId: "movement",
     url: req._parsedOriginalUrl.pathname,
     basic: uni.getActualBasicInfo(uni.planeta),
     listScript: []

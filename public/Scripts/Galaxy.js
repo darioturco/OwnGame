@@ -28,7 +28,7 @@ setTimeout(() => {
   document.onkeyup = function(tecla){
     if(tecla.key == 'Enter') loadSystem(parseInt(galaxyText.value), parseInt(systemText.value));
   };
-  loadSystem(1,1);
+  loadSystem(galaxyText.value, systemText.value);
 }, 0);
 
 function loadSystem(gal, sys){

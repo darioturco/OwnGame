@@ -1,2 +1,46 @@
 extends Ogame_Layout
 block content
+  #content
+    #buttonz
+      .header
+        h2 News feed
+      .content.tabs_wrap
+        ul.tabs_btn
+          li(tabindex='0')
+            a.tabs_btn_img.tb_fleets(href='#')
+              .marker
+              span.icon_caption Fleets
+          li.ui-tabs-active(tabindex='1')
+            a.tabs_btn_img.tb_communication(href='#')
+              span.new_msg_count(style='display: none;') 0
+              .marker
+              span.icon_caption Espionage
+          li(tabindex='2')
+            a.tabs_btn_img.tb_economy(href='#')
+              span.new_msg_count(style='display: none;') 0
+              .marker
+              span.icon_caption Other
+          li(tabindex='3')
+            a.tabs_btn_img.tb_universe(href='#')
+              span.new_msg_count(style='display: none;') 0
+              .marker
+              span.icon_caption Universe
+        div
+          .tab_ctn
+            ul.tab_inner
+              ul.pagination
+                li |&lt;&lt;
+                li &lt;
+                li#curPageUp 1/1
+                li &gt;
+                li &gt;&gt;|
+              li.no_msg
+                | There are currently no messages available in this tab
+              br
+              ul.pagination
+                li |&lt;&lt;
+                li &lt;
+                li#curPageDown 1/1
+                li &gt;
+                li &gt;&gt;|
+        .footer

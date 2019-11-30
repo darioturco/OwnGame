@@ -144,6 +144,11 @@ var exp = {
       speedTime: this.universo.speed,
     };
     return {loadItem: str + "initFunction(" + JSON.stringify(item) + ");",
+      name: this.universo.name,
+      speed: this.universo.speed,
+      speedFleet: this.universo.speedFleet,
+      donutGalaxy: (this.universo.donutGalaxy) ? 'true' : 'false',
+      donutSystem: (this.universo.donutSystem) ? 'true' : 'false',
       playerName: this.player.name,
       highscore: this.player.highscore,
       energy: item.resources.energy,
@@ -356,6 +361,10 @@ var exp = {
       console.log("actualiza");
       this.updatePlanetsOfPlayer(player);
     });
+  },
+  sendMessage: function(player, info) {
+    let newMessage = {date: new Date(new Date().getTime() - 1000*60*60*3).toString().slice(0,24), type: info.type};
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").update({name: player},{$push: {messages: newMessage}});
   },
   seeDataBase: (res, uni, name) => {
     let respuesta = "";

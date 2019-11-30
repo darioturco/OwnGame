@@ -4,11 +4,11 @@ block content
     #galaxyHeader
       span.galaxy_icons.galaxy.tooltip(title='Galaxy')
       span.galaxy_icons.prev(onclick='galaxyChange(-1);')
-      input#galaxy_input.hideNumberSpin(maxlength='1' type='number' value='1' tabindex='2')
+      input#galaxy_input.hideNumberSpin(maxlength='1' type='number' value=coorInit.gal tabindex='1')
       span.galaxy_icons.next(onclick='galaxyChange(1);')
       span.galaxy_icons.solarsystem.tooltip(title='System')
       span.galaxy_icons.prev(onclick='systemChange(-1);')
-      input#system_input.hideNumberSpin(maxlength='3' type='number' value='1' tabindex='2')
+      input#system_input.hideNumberSpin(maxlength='3' type='number' value=coorInit.sys tabindex='2')
       span.galaxy_icons.next(onclick='systemChange(1);')
       .btn_blue(onclick='pressGo();' onkeydown='pressGo();')
         | Go!
