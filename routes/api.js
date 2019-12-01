@@ -42,6 +42,19 @@ router.get('/galaxy', function(req, res, next) {
 
 //Se usa set para las direcciones que cambian cosas en la base de datos
 
+router.get('/set/readMessages', function(req, res, next) {
+  let listMes = uni.player.messages;
+  //setea que viste todos los mesages
+
+  res.send({ok: true, list: listMes});
+});
+
+router.get('/set/deleteMessages', function(req, res, next) {
+  console.log(req.query);
+  uni.deleteMessage(uni.player.name, req.query.all == 'true', req.query.id);
+  res.send({ok: true});
+});
+
 router.get('/set/addVaca', function(req, res, next) {
   req.query.coor = JSON.parse(req.query.coor);
   uni.toggleVaca(res, req.query);

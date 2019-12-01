@@ -363,8 +363,12 @@ var exp = {
     });
   },
   sendMessage: function(player, info) {
-    let newMessage = {date: new Date(new Date().getTime() - 1000*60*60*3).toString().slice(0,24), type: info.type};
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").update({name: player},{$push: {messages: newMessage}});
+    let newMessage = {date: new Date().toString().slice(0,24), type: info.type, title: info.title, text: info.text, data: info.data};
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: player},{$push: {messages: newMessage}});
+  },
+  deleteMessage: function(player, all, borra) {
+    let obj = (all == true) ? {type: parseInt(borra)} : {date: borra};
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: player},{$pull: {messages: obj}}, {multi: true});
   },
   seeDataBase: (res, uni, name) => {
     let respuesta = "";
