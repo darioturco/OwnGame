@@ -4,6 +4,7 @@ var colorImg = [];
 var colorButton = null;
 var startImg = 0;
 var container;
+var universeSpeed = 0;
 var level = "Number: ";
 var info = undefined;
 var size = "250";
@@ -19,6 +20,7 @@ function initial(){
     size = "300";
     level = "Level: ";
   }
+  universeSpeed = parseInt(document.getElementsByName('ogame-universe-speed')[0].content);
   container = document.getElementById("detail");
   descriptionText = document.getElementById("descriptionText");
   colorImg = document.getElementsByClassName('on');

@@ -1,29 +1,22 @@
 var metal_res, crystal_res, deuterium_res, clock;
 var metal = 0, crystal = 0, deuterium = 0;
 var energyTotal = 0;//guarda el total de la energia del planeta
-var universeSpeed = 1;
 
 function initFunction(obj){
-  universeSpeed = obj.speedTime;
   clock = document.getElementById("Clock");
   metal_res = document.getElementById("resources_metal");
   crystal_res = document.getElementById("resources_crystal");
   deuterium_res = document.getElementById("resources_deuterium");
-  metal = Math.floor(obj.add.metal/3600);
-  crystal = Math.floor(obj.add.crystal/3600);
-  deuterium = Math.floor(obj.add.deuterium/3600);
-  metal_res.innerHTML = obj.resources.metal;
-  crystal_res.innerHTML = obj.resources.crystal;
-  deuterium_res.innerHTML = obj.resources.deuterium;
+  metal = Math.floor(parseInt(document.getElementsByName('ogame-add-metal')[0].content)/3600);
+  crystal = Math.floor(parseInt(document.getElementsByName('ogame-add-crystal')[0].content)/3600);
+  deuterium = Math.floor(parseInt(document.getElementsByName('ogame-add-deuterium')[0].content)/3600);
   actualizaFecha();
-  //energyTotal = obj.energyTotal; agregar en obj
   setInterval(() => {
     metal_res.innerHTML = parseInt(metal_res.innerHTML) + metal;
     crystal_res.innerHTML = parseInt(crystal_res.innerHTML) + crystal;
     deuterium_res.innerHTML = parseInt(deuterium_res.innerHTML) + deuterium;
     actualizaFecha();
   }, 1000);
-  //document.body.removeAttribute("onload");
 }
 
 function actualizaFecha(){
@@ -45,6 +38,22 @@ function segundosATiempo(seg){
     }
   }
   return " " + time;
+}
+
+function removeVaca(own, gal, sys, pos){
+  own.parentElement.parentElement.style.display = 'none';
+  loadJSON('./api/set/addVaca?coor={"galaxy":' + gal + ',"system":' + sys + ',"pos":' + pos + '}', (obj) => {
+    console.log(obj);
+  });
+}
+
+function setOptions(){
+  let esp = document.getElementById('inputEspionage').value;
+  let small = document.getElementById('inputSmall').value;
+  let large = document.getElementById('inputLarge').value;
+  loadJSON('./api/set/setOptions?esp=' + esp + '&sml=' + small + '&lar=' + large, (obj) => {
+    if(obj.ok == true) location.reload(); //actualiza la pagina si todo salio bien
+  });
 }
 
 /*<div id="attack_alert" class="tooltip eventToggle soon" title="">

@@ -47,6 +47,7 @@ block content
                   a.tooltip(href='#' onclick='return false;')
                     span.icon.icon_against
                     // ataca como si fuera una vaca
-                  a.tooltip(href='#' onclick='return false;')
+                  a.tooltip(href='#' onclick='removeVaca(this, ' + item.coordinates.galaxy + ', ' + item.coordinates.system + ', ' + item.coordinates.pos + ');')
                     span.icon.icon_mail
-                    // agrega a la lista de vacas
+                    // lo saca de la lista de vacas
+      .footer

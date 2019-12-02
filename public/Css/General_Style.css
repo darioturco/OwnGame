@@ -1250,7 +1250,7 @@ width:670px}#fleet #sendfleet{margin:13px auto 10px auto}
   margin:0 0 1px 0;
   position:absolute;
   width:667px;
-  z-index:1;
+  z-index:-1;
 }
 .detailsClosed .toggleDetails{background: url("../Imagenes/Background.jpg") no-repeat}.detailsOpened .toggleDetails{background: url("../Imagenes/Background.jpg") no-repeat}#eventContent .toggleDetails{width:18px}#buttonz h2,#fleet #sendfleet h2,#movement h3 a,#statistics h3,#highscoreContent h2{text-align:center}#buttonz ul#building{width:640px;
 height:100px;
@@ -1789,10 +1789,14 @@ text-decoration:none}
   text-decoration:underline;
   color:#9c0;
 }
-#bar ul{margin:0 auto}#bar ul li{display:inline;
-list-style-type:none;
-list-style-position:outside;
-margin:0 15px 0 0}#bar ul li#playerName{float:left;
+#bar ul{margin:0 auto}
+#bar ul li{
+  display:inline;
+  list-style-type:none;
+  list-style-position:outside;
+  margin:0 30px 0 0;
+}
+#bar ul li#playerName{float:left;
 margin-right:1px}
 #bar ul li#playerName span.status_abbr_outlaw{background: url("../Imagenes/Background.jpg") no-repeat 0 -640px;
 padding-left:15px}#bar ul li.OGameClock{margin-right:0;
@@ -4298,7 +4302,6 @@ div.buildingimg{
   background-repeat:no-repeat;
   position:relative;
 }
-#research #planet{height:250px}
 #research .c-left,#research .c-right{top:214px}
 #research #buttonz li{width:80px;
 height:80px;
@@ -4480,8 +4483,8 @@ height:80px;
   position:absolute;
   width:1px;
 }
-#vacas #planet,#shipyard #planet{height:250px}
-#vacas .c-left,#vacas .c-right,#shipyard .c-left,#shipyard .c-right{top:214px}
+#options #planet,#vacas #planet,#shipyard #planet,#research #planet,#search #planet,#defense #planet{height:250px}
+#search .c-left,#search .c-right,#options .c-left,#options .c-right,#vacas .c-left,#vacas .c-right,#shipyard .c-left,#shipyard .c-right{top:214px}
 #shipyard #battleships,#shipyard #civilships{
   float:left;
   height:205px;
@@ -4728,7 +4731,6 @@ div.techImage.ship.tech215.notBuilt a{background-position:-1042px -162px}
   position:absolute;
   width:1px;
 }
-#defense #planet{height:250px}
 #defense .c-left,#defense .c-right{top:214px}
 #defensebuilding{
   width:648px;
@@ -4903,7 +4905,8 @@ margin-bottom:6px}
   width:80px;
   text-align:right;
 }
-#station .buildingimg,#station-moon .buildingimg,div.techImage.station a{background-image: url("../Imagenes/Background.jpg");
+#station .buildingimg,#station-moon .buildingimg,div.techImage.station a{
+  background-image: url("../Imagenes/Background.jpg");
 background-repeat:no-repeat}
 #station-moon .stationlarge{
   background-image: url("../Imagenes/Background.jpg");
@@ -6279,4 +6282,28 @@ tr.alt td {
 #messages ul #buttonTrash{
   float: right;
   margin: 12px 20px;
+}
+#search #controlSearch{
+  width: 270px;
+  margin: 0 auto 10px auto;
+}
+#search #controlSearch #inputSearchPlayer{
+  margin-right: 20px;
+}
+#options .itemOptions{
+  width: 400px;
+  margin: 6px auto;
+}
+#options #inputEspionage{
+  margin: 0 56px;
+  width: 50px;
+}
+#options #inputSmall, #options #inputLarge{
+  margin: 0 90px;
+  width: 50px;
+}
+#options a.btn_blue{
+  margin: 20px auto 0 auto;
+  display: block;
+  width: 80px;
 }

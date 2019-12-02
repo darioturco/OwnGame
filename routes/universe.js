@@ -83,7 +83,9 @@ var exp = {
       puntos: 0,
       puntosAcum: 0,
       vacas: [],
-      sendSpionage: 1,
+      sendEspionage: 1,
+      sendSmall: 1,
+      sendLarge: 1,
       dark: 8000,
       messagesCant: 0,
       messages: [],
@@ -136,23 +138,17 @@ var exp = {
     for(var i = 0 ; i<this.player.planets.length ; i++){
       list.push({name: this.player.planets[i].name, coordinates: this.player.planets[i].coordinates, type: this.player.planets[i].type, color: this.player.planets[i].color});
     }
-    let item = {
-      resources: this.player.planets[planet].resources,
-      add: this.player.planets[planet].resourcesAdd,
-      mesagges: this.player.messagesCant,
-      movement: this.player.movement,
-      speedTime: this.universo.speed,
-    };
-    return {loadItem: str + "initFunction(" + JSON.stringify(item) + ");",
-      name: this.universo.name,
+    return {name: this.universo.name,
       speed: this.universo.speed,
       speedFleet: this.universo.speedFleet,
       donutGalaxy: (this.universo.donutGalaxy) ? 'true' : 'false',
       donutSystem: (this.universo.donutSystem) ? 'true' : 'false',
       playerName: this.player.name,
       highscore: this.player.highscore,
-      energy: item.resources.energy,
+      resources: this.player.planets[planet].resources,
+      add: this.player.planets[planet].resourcesAdd,
       dark: this.player.dark,
+      messagesNoRead: this.player.messagesCant,
       cantPlanets: this.player.planets.length,
       maxPlanets: this.player.maxPlanets,
       numPlanet: planet,
@@ -309,6 +305,18 @@ var exp = {
     let tran = (imp >= 5) ? 1000*imp : 500*com;
     return [12500+1250*com, 10000+2000*imp, 15000+3000*imp, 10000+3000*hyp, 10000+3000*hyp, 4000+bomb, 5000+1500*hyp, 100+30*hyp, 5000+tran, 7500+1500*imp, 2500+500*imp, 2000+400*imp, 100000000+10000000*com, 1000000+100000*imp];
   },
+  getQuickAtackData: function(){
+    return {esp: this.player.sendEspionage, small: this.player.sendSmall, large: this.player.sendLarge};
+  },
+  setOptions: function(res, esp, small, large){
+    if(isFinite(esp) && isFinite(small) && isFinite(large)){
+      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: this.player.name}, {$set: {sendEspionage: esp, sendSmall: small, sendLarge: large}}, (err) => {
+        res.send({ok: (err == null) ? true : err});
+      });
+    }else{
+      res.send({ok: false});
+    }
+  },
   toggleVaca: function(res, query){
     let elimino = false;
     for(let i = 0 ; i<this.player.vacas.length ; i++){
@@ -364,11 +372,16 @@ var exp = {
   },
   sendMessage: function(player, info) {
     let newMessage = {date: new Date().toString().slice(0,24), type: info.type, title: info.title, text: info.text, data: info.data};
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: player},{$push: {messages: newMessage}});
+    if(player == this.player.name) this.player.messagesCant++;
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: player},{$push: {messages: newMessage}, $inc: {messagesCant: 1}});
   },
   deleteMessage: function(player, all, borra) {
     let obj = (all == true) ? {type: parseInt(borra)} : {date: borra};
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: player},{$pull: {messages: obj}}, {multi: true});
+  },
+  setNoReadMessages: function(){
+    this.player.messagesCant = 0;
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: this.player.name}, {$set: {messagesCant: 0}});
   },
   seeDataBase: (res, uni, name) => {
     let respuesta = "";

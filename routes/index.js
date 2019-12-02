@@ -71,6 +71,7 @@ router.get('/OGame_Galaxy.html', (req, res, next) => {
 });
 
 router.get('/OGame_Messages.html', (req, res, next) => {
+  uni.setNoReadMessages();
   res.render('OGame_Messages', {bodyId: "messages",
     url: req._parsedOriginalUrl.pathname,
     basic: uni.getActualBasicInfo(uni.planeta),
@@ -155,8 +156,9 @@ router.get('/OGame_Tecnology.html', (req, res, next) => {
 });
 
 router.get('/Options.html', (req, res, next) => {
-  res.render('Options', {bodyId: "resources",
+  res.render('Options', {bodyId: "options",
     url: req._parsedOriginalUrl.pathname,
+    info: uni.getQuickAtackData(),
     basic: uni.getActualBasicInfo(uni.planeta),
     listScript: []
   });
@@ -171,7 +173,7 @@ router.get('/Player.html', (req, res, next) => {
 });
 
 router.get('/Search.html', (req, res, next) => {
-  res.render('Search', {bodyId: "resources",
+  res.render('Search', {bodyId: "search",
     url: req._parsedOriginalUrl.pathname,
     basic: uni.getActualBasicInfo(uni.planeta),
     listScript: []

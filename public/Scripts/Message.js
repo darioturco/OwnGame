@@ -7,7 +7,7 @@ setTimeout(() => {
   original = document.getElementById('orginalMessage');
   listNode = document.getElementById('listNode');
   buttonsType = document.getElementsByClassName('buttonType');
-  loadJSON('./api/set/readMessages', (obj) => {
+  loadJSON('./api/readMessages', (obj) => {
     for(let i = 0 ; i<obj.list.length ; i++){
       switch (obj.list[i].type) {
         case 1:// fleet

@@ -12,6 +12,9 @@ head
   meta(name='ogame-planet-galaxy' content=basic.planets[basic.numPlanet].coordinates.galaxy)
   meta(name='ogame-planet-system' content=basic.planets[basic.numPlanet].coordinates.system)
   meta(name='ogame-planet-position' content=basic.planets[basic.numPlanet].coordinates.pos)
+  meta(name='ogame-add-metal' content=basic.add.metal)
+  meta(name='ogame-add-crystal' content=basic.add.crystal)
+  meta(name='ogame-add-deuterium' content=basic.add.deuterium)
   meta(name='ogame-planet-type' content='planet')
   link(rel='stylesheet' type='text/css' href='./Css/General_Style.css' media='screen')
   link(rel='icon' type='image/x-icon' href='Imagenes/Favicon.ico')
@@ -20,7 +23,7 @@ head
   each item in listScript
     script(src=item)
   title OGame
-body(id=bodyId onLoad=basic.loadItem)
+body(id=bodyId onLoad='initFunction();')
   .contentBoxBody
     #box
       // TOP MENU
@@ -48,31 +51,30 @@ body(id=bodyId onLoad=basic.loadItem)
           li#metal_box.metal
             .resourceIcon.metal
             span.value
-              span#resources_metal 0
+              span#resources_metal #{basic.resources.metal}
           li#crystal_box.crystal
             .resourceIcon.crystal
             span.value
-              span#resources_crystal 0
+              span#resources_crystal #{basic.resources.crystal}
           li#deuterium_box.deuterium
             .resourceIcon.deuterium
             span.value
-              span#resources_deuterium 0
+              span#resources_deuterium #{basic.resources.deuterium}
           li#energy_box.energy
             .resourceIcon.energy
             span.value
-              span#resources_energy #{basic.energy}
+              span#resources_energy #{basic.resources.energy}
           li#darkmatter_box.darkmatter.dark_highlight_tablet
             img(src='./Imagenes/Dark_matter.gif')
             span.value
               span#resources_darkmatter #{basic.dark}
         #message-wrapper
-          // Notificaciones de mensajes y flotas
+          // Mensajes
           a.comm_menu.messages(href='./Ogame_messages.html' class=(bodyId == 'messages') ? 'selected': '')
-            span.new_msg_count.totalMessages.noMessage.news 0
-            // Mensajes
+            span.new_msg_count(class=(basic.messagesNoRead == 0) ? 'noMessage': '') #{basic.messagesNoRead}
+          // Vacas
           a.comm_menu.chat(href='./Vacas.html' class=(bodyId == 'vacas') ? 'selected': '')
-            span.new_msg_count.totalChatMessages.noMessage 0
-            // Chat
+          // Flotas
           #messages_collapsed
             #eventboxFilled.eventToggle(style='display: none;')
               a#js_eventDetailsClosed(href='javascript:void(0);' title='More details')

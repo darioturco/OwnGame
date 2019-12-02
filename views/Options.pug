@@ -1,2 +1,24 @@
 extends Ogame_Layout
 block content
+  #inhalt
+    #planet(style='background-image:url(./Imagenes/Options.jpg)')
+      #header_text
+        h2 Options - #{basic.planets[basic.numPlanet].name}
+    .c-left
+    .c-right
+    #buttonz
+      .header
+        h2 Options Player
+      .content
+        // contenido de todo lo que deberia mostrar la pagina
+        div.itemOptions.fieldwrapper.textBeefy
+          label Number of espionage probes:
+          input#inputEspionage(type='number' value=info.esp)
+        div.itemOptions.fieldwrapper.textBeefy
+          label Number of Small Cargo:
+          input#inputSmall(type='number' value=info.small)
+        div.itemOptions.fieldwrapper.textBeefy
+          label Number of Large Cargo:
+          input#inputLarge(type='number' value=info.large)
+        a.btn_blue(onclick='setOptions(); return false;') Save options
+      .footer
