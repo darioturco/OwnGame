@@ -32,9 +32,9 @@ body(id=bodyId onLoad='initFunction();')
         #bar
           ul
             li#playerName
-              | Player:
+              | Player:!{' '}
               span.textBeefy
-                a.textBeefy(href='./Player.html') #{basic.playerName}
+                a.textBeefy(href='./Ogame_Overview.html') #{basic.playerName}
             li
               span (#{basic.highscore})
               a(href='./Highscore.html') Highscore

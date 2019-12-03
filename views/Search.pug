@@ -12,8 +12,8 @@ block content
       .content
         div#controlSearch
           input#inputSearchPlayer(type='text')
-          a.btn_blue(href='#') Search
-        table#vacaslist.content_table.ignorelist
+          a.btn_blue(href='#' onclick='setSearch();') Search
+        table#searchlist.content_table.ignorelist
           colgroup
             col(span='1' style='width: 20px;')
             col(span='1' style='width: 110px;')
@@ -28,5 +28,24 @@ block content
               th.ct_th.ct_sortable_title Coordinates
               th.ct_th.textCenter Actions
           tbody
+            each item, index in [1,2,3,4,5,6,7,8]
+              tr.rowSearch(style='display: none;')
+                th #{index + 1}
+                th.playerSearch
+                th.planetSearch
+                th.coordinatesSearch
+                  div.coordinatesDiv
+                    a.coordinatesLink(href='./Ogame_Galaxy.html' target='_self')
+                      p.coorSearch
+                th.action
+                  a.tooltip(href='#' onclick='return false;' title='espiar')
+                    span.icon.icon_eye
+                  a.tooltip(href='#' onclick='return false;' title='reporte de espionage')
+                    span.icon.icon_adressbook
+                  a.tooltip(href='#' onclick='return false;' title='ataque personalisado')
+                    span.icon.icon_missile
+                  a.tooltip(href='#' onclick='return false;' title='ataque vaca')
+                    span.icon.icon_against
+
 
       .footer

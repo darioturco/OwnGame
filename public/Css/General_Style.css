@@ -595,7 +595,7 @@ text-decoration:none}.subtabs .ui-state-hover.first a.txt_link{background-positi
 .subtabs .ui-state-hover.last a.txt_link{background-position:100% -375px}
 .pagination{
   display:table;
-  margin:10px auto;
+  margin-bottom: 10px;
 }
 .pagination .p_li{
   display:table-cell;
@@ -945,8 +945,8 @@ text-overflow:ellipsis}
 #resourceSettings #planet.shortHeader{background-image: url("../Imagenes/Resources/Resources_Settings.jpg")}
 #movement #planet.shortHeader{background-image: url("../Imagenes/Background.jpg")}
 #fleet #planet.shortHeader{background-image: url("../Imagenes/Fleet.jpg")}
-#tutorial #planet.shortHeader{background-image: url("../Imagenes/Background.jpg")}
-#tutorial #planet.header{
+#reward #planet.shortHeader{background-image: url("../Imagenes/Background.jpg")}
+#reward #planet.header{
   background-image: url("../Imagenes/Background.jpg");
   height:250px;
 }
@@ -2229,15 +2229,26 @@ margin:0 0 0 18px;
 padding:10px 0;
 width:615px}#rank_explanation h3{color:#6f9fc8;
 font-size:12px;
-font-weight:700}div.h10{height:10px}.boxWrapper{color:#848484;
+font-weight:700}div.h10{height:10px}
+.boxWrapper,#aufgabentext{color:#848484;
 margin-top:3px;
 width:667px}.boxWrapper .header{background:transparent  url("../Imagenes/Background.jpg") no-repeat;
-height:29px}.boxWrapper .content{background:transparent  url("../Imagenes/Background.jpg") repeat-y;
-padding:10px 20px}.boxWrapper .footer{background:transparent  url("../Imagenes/Background.jpg") no-repeat;
-height:29px}.boxWrapper h3{padding-top:8px}h3 span{display:block}.boxWrapper .content div{padding:20px}#ticket .dropdown{margin-left:10px}#ticket .textBox{margin:20px auto}.accent{background:#13181d;
-border:1px solid #030303}table.empty td{line-height:30px}#box #inhalt .buildingimg .construction .pusher a.timeLink:link,#box #inhalt .buildingimg .construction .pusher a.timeLink:visited,#box #inhalt .buildingimg .construction .pusher a.timeLink:hover,#box #inhalt .buildingimg .construction .pusher a.timeLink:active{background:transparent none;
-cursor:pointer;
-display:inline}#box #inhalt .buildingimg .construction .pusher{filter:alpha(opacity=60);
+height:29px}
+.content{background:transparent  url("../Imagenes/Background.jpg") repeat-y;
+padding:10px 20px}
+.boxWrapper .footer{background:transparent  url("../Imagenes/Background.jpg") no-repeat;
+height:29px}.boxWrapper h3{padding-top:8px}h3 span{display:block}
+.boxWrapper .content div,#reward .content div{padding:20px}
+#reward .content{padding: 10px 20px}
+#ticket .dropdown{margin-left:10px}#ticket .textBox{margin:20px auto}.accent{background:#13181d;
+border:1px solid #030303}
+table.empty td{line-height:30px}
+#box #inhalt .buildingimg .construction .pusher a.timeLink:link,#box #inhalt .buildingimg .construction .pusher a.timeLink:visited,#box #inhalt .buildingimg .construction .pusher a.timeLink:hover,#box #inhalt .buildingimg .construction .pusher a.timeLink:active{
+  background:transparent none;
+  cursor:pointer;
+  display:inline;
+}
+#box #inhalt .buildingimg .construction .pusher{filter:alpha(opacity=60);
 -moz-opacity:.6;
 -khtml-opacity:.6;
 opacity:.6;
@@ -2419,7 +2430,8 @@ float:left;
 display:inline;
 height:43px;
 margin:3px 0 0 15px;
-width:46px}.fadeBox .success{background:transparent  url("../Imagenes/Background.jpg") no-repeat}.fadeBox .failed{background:transparent  url("../Imagenes/Background.jpg") no-repeat}#overview .fadeBox,#resources .fadeBox,#station .fadeBox,#station-moon .fadeBox{top:35%}#trader .fadeBox,#research .fadeBox,#shipyard .fadeBox,#defense .fadeBox,#empire .fadeBox,#premium .fadeBox{top:32%}#fleet .fadeBox,#messages .fadeBox{top:40%}#galaxy .fadeBox{top:50%}div#onet{background-color:#404040;
+width:46px}.fadeBox .success{background:transparent  url("../Imagenes/Background.jpg") no-repeat}.fadeBox .failed{background:transparent  url("../Imagenes/Background.jpg") no-repeat}#overview .fadeBox,#resources .fadeBox,#station .fadeBox,#station-moon .fadeBox{top:35%}
+#trader .fadeBox,#research .fadeBox,#shipyard .fadeBox,#defense .fadeBox,#empire .fadeBox,#premium .fadeBox{top:32%}#fleet .fadeBox,#messages .fadeBox{top:40%}#galaxy .fadeBox{top:50%}div#onet{background-color:#404040;
 color:#fff;
 font-family:Verdana,Arial,Helvetica,sans-serif;
 font-size:9px;
@@ -2540,15 +2552,37 @@ right:0;
 position:absolute;
 top:0;
 width:80px;
-z-index:1}#shop .event_item_10p_discount{background-position:55px -1px;
+z-index:1}
+#shop .event_item_10p_discount{background-position:55px -1px;
 height:105px;
-width:105px}#activeBuffDetails .event_item_10p_discount{background-position:25px -1px;
+width:105px}
+#activeBuffDetails .event_item_10p_discount{background-position:25px -1px;
 height:75px;
-width:75px}.event_active_hint{background-position:-160px 0}.reducement{background-image: url("../Imagenes/Background.jpg");
+width:75px}
+.event_active_hint{background-position:-160px 0}.reducement{background-image: url("../Imagenes/Background.jpg");
 width:50px;
 height:50px}
-.reducement5{background-position:-2px 0}.reducement10{background-position:-111px 0}.reducement15{background-position:-220px 0}.reducement20{background-position:-329px 0}.reducement25{background-position:-438px 0}.reducement30{background-position:-547px 0}.reducement35{background-position:-656px 0}.reducement40{background-position:-765px 0}.reducement45{background-position:-874px 0}.reducement50{background-position:-983px 0}.reducement55{background-position:-1092px 0}.reducement60{background-position:-1201px 0}.reducement65{background-position:-1310px 0}.reducement70{background-position:-1419px 0}.reducement75{background-position:-1528px 0}.reducement80{background-position:-1637px 0}.reducement85{background-position:-1746px 0}.reducement90{background-position:-1855px 0}#shipyard #buttonz ul#military li a:hover,#shipyard #buttonz ul#military li a.active,#shipyard #buttonz ul#civil li a:hover,#shipyard #buttonz ul#civil li a.active{z-index:1}#shop #inhalt .item_img a,#activeBuffDetails .item_img a,#div_traderScrap .image a{z-index:1}#expeditionbutton
-.event_active_hint{height:25px;
+.reducement5{background-position:-2px 0}
+.reducement10{background-position:-111px 0}
+.reducement15{background-position:-220px 0}
+.reducement20{background-position:-329px 0}
+.reducement25{background-position:-438px 0}
+.reducement30{background-position:-547px 0}
+.reducement35{background-position:-656px 0}
+.reducement40{background-position:-765px 0}
+.reducement45{background-position:-874px 0}
+.reducement50{background-position:-983px 0}
+.reducement55{background-position:-1092px 0}
+.reducement60{background-position:-1201px 0}
+.reducement65{background-position:-1310px 0}
+.reducement70{background-position:-1419px 0}
+.reducement75{background-position:-1528px 0}
+.reducement80{background-position:-1637px 0}
+.reducement85{background-position:-1746px 0}
+.reducement90{background-position:-1855px 0}
+#shipyard #buttonz ul#military li a:hover,#shipyard #buttonz ul#military li a.active,#shipyard #buttonz ul#civil li a:hover,#shipyard #buttonz ul#civil li a.active{z-index:1}
+#shop #inhalt .item_img a,#activeBuffDetails .item_img a,#div_traderScrap .image a{z-index:1}
+#expeditionbutton .event_active_hint{height:25px;
 width:25px;
 position:absolute;
 bottom:-2px;
@@ -4483,8 +4517,8 @@ height:80px;
   position:absolute;
   width:1px;
 }
-#options #planet,#vacas #planet,#shipyard #planet,#research #planet,#search #planet,#defense #planet{height:250px}
-#search .c-left,#search .c-right,#options .c-left,#options .c-right,#vacas .c-left,#vacas .c-right,#shipyard .c-left,#shipyard .c-right{top:214px}
+#reward #planet,#options #planet,#vacas #planet,#shipyard #planet,#research #planet,#search #planet,#defense #planet{height:250px}
+#reward .c-left,#reward .c-right,#search .c-left,#search .c-right,#options .c-left,#options .c-right,#vacas .c-left,#vacas .c-right,#shipyard .c-left,#shipyard .c-right{top:214px}
 #shipyard #battleships,#shipyard #civilships{
   float:left;
   height:205px;
@@ -5227,15 +5261,15 @@ height:38px;
 line-height:38px;
 margin:0 50px 30px 0;
 text-align:center;
-width:104px}#tutorial a.start_tutorial,#tutorial a.stop_tutorial{color:#fff;
+width:104px}#reward a.start_tutorial,#reward a.stop_tutorial{color:#fff;
 font-weight:700;
 text-decoration:none}.stop_tutorial{background-position:0 -278px}.start_tutorial:hover{background-position:-104px -240px}.stop_tutorial:hover{background-position:-104px -278px}
-#tutorial .pagination ul{margin:0 0 0 135px;
+#reward .pagination ul{margin:0 0 0 135px;
 padding:4px 0 0 0;
 text-align:left;
-font-size:14px}#tutorial .pagination li{list-style-type:none;
+font-size:14px}#reward .pagination li{list-style-type:none;
 display:inline;
-padding-bottom:1px}#tutorial .pagination a,#tutorial .pagination a:visited{background: url("../Imagenes/Background.jpg") no-repeat;
+padding-bottom:1px}#reward .pagination a,#reward .pagination a:visited{background: url("../Imagenes/Background.jpg") no-repeat;
 color:#fff;
 float:left;
 height:23px;
@@ -5243,36 +5277,55 @@ line-height:23px;
 margin:0 5px;
 text-align:center;
 text-decoration:none;
-width:26px}#tutorial .pagination a:hover,#tutorial .pagination a:active{background-position:0 -23px;
-cursor:pointer}#tutorial .pagination a.currentpage{background-position:0 -23px;
-border-color:#2b66a5;
-color:#FFF!important;
-cursor:default;
-font-weight:bold}#tutorial .pagination a.tutorial_done{font-size:12px;
-background: url("../Imagenes/Background.jpg") no-repeat 0 -69px;
-line-height:18px}#tutorial .pagination a.tutorial_done:hover,#tutorial .pagination a.tutorial_done.currentpage{background-position:0 -92px}#tutorial .pagination a.tutorial_done_selected{background-position:0 -92px;
-border-color:#2b66a5;
-color:#FFF!important;
-cursor:default;
-font-weight:bold}#tutorial .pagination a.tut_new{font-size:14px;
+width:26px}
+#reward .pagination a:hover,#reward .pagination a:active{
+  background-position:0 -23px;
+  cursor:pointer;
+}
+#reward .pagination a.currentpage{
+  background-position:0 -23px;
+  border-color:#2b66a5;
+  color:#FFF!important;
+  cursor:default;
+  font-weight:bold;
+}
+#reward .pagination a.tutorial_done{
+  font-size:12px;
+  background: url("../Imagenes/TutorialButtons.gif") no-repeat 0 -69px;
+  line-height:18px;
+}
+#reward .pagination a.tutorial_done:hover,#reward .pagination a.tutorial_done.currentpage{background-position:0 -92px}
+#reward .pagination a.tutorial_done_selected{
+  background-position:0 -92px;
+  border-color:#2b66a5;
+  color:#FFF!important;
+  cursor:default;
+  font-weight:bold;
+}
+#reward .pagination a.tut_new{font-size:14px;
 line-height:23px;
 font-weight:normal;
-background: url("../Imagenes/Background.jpg") no-repeat 0 -46px}#tutorial .pagination a.disablelink,#tutorial .pagination a.disablelink:hover{background-color:white;
+background: url("../Imagenes/Background.jpg") no-repeat 0 -46px}#reward .pagination a.disablelink,#reward .pagination a.disablelink:hover{background-color:white;
 cursor:default;
 color:#929292;
 border-color:#929292;
-font-weight:normal!important}.pagination a.prevnext{font-weight:bold}#tutorial #inhalt .shortCorner{top:4px}
-#tutorial .c-left,#tutorial .c-right{height:39px;
+font-weight:normal!important}.pagination a.prevnext{font-weight:bold}#reward #inhalt .shortCorner{top:4px}
+#reward .c-left,#reward .c-right{height:39px;
 position:absolute;
 top:214px;
-width:28px}#tutorial .boxWrapper .content div{padding:0}#tutorial div.pic{background:0;
-border:2px solid #0e131f;
-float:left;
-height:200px;
-margin:0 10px 10px 2px;
-position:relative;
-width:200px;
--moz-border-radius:3px}#tutorial #contentWrapper h3{color:#6f9fc8;
+width:28px}
+#reward .content div{padding:0}
+#reward div.pic{
+  background: url("../Imagenes/TutorialReward.jpg") no-repeat 0 0;
+  border:2px solid #0e131f;
+  float:left;
+  height:200px;
+  margin:0 10px 10px 2px;
+  position:relative;
+  width:200px;
+  -moz-border-radius:3px;
+}
+#reward #contentWrapper h3{color:#6f9fc8;
 padding:0}#tutorial-content{margin:10px 0 10px 0}#aufgabe_liste .input{margin:2px 0 0 0}.tutorial_go{background:transparent  url("../Imagenes/Background.jpg") no-repeat 0 2px;
 width:14px;
 height:16px;
@@ -5288,9 +5341,11 @@ margin:0;
 line-height:130%}#done{display:block;
 width:13px;
 height:11px;
-background:#f00  url("../Imagenes/Background.jpg") no-repeat}#reward{margin:10px 20px;
-color:#9c0}#hilfetext_headline{float:left;
-width:200px}#hilfetext_headline a{background: url("../Imagenes/Background.jpg") no-repeat;
+background:#f00  url("../Imagenes/Background.jpg") no-repeat}
+#hilfetext_headline p{float:left;
+width:200px;
+padding-left: 22px}
+#hilfetext_headline a{background: url("../Imagenes/Background.jpg") no-repeat;
 color:#0d1014;
 display:block;
 font-weight:700;
@@ -5299,18 +5354,25 @@ line-height:27px;
 margin:0 0 10px 0;
 text-align:center;
 text-decoration:none;
-width:176px}#hilfetext_headline a:hover{background-position:0 -27px}.hilfe_buttons{height:40px;
-width:620px}#tutorial a.next_step{background: url("../Imagenes/Background.jpg");
-color:#fff;
-font:bold 12px Verdana;
-float:right;
-height:27px;
-line-height:27px;
-margin:0;
-padding:0 25px 0 0;
-width:155px;
-text-align:center;
-text-decoration:none}#tutorial a:hover.next_step{background-position:0 -27px}#tutorial_hilfetext{background:#13181d;
+width:176px;
+}
+#hilfetext_headline a:hover{background-position:0 -27px}
+.hilfe_buttons{height:40px;
+width:620px}
+#reward a.next_step{
+  background: url("../Imagenes/TutorialArrows.gif");
+  color:#fff;
+  font:bold 12px Verdana;
+  float:right;
+  height:27px;
+  line-height:27px;
+  margin:0;
+  padding:0 25px 0 0;
+  width:155px;
+  text-align:center;
+  text-decoration:none;
+}
+#reward a:hover.next_step{background-position:0 -27px}#tutorial_hilfetext{background:#13181d;
 border:1px solid #030303;
 color:#848484;
 display:none;
@@ -6258,25 +6320,25 @@ tr.alt td {
   float: right;
   font-weight: 100;
 }
-#vacas #vacaslist{
+#search #searchlist, #vacas #vacaslist{
   text-align: center;
 }
-#vacas #vacaslist tbody tr{
+#search #searchlist tbody tr, #vacas #vacaslist tbody tr{
   text-align: center;
   height: 24px;
 }
-#vacas tbody .action a{
+#search tbody .action a, #vacas tbody .action a{
   margin: 0 2px;
 }
-#vacas tbody .coordinatesDiv{
+#search tbody .coordinatesDiv, #vacas tbody .coordinatesDiv{
   width: min-content;
   margin: auto;
 }
-#vacas tbody .coordinatesLink{
+#search tbody .coordinatesLink, #vacas tbody .coordinatesLink{
   color: #F1F1F1;
   text-decoration: none;
 }
-#vacas tbody .coordinatesLink:hover{
+#search tbody .coordinatesLink:hover, #vacas tbody .coordinatesLink:hover{
   color: #848484;
 }
 #messages ul #buttonTrash{
@@ -6307,3 +6369,17 @@ tr.alt td {
   display: block;
   width: 80px;
 }
+#rewardText {
+    margin: 12px 22px;
+    color: #9c0;
+}
+#reward #imgReward_1{background-position: 0 0}
+#reward #imgReward_2{background-position: -200px 0}
+#reward #imgReward_3{background-position: -400px 0}
+#reward #imgReward_4{background-position: -600px 0}
+#reward #imgReward_5{background-position: -800px 0}
+#reward #imgReward_6{background-position: -1000px 0}
+#reward #imgReward_7{background-position: -1200px 0}
+#reward #imgReward_8{background-position: -1400px 0}
+#reward #imgReward_9{background-position: -1600px 0}
+#reward #imgReward_10{background-position: -1800px 0}

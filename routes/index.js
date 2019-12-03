@@ -131,10 +131,10 @@ router.get('/OGame_ResourceSetings.html', (req, res, next) => {
 });
 
 router.get('/OGame_Reward.html', (req, res, next) => {
-  res.render('OGame_Reward', {bodyId: "resources",
+  res.render('OGame_Reward', {bodyId: "reward",
     url: req._parsedOriginalUrl.pathname,
     basic: uni.getActualBasicInfo(uni.planeta),
-    listScript: []
+    listScript: ['./Scripts/Reward.js']
   });
 });
 
@@ -164,19 +164,11 @@ router.get('/Options.html', (req, res, next) => {
   });
 });
 
-router.get('/Player.html', (req, res, next) => {
-  res.render('Player', {bodyId: "resources",
-    url: req._parsedOriginalUrl.pathname,
-    basic: uni.getActualBasicInfo(uni.planeta),
-    listScript: []
-  });
-});
-
 router.get('/Search.html', (req, res, next) => {
   res.render('Search', {bodyId: "search",
     url: req._parsedOriginalUrl.pathname,
     basic: uni.getActualBasicInfo(uni.planeta),
-    listScript: []
+    listScript: ['./Scripts/Search.js']
   });
 });
 

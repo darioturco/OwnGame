@@ -35,19 +35,14 @@ block content
                     a.coordinatesLink(href='./Ogame_Galaxy.html?gal=' + item.coordinates.galaxy + '&sys=' + item.coordinates.system target='_self')
                       p [#{item.coordinates.galaxy}:#{item.coordinates.system}:#{item.coordinates.pos}]
                 th.action
-                  a.tooltip(href='#' onclick='return false;')
+                  a.tooltip(href='#' onclick='return false;' title='espiar')
                     span.icon.icon_eye
-                    //espiar (se pone verdecito si ya lo estas espiando)
-                  a.tooltip(href='#' onclick='return false;')
+                  a.tooltip(href='#' onclick='return false;' title='reporte de espionage')
                     span.icon.icon_adressbook
-                    // leer reporte de espionaje (esta negro si no tenes reporte de ese jugador)
-                  a.tooltip(href='#' onclick='return false;')
+                  a.tooltip(href='#' onclick='return false;' title='ataque personalisado')
                     span.icon.icon_missile
-                    // ataque personalisado
-                  a.tooltip(href='#' onclick='return false;')
+                  a.tooltip(href='#' onclick='return false;' title='ataque vaca')
                     span.icon.icon_against
-                    // ataca como si fuera una vaca
-                  a.tooltip(href='#' onclick='removeVaca(this, ' + item.coordinates.galaxy + ', ' + item.coordinates.system + ', ' + item.coordinates.pos + ');')
+                  a.tooltip(href='#' onclick='removeVaca(this, ' + item.coordinates.galaxy + ', ' + item.coordinates.system + ', ' + item.coordinates.pos + ');' title='eliminar')
                     span.icon.icon_mail
-                    // lo saca de la lista de vacas
       .footer

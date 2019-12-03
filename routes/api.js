@@ -42,10 +42,13 @@ router.get('/galaxy', function(req, res, next) {
 
 router.get('/readMessages', function(req, res, next) {
   let listMes = uni.player.messages;
-  //setea que viste todos los mesages
-
   res.send({ok: true, list: listMes});
 });
+
+router.get('/searchPlayer', function(req, res, next) {
+  uni.searchPlayer(res, req.query.name);
+});
+
 
 //Se usa set para las direcciones que cambian cosas en la base de datos
 

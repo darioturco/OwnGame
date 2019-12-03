@@ -317,6 +317,21 @@ var exp = {
       res.send({ok: false});
     }
   },
+  searchPlayer: function(res, playerName){
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOne({name: playerName}, (err, obj) => {
+      if(err) throw err;
+      if(obj == null){
+        res.send({ok: false, reason: "not found"});
+      }else{
+        let coors = [], names = [];
+        for(let i = 0 ; i<obj.planets.length ; i++){
+          coors.push(obj.planets[i].coordinates);
+          names.push(obj.planets[i].name);
+        }
+        res.send({ok: true, 'names': names, 'coors': coors});
+      }
+    });
+  },
   toggleVaca: function(res, query){
     let elimino = false;
     for(let i = 0 ; i<this.player.vacas.length ; i++){

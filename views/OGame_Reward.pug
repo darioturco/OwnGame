@@ -1,2 +1,60 @@
 extends Ogame_Layout
 block content
+  #inhalt
+    #planet(style='background-image:url(./Imagenes/Tutorial.jpg)')
+      #header_text
+        h2 Welcome to the Tutorial
+    .c-left
+    .c-right
+    #buttonz
+      .header
+        h2 Tutorial
+      .content
+        .pagination
+          ul
+            li
+              a#tutorialStep_0.tutorial_done.tooltipHTML.currentpage(href='javascript:void(0);' onclick='switchMission(1);') 1
+            li
+              a#tutorialStep_1.tutorial_done.tooltipHTML(href='javascript:void(0);' onclick='switchMission(2);') 2
+            li
+              a#tutorialStep_2.tutorial_done.tooltipHTML(href='javascript:void(0);' onclick='switchMission(3);') 3
+            li
+              a#tutorialStep_3.tutorial_done.tooltipHTML(href='javascript:void(0);' onclick='switchMission(4);') 4
+            li
+              a#tutorialStep_4.tutorial_done.tooltipHTML(href='javascript:void(0);' onclick='switchMission(5);') 5
+            li
+              a#tutorialStep_5.tutorial_done.tooltipHTML(href='javascript:void(0);' onclick='switchMission(6);') 6
+            li
+              a#tutorialStep_6.tutorial_done.tooltipHTML(href='javascript:void(0);' onclick='switchMission(7);') 7
+            li
+              a#tutorialStep_7.tutorial_done.tooltipHTML(href='javascript:void(0);' onclick='switchMission(8);') 8
+            li
+              a#tutorialStep_8.tutorial_done.tooltipHTML(href='javascript:void(0);' onclick='switchMission(9);') 9
+            li
+              a#tutorialStep_9.tutorial_done.tooltipHTML(href='javascript:void(0);' onclick='switchMission(10);') 10
+        h3#titleReward.textBeefy Task 1 - Basic supply
+        #tutorial-content
+          #aufgabentext.building.metalMine
+            div#imgReward_1.pic
+            p#infoReward To expand your home planet you first of all, will need enough resources. You can produce these via mines. Secure your basic supply by expanding your metal and crystal mines. Please note that the upkeep of supply buildings use up a lot of energy. You can produce this energy by, for example, using solar power plants.
+          br.clearfloat
+          #aufgaben
+            span#aufgaben_header Tasks:
+            ul#aufgabe_liste
+              li#aufgabe_0
+                span#task1 Upgrade metal mine to level 4
+              li#aufgabe_1
+                span#task2 Upgrade crystal mine to level 2
+              li#aufgabe_2
+                span#task3 Upgrade solar power plant to level 4
+          #rewardText Reward: 150 units metal + 75 units crystal
+          .hilfe_buttons
+            #hilfetext_headline
+              p#resText
+            #nexttext_headline
+              a.next_step(href='javascript:void(0);') Next mission
+
+
+
+
+      .footer
