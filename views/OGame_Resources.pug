@@ -6,52 +6,47 @@ block content
         h2 Resources - #{basic.planets[basic.numPlanet].name}
       #slot01.slot
         a(href='./Ogame_ResourceSetings.html') Resource settings
-      form(method='POST' action='' name='form' onkeyup='sendBuildRequest(null, event, false);' onsubmit='return false;')
-        #detail.detail_screen
-          #imgBlackInfo.pic
-            a.techtree_link.tooltip.overlay(href='./Ogame_Tecnology.html')
-              .techtree_img
-              span.label Techtree
-          #content
-            h2#nameText
-            a#close.close_details(href='javascript:void(0);' onclick='toggleDescription("void"); return false;')
-            span#levelText.level
-              | Level 0
-              span.undermark
-            br.clearfloat
-            ul.production_info
-              li
-                | Production duration:
-                span#buildDuration.time
-                  | 0s
-                  span.undermark
-              li
-                | Construction possible:
-                span#possibleInTime.time 
-            a.demolish_link.tooltip.demolishDisabled(href='#demolish3' onclick='')
-              .demolish_img_disabled
-              span.label Tear down
-            .costs_wrap
-              p.costs_info Required to improve to the next level:
-              ul#costs
-                li.metal.tooltip
-                  .resourceIcon.descriptionIcon.metal
-                  #cost1.cost -
-                li.crystal.tooltip
-                  .resourceIcon.descriptionIcon.crystal
-                  #cost2.cost -
-                li.deuterium.tooltip
-                  .resourceIcon.descriptionIcon.energy
-                  #cost3.cost -
-            .build-it_wrap
-              a#build-it.build-it(href='javascript:void(0);')
-                span Improve
-          br(clear='all')
-          #description
-            .txt_box
-              a.tooltip.help.overlay(href='Ogame_Tecnology.html')
-              p#descriptionText.description_txt(style='width: 90%')
-                | Deuterium Synthesizers draw the trace Deuterium content from the water on a planet.
+      #detail.detail_screen
+        #imgBlackInfo.pic
+          a.techtree_link.tooltip.overlay(href='./Ogame_Tecnology.html')
+            .techtree_img
+            span.label Techtree
+        #content
+          h2#nameText
+          a#close.close_details(href='javascript:void(0);' onclick='toggleDescription("void"); return false;')
+          span#levelText.level
+            | Level 0
+            span.undermark
+          br.clearfloat
+          ul.production_info
+            li
+              | Production duration:
+              span#buildDuration.time
+                | 0s
+                span.undermark
+            li
+              | Construction possible:
+              span#possibleInTime.time
+          .costs_wrap
+            p.costs_info Required to improve to the next level:
+            ul#costs
+              li.metal.tooltip
+                .resourceIcon.descriptionIcon.metal
+                #cost1.cost -
+              li.crystal.tooltip
+                .resourceIcon.descriptionIcon.crystal
+                #cost2.cost -
+              li.deuterium.tooltip
+                .resourceIcon.descriptionIcon.energy
+                #cost3.cost -
+          .build-it_wrap
+            a#build-it.build-it(href='javascript:void(0);')
+              span Improve
+        br
+        #description
+          .txt_box
+            a.tooltip.help.overlay(href='Ogame_Tecnology.html')
+            p#descriptionText.description_txt(style='width: 90%')
     .c-left
     .c-right
     #buttonz

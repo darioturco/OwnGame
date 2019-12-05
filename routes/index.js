@@ -116,7 +116,7 @@ router.get('/OGame_Resources.html', (req, res, next) => {
   res.render('OGame_Resources', {bodyId: "resources",
     url: req._parsedOriginalUrl.pathname,
     info: uni.buildingsActualInfo(uni.planeta),
-    basic: uni.getActualBasicInfo(uni.planeta, "info="+JSON.stringify(this.info)+";"),
+    basic: uni.getActualBasicInfo(uni.planeta),
     listScript: ['./Scripts/Description.js']
   });
 });
@@ -125,7 +125,7 @@ router.get('/OGame_ResourceSetings.html', (req, res, next) => {
   res.render('OGame_ResourceSetings', {bodyId: "resourceSettings",
     url: req._parsedOriginalUrl.pathname,
     info: uni.resourcesSetting(uni.planeta),
-    basic: uni.getActualBasicInfo(uni.planeta, "resourcesInitial(); "),
+    basic: uni.getActualBasicInfo(uni.planeta),
     listScript: ['./Scripts/Resources_Info.js']
   });
 });
@@ -133,6 +133,7 @@ router.get('/OGame_ResourceSetings.html', (req, res, next) => {
 router.get('/OGame_Reward.html', (req, res, next) => {
   res.render('OGame_Reward', {bodyId: "reward",
     url: req._parsedOriginalUrl.pathname,
+    info: uni.player.tutorial,
     basic: uni.getActualBasicInfo(uni.planeta),
     listScript: ['./Scripts/Reward.js']
   });

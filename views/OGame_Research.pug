@@ -4,49 +4,47 @@ block content
     #planet(style='background-image: url(./Imagenes/Research/Research.jpg)')
       #header_text
         h2 Research - #{basic.planets[basic.numPlanet].name}
-      form(method='POST' action='' name='form')
-        #detail.detail_screen
-          #imgBlackInfo.pic
-            a.techtree_link.tooltip.overlay(href='./Ogame_Tecnology.html')
-              .techtree_img
-              span.label Techtree
-          #content
-            h2#nameText
-            a#close.close_details(href='javascript:void(0);' onclick='toggleDescription("void"); return false;')
-            span#levelText.level
-              | Level 0
-              span.undermark
-            br.clearfloat
-            ul.production_info
-              li
-                | Research time:
-                span#buildDuration.time
-                  | 0s
-                  span.undermark
-              li
-                | Construction possible:
-                span#possibleInTime.time
-            .costs_wrap
-              p.costs_info Required to improve to the next level:
-              ul#costs
-                li.metal.tooltip
-                  .resourceIcon.descriptionIcon.metal
-                  #cost1.cost.overmark -
-                li.crystal.tooltip
-                  .resourceIcon.descriptionIcon.crystal
-                  #cost2.cost.overmark -
-                li.deuterium.tooltip
-                  .resourceIcon.descriptionIcon.deuterium
-                  #cost3.cost.overmark -
-            .build-it_wrap
-              a#build-it.build-it_disabled(href='javascript:void(0);')
-                span Research
-          br(clear='all')
-          #description
-            .txt_box
-              a.tooltip.help.overlay(href='Ogame_Tecnology.html')
-              p#descriptionText.description_txt(style='width: 90%')
-                | With an astrophysics research module, ships can undertake long expeditions. Every second level of this technology will allow you to colonise an extra planet.
+      #detail.detail_screen
+        #imgBlackInfo.pic
+          a.techtree_link.tooltip.overlay(href='./Ogame_Tecnology.html')
+            .techtree_img
+            span.label Techtree
+        #content
+          h2#nameText
+          a#close.close_details(href='javascript:void(0);' onclick='toggleDescription("void"); return false;')
+          span#levelText.level
+            | Level 0
+            span.undermark
+          br.clearfloat
+          ul.production_info
+            li
+              | Research time:
+              span#buildDuration.time
+                | 0s
+                span.undermark
+            li
+              | Construction possible:
+              span#possibleInTime.time
+          .costs_wrap
+            p.costs_info Required to improve to the next level:
+            ul#costs
+              li.metal.tooltip
+                .resourceIcon.descriptionIcon.metal
+                #cost1.cost.overmark -
+              li.crystal.tooltip
+                .resourceIcon.descriptionIcon.crystal
+                #cost2.cost.overmark -
+              li.deuterium.tooltip
+                .resourceIcon.descriptionIcon.deuterium
+                #cost3.cost.overmark -
+          .build-it_wrap
+            a#build-it.build-it_disabled(href='javascript:void(0);')
+              span Research
+        br
+        #description
+          .txt_box
+            a.tooltip.help.overlay(href='Ogame_Tecnology.html')
+            p#descriptionText.description_txt(style='width: 90%')
     .c-left
     .c-right
     #buttonz.wrapButtons

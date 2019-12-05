@@ -13,25 +13,25 @@ block content
         .pagination
           ul
             li
-              a#tutorialStep_0.tutorial_done.tooltipHTML.currentpage(href='javascript:void(0);' onclick='switchMission(1);') 1
+              a#tutorialStep_0.tooltipHTML.currentpage(class=(info[0])?'tutorial_done':''  href='javascript:void(0);' onclick='switchMission(1);') 1
             li
-              a#tutorialStep_1.tutorial_done.tooltipHTML(href='javascript:void(0);' onclick='switchMission(2);') 2
+              a#tutorialStep_1.tooltipHTML(class=(info[1])?'tutorial_done':'' href='javascript:void(0);' onclick='switchMission(2);') 2
             li
-              a#tutorialStep_2.tutorial_done.tooltipHTML(href='javascript:void(0);' onclick='switchMission(3);') 3
+              a#tutorialStep_2.tooltipHTML(class=(info[2])?'tutorial_done':'' href='javascript:void(0);' onclick='switchMission(3);') 3
             li
-              a#tutorialStep_3.tutorial_done.tooltipHTML(href='javascript:void(0);' onclick='switchMission(4);') 4
+              a#tutorialStep_3.tooltipHTML(class=(info[3])?'tutorial_done':'' href='javascript:void(0);' onclick='switchMission(4);') 4
             li
-              a#tutorialStep_4.tutorial_done.tooltipHTML(href='javascript:void(0);' onclick='switchMission(5);') 5
+              a#tutorialStep_4.tooltipHTML(class=(info[4])?'tutorial_done':'' href='javascript:void(0);' onclick='switchMission(5);') 5
             li
-              a#tutorialStep_5.tutorial_done.tooltipHTML(href='javascript:void(0);' onclick='switchMission(6);') 6
+              a#tutorialStep_5.tooltipHTML(class=(info[5])?'tutorial_done':'' href='javascript:void(0);' onclick='switchMission(6);') 6
             li
-              a#tutorialStep_6.tutorial_done.tooltipHTML(href='javascript:void(0);' onclick='switchMission(7);') 7
+              a#tutorialStep_6.tooltipHTML(class=(info[6])?'tutorial_done':'' href='javascript:void(0);' onclick='switchMission(7);') 7
             li
-              a#tutorialStep_7.tutorial_done.tooltipHTML(href='javascript:void(0);' onclick='switchMission(8);') 8
+              a#tutorialStep_7.tooltipHTML(class=(info[7])?'tutorial_done':'' href='javascript:void(0);' onclick='switchMission(8);') 8
             li
-              a#tutorialStep_8.tutorial_done.tooltipHTML(href='javascript:void(0);' onclick='switchMission(9);') 9
+              a#tutorialStep_8.tooltipHTML(class=(info[8])?'tutorial_done':'' href='javascript:void(0);' onclick='switchMission(9);') 9
             li
-              a#tutorialStep_9.tutorial_done.tooltipHTML(href='javascript:void(0);' onclick='switchMission(10);') 10
+              a#tutorialStep_9.tooltipHTML(class=(info[9])?'tutorial_done':'' href='javascript:void(0);' onclick='switchMission(10);') 10
         h3#titleReward.textBeefy Task 1 - Basic supply
         #tutorial-content
           #aufgabentext.building.metalMine
@@ -52,9 +52,5 @@ block content
             #hilfetext_headline
               p#resText
             #nexttext_headline
-              a.next_step(href='javascript:void(0);') Next mission
-
-
-
-
+              a.next_step(href='javascript:void(0);' onclick='validateMission();') Check mission
       .footer

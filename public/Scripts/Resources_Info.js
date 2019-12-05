@@ -1,18 +1,20 @@
 var selects = [];
 var controls = [];
 var open = [];
+var values = [];
 
-function resourcesInitial(){
-  //carga los datos desde el servidor
-  for(let i = 1 ; i<=6 ; i++){
+setTimeout(() => {
+  for(let i = 1 ; i<=5 ; i++){
     selects.push(document.getElementById("dropdown" + i));
     controls.push(document.getElementById("downButton" + i));
     open.push(false);
+
+    values.push(selects[i-1].dataset.val);
   }
-}
+}, 0)
 
 function clickSelect(num){
-  for(let i = 0 ; i<6 ; i++){
+  for(let i = 0 ; i<5 ; i++){
     if(i == num-1){
       if(open[i] == true){
         selects[i].style.display = "none";
@@ -41,4 +43,10 @@ function setDropdown(val, num){
     }
   }
   clickSelect(num);
+}
+
+function recalculateButton(){
+  loadJSON('./api/set/updateResources', (obj) => {
+    console.log(obj);
+  });
 }

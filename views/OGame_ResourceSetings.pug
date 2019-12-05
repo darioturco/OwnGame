@@ -7,392 +7,293 @@ block content
       .headerRS
         a.close_details.close_ressources(href='./Ogame_Resources.html')
       .mainRS
-        form(method='GET' action='')
-          table.list.listOfResourceSettingsPerPlanet(cellpadding='0' cellspacing='0' style='margin-top:0px;')
-            tbody
-              tr
-                td#factor(colspan='7')
-                  .secondcol
-                    div(style='width:376px; margin: 0px auto;')
-                      span.factorkey Production factor: 100%
-                      span.factorbutton
-                        input.btn_blue(type='submit' value='Recalculate')
-                      br.clearfloat
-              tr
-                th(colspan='2')
-                th Metal
-                th Crystal
-                th Deuterium
-                th Energy
-                th
-              tr.alt
-                td.label(colspan='2') Basic Income
-                td.undermark.textRight
-                  span.tooltipCustom #{info.basic.metal}
-                td.undermark.textRight
-                  span.tooltipCustom #{info.basic.crystal}
-                td.normalmark.textRight
-                  span.tooltipCustom 0
-                td.normalmark.textRight
-                  span.tooltipCustom 0
-                td
-              tr
-                td.label Metal Mine (Level 19)
-                td
-                td.undermark
-                  span.tooltipCustom #{info.mines.metal}
-                td.normalmark
-                  span.tooltipCustom 0
-                td.normalmark
-                  span.tooltipCustom 0
-                td.overmark
-                  span.tooltipCustom 1.163/1.163
-                td
-                  select.undermark.dropdownInitialized(name='last1' size='1' style='display: none;')
-                    option.undermark(value='100' selected='') 100%
-                    option.undermark(value='90') 90%
-                    option.undermark(value='80') 80%
-                    option.undermark(value='70') 70%
-                    option.middlemark(value='60') 60%
-                    option.middlemark(value='50') 50%
-                    option.middlemark(value='40') 40%
-                    option.overmark(value='30') 30%
-                    option.overmark(value='20') 20%
-                    option.overmark(value='10') 10%
-                    option.overmark(value='0') 0%
-                  span.dropdown.currentlySelected.undermark(style='width: 67px;')
-                    a#downButton1.undermark(value='100' href='javascript:void(0);' onclick='clickSelect(1)') 100%
-                  ul#dropdown1.dropdown.dropdownList.initialized(style='left: 568px; top: 186px; min-width: 67px; display:none;')
-                    li
-                      a.undermark(value='100' onclick='setDropdown(100, 1)') 100%
-                    li
-                      a.undermark(value='90' onclick='setDropdown(90, 1)') 90%
-                    li
-                      a.undermark(value='80' onclick='setDropdown(80, 1)') 80%
-                    li
-                      a.undermark(value='70' onclick='setDropdown(70, 1)') 70%
-                    li
-                      a.middlemark(value='60' onclick='setDropdown(60, 1)') 60%
-                    li
-                      a.middlemark(value='50' onclick='setDropdown(50, 1)') 50%
-                    li
-                      a.middlemark(value='40' onclick='setDropdown(40, 1)') 40%
-                    li
-                      a.overmark(value='30' onclick='setDropdown(30, 1)') 30%
-                    li
-                      a.overmark(value='20' onclick='setDropdown(20, 1)') 20%
-                    li
-                      a.overmark(value='10' onclick='setDropdown(10, 1)') 10%
-                    li
-                      a.overmark(value='0' onclick='setDropdown(0, 1)') 0%
-              tr.alt
-                td.label Crystal Mine (Level 16)
-                td
-                td.normalmark
-                  span.tooltipCustom 0
-                td.undermark
-                  span.tooltipCustom #{info.mines.crystal}
-                td.normalmark
-                  span.tooltipCustom 0
-                td.overmark
-                  span.tooltipCustom 736/736
-                td
-                  select.undermark.dropdownInitialized(name='last2' size='1' style='display: none;')
-                    option.undermark(value='100' selected='') 100%
-                    option.undermark(value='90') 90%
-                    option.undermark(value='80') 80%
-                    option.undermark(value='70') 70%
-                    option.middlemark(value='60') 60%
-                    option.middlemark(value='50') 50%
-                    option.middlemark(value='40') 40%
-                    option.overmark(value='30') 30%
-                    option.overmark(value='20') 20%
-                    option.overmark(value='10') 10%
-                    option.overmark(value='0') 0%
-                  span.dropdown.currentlySelected.undermark(style='width: 67px;')
-                    a#downButton2.undermark(data-value='100' href='javascript:void(0);' onclick='clickSelect(2)') 100%
-                  ul#dropdown2.dropdown.dropdownList.initialized(style='left: 568px; top: 211px; min-width: 67px; display:none;')
-                    li
-                      a.undermark(value='100' onclick='setDropdown(100, 2)') 100%
-                    li
-                      a.undermark(value='90' onclick='setDropdown(90, 2)') 90%
-                    li
-                      a.undermark(value='80' onclick='setDropdown(80, 2)') 80%
-                    li
-                      a.undermark(value='70' onclick='setDropdown(70, 2)') 70%
-                    li
-                      a.middlemark(value='60' onclick='setDropdown(60, 2)') 60%
-                    li
-                      a.middlemark(value='50' onclick='setDropdown(50, 2)') 50%
-                    li
-                      a.middlemark(value='40' onclick='setDropdown(40, 2)') 40%
-                    li
-                      a.overmark(value='30' onclick='setDropdown(30, 2)') 30%
-                    li
-                      a.overmark(value='20' onclick='setDropdown(20, 2)') 20%
-                    li
-                      a.overmark(value='10' onclick='setDropdown(10, 2)') 10%
-                    li
-                      a.overmark(value='0' onclick='setDropdown(0, 2)') 0%
-              tr
-                td.label Deuterium Synthesizer (Level 10)
-                td
-                td.normalmark
-                  span.tooltipCustom 0
-                td.normalmark
-                  span.tooltipCustom 0
-                td.undermark
-                  span.tooltipCustom #{info.mines.deuterium}
-                td.overmark
-                  span.tooltipCustom 519/519
-                td
-                  select.undermark.dropdownInitialized(name='last3' size='1' style='display: none;')
-                    option.undermark(value='100' selected='') 100%
-                    option.undermark(value='90') 90%
-                    option.undermark(value='80') 80%
-                    option.undermark(value='70') 70%
-                    option.middlemark(value='60') 60%
-                    option.middlemark(value='50') 50%
-                    option.middlemark(value='40') 40%
-                    option.overmark(value='30') 30%
-                    option.overmark(value='20') 20%
-                    option.overmark(value='10') 10%
-                    option.overmark(value='0') 0%
-                  span.dropdown.currentlySelected.undermark(style='width: 67px;')
-                    a#downButton3.undermark(value='100' href='javascript:void(0);' onclick='clickSelect(3)') 100%
-                  ul#dropdown3.dropdown.dropdownList.initialized(style='left: 568px; top: 236px; min-width: 67px; display:none;')
-                    li
-                      a.undermark(value='100' onclick='setDropdown(100, 3)') 100%
-                    li
-                      a.undermark(value='90' onclick='setDropdown(90, 3)') 90%
-                    li
-                      a.undermark(value='80' onclick='setDropdown(80, 3)') 80%
-                    li
-                      a.undermark(value='70' onclick='setDropdown(70, 3)') 70%
-                    li
-                      a.middlemark(value='60' onclick='setDropdown(60, 3)') 60%
-                    li
-                      a.middlemark(value='50' onclick='setDropdown(50, 3)') 50%
-                    li
-                      a.middlemark(value='40' onclick='setDropdown(40, 3)') 40%
-                    li
-                      a.overmark(value='30' onclick='setDropdown(30, 3)') 30%
-                    li
-                      a.overmark(value='20' onclick='setDropdown(20, 3)') 20%
-                    li
-                      a.overmark(value='10' onclick='setDropdown(10, 3)') 10%
-                    li
-                      a.overmark(value='0' onclick='setDropdown(0, 3)') 0%
-              tr.alt
-                td.label Solar Plant (Level 19)
-                td
-                td.normalmark
-                  span.tooltipCustom 0
-                td.normalmark
-                  span.tooltipCustom 0
-                td.normalmark
-                  span.tooltipCustom 0
-                td.undermark
-                  span.tooltipCustom #{info.mines.solar}
-                td
-                  select.undermark.dropdownInitialized(name='last4' size='1' style='display: none;')
-                    option.undermark(value='100' selected='') 100%
-                    option.undermark(value='90') 90%
-                    option.undermark(value='80') 80%
-                    option.undermark(value='70') 70%
-                    option.middlemark(value='60') 60%
-                    option.middlemark(value='50') 50%
-                    option.middlemark(value='40') 40%
-                    option.overmark(value='30') 30%
-                    option.overmark(value='20') 20%
-                    option.overmark(value='10') 10%
-                    option.overmark(value='0') 0%
-                  span.dropdown.currentlySelected.undermark(style='width: 67px;')
-                    a#downButton4.undermark(value='100' href='javascript:void(0);' onclick='clickSelect(4)') 100%
-                  ul#dropdown4.dropdown.dropdownList.initialized(style='left: 568px; top: 261px; min-width: 67px; display:none;')
-                    li
-                      a.undermark(value='100' onclick='setDropdown(100, 4)') 100%
-                    li
-                      a.undermark(value='90' onclick='setDropdown(90, 4)') 90%
-                    li
-                      a.undermark(value='80' onclick='setDropdown(80, 4)') 80%
-                    li
-                      a.undermark(value='70' onclick='setDropdown(70, 4)') 70%
-                    li
-                      a.middlemark(value='60' onclick='setDropdown(60, 4)') 60%
-                    li
-                      a.middlemark(value='50' onclick='setDropdown(50, 4)') 50%
-                    li
-                      a.middlemark(value='40' onclick='setDropdown(40, 4)') 40%
-                    li
-                      a.overmark(value='30' onclick='setDropdown(30, 4)') 30%
-                    li
-                      a.overmark(value='20' onclick='setDropdown(20, 4)') 20%
-                    li
-                      a.overmark(value='10' onclick='setDropdown(10, 4)') 10%
-                    li
-                      a.overmark(value='0' onclick='setDropdown(0, 4)') 0%
-              tr
-                td.label Fusion Reactor (Level 0)
-                td
-                td.normalmark
-                  span.tooltipCustom 0
-                td.normalmark
-                  span.tooltipCustom 0
-                td.overmark
-                  span.tooltipCustom 0
-                td.normalmark
-                  span.tooltipCustom #{info.mines.fusion}
-                td
-                  select.overmark.dropdownInitialized(name='last12' size='1' style='display: none;')
-                    option.undermark(value='100' selected='') 100%
-                    option.undermark(value='90') 90%
-                    option.undermark(value='80') 80%
-                    option.undermark(value='70') 70%
-                    option.middlemark(value='60') 60%
-                    option.middlemark(value='50') 50%
-                    option.middlemark(value='40') 40%
-                    option.overmark(value='30') 30%
-                    option.overmark(value='20') 20%
-                    option.overmark(value='10') 10%
-                    option.overmark(value='0' selected='') 0%
-                  span.dropdown.currentlySelected.overmark(style='width: 67px;')
-                    a#downButton5.undermark(value='0' href='javascript:void(0);' onclick='clickSelect(5)') 100%
-                  ul#dropdown5.dropdown.dropdownList.initialized(style='left: 568px; top: 286px; min-width: 67px; display:none;')
-                    li
-                      a.undermark(value='100' onclick='setDropdown(100, 5)') 100%
-                    li
-                      a.undermark(value='90' onclick='setDropdown(90, 5)') 90%
-                    li
-                      a.undermark(value='80' onclick='setDropdown(80, 5)') 80%
-                    li
-                      a.undermark(value='70' onclick='setDropdown(70, 5)') 70%
-                    li
-                      a.middlemark(value='60' onclick='setDropdown(60, 5)') 60%
-                    li
-                      a.middlemark(value='50' onclick='setDropdown(50, 5)') 50%
-                    li
-                      a.middlemark(value='40' onclick='setDropdown(40, 5)') 40%
-                    li
-                      a.overmark(value='30' onclick='setDropdown(30, 5)') 30%
-                    li
-                      a.overmark(value='20' onclick='setDropdown(20, 5)') 20%
-                    li
-                      a.overmark(value='10' onclick='setDropdown(10, 5)') 10%
-                    li
-                      a.overmark(value='0' onclick='setDropdown(0, 5)') 0%
-              tr.alt
-                td.label Solar Satellite (Number: 8)
-                td
-                td.normalmark
-                  span.tooltipCustom 0
-                td.normalmark
-                  span.tooltipCustom 0
-                td.normalmark
-                  span.tooltipCustom 0
-                td.undermark
-                  span.tooltipCustom #{info.mines.satillite}
-                td
-                  select.undermark.dropdownInitialized(name='last212' size='1' style='display: none;')
-                    option.undermark(value='100' selected='') 100%
-                    option.undermark(value='90') 90%
-                    option.undermark(value='80') 80%
-                    option.undermark(value='70') 70%
-                    option.middlemark(value='60') 60%
-                    option.middlemark(value='50') 50%
-                    option.middlemark(value='40') 40%
-                    option.overmark(value='30') 30%
-                    option.overmark(value='20') 20%
-                    option.overmark(value='10') 10%
-                    option.overmark(value='0') 0%
-                  span.dropdown.currentlySelected.undermark(style='width: 67px;')
-                    a#downButton6.undermark(value='100' href='javascript:void(0);' onclick='clickSelect(6)') 100%
-                  ul#dropdown6.dropdown.dropdownList.initialized(style='left: 568px; top: 311px; min-width: 67px; display:none;')
-                    li
-                      a.undermark(value='100' onclick='setDropdown(100, 1)') 100%
-                    li
-                      a.undermark(value='90' onclick='setDropdown(90, 6)') 90%
-                    li
-                      a.undermark(value='80' onclick='setDropdown(80, 6)') 80%
-                    li
-                      a.undermark(value='70' onclick='setDropdown(70, 6)') 70%
-                    li
-                      a.middlemark(value='60' onclick='setDropdown(60, 6)') 60%
-                    li
-                      a.middlemark(value='50' onclick='setDropdown(50, 6)') 50%
-                    li
-                      a.middlemark(value='40' onclick='setDropdown(40, 6)') 40%
-                    li
-                      a.overmark(value='30' onclick='setDropdown(30, 6)') 30%
-                    li
-                      a.overmark(value='20' onclick='setDropdown(20, 6)') 20%
-                    li
-                      a.overmark(value='10' onclick='setDropdown(10, 6)') 10%
-                    li
-                      a.overmark(value='0' onclick='setDropdown(0, 6)') 0%
-              tr
-                td.label Plasma Technology (Level #{info.plasma})
-                td
-                - let metalPlasma = Math.floor(info.plasma*0.01*info.mines.metal);
-                - let crystalPlasma = Math.floor(info.plasma*0.00666*info.mines.crystal);
-                - let deuteriumPlasma = Math.floor(info.plasma*0.00333*info.mines.deuterium);
-                td.normalmark
-                  span.tooltipCustom #{metalPlasma}
-                td.normalmark
-                  span.tooltipCustom #{crystalPlasma}
-                td.normalmark
-                  span.tooltipCustom #{deuteriumPlasma}
-                td.normalmark
-                  span.tooltipCustom 0
-                td
-              tr
-                td.label(colspan='2') Storage capacity
-                td.normalmark.left2
-                  span.tooltipCustom 470.000
-                td.normalmark.left2
-                  span.tooltipCustom 255.000
-                td.normalmark.left2
-                  span.tooltipCustom 75.000
-                td -
-                td
-              tr.summary.alt
-                - let metalHour = info.basic.metal + info.mines.metal + metalPlasma;
-                - let crystalHour = info.basic.crystal + info.mines.crystal + crystalPlasma;
-                - let deuteriumHour = info.mines.deuterium + deuteriumPlasma + info.mines.fusionDeuterium;
-                td.label(colspan='2')
-                  em Total per hour:
-                td.undermark
-                  span.tooltipCustom #{metalHour}
-                td.undermark
-                  span.tooltipCustom #{crystalHour}
-                td.undermark
-                  span.tooltipCustom #{deuteriumHour}
-                td.undermark
-                  span.tooltipCustom 186
-                td
-              tr
-                td.label(colspan='2')
-                  em Total per day:
-                td.undermark
-                  span.tooltipCustom #{metalHour*24}
-                td.undermark
-                  span.tooltipCustom #{crystalHour*24}
-                td.undermark
-                  span.tooltipCustom #{deuteriumHour*24}
-                td.undermark
-                  span.tooltipCustom 186
-                td
-              tr.alt
-                td.label(colspan='2')
-                  em Total per week:
-                td.undermark
-                  span.tooltipCustom #{metalHour*168}
-                td.undermark
-                  span.tooltipCustom #{crystalHour*168}
-                td.undermark
-                  span.tooltipCustom #{deuteriumHour*168}
-                td.undermark
-                  span.tooltipCustom 186
-                td
+        table.list.listOfResourceSettingsPerPlanet(cellpadding='0' cellspacing='0' style='margin-top:0px;')
+          tbody
+            tr
+              td#factor(colspan='7')
+                .secondcol
+                  div(style='width:376px; margin: 0px auto;')
+                    span.factorkey Production factor: 100%
+                    span.factorbutton
+                      input.btn_blue(type='button' value='Recalculate' onclick='recalculateButton();')
+                    br.clearfloat
+            tr
+              th(colspan='2')
+              th Metal
+              th Crystal
+              th Deuterium
+              th Energy
+              th
+            tr.alt
+              td.label(colspan='2') Basic Income
+              td.undermark.textRight
+                span.tooltipCustom #{info.basic.metal}
+              td.undermark.textRight
+                span.tooltipCustom #{info.basic.crystal}
+              td.normalmark.textRight
+                span.tooltipCustom 0
+              td.normalmark.textRight
+                span.tooltipCustom 0
+              td
+            tr
+              td.label Metal Mine (Level #{info.buildings.metalMine})
+              td
+              td.undermark
+                span.tooltipCustom #{info.mines.metal}
+              td.normalmark
+                span.tooltipCustom 0
+              td.normalmark
+                span.tooltipCustom 0
+              td.overmark
+                span.tooltipCustom 1.163/1.163
+              td
+                span.dropdown.currentlySelected.undermark(style='width: 67px;')
+                  a#downButton1.undermark(value='100' href='javascript:void(0);' onclick='clickSelect(1)') 100%
+                ul#dropdown1.dropdown.dropdownList.initialized(data-val=info.values.metal style='left: 568px; top: 186px; min-width: 67px; display:none;')
+                  li
+                    a.undermark(value='100' onclick='setDropdown(100, 1)') 100%
+                  li
+                    a.undermark(value='90' onclick='setDropdown(90, 1)') 90%
+                  li
+                    a.undermark(value='80' onclick='setDropdown(80, 1)') 80%
+                  li
+                    a.undermark(value='70' onclick='setDropdown(70, 1)') 70%
+                  li
+                    a.middlemark(value='60' onclick='setDropdown(60, 1)') 60%
+                  li
+                    a.middlemark(value='50' onclick='setDropdown(50, 1)') 50%
+                  li
+                    a.middlemark(value='40' onclick='setDropdown(40, 1)') 40%
+                  li
+                    a.overmark(value='30' onclick='setDropdown(30, 1)') 30%
+                  li
+                    a.overmark(value='20' onclick='setDropdown(20, 1)') 20%
+                  li
+                    a.overmark(value='10' onclick='setDropdown(10, 1)') 10%
+                  li
+                    a.overmark(value='0' onclick='setDropdown(0, 1)') 0%
+            tr.alt
+              td.label Crystal Mine (Level #{info.buildings.crystalMine})
+              td
+              td.normalmark
+                span.tooltipCustom 0
+              td.undermark
+                span.tooltipCustom #{info.mines.crystal}
+              td.normalmark
+                span.tooltipCustom 0
+              td.overmark
+                span.tooltipCustom 736/736
+              td
+                span.dropdown.currentlySelected.undermark(style='width: 67px;')
+                  a#downButton2.undermark(data-value='100' href='javascript:void(0);' onclick='clickSelect(2)') 100%
+                ul#dropdown2.dropdown.dropdownList.initialized(data-val=info.values.crystal style='left: 568px; top: 211px; min-width: 67px; display:none;')
+                  li
+                    a.undermark(value='100' onclick='setDropdown(100, 2)') 100%
+                  li
+                    a.undermark(value='90' onclick='setDropdown(90, 2)') 90%
+                  li
+                    a.undermark(value='80' onclick='setDropdown(80, 2)') 80%
+                  li
+                    a.undermark(value='70' onclick='setDropdown(70, 2)') 70%
+                  li
+                    a.middlemark(value='60' onclick='setDropdown(60, 2)') 60%
+                  li
+                    a.middlemark(value='50' onclick='setDropdown(50, 2)') 50%
+                  li
+                    a.middlemark(value='40' onclick='setDropdown(40, 2)') 40%
+                  li
+                    a.overmark(value='30' onclick='setDropdown(30, 2)') 30%
+                  li
+                    a.overmark(value='20' onclick='setDropdown(20, 2)') 20%
+                  li
+                    a.overmark(value='10' onclick='setDropdown(10, 2)') 10%
+                  li
+                    a.overmark(value='0' onclick='setDropdown(0, 2)') 0%
+            tr
+              td.label Deuterium Synthesizer (Level #{info.buildings.deuteriumMine})
+              td
+              td.normalmark
+                span.tooltipCustom 0
+              td.normalmark
+                span.tooltipCustom 0
+              td.undermark
+                span.tooltipCustom #{info.mines.deuterium}
+              td.overmark
+                span.tooltipCustom 519/519
+              td
+                span.dropdown.currentlySelected.undermark(style='width: 67px;')
+                  a#downButton3.undermark(value='100' href='javascript:void(0);' onclick='clickSelect(3)') 100%
+                ul#dropdown3.dropdown.dropdownList.initialized(data-val=info.values.deuterium style='left: 568px; top: 236px; min-width: 67px; display:none;')
+                  li
+                    a.undermark(value='100' onclick='setDropdown(100, 3)') 100%
+                  li
+                    a.undermark(value='90' onclick='setDropdown(90, 3)') 90%
+                  li
+                    a.undermark(value='80' onclick='setDropdown(80, 3)') 80%
+                  li
+                    a.undermark(value='70' onclick='setDropdown(70, 3)') 70%
+                  li
+                    a.middlemark(value='60' onclick='setDropdown(60, 3)') 60%
+                  li
+                    a.middlemark(value='50' onclick='setDropdown(50, 3)') 50%
+                  li
+                    a.middlemark(value='40' onclick='setDropdown(40, 3)') 40%
+                  li
+                    a.overmark(value='30' onclick='setDropdown(30, 3)') 30%
+                  li
+                    a.overmark(value='20' onclick='setDropdown(20, 3)') 20%
+                  li
+                    a.overmark(value='10' onclick='setDropdown(10, 3)') 10%
+                  li
+                    a.overmark(value='0' onclick='setDropdown(0, 3)') 0%
+            tr.alt
+              td.label Solar Plant (Level #{info.buildings.solarPlant})
+              td
+              td.normalmark
+                span.tooltipCustom 0
+              td.normalmark
+                span.tooltipCustom 0
+              td.normalmark
+                span.tooltipCustom 0
+              td.undermark
+                span.tooltipCustom #{info.energy.solar}
+              td
+                span.dropdown.currentlySelected.undermark(style='width: 67px;')
+                  a#downButton4.undermark(value='100' href='javascript:void(0);' onclick='clickSelect(4)') 100%
+                ul#dropdown4.dropdown.dropdownList.initialized(data-val=info.values.solar style='left: 568px; top: 261px; min-width: 67px; display:none;')
+                  li
+                    a.undermark(value='100' onclick='setDropdown(100, 4)') 100%
+                  li
+                    a.undermark(value='90' onclick='setDropdown(90, 4)') 90%
+                  li
+                    a.undermark(value='80' onclick='setDropdown(80, 4)') 80%
+                  li
+                    a.undermark(value='70' onclick='setDropdown(70, 4)') 70%
+                  li
+                    a.middlemark(value='60' onclick='setDropdown(60, 4)') 60%
+                  li
+                    a.middlemark(value='50' onclick='setDropdown(50, 4)') 50%
+                  li
+                    a.middlemark(value='40' onclick='setDropdown(40, 4)') 40%
+                  li
+                    a.overmark(value='30' onclick='setDropdown(30, 4)') 30%
+                  li
+                    a.overmark(value='20' onclick='setDropdown(20, 4)') 20%
+                  li
+                    a.overmark(value='10' onclick='setDropdown(10, 4)') 10%
+                  li
+                    a.overmark(value='0' onclick='setDropdown(0, 4)') 0%
+            tr
+              td.label Fusion Reactor (Level #{info.buildings.fusionReactor})
+              td
+              td.normalmark
+                span.tooltipCustom 0
+              td.normalmark
+                span.tooltipCustom 0
+              td.overmark
+                span.tooltipCustom #{info.energy.fusionDeuterium}
+              td.undermark
+                span.tooltipCustom #{info.energy.fusion}
+              td
+                span.dropdown.currentlySelected.overmark(style='width: 67px;')
+                  a#downButton5.undermark(value='0' href='javascript:void(0);' onclick='clickSelect(5)') 100%
+                ul#dropdown5.dropdown.dropdownList.initialized(data-val=info.values.fusion style='left: 568px; top: 286px; min-width: 67px; display:none;')
+                  li
+                    a.undermark(value='100' onclick='setDropdown(100, 5)') 100%
+                  li
+                    a.undermark(value='90' onclick='setDropdown(90, 5)') 90%
+                  li
+                    a.undermark(value='80' onclick='setDropdown(80, 5)') 80%
+                  li
+                    a.undermark(value='70' onclick='setDropdown(70, 5)') 70%
+                  li
+                    a.middlemark(value='60' onclick='setDropdown(60, 5)') 60%
+                  li
+                    a.middlemark(value='50' onclick='setDropdown(50, 5)') 50%
+                  li
+                    a.middlemark(value='40' onclick='setDropdown(40, 5)') 40%
+                  li
+                    a.overmark(value='30' onclick='setDropdown(30, 5)') 30%
+                  li
+                    a.overmark(value='20' onclick='setDropdown(20, 5)') 20%
+                  li
+                    a.overmark(value='10' onclick='setDropdown(10, 5)') 10%
+                  li
+                    a.overmark(value='0' onclick='setDropdown(0, 5)') 0%
+            tr.alt
+              td.label Solar Satellite (Number: #{info.solarSatelite})
+              td
+              td.normalmark
+                span.tooltipCustom 0
+              td.normalmark
+                span.tooltipCustom 0
+              td.normalmark
+                span.tooltipCustom 0
+              td.undermark
+                span.tooltipCustom #{info.energy.satillite}
+            tr
+              td.label Plasma Technology (Level #{info.plasma})
+              td
+              - let metalPlasma = Math.floor(info.plasma*0.01*info.mines.metal);
+              - let crystalPlasma = Math.floor(info.plasma*0.00666*info.mines.crystal);
+              - let deuteriumPlasma = Math.floor(info.plasma*0.00333*info.mines.deuterium);
+              td.undermark
+                span.tooltipCustom #{metalPlasma}
+              td.undermark
+                span.tooltipCustom #{crystalPlasma}
+              td.undermark
+                span.tooltipCustom #{deuteriumPlasma}
+              td.normalmark
+                span.tooltipCustom 0
+              td
+            tr
+              td.label(colspan='2') Storage capacity
+              td.normalmark.left2
+                span.tooltipCustom #{info.storage.metal}
+              td.normalmark.left2
+                span.tooltipCustom #{info.storage.crystal}
+              td.normalmark.left2
+                span.tooltipCustom #{info.storage.deuterium}
+              td -
+              td
+            tr.summary.alt
+              - let metalHour = info.basic.metal + info.mines.metal + metalPlasma;
+              - let crystalHour = info.basic.crystal + info.mines.crystal + crystalPlasma;
+              - let deuteriumHour = info.mines.deuterium + deuteriumPlasma + info.energy.fusionDeuterium;
+              td.label(colspan='2')
+                em Total per hour:
+              td.undermark
+                span.tooltipCustom #{metalHour}
+              td.undermark
+                span.tooltipCustom #{crystalHour}
+              td.undermark
+                span.tooltipCustom #{deuteriumHour}
+              td.undermark
+                span.tooltipCustom 186
+              td
+            tr
+              td.label(colspan='2')
+                em Total per day:
+              td.undermark
+                span.tooltipCustom #{metalHour*24}
+              td.undermark
+                span.tooltipCustom #{crystalHour*24}
+              td.undermark
+                span.tooltipCustom #{deuteriumHour*24}
+              td.undermark
+                span.tooltipCustom 186
+              td
+            tr.alt
+              td.label(colspan='2')
+                em Total per week:
+              td.undermark
+                span.tooltipCustom #{metalHour*168}
+              td.undermark
+                span.tooltipCustom #{crystalHour*168}
+              td.undermark
+                span.tooltipCustom #{deuteriumHour*168}
+              td.undermark
+                span.tooltipCustom 186
+              td
       .footerRS
     br.clearfloat

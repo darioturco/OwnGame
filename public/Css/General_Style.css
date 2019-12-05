@@ -909,6 +909,7 @@ text-decoration:none}
 .lang-gr #links .leftmenu li .officers{font-size:10px}
 #planet{
   background-repeat:no-repeat;
+  overflow: hidden;
   height:300px;
   margin:0 auto 3px auto;
   position:relative;
@@ -5205,7 +5206,7 @@ div.detail_screen div#crystalMine,#techinfo div.techwrapper div.building.tech2 i
 div.detail_screen div#deuteriumMine,#techinfo div.techwrapper div.building.tech3 img{background-position:-400px 0}
 div.detail_screen div#solarPlant,#techinfo div.techwrapper div.building.tech4 img{background-position:-600px 0}
 div.detail_screen div#fusionReactor,#techinfo div.techwrapper div.building.tech12 img{background-position:-800px 0}
-div.detail_screen div#resources_212_large{background-position:-1000px 0}
+div.detail_screen div#solarSatellite{background-position:-1000px 0}
 div.detail_screen div#metalStorage,#techinfo div.techwrapper div.building.tech22 img{background-position:-1200px 0}
 div.detail_screen div#crystalStorage,#techinfo div.techwrapper div.building.tech23 img{background-position:-1400px 0}
 div.detail_screen div#deuteriumStorage,#techinfo div.techwrapper div.building.tech24 img{background-position:-1600px 0}
@@ -5267,17 +5268,23 @@ text-decoration:none}.stop_tutorial{background-position:0 -278px}.start_tutorial
 #reward .pagination ul{margin:0 0 0 135px;
 padding:4px 0 0 0;
 text-align:left;
-font-size:14px}#reward .pagination li{list-style-type:none;
-display:inline;
-padding-bottom:1px}#reward .pagination a,#reward .pagination a:visited{background: url("../Imagenes/Background.jpg") no-repeat;
-color:#fff;
-float:left;
-height:23px;
-line-height:23px;
-margin:0 5px;
-text-align:center;
-text-decoration:none;
-width:26px}
+font-size:14px}
+#reward .pagination li{
+  list-style-type:none;
+  display:inline;
+  padding-bottom:1px;
+}
+#reward .pagination a,#reward .pagination a:visited{
+  background: url("../Imagenes/TutorialButtons.gif") no-repeat;
+  color:#fff;
+  float:left;
+  height:23px;
+  line-height:23px;
+  margin:0 5px;
+  text-align:center;
+  text-decoration:none;
+  width:26px;
+}
 #reward .pagination a:hover,#reward .pagination a:active{
   background-position:0 -23px;
   cursor:pointer;
@@ -6257,11 +6264,12 @@ position:relative}
   width: 1000px;
 }
 #detail{
-  height: 0px;
+  height: 300px;
   display: block;
   overflow: hidden;
   margin-top: 0px;
   transform: translateY(300px);
+  transform-origin: bottom;
   transition-duration: 1s;
 }
 #research #detail, #shipyard #detail, #defense #detail{

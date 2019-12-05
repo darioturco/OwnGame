@@ -4,56 +4,54 @@ block content
     #planet(style='background-image:url(./Imagenes/Shipyard/Shipyard.jpg)')
       #header_text
         h2 Shipyard - #{basic.planets[basic.numPlanet].name}
-      form(method='POST' action='' name='form')
-        #detail.detail_screen(style='height: 0px; display: block; overflow: hidden; margin-top: 0px;')
-          #imgBlackInfo.pic
-            a.techtree_link.tooltip.overlay(href='./Ogame_Tecnology.html')
-              .techtree_img
-              span.label Techtree
-          #content
-            h2#nameText
-            a#close.close_details(href='javascript:void(0);' onclick='toggleDescription("void"); return false;')
-            span#levelText.level
-              | Number: 0
-              span.undermark
-            br.clearfloat
-            ul.production_info.narrow
-              li
-                | Production duration
-                span#buildDuration.time
-                  | 0s
-                  span.undermark
-              li
-                | Construction possible:
-                span#possibleInTime.time
-            .enter
-              p.amount Number:
-              .clearfix.maxlink_wrap
-                input#number.amount_input(type='text' pattern='[0-9,.]*' size='5' name='menge' value='')
-                .maxlink_arrow
-                a#maxlink.tooltip(href='javascript:void(0);' onclick="document.forms['form'].menge.value = 5;") [max. 5]
-            .costs_wrap
-              p.costs_info Costs per piece:
-              ul#costs
-                li.metal.tooltip
-                  .resourceIcon.descriptionIcon.metal
-                  #cost1.cost -
-                li.crystal.tooltip
-                  .resourceIcon.descriptionIcon.crystal
-                  #cost2.cost -
-                li.deuterium.tooltip
-                  .resourceIcon.descriptionIcon.deuterium
-                  #cost3.cost -
-            .build-it_wrap
-              .premium_info_placeholder
-              a#build-it.build-it(href='javascript:void(0);')
-                span Build
-          br(clear='all')
-          #description
-            .txt_box
-              a.tooltip.help.overlay(href='./Ogame_Tecnology.html')
-              p#descriptionText.description_txt(style='width: 90%')
-                | This is the first fighting ship all emperors will build. The light fighter is an agile ship, but vulnerable on its own. In mass numbers, they can become a great threat to any empire. They are the first to accompany small and large cargoes to hostile planets with minor defences.
+      #detail.detail_screen(style='height: 0px; display: block; overflow: hidden; margin-top: 0px;')
+        #imgBlackInfo.pic
+          a.techtree_link.tooltip.overlay(href='./Ogame_Tecnology.html')
+            .techtree_img
+            span.label Techtree
+        #content
+          h2#nameText
+          a#close.close_details(href='javascript:void(0);' onclick='toggleDescription("void"); return false;')
+          span#levelText.level
+            | Number: 0
+            span.undermark
+          br.clearfloat
+          ul.production_info.narrow
+            li
+              | Production duration
+              span#buildDuration.time
+                | 0s
+                span.undermark
+            li
+              | Construction possible:
+              span#possibleInTime.time
+          .enter
+            p.amount Number:
+            .clearfix.maxlink_wrap
+              input#number.amount_input(type='number' pattern='[0-9,.]*' size='5' value='')
+              .maxlink_arrow
+              a#maxlink.tooltip(href='javascript:void(0);' onclick="setMax();") [max. 5]
+          .costs_wrap
+            p.costs_info Costs per piece:
+            ul#costs
+              li.metal.tooltip
+                .resourceIcon.descriptionIcon.metal
+                #cost1.cost -
+              li.crystal.tooltip
+                .resourceIcon.descriptionIcon.crystal
+                #cost2.cost -
+              li.deuterium.tooltip
+                .resourceIcon.descriptionIcon.deuterium
+                #cost3.cost -
+          .build-it_wrap
+            .premium_info_placeholder
+            a#build-it.build-it(href='javascript:void(0);')
+              span Build
+        br
+        #description
+          .txt_box
+            a.tooltip.help.overlay(href='./Ogame_Tecnology.html')
+            p#descriptionText.description_txt(style='width: 90%')
     .c-left
     .c-right
     #buttonz

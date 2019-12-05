@@ -52,8 +52,12 @@ router.get('/searchPlayer', function(req, res, next) {
 
 //Se usa set para las direcciones que cambian cosas en la base de datos
 
+router.get('/set/updateResources', function(req, res, next) {
+  uni.updateResourcesData(uni.planeta);
+  res.send({ok: true});
+});
+
 router.get('/set/deleteMessages', function(req, res, next) {
-  console.log(req.query);
   uni.deleteMessage(uni.player.name, req.query.all == 'true', req.query.id);
   res.send({ok: true});
 });

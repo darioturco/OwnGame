@@ -9,6 +9,8 @@ var level = "Number: ";
 var info = undefined;
 var size = "250";
 var elementList = ["metal", "crystal", "deuterium", "energy"];
+var inputCant = null, maxlink = null;
+var max = 0;
 var descriptionText, resourcesText, resourcesIcon, timeText, nameText, levelText, imgInfo, posibleText;
 setTimeout(initial, 0);
 
@@ -32,6 +34,8 @@ function initial(){
   imgInfo = document.getElementById("imgBlackInfo");
   colorButton = document.getElementById("build-it");
   posibleText = document.getElementById("possibleInTime");
+  inputCant = document.getElementById('number');
+  maxlink = document.getElementById('maxlink');
   url += getDireccionApi(body);
   loadJSON(url, (res) => {
     info = res;
@@ -55,8 +59,7 @@ function toggleDescription(id){
     setInfo();//pone la info en el div
   }else{
     if(toggle == id || id == "void"){
-      toggle = "void";
-      container.style.height = "0px";//cierra el div
+      toggle = "void";//cierra el divisor
       container.style.transform = "translateY(" + size + "px)";
     }else{
       toggle = id;
@@ -76,16 +79,18 @@ function setInfo(){
     resourcesText[i].classList.remove("overmark");
     resourcesText[i].innerHTML = "";
   }
+  max = Infinity;
   for(let i = 0 ; i<4 && cont<3 ; i++){
     if(resourcesList[i] != 0){
       resourcesIcon[cont].classList.add(elementList[i]);
       resourcesText[cont].innerHTML = resourcesList[i];
       if(resourcesList[i] > totalRosources[i]) resourcesText[cont].classList.add("overmark");// si no tenes los recursos lo escribe en rojo
+      if(totalRosources[i]/resourcesList[i] < max) max = Math.floor(totalRosources[i]/resourcesList[i]);
       cont++;
     }
   }
   nameText.innerHTML = info[toggle].name;
-  levelText.innerHTML = level + info[toggle].level;
+  levelText.innerHTML = ((toggle == 'solarSatellite') ? 'Number: ' : level) + info[toggle].level;
   timeText.innerHTML = segundosATiempo(tiempoParaEdificios(info[toggle].metal + info[toggle].crystal));// tiene que ser calculado apartir de los recurso que usa y de las fabricas de robot/nanobots
   descriptionText.innerHTML = info[toggle].description;
   imgInfo.id = toggle;
@@ -96,6 +101,7 @@ function setInfo(){
     posibleText.innerHTML = " now";
     colorButton.classList.remove("build-it_disabled");
   }
+  if(maxlink != null) maxlink.innerText = '[max. ' + max + ']'; //setea el maximo de objetos a contruir
 }
 
 function getDireccionApi(body){
@@ -119,4 +125,8 @@ function minimoPara(resources, objetivo){
     if(aux < min) min = aux;
   }
   return min;
+}
+
+function setMax(){
+  if(inputCant != null && maxlink != null) inputCant.value = max;
 }
