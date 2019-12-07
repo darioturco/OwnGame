@@ -13,7 +13,8 @@ block content
               td#factor(colspan='7')
                 .secondcol
                   div(style='width:376px; margin: 0px auto;')
-                    span.factorkey Production factor: 100%
+                    - factor = (basic.format(info.usageEnergy.metal) + basic.format(info.usageEnergy.crystal) + basic.format(info.usageEnergy.deuterium)) / (basic.format(info.maxEnergy.metal) + basic.format(info.usageEnergy.crystal) + basic.format(info.usageEnergy.deuterium))
+                    span.factorkey Production factor: #{Math.floor(factor*100)}%
                     span.factorbutton
                       input.btn_blue(type='button' value='Recalculate' onclick='recalculateButton();')
                     br.clearfloat
@@ -39,13 +40,13 @@ block content
               td.label Metal Mine (Level #{info.buildings.metalMine})
               td
               td.undermark
-                span.tooltipCustom #{info.mines.metal}
+                span.tooltipCustom #{basic.format(info.mines.metal)}
               td.normalmark
                 span.tooltipCustom 0
               td.normalmark
                 span.tooltipCustom 0
               td.overmark
-                span.tooltipCustom 1.163/1.163
+                span.tooltipCustom #{basic.format(info.usageEnergy.metal)}/#{basic.format(info.maxEnergy.metal)}
               td
                 span.dropdown.currentlySelected.undermark(style='width: 67px;')
                   a#downButton1.undermark(value='100' href='javascript:void(0);' onclick='clickSelect(1)') 100%
@@ -78,11 +79,11 @@ block content
               td.normalmark
                 span.tooltipCustom 0
               td.undermark
-                span.tooltipCustom #{info.mines.crystal}
+                span.tooltipCustom #{basic.format(info.mines.crystal)}
               td.normalmark
                 span.tooltipCustom 0
               td.overmark
-                span.tooltipCustom 736/736
+                span.tooltipCustom #{basic.format(info.usageEnergy.crystal)}/#{basic.format(info.maxEnergy.crystal)}
               td
                 span.dropdown.currentlySelected.undermark(style='width: 67px;')
                   a#downButton2.undermark(data-value='100' href='javascript:void(0);' onclick='clickSelect(2)') 100%
@@ -117,9 +118,9 @@ block content
               td.normalmark
                 span.tooltipCustom 0
               td.undermark
-                span.tooltipCustom #{info.mines.deuterium}
+                span.tooltipCustom #{basic.format(info.mines.deuterium)}
               td.overmark
-                span.tooltipCustom 519/519
+                span.tooltipCustom #{basic.format(info.usageEnergy.deuterium)}/#{basic.format(info.maxEnergy.deuterium)}
               td
                 span.dropdown.currentlySelected.undermark(style='width: 67px;')
                   a#downButton3.undermark(value='100' href='javascript:void(0);' onclick='clickSelect(3)') 100%
@@ -147,20 +148,20 @@ block content
                   li
                     a.overmark(value='0' onclick='setDropdown(0, 3)') 0%
             tr.alt
-              td.label Solar Plant (Level #{info.buildings.solarPlant})
+              td.label Fusion Reactor (Level #{info.buildings.fusionReactor})
               td
               td.normalmark
                 span.tooltipCustom 0
               td.normalmark
                 span.tooltipCustom 0
-              td.normalmark
-                span.tooltipCustom 0
+              td.overmark
+                span.tooltipCustom #{basic.format(info.energy.fusionDeuterium)}
               td.undermark
-                span.tooltipCustom #{info.energy.solar}
+                span.tooltipCustom #{basic.format(info.energy.fusion)}
               td
-                span.dropdown.currentlySelected.undermark(style='width: 67px;')
-                  a#downButton4.undermark(value='100' href='javascript:void(0);' onclick='clickSelect(4)') 100%
-                ul#dropdown4.dropdown.dropdownList.initialized(data-val=info.values.solar style='left: 568px; top: 261px; min-width: 67px; display:none;')
+                span.dropdown.currentlySelected.overmark(style='width: 67px;')
+                  a#downButton4.undermark(value='0' href='javascript:void(0);' onclick='clickSelect(4)') 100%
+                ul#dropdown4.dropdown.dropdownList.initialized(data-val=info.values.energy style='left: 568px; top: 261px; min-width: 67px; display:none;')
                   li
                     a.undermark(value='100' onclick='setDropdown(100, 4)') 100%
                   li
@@ -184,42 +185,16 @@ block content
                   li
                     a.overmark(value='0' onclick='setDropdown(0, 4)') 0%
             tr
-              td.label Fusion Reactor (Level #{info.buildings.fusionReactor})
+              td.label Solar Plant (Level #{info.buildings.solarPlant})
               td
               td.normalmark
                 span.tooltipCustom 0
               td.normalmark
                 span.tooltipCustom 0
-              td.overmark
-                span.tooltipCustom #{info.energy.fusionDeuterium}
+              td.normalmark
+                span.tooltipCustom 0
               td.undermark
-                span.tooltipCustom #{info.energy.fusion}
-              td
-                span.dropdown.currentlySelected.overmark(style='width: 67px;')
-                  a#downButton5.undermark(value='0' href='javascript:void(0);' onclick='clickSelect(5)') 100%
-                ul#dropdown5.dropdown.dropdownList.initialized(data-val=info.values.fusion style='left: 568px; top: 286px; min-width: 67px; display:none;')
-                  li
-                    a.undermark(value='100' onclick='setDropdown(100, 5)') 100%
-                  li
-                    a.undermark(value='90' onclick='setDropdown(90, 5)') 90%
-                  li
-                    a.undermark(value='80' onclick='setDropdown(80, 5)') 80%
-                  li
-                    a.undermark(value='70' onclick='setDropdown(70, 5)') 70%
-                  li
-                    a.middlemark(value='60' onclick='setDropdown(60, 5)') 60%
-                  li
-                    a.middlemark(value='50' onclick='setDropdown(50, 5)') 50%
-                  li
-                    a.middlemark(value='40' onclick='setDropdown(40, 5)') 40%
-                  li
-                    a.overmark(value='30' onclick='setDropdown(30, 5)') 30%
-                  li
-                    a.overmark(value='20' onclick='setDropdown(20, 5)') 20%
-                  li
-                    a.overmark(value='10' onclick='setDropdown(10, 5)') 10%
-                  li
-                    a.overmark(value='0' onclick='setDropdown(0, 5)') 0%
+                span.tooltipCustom #{basic.format(info.energy.solar)}
             tr.alt
               td.label Solar Satellite (Number: #{info.solarSatelite})
               td
@@ -230,7 +205,7 @@ block content
               td.normalmark
                 span.tooltipCustom 0
               td.undermark
-                span.tooltipCustom #{info.energy.satillite}
+                span.tooltipCustom #{basic.format(info.energy.satillite)}
             tr
               td.label Plasma Technology (Level #{info.plasma})
               td
@@ -238,62 +213,63 @@ block content
               - let crystalPlasma = Math.floor(info.plasma*0.00666*info.mines.crystal);
               - let deuteriumPlasma = Math.floor(info.plasma*0.00333*info.mines.deuterium);
               td.undermark
-                span.tooltipCustom #{metalPlasma}
+                span.tooltipCustom #{basic.format(metalPlasma)}
               td.undermark
-                span.tooltipCustom #{crystalPlasma}
+                span.tooltipCustom #{basic.format(crystalPlasma)}
               td.undermark
-                span.tooltipCustom #{deuteriumPlasma}
+                span.tooltipCustom #{basic.format(deuteriumPlasma)}
               td.normalmark
                 span.tooltipCustom 0
-              td
             tr
               td.label(colspan='2') Storage capacity
               td.normalmark.left2
-                span.tooltipCustom #{info.storage.metal}
+                span.tooltipCustom #{basic.format(info.storage.metal)}
               td.normalmark.left2
-                span.tooltipCustom #{info.storage.crystal}
+                span.tooltipCustom #{basic.format(info.storage.crystal)}
               td.normalmark.left2
-                span.tooltipCustom #{info.storage.deuterium}
+                span.tooltipCustom #{basic.format(info.storage.deuterium)}
               td -
               td
             tr.summary.alt
               - let metalHour = info.basic.metal + info.mines.metal + metalPlasma;
               - let crystalHour = info.basic.crystal + info.mines.crystal + crystalPlasma;
               - let deuteriumHour = info.mines.deuterium + deuteriumPlasma + info.energy.fusionDeuterium;
+              - if(deuteriumHour < 0) deuteriumHour = 0;
+              - let energy = info.energy.solar + info.energy.fusion + info.energy.satillite - info.maxEnergy.metal - info.maxEnergy.crystal - info.maxEnergy.deuterium;
               td.label(colspan='2')
                 em Total per hour:
               td.undermark
-                span.tooltipCustom #{metalHour}
+                span.tooltipCustom #{basic.format(metalHour)}
               td.undermark
-                span.tooltipCustom #{crystalHour}
+                span.tooltipCustom #{basic.format(crystalHour)}
               td.undermark
-                span.tooltipCustom #{deuteriumHour}
-              td.undermark
-                span.tooltipCustom 186
+                span.tooltipCustom #{basic.format(deuteriumHour)}
+              td(class=(energy < 0) ? 'overmark' : 'undermark')
+                span.tooltipCustom #{basic.format(energy)}
               td
             tr
               td.label(colspan='2')
                 em Total per day:
               td.undermark
-                span.tooltipCustom #{metalHour*24}
+                span.tooltipCustom #{basic.format(metalHour*24)}
               td.undermark
-                span.tooltipCustom #{crystalHour*24}
+                span.tooltipCustom #{basic.format(crystalHour*24)}
               td.undermark
-                span.tooltipCustom #{deuteriumHour*24}
-              td.undermark
-                span.tooltipCustom 186
+                span.tooltipCustom #{basic.format(deuteriumHour*24)}
+              td(class=(energy < 0) ? 'overmark' : 'undermark')
+                span.tooltipCustom #{basic.format(energy)}
               td
             tr.alt
               td.label(colspan='2')
                 em Total per week:
               td.undermark
-                span.tooltipCustom #{metalHour*168}
+                span.tooltipCustom #{basic.format(metalHour*168)}
               td.undermark
-                span.tooltipCustom #{crystalHour*168}
+                span.tooltipCustom #{basic.format(crystalHour*168)}
               td.undermark
-                span.tooltipCustom #{deuteriumHour*168}
-              td.undermark
-                span.tooltipCustom 186
+                span.tooltipCustom #{basic.format(deuteriumHour*168)}
+              td(class=(energy < 0) ? 'overmark' : 'undermark')
+                span.tooltipCustom #{basic.format(energy)}
               td
       .footerRS
     br.clearfloat

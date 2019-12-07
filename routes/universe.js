@@ -61,9 +61,9 @@ var exp = {
       temperature: typePlanet.temperature,
       camposMax: typePlanet.campos,
       campos: 0,
-      resources: {metal: 500, crystal: 500, deuterium: 0, energy: 0, energyMax: 0},
+      resources: {metal: 500, crystal: 500, deuterium: 0, energy: 0},
       resourcesAdd: {metal: 20, crystal: 10, deuterium: 0},
-      resourcesPercentage: {metal: 10, crystal: 10, deuterium: 10, energy: 10},
+      resourcesPercentage: {metal: '10', crystal: '10', deuterium: '10', energy: '10'},
       buildings: {metalMine: 0, crystalMine: 0, deuteriumMine: 0, solarPlant: 0, fusionReactor: 0, metalStorage: 0, crystalStorage: 0, deuteriumStorage: 0, robotFactory: 0, shipyard: 0, researchLab: 0, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0},
       fleet: {lightFighter: 0, heavyFighter: 0, cruiser: 0, battleship: 0, battlecruiser: 0, bomber: 0, destroyer: 0, deathstar: 0, smallCargo: 0, largeCargo: 0, colony: 0, recycler: 0, espionageProbe: 0, solarSatellite: 0},
       defense: {rocketLauncher: 0, lightLaser: 0, heavyLaser: 0, gauss: 0, ion: 0, plasma: 0, smallShield: 0, largeShield: 0, antiballisticMissile: 0, interplanetaryMissile: 0},
@@ -153,27 +153,31 @@ var exp = {
       cantPlanets: this.player.planets.length,
       maxPlanets: this.player.maxPlanets,
       numPlanet: planet,
-      planets: list
+      planets: list,
+      format: this.formatNumber
     };
   },
   resourcesSetting: function(planet) {
+    let spd = this.universo.speed;
     let minas = this.player.planets[planet].buildings;
     let temp = (this.player.planets[planet].temperature.max + this.player.planets[planet].temperature.min)/2;
-    this.player.planets[planet].resourcesPercentage = {metal: 10, crystal: 10, deuterium: 10, solar: 10, fusion: 10};
-    return {basic: {metal: 30*this.universo.speed, crystal: 15*this.universo.speed},
-            values: this.player.planets[planet].resourcesPercentage,
-            buildings: minas,
-            solarSatelite: this.player.planets[planet].fleet.solarSatellite,
-            mines: {metal: Math.floor(30*this.universo.speed*minas.metalMine*Math.pow(1.1, minas.metalMine)), crystal: Math.floor(20*this.universo.speed*minas.crystalMine*Math.pow(1.1, minas.crystalMine)), deuterium: Math.floor(10*this.universo.speed*minas.deuteriumMine*Math.pow(1.1, minas.deuteriumMine)*(1.36-0.004*temp))},
-            energy: {solar: Math.floor(20*minas.solarPlant*Math.pow(1.1,minas.solarPlant)), fusion: Math.floor(30*minas.fusionReactor*Math.pow(1.05+0.01*this.player.research.energy, minas.fusionReactor)), fusionDeuterium: -10*minas.fusionReactor*Math.pow(1.1, minas.fusionReactor), satillite: Math.floor((temp+160)/6)*this.player.planets[planet].fleet.solarSatellite},
-            maxEnergy: {metal: Math.floor(10*minas.metalMine*Math.pow(1.1, minas.metalMine)), crystal: Math.floor(10*minas.crystalMine*Math.pow(1.1, minas.crystalMine)), deuterium: Math.floor(20*minas.deuteriumMine*Math.pow(1.1, minas.deuteriumMine))},
-            usageEnergy: {},
-            resourcesHour: this.player.planets[planet].resourcesAdd,
-            storage: {metal: 5000*Math.floor(2.5*Math.pow(Math.E, 0.61*minas.metalStorage)), crystal: 5000*Math.floor(2.5*Math.pow(Math.E, 0.61*minas.crystalStorage)),deuterium: 5000*Math.floor(2.5*Math.pow(Math.E, 0.61*minas.deuteriumStorage))},
-            plasma: this.player.research.plasma}
-  },
-  updateResourcesData: function(planet) { //updatea los multiplicadores de los recursos(NO toca los recursos)
-
+    let maxEnergyAux = {metal: Math.floor(parseInt(this.player.planets[planet].resourcesPercentage.metal)*minas.metalMine*Math.pow(1.1, minas.metalMine)), crystal: Math.floor(parseInt(this.player.planets[planet].resourcesPercentage.crystal)*minas.crystalMine*Math.pow(1.1, minas.crystalMine)), deuterium: Math.floor(2*parseInt(this.player.planets[planet].resourcesPercentage.deuterium)*minas.deuteriumMine*Math.pow(1.1, minas.deuteriumMine))};
+    let auxEnergy = {solar: Math.floor(20*minas.solarPlant*Math.pow(1.1,minas.solarPlant)), fusion: Math.floor(3*minas.fusionReactor*parseInt(this.player.planets[planet].resourcesPercentage.energy)*Math.pow(1.05+0.01*this.player.research.energy, minas.fusionReactor)), fusionDeuterium: -Math.floor(minas.fusionReactor*parseInt(this.player.planets[planet].resourcesPercentage.energy)*Math.pow(1.1, minas.fusionReactor)), satillite: Math.floor((temp+160)/6)*this.player.planets[planet].fleet.solarSatellite};
+    let energyTotal = auxEnergy.solar + auxEnergy.fusion + auxEnergy.satillite;
+    let totalEnergyUsage = maxEnergyAux.metal + maxEnergyAux.crystal + maxEnergyAux.deuterium;
+    let energyUsage = {metal: Math.floor((maxEnergyAux.metal*energyTotal)/totalEnergyUsage), crystal: Math.floor((maxEnergyAux.crystal*energyTotal)/totalEnergyUsage), deuterium: Math.floor((maxEnergyAux.deuterium*energyTotal)/totalEnergyUsage)};
+    energyUsage = {metal: ((energyUsage.metal > maxEnergyAux.metal) ? maxEnergyAux.metal : energyUsage.metal), crystal: ((energyUsage.crystal > maxEnergyAux.crystal) ? maxEnergyAux.crystal : energyUsage.crystal), deuterium: ((energyUsage.deuterium > maxEnergyAux.deuterium) ? maxEnergyAux.deuterium : energyUsage.deuterium)};
+    return {basic: {metal: 30*spd, crystal: 15*spd},
+      values: this.player.planets[planet].resourcesPercentage,
+      buildings: minas,
+      solarSatelite: this.player.planets[planet].fleet.solarSatellite,
+      mines: {metal: Math.floor(3*(energyUsage.metal/maxEnergyAux.metal)*spd*parseInt(this.player.planets[planet].resourcesPercentage.metal)*minas.metalMine*Math.pow(1.1, minas.metalMine)), crystal: Math.floor(2*(energyUsage.crystal/maxEnergyAux.crystal)*spd*parseInt(this.player.planets[planet].resourcesPercentage.crystal)*minas.crystalMine*Math.pow(1.1, minas.crystalMine)), deuterium: Math.floor((energyUsage.deuterium/maxEnergyAux.deuterium)*spd*parseInt(this.player.planets[planet].resourcesPercentage.deuterium)*minas.deuteriumMine*Math.pow(1.1, minas.deuteriumMine)*(1.36-0.004*temp))},
+      energy: auxEnergy,
+      maxEnergy: maxEnergyAux,
+      usageEnergy: energyUsage,
+      resourcesHour: this.player.planets[planet].resourcesAdd,
+      storage: {metal: 5000*Math.floor(2.5*Math.pow(Math.E, 0.61*minas.metalStorage)), crystal: 5000*Math.floor(2.5*Math.pow(Math.E, 0.61*minas.crystalStorage)),deuterium: 5000*Math.floor(2.5*Math.pow(Math.E, 0.61*minas.deuteriumStorage))},
+      plasma: this.player.research.plasma}
   },
   overviewActualInfo: function (planet) {
     let cam = this.player.planets[planet].camposMax;
@@ -360,24 +364,13 @@ var exp = {
       res.send({ok: (err == null) ? true : err, deleted: elimino});
     });
   },
-  normalRandom: (min, max, podaMin = -Infinity, podaMax = Infinity) => {// la esperanza es (max+min)/2
-    var u = 0, v = 0;
-    while(u == 0) u = Math.random(); //Converting [0,1) to (0,1)
-    let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v); // Box–Muller transform
-    num = num / 10.0 + 0.5; // Translate to 0 -> 1
-    if (num > 1 || num < 0) num = Math.random(); // resample between 0 and 1 if out of range
-    num *= max - min; // Stretch to fill range
-    num += min; // offset to min
-    if (num > podaMax || num < podaMin) num = Math.random()*(podaMax-podaMin)+(podaMin);
-    return num;
-  },
-  updatePlanetsOfPlayer: function(pla){
+  updatePlanetsOfPlayer: function(pla, f = () => {}){
     let list = [];
     let cursor = mongo.db(process.env.UNIVERSE_NAME).collection("galaxy").find({player: pla});
     cursor.forEach((doc, err) => {
       list.push(doc);
     }, () => {
-      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: pla}, {$set: {planets: list}});
+      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: pla}, {$set: {planets: list}}, () => {f()});
     });
   },
   setPlanetName: function(cord, newName){
@@ -386,14 +379,38 @@ var exp = {
       this.updatePlanetsOfPlayer(this.player.name);
     });
   },
+  updateResourcesData: function(res, planet, obj = null) { //updatea los multiplicadores de los recursos(NO toca los recursos)
+    let objSet = {};
+    let spd = this.universo.speed;
+    let plasma = this.player.research.plasma;
+    let minas = this.player.planets[planet].buildings;
+    let temp = (this.player.planets[planet].temperature.max + this.player.planets[planet].temperature.min)/2;
+    if(obj != null){
+      this.player.planets[planet].resourcesPercentage = obj;
+      objSet.resourcesPercentage = obj;
+    }
+    let maxEnergyAux = {metal: Math.floor(parseInt(this.player.planets[planet].resourcesPercentage.metal)*minas.metalMine*Math.pow(1.1, minas.metalMine)), crystal: Math.floor(parseInt(this.player.planets[planet].resourcesPercentage.crystal)*minas.crystalMine*Math.pow(1.1, minas.crystalMine)), deuterium: Math.floor(2*parseInt(this.player.planets[planet].resourcesPercentage.deuterium)*minas.deuteriumMine*Math.pow(1.1, minas.deuteriumMine))};
+    let auxEnergy = {solar: Math.floor(20*minas.solarPlant*Math.pow(1.1,minas.solarPlant)), fusion: Math.floor(3*minas.fusionReactor*parseInt(this.player.planets[planet].resourcesPercentage.energy)*Math.pow(1.05+0.01*this.player.research.energy, minas.fusionReactor)), fusionDeuterium: -Math.floor(minas.fusionReactor*parseInt(this.player.planets[planet].resourcesPercentage.energy)*Math.pow(1.1, minas.fusionReactor)), satillite: Math.floor((temp+160)/6)*this.player.planets[planet].fleet.solarSatellite};
+    let energyTotal = auxEnergy.solar + auxEnergy.fusion + auxEnergy.satillite;
+    let totalEnergyUsage = maxEnergyAux.metal + maxEnergyAux.crystal + maxEnergyAux.deuterium;
+    let energyUsage = {metal: Math.floor((maxEnergyAux.metal*energyTotal)/totalEnergyUsage), crystal: Math.floor((maxEnergyAux.crystal*energyTotal)/totalEnergyUsage), deuterium: Math.floor((maxEnergyAux.deuterium*energyTotal)/totalEnergyUsage)};
+    energyUsage = {metal: ((energyUsage.metal > maxEnergyAux.metal) ? maxEnergyAux.metal : energyUsage.metal), crystal: ((energyUsage.crystal > maxEnergyAux.crystal) ? maxEnergyAux.crystal : energyUsage.crystal), deuterium: ((energyUsage.deuterium > maxEnergyAux.deuterium) ? maxEnergyAux.deuterium : energyUsage.deuterium)};
+    objSet['resources.energy'] = Math.floor(energyTotal - maxEnergyAux.metal-maxEnergyAux.crystal - maxEnergyAux.deuterium);
+    let deuteriumHour = spd*(energyUsage.deuterium/maxEnergyAux.deuterium)*parseInt(this.player.planets[planet].resourcesPercentage.deuterium)*minas.deuteriumMine*Math.pow(1.1, minas.deuteriumMine)*(1.36-0.004*temp)*(100+plasma/3)/100 + auxEnergy.fusionDeuterium;
+    if(deuteriumHour < 0) deuteriumHour = 0;
+    objSet.resourcesAdd = {metal: 30*spd+3*(energyUsage.metal/maxEnergyAux.metal)*spd*parseInt(this.player.planets[planet].resourcesPercentage.metal)*minas.metalMine*Math.pow(1.1, minas.metalMine)*(100+plasma)/100, crystal: 15*spd+2*(energyUsage.crystal/maxEnergyAux.crystal)*spd*parseInt(this.player.planets[planet].resourcesPercentage.crystal)*minas.crystalMine*Math.pow(1.1, minas.crystalMine)*(100+plasma*(2/3))/100, deuterium: deuteriumHour};
+    mongo.db(process.env.UNIVERSE_NAME).collection("galaxy").updateOne({coordinates: this.player.planets[planet].coordinates}, {$set: objSet}, () => {
+      this.updatePlanetsOfPlayer(this.player.name, () => {res.send({ok: true})});
+    });
+  },
   setPlanetData: function(cord, player){
-    let building = {metalMine: 5, crystalMine: 3, deuteriumMine: 1, solarPlant: 10, fusionReactor: 0, metalStorage: 1, crystalStorage: 0, deuteriumStorage: 0, robotFactory: 0, shipyard: 0, researchLab: 0, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0};
-    let fleet = {lightFighter: 10, heavyFighter: 0, cruiser: 1, battleship: 10, battlecruiser: 0, bomber: 3, destroyer: 100, deathstar: 1, smallCargo: 20, largeCargo: 200, colony: 1, recycler: 10, espionageProbe: 30, solarSatellite: 0};
+    // cambiar para que no sean constantes
+    let building = {metalMine: 15, crystalMine: 8, deuteriumMine: 10, solarPlant: 10, fusionReactor: 20, metalStorage: 1, crystalStorage: 0, deuteriumStorage: 0, robotFactory: 0, shipyard: 0, researchLab: 0, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0};
+    let fleet = {lightFighter: 10, heavyFighter: 0, cruiser: 1, battleship: 10, battlecruiser: 0, bomber: 3, destroyer: 100, deathstar: 1, smallCargo: 20, largeCargo: 200, colony: 1, recycler: 10, espionageProbe: 30, solarSatellite: 15};
     let defenses = {rocketLauncher: 500, lightLaser: 0, heavyLaser: 0, gauss: 0, ion: 0, plasma: 0, smallShield: 0, largeShield: 0, antiballisticMissile: 0, interplanetaryMissile: 10};
     let moon = {active: false, size: 0};
     let debris = {active: true, metal:3000, crystal: 1000};
     mongo.db(process.env.UNIVERSE_NAME).collection("galaxy").updateOne({coordinates: {galaxy: cord.galaxy, system: cord.system, pos: cord.pos}}, {$set: {'buildings': building, 'fleet': fleet, 'defense': defenses,'moon': moon, 'debris': debris}}, () => {
-      console.log("actualiza");
       this.updatePlanetsOfPlayer(player);
     });
   },
@@ -409,6 +426,43 @@ var exp = {
   setNoReadMessages: function(){
     this.player.messagesCant = 0;
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: this.player.name}, {$set: {messagesCant: 0}});
+  },
+  normalRandom: (min, max, podaMin = -Infinity, podaMax = Infinity) => {// la esperanza es (max+min)/2
+    var u = 0, v = 0;
+    while(u == 0) u = Math.random(); //Converting [0,1) to (0,1)
+    let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v); // Box–Muller transform
+    num = num / 10.0 + 0.5; // Translate to 0 -> 1
+    if (num > 1 || num < 0) num = Math.random(); // resample between 0 and 1 if out of range
+    num *= max - min; // Stretch to fill range
+    num += min; // offset to min
+    if (num > podaMax || num < podaMin) num = Math.random()*(podaMax-podaMin)+(podaMin);
+    return num;
+  },
+  formatNumber: (num) => {
+    this.completaDigitos = (inn) => {
+      let result = inn;
+      if(inn < 100){
+        result = '0' + inn;
+        if(inn < 10){
+          result = '00' + inn;
+          if(inn <= 0) result = '000';
+        }
+      }
+      return result;
+    };
+    let res = num;
+    let sign = Math.sign(num);
+    if(isFinite(num)){
+      res = '';
+      num = Math.abs(num);
+      while(num > 999){
+        res = '.' + this.completaDigitos(num%1000) + res;
+        num = Math.floor(num / 1000);
+      }
+      res = num + res;
+      if(sign == -1) res = '-' + res;
+    }
+    return res;
   },
   seeDataBase: (res, uni, name) => {
     let respuesta = "";
