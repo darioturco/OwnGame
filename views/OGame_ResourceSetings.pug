@@ -14,6 +14,7 @@ block content
                 .secondcol
                   div(style='width:376px; margin: 0px auto;')
                     - factor = (basic.format(info.usageEnergy.metal) + basic.format(info.usageEnergy.crystal) + basic.format(info.usageEnergy.deuterium)) / (basic.format(info.maxEnergy.metal) + basic.format(info.usageEnergy.crystal) + basic.format(info.usageEnergy.deuterium))
+                    - if(isNaN(factor)) factor = 0
                     span.factorkey Production factor: #{Math.floor(factor*100)}%
                     span.factorbutton
                       input.btn_blue(type='button' value='Recalculate' onclick='recalculateButton();')

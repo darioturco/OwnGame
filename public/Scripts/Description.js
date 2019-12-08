@@ -11,6 +11,7 @@ var size = "250";
 var elementList = ["metal", "crystal", "deuterium", "energy"];
 var inputCant = null, maxlink = null;
 var max = 0;
+var energy_res;
 var descriptionText, resourcesText, resourcesIcon, timeText, nameText, levelText, imgInfo, posibleText;
 setTimeout(initial, 0);
 
@@ -36,6 +37,7 @@ function initial(){
   posibleText = document.getElementById("possibleInTime");
   inputCant = document.getElementById('number');
   maxlink = document.getElementById('maxlink');
+  energy_res = document.getElementById('resources_energy');
   url += getDireccionApi(body);
   loadJSON(url, (res) => {
     info = res;
@@ -69,7 +71,7 @@ function toggleDescription(id){
 }
 
 function setInfo(){
-  let totalRosources = [metal_res.innerHTML, crystal_res.innerHTML, deuterium_res.innerHTML, energyTotal];
+  let totalRosources = [metal_res.innerText, crystal_res.innerText, deuterium_res.innerText, energy_res.innerText];
   let resourcesList = [info[toggle].metal, info[toggle].crystal, info[toggle].deuterium, info[toggle].energy];
   let cont = 0;
   for(let i = 0 ; i<3 ; i++){//limpia los 3 mostradores de recursos
@@ -79,24 +81,36 @@ function setInfo(){
     resourcesText[i].classList.remove("overmark");
     resourcesText[i].innerHTML = "";
   }
-  max = Infinity;
+  max = Infinity; // maximo de objetos que se pueden contruir con los recursos actuales
   for(let i = 0 ; i<4 && cont<3 ; i++){
     if(resourcesList[i] != 0){
       resourcesIcon[cont].classList.add(elementList[i]);
-      resourcesText[cont].innerHTML = resourcesList[i];
-      if(resourcesList[i] > totalRosources[i]) resourcesText[cont].classList.add("overmark");// si no tenes los recursos lo escribe en rojo
+      resourcesText[cont].innerHTML = formatNumber(resourcesList[i]);
+      if(cont == 2 && info[toggle].energyNeed != undefined){
+        let classAux = 'undermark';
+        if(info[toggle].energyNeed > totalRosources[i]){
+          resourcesText[cont].classList.add("overmark");
+          classAux = 'overmark';
+        }
+        resourcesText[cont].innerHTML += "<span class='" + classAux + "'> (+" + info[toggle].energyNeed + ")</span>";
+      }else{
+        if(resourcesList[i] > totalRosources[i]) resourcesText[cont].classList.add("overmark");// si no tenes los recursos lo escribe en rojo
+      }
       if(totalRosources[i]/resourcesList[i] < max) max = Math.floor(totalRosources[i]/resourcesList[i]);
       cont++;
     }
   }
   nameText.innerHTML = info[toggle].name;
   levelText.innerHTML = ((toggle == 'solarSatellite') ? 'Number: ' : level) + info[toggle].level;
-  timeText.innerHTML = segundosATiempo(tiempoParaEdificios(info[toggle].metal + info[toggle].crystal));// tiene que ser calculado apartir de los recurso que usa y de las fabricas de robot/nanobots
+  timeText.innerHTML = segundosATiempo(tiempoParaEdificios(info[toggle].metal + info[toggle].crystal));// calcula el tiempo y lo pasa a segundos
   descriptionText.innerHTML = info[toggle].description;
   imgInfo.id = toggle;
   if((info[toggle].tech == false) || (totalRosources[0] < info[toggle].metal) || (totalRosources[1] < info[toggle].crystal) || (totalRosources[2] < info[toggle].deuterium)){
     colorButton.classList.add("build-it_disabled");
     posibleText.innerHTML = segundosATiempo(minimoPara(totalRosources, resourcesList));
+    if(info[toggle].tech == false){
+      posibleText.innerHTML = " req. are no met";
+    }
   }else{
     posibleText.innerHTML = " now";
     colorButton.classList.remove("build-it_disabled");
@@ -117,16 +131,23 @@ function tiempoParaEdificios(recursos){// esta medido en segundos
 
 function minimoPara(resources, objetivo){
   let aumento = [metal, crystal, deuterium];
-  let min = Infinity;
+  let max_res = 0;
   let aux = 0;
   for(let i = 0 ; i<3; i++){
-    if((objetivo[i] - resources[i]) > 0) aux = (objetivo[i] - resources[i])/aumento[i];
+    if((objetivo[i] - resources[i]) > 0) aux = (objetivo[i] - resources[i])/(aumento[i]/3600);
     if(!isFinite(aux)) return Infinity;
-    if(aux < min) min = aux;
+    if(aux > max_res) max_res = aux;
   }
-  return min;
+  return Math.floor(max_res);
 }
 
 function setMax(){
   if(inputCant != null && maxlink != null) inputCant.value = max;
+}
+
+function sendInproveRequest(){
+  console.log(toggle);
+  /*loadJSON('./api/set/', (obj) => {
+    console.log(obj);
+  };*/
 }

@@ -1,20 +1,16 @@
 var metal_res, crystal_res, deuterium_res, clock;
 var metal = 0, crystal = 0, deuterium = 0;
-var energyTotal = 0;//guarda el total de la energia del planeta
 
 function initFunction(obj){
   clock = document.getElementById("Clock");
   metal_res = document.getElementById("resources_metal");
   crystal_res = document.getElementById("resources_crystal");
   deuterium_res = document.getElementById("resources_deuterium");
-  metal = Math.floor(parseInt(document.getElementsByName('ogame-add-metal')[0].content)/3600);
-  crystal = Math.floor(parseInt(document.getElementsByName('ogame-add-crystal')[0].content)/3600);
-  deuterium = Math.floor(parseInt(document.getElementsByName('ogame-add-deuterium')[0].content)/3600);
+  metal = Math.floor(parseInt(document.getElementsByName('ogame-add-metal')[0].content));
+  crystal = Math.floor(parseInt(document.getElementsByName('ogame-add-crystal')[0].content));
+  deuterium = Math.floor(parseInt(document.getElementsByName('ogame-add-deuterium')[0].content));
   actualizaFecha();
   setInterval(() => {
-    metal_res.innerHTML = parseInt(metal_res.innerHTML) + metal;
-    crystal_res.innerHTML = parseInt(crystal_res.innerHTML) + crystal;
-    deuterium_res.innerHTML = parseInt(deuterium_res.innerHTML) + deuterium;
     actualizaFecha();
   }, 1000);
 }
@@ -56,6 +52,33 @@ function setOptions(){
   });
 }
 
+function formatNumber (num) {
+  let res = num;
+  let sign = Math.sign(num);
+  if(isFinite(num)){
+    res = '';
+    num = Math.abs(num);
+    while(num > 999){
+      res = '.' + completaDigitos(num%1000) + res;
+      num = Math.floor(num / 1000);
+    }
+    res = num + res;
+    if(sign == -1) res = '-' + res;
+  }
+  return res;
+}
+
+function completaDigitos (inn) {
+  let result = inn;
+  if(inn < 100){
+    result = '0' + inn;
+    if(inn < 10){
+      result = '00' + inn;
+      if(inn <= 0) result = '000';
+    }
+  }
+  return result;
+}
 /*<div id="attack_alert" class="tooltip eventToggle soon" title="">
               <a href="https://s163-en.ogame.gameforge.com/game/index.php?page=eventList"></a>
                             </div>*/

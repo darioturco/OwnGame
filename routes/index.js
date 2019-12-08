@@ -15,8 +15,9 @@ router.get('/', (req, res, next) => {
   //uni.deleteCollection(process.env.UNIVERSE_NAME, ["jugadores", "galaxy", "universo"]);
   //uni.createUniverse(process.env.UNIVERSE_NAME, 5, {name: "", inicio: 0,maxGalaxies: 9,donutGalaxy: true,donutSystem: true,speed: 1,speedFleet: 1,fleetDebris: 30,defenceDebris: 0,maxMoon: 20});
   //uni.addNewPlayer("dturco", 1);
-  //uni.setPlanetData({galaxy: 1, system: 1, pos: 6}, "dturco");
+  //uni.setPlanetData({galaxy: 1, system: 1, pos: 7}, "dturco");
   //uni.sendMessage("dturco", {type: 1, title: "Nuevo titulo", text: "Mensaje oficial", data: {}});
+  //uni.colonize({galaxy: 1, system: 3, pos: 5}, 'dturco');
   uni.seeDataBase(res, process.env.UNIVERSE_NAME, "jugadores");
 });
 
