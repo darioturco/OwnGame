@@ -51,15 +51,15 @@ body(id=bodyId onLoad='initFunction();')
           li#metal_box.metal
             .resourceIcon.metal
             span.value
-              span#resources_metal #{basic.resources.metal}
+              span#resources_metal #{Math.floor(basic.resources.metal)}
           li#crystal_box.crystal
             .resourceIcon.crystal
             span.value
-              span#resources_crystal #{basic.resources.crystal}
+              span#resources_crystal #{Math.floor(basic.resources.crystal)}
           li#deuterium_box.deuterium
             .resourceIcon.deuterium
             span.value
-              span#resources_deuterium #{basic.resources.deuterium}
+              span#resources_deuterium #{Math.floor(basic.resources.deuterium)}
           li#energy_box.energy
             .resourceIcon.energy
             span.value

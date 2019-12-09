@@ -43,17 +43,37 @@ var exp = {
     }, () => {this.allCord = obj;});
   },
   getPlayer: function(player, f) {
-    mongo.db(process.env.UNIVERSE_NAME).collection(process.env.JUGADORES).findOne({name: player}, (err, res) => {
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOne({name: player}, (err, res) => {
       if(err) throw err;
-      this.player = res;
-      this.updatePlayer(this.player, f);//actualiza los datos desde la ultima conecccion
+      if(res == null){
+        f();
+      }else{
+        this.updatePlayer(res.name, (respuesta) => {this.player = respuesta;f();}, res);//actualiza los datos desde la ultima conecccion
+      }
     });
   },
-  updatePlayer: function(player, f){
-    /*mongo.db(process.env.UNIVERSE_NAME).collection(process.env.JUGADORES).updateOne({name: player}, (err, res) => {
-
-    }*/
-    f();
+  updatePlayer: function(player, f, help = null){
+    let objInc = {};
+    if(help == null){
+      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOne({name: player}, (err, res) => {
+        if(err) throw err;
+        //tiene que hacer lo mismo que hace abajo pero en lugar de usar el objeto hhelp usar el res que encontro
+        // se podria pasar todo a una sola funcion que le entre help o res dependiendo de lo que se nececite
+        f();
+      });
+    }else{
+      let last = help.lastVisit;
+      let hour = (new Date().getTime() - last)/(1000*3600);
+      for(let i = 0 ; i<help.planets.length ; i++){
+        objInc['planets.' + i + '.resources.metal'] = help.planets[i].resourcesAdd.metal*hour;
+        objInc['planets.' + i + '.resources.crystal'] = help.planets[i].resourcesAdd.crystal*hour;
+        objInc['planets.' + i + '.resources.deuterium'] = help.planets[i].resourcesAdd.deuterium*hour;
+      }
+      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOneAndUpdate({name: player}, {$set: {lastVisit: new Date().getTime()}, $inc: objInc}, {returnOriginal: false}, (err, res) => {
+        if(err) throw err;
+        f(res.value);
+      });
+    }
   },
   createNewPlanet: function(cord, planetName, playerName, playerTypeNew) {
     var typePlanet = this.generateNewTypeOfPlanet(cord.pos, cord.system % 2);
@@ -69,7 +89,7 @@ var exp = {
       camposMax: typePlanet.campos,
       campos: 0,
       resources: {metal: 500, crystal: 500, deuterium: 0, energy: 0},
-      resourcesAdd: {metal: 20, crystal: 10, deuterium: 0},
+      resourcesAdd: {metal: 30*this.universo.speed, crystal: 15*this.universo.speed, deuterium: 0},
       resourcesPercentage: {metal: '10', crystal: '10', deuterium: '10', energy: '10'},
       buildings: {metalMine: 0, crystalMine: 0, deuteriumMine: 0, solarPlant: 0, fusionReactor: 0, metalStorage: 0, crystalStorage: 0, deuteriumStorage: 0, robotFactory: 0, shipyard: 0, researchLab: 0, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0},
       fleet: {lightFighter: 0, heavyFighter: 0, cruiser: 0, battleship: 0, battlecruiser: 0, bomber: 0, destroyer: 0, deathstar: 0, smallCargo: 0, largeCargo: 0, colony: 0, recycler: 0, espionageProbe: 0, solarSatellite: 0},
@@ -403,12 +423,13 @@ var exp = {
   },
   setPlanetData: function(cord, player){
     // cambiar para que no sean constantes
-    let building = {metalMine: 10, crystalMine: 2, deuteriumMine: 0, solarPlant: 9, fusionReactor: 12, metalStorage: 2, crystalStorage: 1, deuteriumStorage: 0, robotFactory: 0, shipyard: 0, researchLab: 0, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0};
+    let resources = {metal: 500, crystal: 500, deuterium: 100};
+    let building = {metalMine: 13, crystalMine: 2, deuteriumMine: 0, solarPlant: 9, fusionReactor: 12, metalStorage: 2, crystalStorage: 1, deuteriumStorage: 0, robotFactory: 0, shipyard: 0, researchLab: 0, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0};
     let fleet = {lightFighter: 10, heavyFighter: 0, cruiser: 1, battleship: 10, battlecruiser: 0, bomber: 3, destroyer: 100, deathstar: 1, smallCargo: 20, largeCargo: 200, colony: 1, recycler: 10, espionageProbe: 30, solarSatellite: 15};
     let defenses = {rocketLauncher: 500, lightLaser: 0, heavyLaser: 0, gauss: 0, ion: 0, plasma: 0, smallShield: 0, largeShield: 0, antiballisticMissile: 0, interplanetaryMissile: 10};
     let moon = {active: false, size: 0};
     let debris = {active: false, metal:0, crystal: 0};
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({planets :{$elemMatch: {coordinates: {galaxy: cord.galaxy, system: cord.system, pos: cord.pos}}}}, {$set: {'planets.$.buildings': building, 'planets.$.fleet': fleet, 'planets.$.defense': defenses,'planets.$.moon': moon, 'planets.$.debris': debris}});
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({planets :{$elemMatch: {coordinates: {galaxy: cord.galaxy, system: cord.system, pos: cord.pos}}}}, {$set: {'planets.$.resources': resources,'planets.$.buildings': building, 'planets.$.fleet': fleet, 'planets.$.defense': defenses,'planets.$.moon': moon, 'planets.$.debris': debris}});
   },
   colonize: function(cord, player){
     let newPlanet = this.createNewPlanet(cord, 'Colony', player, 'activo'); // no deberia estar siempre activo
@@ -465,6 +486,7 @@ var exp = {
     return res;
   },
   seeDataBase: (res, uni, name) => {
+    console.log(new Date());
     let respuesta = "";
     let cursor = mongo.db(uni).collection(name).find();
     cursor.forEach((doc, err) => {
