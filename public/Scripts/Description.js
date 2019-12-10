@@ -12,6 +12,7 @@ var elementList = ["metal", "crystal", "deuterium", "energy"];
 var inputCant = null, maxlink = null;
 var max = 0;
 var energy_res;
+var doing = false, canPress = false;
 var descriptionText, resourcesText, resourcesIcon, timeText, nameText, levelText, imgInfo, posibleText;
 setTimeout(initial, 0);
 
@@ -45,11 +46,12 @@ function initial(){
       if(info[info.listInfo[startImg + i]].tech == false){
         colorImg[i].classList.add('off');
       }else{
-        if(document.getElementById("resources_metal").innerHTML < info[info.listInfo[startImg + i]].metal || document.getElementById("resources_crystal").innerHTML < info[info.listInfo[startImg + i]].crystal || document.getElementById("resources_deuterium").innerHTML < info[info.listInfo[startImg + i]].deuterium){
+        if(document.getElementById("resources_metal").innerHTML < info[info.listInfo[startImg + i]].metal || document.getElementById("resources_crystal").innerHTML < info[info.listInfo[startImg + i]].crystal || document.getElementById("resources_deuterium").innerHTML < info[info.listInfo[startImg + i]].deuterium || info.doing != false){
           colorImg[i].classList.add('disabled');
         }
       }
     }
+    doing = info.doing != false;
   });
 }
 
@@ -105,7 +107,9 @@ function setInfo(){
   timeText.innerHTML = segundosATiempo(tiempoParaEdificios(info[toggle].metal + info[toggle].crystal));// calcula el tiempo y lo pasa a segundos
   descriptionText.innerHTML = info[toggle].description;
   imgInfo.id = toggle;
-  if((info[toggle].tech == false) || (totalRosources[0] < info[toggle].metal) || (totalRosources[1] < info[toggle].crystal) || (totalRosources[2] < info[toggle].deuterium)){
+  canPress = true;
+  if((info[toggle].tech == false) || doing ||(totalRosources[0] < info[toggle].metal) || (totalRosources[1] < info[toggle].crystal) || (totalRosources[2] < info[toggle].deuterium)){
+    canPress = false;
     colorButton.classList.add("build-it_disabled");
     posibleText.innerHTML = segundosATiempo(minimoPara(totalRosources, resourcesList));
     if(info[toggle].tech == false){
@@ -146,8 +150,35 @@ function setMax(){
 }
 
 function sendInproveRequest(){
-  console.log(toggle);
-  /*loadJSON('./api/set/', (obj) => {
-    console.log(obj);
-  };*/
+  if(canPress == true){
+    loadJSON('./api/set/sendBuildRequest?obj=' + toggle, (obj) => {
+      console.log(obj);
+      if(obj.ok == true) location.reload();//recargo la pagina
+    });
+  }
 }
+
+/*<li id="button1" class="on">
+                                <div class="item_box supply1 tooltip js_hideTipOnMobile" title="">
+	<div class="stationlarge buildingimg">
+
+		<div class="construction">
+            <div class="pusher" id="b_supply1" style="height: 38px; margin-top: 62px;">
+            </div>
+            <a class="slideIn timeLink active" href="javascript:void(0);" ref="1">
+                <span class="time" id="test" name="zeit">1h 10m</span>
+            </a>
+
+			<a class="detail_button slideIn active" id="details1" ref="1" href="javascript:void(0);">
+				<span class="eckeoben">
+					<span style="font-size:11px;" class="undermark">22</span>
+				</span>
+				<span class="ecke">
+					<span class="level">21                                            </span>
+				</span>
+			</a>
+		</div>
+	</div>
+</div>
+
+                        </li>*/

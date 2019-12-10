@@ -1,7 +1,7 @@
 extends Ogame_Layout
 block content
   #inhalt
-    #planet(style='background-image:url(./Imagenes/Planets/Facilities_Planet_1.jpg)')
+    #planet(style='background-image:url(./Imagenes/Planets/Facilities_Planet_' + basic.planets[basic.numPlanet].type + '.jpg)')
       #header_text(style='opacity: 1; display: block;')
         h2 Facilities - #{basic.planets[basic.numPlanet].name}
       #detail.detail_screen

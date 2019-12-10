@@ -8,7 +8,7 @@ router.get('/universoInfo', function(req, res, next) {
 });
 
 router.get('/universo', function(req, res, next) {
-  res.send(uni);
+  uni.getPlayer(process.env.PLAYER, () => {res.send(uni);});
 });
 
 router.get('/allPlanets', function(req, res, next) {
@@ -49,10 +49,9 @@ router.get('/searchPlayer', function(req, res, next) {
   uni.searchPlayer(res, req.query.name);
 });
 
-
 //Se usa set para las direcciones que cambian cosas en la base de datos
 
-router.get('/set/updateResources', function(req, res, next) {
+router.get('/set/updateResources', function(req, res, next) {// updatea los valores de resourcesSettings
   uni.updateResourcesData(res, uni.planeta, req.query);
 });
 
@@ -71,6 +70,10 @@ router.get('/set/setOptions', function(req, res, next) {
   let small = parseInt(req.query.sml);
   let large = parseInt(req.query.lar);
   uni.setOptions(res, esp, small, large);
+});
+
+router.get('/set/sendBuildRequest', function(req, res, next) {
+  uni.proccesBuildRequest(uni.planeta, req.query.obj, res);
 });
 
 module.exports = router;
