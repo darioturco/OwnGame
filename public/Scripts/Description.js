@@ -9,11 +9,15 @@ var level = "Number: ";
 var info = undefined;
 var size = "250";
 var elementList = ["metal", "crystal", "deuterium", "energy"];
-var inputCant = null, maxlink = null;
+var inputCant = null, maxlink = null, contdownText = null;
+var timeContdown = 0, contContdown = 0;
 var max = 0;
 var energy_res;
 var doing = false, canPress = false;
 var descriptionText, resourcesText, resourcesIcon, timeText, nameText, levelText, imgInfo, posibleText;
+
+// hay que hecer que se pueda cancelar la contruccion de un edificio y verificar que el contador de tiempo funciona bien
+
 setTimeout(initial, 0);
 
 function initial(){
@@ -42,16 +46,26 @@ function initial(){
   url += getDireccionApi(body);
   loadJSON(url, (res) => {
     info = res;
+    doing = info.doing != false;
     for(let i = 0 ; i<colorImg.length ; i++){
       if(info[info.listInfo[startImg + i]].tech == false){
         colorImg[i].classList.add('off');
       }else{
-        if(document.getElementById("resources_metal").innerHTML < info[info.listInfo[startImg + i]].metal || document.getElementById("resources_crystal").innerHTML < info[info.listInfo[startImg + i]].crystal || document.getElementById("resources_deuterium").innerHTML < info[info.listInfo[startImg + i]].deuterium || info.doing != false){
-          colorImg[i].classList.add('disabled');
+        if(document.getElementById("resources_metal").innerHTML < info[info.listInfo[startImg + i]].metal || document.getElementById("resources_crystal").innerHTML < info[info.listInfo[startImg + i]].crystal || document.getElementById("resources_deuterium").innerHTML < info[info.listInfo[startImg + i]].deuterium || doing){
+          if(doing == true && info.doing.item == info.listInfo[startImg + i]){
+            timeContdown = info.time - Math.floor((new Date().getTime() - info.doing.init)/1000);
+            contdownText = document.createElement("span");
+            contdownText.classList.add('time');
+            contdownText.innerText = segundosATiempo(timeContdown);
+            colorImg[i].children[0].children[0].appendChild(contdownText);
+            setInterval(() => {contdownText.innerText = segundosATiempo(timeContdown - contContdown); contContdown++;}, 1000);
+          }else{
+            colorImg[i].classList.add('disabled');
+          }
         }
       }
     }
-    doing = info.doing != false;
+
   });
 }
 
@@ -162,11 +176,8 @@ function sendInproveRequest(){
                                 <div class="item_box supply1 tooltip js_hideTipOnMobile" title="">
 	<div class="stationlarge buildingimg">
 
-		<div class="construction">
-            <div class="pusher" id="b_supply1" style="height: 38px; margin-top: 62px;">
-            </div>
-            <a class="slideIn timeLink active" href="javascript:void(0);" ref="1">
-                <span class="time" id="test" name="zeit">1h 10m</span>
+            <a href="javascript:void(0);">
+                <span class="time" id="test">1h 10m</span>
             </a>
 
 			<a class="detail_button slideIn active" id="details1" ref="1" href="javascript:void(0);">
@@ -177,7 +188,6 @@ function sendInproveRequest(){
 					<span class="level">21                                            </span>
 				</span>
 			</a>
-		</div>
 	</div>
 </div>
 
