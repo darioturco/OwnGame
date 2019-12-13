@@ -52,7 +52,7 @@ router.get('/searchPlayer', function(req, res, next) {
 //Se usa set para las direcciones que cambian cosas en la base de datos
 
 router.get('/set/updateResources', function(req, res, next) {// updatea los valores de resourcesSettings
-  uni.updateResourcesData(res, uni.planeta, req.query);
+  uni.updateResourcesData(() => {res.send({ok: true});}, uni.planeta, req.query);
 });
 
 router.get('/set/deleteMessages', function(req, res, next) {
@@ -74,6 +74,10 @@ router.get('/set/setOptions', function(req, res, next) {
 
 router.get('/set/sendBuildRequest', function(req, res, next) {
   uni.proccesBuildRequest(uni.planeta, req.query.obj, res);
+});
+
+router.get('/set/cancelBuildRequest', function(req, res, next) {
+  uni.cancelBuildRequest(uni.planeta, res);
 });
 
 module.exports = router;

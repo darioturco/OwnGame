@@ -53,19 +53,22 @@ function initial(){
       }else{
         if(document.getElementById("resources_metal").innerHTML < info[info.listInfo[startImg + i]].metal || document.getElementById("resources_crystal").innerHTML < info[info.listInfo[startImg + i]].crystal || document.getElementById("resources_deuterium").innerHTML < info[info.listInfo[startImg + i]].deuterium || doing){
           if(doing == true && info.doing.item == info.listInfo[startImg + i]){
-            timeContdown = info.time - Math.floor((new Date().getTime() - info.doing.init)/1000);
+            timeContdown = info.doing.time - Math.floor((new Date().getTime() - info.doing.init)/1000);
             contdownText = document.createElement("span");
             contdownText.classList.add('time');
             contdownText.innerText = segundosATiempo(timeContdown);
             colorImg[i].children[0].children[0].appendChild(contdownText);
-            setInterval(() => {contdownText.innerText = segundosATiempo(timeContdown - contContdown); contContdown++;}, 1000);
+            setInterval(() => {
+              contdownText.innerText = segundosATiempo(timeContdown - contContdown);
+              contContdown++;
+              if((timeContdown - contContdown) < 0) setTimeout(() => {location.reload();}, 1000);
+            }, 1000);
           }else{
             colorImg[i].classList.add('disabled');
           }
         }
       }
     }
-
   });
 }
 
@@ -165,11 +168,19 @@ function setMax(){
 
 function sendInproveRequest(){
   if(canPress == true){
+    //probar que pasa si hago doble click
     loadJSON('./api/set/sendBuildRequest?obj=' + toggle, (obj) => {
       console.log(obj);
       if(obj.ok == true) location.reload();//recargo la pagina
     });
   }
+}
+
+function cancelBuilding(){
+  loadJSON('./api/set/cancelBuildRequest', (obj) => {
+    console.log(obj);
+    if(obj.ok == true) location.reload();//recargo la pagina
+  });
 }
 
 /*<li id="button1" class="on">

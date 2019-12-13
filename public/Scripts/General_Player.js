@@ -22,6 +22,7 @@ function actualizaFecha(){
 
 function segundosATiempo(seg){
   if(!isFinite(seg)) return " unknown";
+  if(seg < 0) return " now";
   let time = (seg%60) + "s";
   seg = Math.floor(seg/60);
   if(seg != 0){

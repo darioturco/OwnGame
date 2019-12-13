@@ -6,7 +6,7 @@ require('mongodb').MongoClient.connect(process.env.MONGO_URL, {useUnifiedTopolog
   exp.getUniverseData(process.env.UNIVERSE_NAME);//carga los datos del universo
   mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").countDocuments({}, function(err, cant) {exp.cantPlayers = cant});
   exp.getListCord();
-  console.log('\x1b[32m%s\x1b[0m', "Base de datos lista.");
+  exp.getPlayer(process.env.PLAYER, () => {console.log('\x1b[32m%s\x1b[0m', "Base de datos lista.");});
 });
 var exp = {
   universo: null,
@@ -48,31 +48,44 @@ var exp = {
       if(res == null){
         f();
       }else{
-        this.updatePlayer(res.name, (respuesta) => {this.player = respuesta;f();}, res);//actualiza los datos desde la ultima conecccion
+        this.player = res;
+        this.updatePlayer(res.name, (respuesta) => {this.player = respuesta;f();}, true);//actualiza los datos desde la ultima conecccion
       }
     });
   },
-  updatePlayer: function(player, f, help = null){
+  updatePlayer: function(player, f, help = false){
+    let objSet = {};
     let objInc = {};
-    if(help == null){
+    if(help == true){
+      let hour = (new Date().getTime() - this.player.lastVisit)/(1000*3600);
+      for(let i = 0 ; i<this.player.planets.length ; i++){
+        if((this.player.planets[i].buildingConstrucction != false) && (this.player.planets[i].buildingConstrucction.time - Math.floor((new Date().getTime() - this.player.planets[i].buildingConstrucction.init)/1000) <= 0)){
+          objSet['planets.' + i + '.buildingConstrucction'] = false;
+          objInc['planets.' + i + '.buildings.' + this.player.planets[i].buildingConstrucction.item] = 1;
+          this.updateResourcesData(() => {}, i);//updatea la energia y resourcesAdd
+          objSet['planets.' + i + '.resources.energy'] = this.player.planets[i].resources.energy;
+        }
+        // deberia fijarce hace cuanto tiempo se aumento el edificio y que repercuciones tiene en la produccion de recursos
+        // deberia fijarce en la capacidad maxima de los almacenes
+        objInc['planets.' + i + '.resources.metal'] = this.player.planets[i].resourcesAdd.metal*hour;
+        objInc['planets.' + i + '.resources.crystal'] = this.player.planets[i].resourcesAdd.crystal*hour;
+        objInc['planets.' + i + '.resources.deuterium'] = this.player.planets[i].resourcesAdd.deuterium*hour;
+      }
+      objSet.lastVisit = new Date().getTime();
+      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOneAndUpdate({name: player}, {$set: objSet, $inc: objInc}, {returnOriginal: false}, (err, res) => {
+        if(err) throw err;
+        f(res.value);
+      });
+    }else{
+
       mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOne({name: player}, (err, res) => {
         if(err) throw err;
         //tiene que hacer lo mismo que hace abajo pero en lugar de usar el objeto hhelp usar el res que encontro
         // se podria pasar todo a una sola funcion que le entre help o res dependiendo de lo que se nececite
         f();
       });
-    }else{
-      let last = help.lastVisit;
-      let hour = (new Date().getTime() - last)/(1000*3600);
-      for(let i = 0 ; i<help.planets.length ; i++){
-        objInc['planets.' + i + '.resources.metal'] = help.planets[i].resourcesAdd.metal*hour;
-        objInc['planets.' + i + '.resources.crystal'] = help.planets[i].resourcesAdd.crystal*hour;
-        objInc['planets.' + i + '.resources.deuterium'] = help.planets[i].resourcesAdd.deuterium*hour;
-      }
-      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOneAndUpdate({name: player}, {$set: {lastVisit: new Date().getTime()}, $inc: objInc}, {returnOriginal: false}, (err, res) => {
-        if(err) throw err;
-        f(res.value);
-      });
+
+
     }
   },
   createNewPlanet: function(cord, planetName, playerName, playerTypeNew) {
@@ -429,11 +442,27 @@ var exp = {
       res.send({ok: false});
     }
   },
+  cancelBuildRequest: function(planet, res){
+    if(this.player.planets[planet].buildingConstrucction != false){
+      let objSet = {};
+      let objInc = {}
+      objSet['planets.' + planet + '.buildingConstrucction'] = false;
+      objInc['planets.' + planet + '.resources.metal'] = this.player.planets[planet].buildingConstrucction.metal;
+      objInc['planets.' + planet + '.resources.crystal'] = this.player.planets[planet].buildingConstrucction.crystal;
+      objInc['planets.' + planet + '.resources.deuterium'] = this.player.planets[planet].buildingConstrucction.deuterium;
+      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: this.player.name}, {$set: objSet, $inc: objInc}, (err, result) => {
+        if(err) throw err;
+        res.send({ok: true});
+      });
+    }else{
+      res.send({ok: false});
+    }
+  },
   timeBuild: function(recursos, mult, elev){
     let divisor = 2500 * (1+mult) * Math.pow(2,elev) * this.universo.speed;
     return Math.floor(60*recursos/divisor);
   },
-  updateResourcesData: function(res, planet, obj = null) { //updatea los multiplicadores de los recursos(NO toca los recursos)
+  updateResourcesData: function(f, planet, obj = null) { //updatea los multiplicadores de los recursos(NO toca los recursos)
     let objSet = {};
     let spd = this.universo.speed;
     let plasma = this.player.research.plasma;
@@ -449,17 +478,22 @@ var exp = {
     let totalEnergyUsage = maxEnergyAux.metal + maxEnergyAux.crystal + maxEnergyAux.deuterium;
     let energyUsage = {metal: Math.floor((maxEnergyAux.metal*energyTotal)/totalEnergyUsage), crystal: Math.floor((maxEnergyAux.crystal*energyTotal)/totalEnergyUsage), deuterium: Math.floor((maxEnergyAux.deuterium*energyTotal)/totalEnergyUsage)};
     energyUsage = {metal: ((energyUsage.metal > maxEnergyAux.metal) ? maxEnergyAux.metal : energyUsage.metal), crystal: ((energyUsage.crystal > maxEnergyAux.crystal) ? maxEnergyAux.crystal : energyUsage.crystal), deuterium: ((energyUsage.deuterium > maxEnergyAux.deuterium) ? maxEnergyAux.deuterium : energyUsage.deuterium)};
-    objSet['resources.energy'] = Math.floor(energyTotal - maxEnergyAux.metal-maxEnergyAux.crystal - maxEnergyAux.deuterium);
+    let energy = Math.floor(energyTotal - maxEnergyAux.metal - maxEnergyAux.crystal - maxEnergyAux.deuterium);
+    objSet['resources.energy'] = energy;
     let deuteriumHour = spd*((isNaN(energyUsage.deuterium/maxEnergyAux.deuterium)) ? 0 : (energyUsage.deuterium/maxEnergyAux.deuterium))*parseInt(this.player.planets[planet].resourcesPercentage.deuterium)*minas.deuteriumMine*Math.pow(1.1, minas.deuteriumMine)*(1.36-0.004*temp)*(100+plasma/3)/100 + auxEnergy.fusionDeuterium;
     if(deuteriumHour < 0) deuteriumHour = 0;
     objSet.resourcesAdd = {metal: 30*spd+3*((isNaN(energyUsage.metal/maxEnergyAux.metal)) ? 0 : (energyUsage.metal/maxEnergyAux.metal))*spd*parseInt(this.player.planets[planet].resourcesPercentage.metal)*minas.metalMine*Math.pow(1.1, minas.metalMine)*(100+plasma)/100, crystal: 15*spd+2*((isNaN(energyUsage.crystal/maxEnergyAux.crystal)) ? 0 : (energyUsage.crystal/maxEnergyAux.crystal))*spd*parseInt(this.player.planets[planet].resourcesPercentage.crystal)*minas.crystalMine*Math.pow(1.1, minas.crystalMine)*(100+plasma*(2/3))/100, deuterium: deuteriumHour};
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({planets :{$elemMatch: {coordinates: {galaxy: this.player.planets[planet].coordinates.galaxy, system: this.player.planets[planet].coordinates.system, pos: this.player.planets[planet].coordinates.pos}}}}, {$set: {'planets.$.resourcesPercentage': objSet.resourcesPercentage, 'planets.$.resources.energy': objSet['resources.energy'], 'planets.$.resourcesAdd': objSet.resourcesAdd}}, () => {
-      res.send({ok: true});
-    });
+    this.player.planets[planet].resourcesAdd = objSet.resourcesAdd;
+    this.player.planets[planet].resources.energy = energy;
+    if(obj != null){
+      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({planets :{$elemMatch: {coordinates: {galaxy: this.player.planets[planet].coordinates.galaxy, system: this.player.planets[planet].coordinates.system, pos: this.player.planets[planet].coordinates.pos}}}}, {$set: {'planets.$.resourcesPercentage': objSet.resourcesPercentage, 'planets.$.resources.energy': objSet['resources.energy'], 'planets.$.resourcesAdd': objSet.resourcesAdd}}, () => {
+        f();
+      });
+    }
   },
   setPlanetData: function(cord, player){
     // cambiar para que no sean constantes
-    let resources = {metal: 500, crystal: 500, deuterium: 100, energy: 0};
+    let resources = {metal: 5000000, crystal: 4000000, deuterium: 1000000, energy: 0};
     let building = {metalMine: 0, crystalMine: 1, deuteriumMine: 0, solarPlant: 0, fusionReactor: 12, metalStorage: 2, crystalStorage: 1, deuteriumStorage: 0, robotFactory: 0, shipyard: 0, researchLab: 0, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0};
     let fleet = {lightFighter: 10, heavyFighter: 0, cruiser: 1, battleship: 10, battlecruiser: 0, bomber: 3, destroyer: 100, deathstar: 1, smallCargo: 20, largeCargo: 200, colony: 1, recycler: 10, espionageProbe: 30, solarSatellite: 15};
     let defenses = {rocketLauncher: 500, lightLaser: 0, heavyLaser: 0, gauss: 0, ion: 0, plasma: 0, smallShield: 0, largeShield: 0, antiballisticMissile: 0, interplanetaryMissile: 10};
@@ -485,9 +519,10 @@ var exp = {
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: this.player.name}, {$set: {messagesCant: 0}});
   },
   normalRandom: (min, max, podaMin = -Infinity, podaMax = Infinity) => {// la esperanza es (max+min)/2
-    var u = 0, v = 0;
+    let u = 0, v = 0, num = 1;
     while(u == 0) u = Math.random(); //Converting [0,1) to (0,1)
-    let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v); // Box–Muller transform
+    v = Math.random();
+    num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v); // Box–Muller transform
     num = num / 10.0 + 0.5; // Translate to 0 -> 1
     if (num > 1 || num < 0) num = Math.random(); // resample between 0 and 1 if out of range
     num *= max - min; // Stretch to fill range

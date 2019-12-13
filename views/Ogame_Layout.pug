@@ -63,6 +63,7 @@ body(id=bodyId onLoad='initFunction();')
           li#energy_box.energy
             .resourceIcon.energy
             span.value
+              - console.log(basic.resources.energy)
               span#resources_energy(class=(basic.resources.energy < 0) ? 'overmark' : '') #{basic.resources.energy}
           li#darkmatter_box.darkmatter.dark_highlight_tablet
             img(src='./Imagenes/Dark_matter.gif')
