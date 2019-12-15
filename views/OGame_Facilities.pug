@@ -9,6 +9,7 @@ block content
           a.techtree_link.tooltip.overlay(href='./Ogame_Tecnology.html')
             .techtree_img
             span.label Techtree
+          a#cancelButton.tooltip.abort_link(href='javascript:void(0);' onclick='cancelBuilding();')
         #content
           h2#nameText
           a#close.close_details(href='javascript:void(0);' onclick='toggleDescription("void"); return false;')
@@ -60,7 +61,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Robotics Factory
-                      | 0
+                      | #{info.buildings.robotFactory}
           li#button1.on
             .item_box.station21
               .stationlarge.buildingimg
@@ -68,7 +69,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Shipyard
-                      | 0
+                      | #{info.buildings.shipyard}
           li#button2.on
             .item_box.station31
               .stationlarge.buildingimg
@@ -76,7 +77,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Research Lab
-                      | 0
+                      | #{info.buildings.researchLab}
           li#button3.on
             .item_box.station34
               .stationlarge.buildingimg
@@ -84,7 +85,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Alliance Depot
-                      | 0
+                      | #{info.buildings.alliance}
           li#button4.on
             .item_box.station44
               .stationlarge.buildingimg
@@ -92,7 +93,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Missile Silo
-                      | 0
+                      | #{info.buildings.silo}
           li#button5.on
             .item_box.station15
               .stationlarge.buildingimg
@@ -100,7 +101,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Nanite Factory
-                      | 0
+                      | #{info.buildings.naniteFactory}
           li#button6.on
             .item_box.station33
               .stationlarge.buildingimg
@@ -108,5 +109,5 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Terraformer
-                      | 0
+                      | #{info.buildings.Terraformer}
         .footer

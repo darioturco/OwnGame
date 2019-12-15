@@ -76,8 +76,16 @@ router.get('/set/sendBuildRequest', function(req, res, next) {
   uni.proccesBuildRequest(uni.planeta, req.query.obj, res);
 });
 
+router.get('/set/sendResearchRequest', function(req, res, next) {
+  uni.proccesResearchRequest(uni.planeta, req.query.obj, res);
+});
+
 router.get('/set/cancelBuildRequest', function(req, res, next) {
   uni.cancelBuildRequest(uni.planeta, res);
+});
+
+router.get('/set/cancelResearchRequest', function(req, res, next) {
+  uni.cancelResearchRequest(res);
 });
 
 module.exports = router;

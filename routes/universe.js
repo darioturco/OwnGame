@@ -58,12 +58,27 @@ var exp = {
     let objInc = {};
     if(help == true){
       let hour = (new Date().getTime() - this.player.lastVisit)/(1000*3600);
+      let updateResourcesAddOfAllPlanets = false;
+      if((this.player.researchConstrucction != false) && (this.player.researchConstrucction.time - Math.floor((new Date().getTime() - this.player.researchConstrucction.init)/1000) <= 0)){
+        objSet['researchConstrucction'] = false;
+        objInc['research.' + this.player.researchConstrucction.item] = 1;
+        this.player.research[this.player.researchConstrucction.item] += 1;
+        if(this.player.researchConstrucction.item == 'energy' || this.player.researchConstrucction.item == 'plasma') updateResourcesAddOfAllPlanets = true;
+      }
       for(let i = 0 ; i<this.player.planets.length ; i++){
+        let updateDataThisPlanet = false;
         if((this.player.planets[i].buildingConstrucction != false) && (this.player.planets[i].buildingConstrucction.time - Math.floor((new Date().getTime() - this.player.planets[i].buildingConstrucction.init)/1000) <= 0)){
           objSet['planets.' + i + '.buildingConstrucction'] = false;
           objInc['planets.' + i + '.buildings.' + this.player.planets[i].buildingConstrucction.item] = 1;
+          updateDataThisPlanet = true;
+          this.player.planets[i].buildings[this.player.planets[i].buildingConstrucction.item] += 1;
+        }
+        if(updateDataThisPlanet || updateResourcesAddOfAllPlanets){
           this.updateResourcesData(() => {}, i);//updatea la energia y resourcesAdd
           objSet['planets.' + i + '.resources.energy'] = this.player.planets[i].resources.energy;
+          objSet['planets.' + i + '.resourcesAdd.metal'] = this.player.planets[i].resourcesAdd.metal;
+          objSet['planets.' + i + '.resourcesAdd.crystal'] = this.player.planets[i].resourcesAdd.crystal;
+          objSet['planets.' + i + '.resourcesAdd.deuterium'] = this.player.planets[i].resourcesAdd.deuterium;
         }
         // deberia fijarce hace cuanto tiempo se aumento el edificio y que repercuciones tiene en la produccion de recursos
         // deberia fijarce en la capacidad maxima de los almacenes
@@ -71,6 +86,7 @@ var exp = {
         objInc['planets.' + i + '.resources.crystal'] = this.player.planets[i].resourcesAdd.crystal*hour;
         objInc['planets.' + i + '.resources.deuterium'] = this.player.planets[i].resourcesAdd.deuterium*hour;
       }
+
       objSet.lastVisit = new Date().getTime();
       mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOneAndUpdate({name: player}, {$set: objSet, $inc: objInc}, {returnOriginal: false}, (err, res) => {
         if(err) throw err;
@@ -131,10 +147,10 @@ var exp = {
       messagesCant: 0,
       messages: [],
       movement: [],
-      researchConstrucciton: false,
+      researchConstrucction: false,
       tutorial: [false, false, false, false, false, false, false, false, false, false],
       research: {energy: 0, laser: 0, ion: 0, hyperspace: 0, plasma: 0, espionage: 0, computer: 0, astrophysics: 0, intergalactic: 0, graviton: 0, combustion: 0, impulse: 0, hyperspace_drive: 0, weapons: 0, shielding: 0, armour: 0},
-      lastVisit: 0,
+      lastVisit: new Date().getTime(),
       type: "activo"// activo inactivo InactivoFuerte fuerte debil
     };
     this.cantPlayers++;//aumenta en uno la cantidad de jugadores del universo
@@ -278,8 +294,9 @@ var exp = {
             weapons: {metal: 800*Math.pow(2, research.weapons), crystal: 200*Math.pow(2, research.weapons), deuterium: 0, energy: 0, tech: lab >= 4, level: research.weapons, name: "Weapons Technology", description: "Weapons technology makes weapons systems more efficient. Each level of weapons technology increases the weapon strength of units by 10 % of the base value."},
             shielding: {metal: 200*Math.pow(2, research.shielding), crystal: 600*Math.pow(2, research.shielding), deuterium: 0, energy: 0, tech: lab >= 6 && research.research.energy >= 3, level: research.shielding, name: "Shielding Technology", description: "Shielding technology makes the shields on ships and defensive facilities more efficient. Each level of shield technology increases the strength of the shields by 10 % of the base value."},
             armour: {metal: 1000*Math.pow(2, research.armour), crystal: 0, deuterium: 0, energy: 0, tech: lab >= 2, level: research.armour, name: "Armour Technology", description: "Special alloys improve the armour on ships and defensive structures. The effectiveness of the armour can be increased by 10 % per level."},
-            listInfo: ["energy", "laser", "ion", "hyperspace", "plasma", "espionage", "computer", "astrophysics", "intergalactic", "graviton", "combustion", "impulse", "hyperspace_drive", "weapons", "shielding", "armour"],
-            time: {mult: lab, elev: research.intergalactic}
+            listInfo: ["energy", "laser", "ion", "hyperspace", "plasma", "combustion", "impulse", "hyperspace_drive", "espionage", "computer", "astrophysics", "intergalactic", "graviton", "weapons", "shielding", "armour"],
+            time: {mult: lab, elev: research.intergalactic},
+            doing: this.player.researchConstrucction
     };
   },
   costShipyard: function(planet){
@@ -442,14 +459,61 @@ var exp = {
       res.send({ok: false});
     }
   },
+  proccesResearchRequest: function(planet, researchName, res){
+    if(this.player.researchConstrucction == false){
+      let objPrice = this.costResearch(planet);
+      if(objPrice[researchName].metal <= this.player.planets[planet].resources.metal && objPrice[researchName].crystal <= this.player.planets[planet].resources.crystal && objPrice[researchName].deuterium <= this.player.planets[planet].resources.deuterium && objPrice[researchName].tech == true){
+        let researchConstrucctionAux = {};
+        let researchConstrucction = {};
+        let objInc = {};
+        researchConstrucctionAux.metal = objPrice[researchName].metal;
+        researchConstrucctionAux.crystal = objPrice[researchName].crystal;
+        researchConstrucctionAux.deuterium = objPrice[researchName].deuterium;
+        researchConstrucctionAux.item = researchName;
+        researchConstrucctionAux.planet = planet;
+        researchConstrucctionAux.init = new Date().getTime();
+        researchConstrucctionAux.time = this.timeBuild(objPrice[researchName].metal + objPrice[researchName].crystal, objPrice.time.mult, objPrice.time.elev);
+        researchConstrucction['researchConstrucction'] = researchConstrucctionAux;
+        this.player.researchConstrucction = researchConstrucctionAux;
+        objInc['planets.' + planet + '.resources.metal'] = -objPrice[researchName].metal;
+        objInc['planets.' + planet + '.resources.crystal'] = -objPrice[researchName].crystal;
+        objInc['planets.' + planet + '.resources.deuterium'] = -objPrice[researchName].deuterium;
+        mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: this.player.name}, {$set: researchConstrucction, $inc: objInc}, (err, result) => {
+          if(err) throw err;
+          res.send({ok: true})
+        });
+      }else{
+        res.send({ok: false});
+      }
+    }else{
+      res.send({ok: false});
+    }
+  },
   cancelBuildRequest: function(planet, res){
     if(this.player.planets[planet].buildingConstrucction != false){
       let objSet = {};
-      let objInc = {}
+      let objInc = {};
       objSet['planets.' + planet + '.buildingConstrucction'] = false;
       objInc['planets.' + planet + '.resources.metal'] = this.player.planets[planet].buildingConstrucction.metal;
       objInc['planets.' + planet + '.resources.crystal'] = this.player.planets[planet].buildingConstrucction.crystal;
       objInc['planets.' + planet + '.resources.deuterium'] = this.player.planets[planet].buildingConstrucction.deuterium;
+      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: this.player.name}, {$set: objSet, $inc: objInc}, (err, result) => {
+        if(err) throw err;
+        res.send({ok: true});
+      });
+    }else{
+      res.send({ok: false});
+    }
+  },
+  cancelResearchRequest: function(res){
+    if(this.player.researchConstrucction != false){
+      let planet = this.player.researchConstrucction.planet;
+      let objSet = {};
+      let objInc = {};
+      objSet['researchConstrucction'] = false;
+      objInc['planets.' + planet + '.resources.metal'] = this.player.researchConstrucction.metal;
+      objInc['planets.' + planet + '.resources.crystal'] = this.player.researchConstrucction.crystal;
+      objInc['planets.' + planet + '.resources.deuterium'] = this.player.researchConstrucction.deuterium;
       mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: this.player.name}, {$set: objSet, $inc: objInc}, (err, result) => {
         if(err) throw err;
         res.send({ok: true});
@@ -494,7 +558,7 @@ var exp = {
   setPlanetData: function(cord, player){
     // cambiar para que no sean constantes
     let resources = {metal: 5000000, crystal: 4000000, deuterium: 1000000, energy: 0};
-    let building = {metalMine: 0, crystalMine: 1, deuteriumMine: 0, solarPlant: 0, fusionReactor: 12, metalStorage: 2, crystalStorage: 1, deuteriumStorage: 0, robotFactory: 0, shipyard: 0, researchLab: 0, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0};
+    let building = {metalMine: 0, crystalMine: 1, deuteriumMine: 0, solarPlant: 0, fusionReactor: 12, metalStorage: 2, crystalStorage: 1, deuteriumStorage: 0, robotFactory: 0, shipyard: 0, researchLab: 5, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0};
     let fleet = {lightFighter: 10, heavyFighter: 0, cruiser: 1, battleship: 10, battlecruiser: 0, bomber: 3, destroyer: 100, deathstar: 1, smallCargo: 20, largeCargo: 200, colony: 1, recycler: 10, espionageProbe: 30, solarSatellite: 15};
     let defenses = {rocketLauncher: 500, lightLaser: 0, heavyLaser: 0, gauss: 0, ion: 0, plasma: 0, smallShield: 0, largeShield: 0, antiballisticMissile: 0, interplanetaryMissile: 10};
     let moon = {active: false, size: 0};
@@ -557,7 +621,6 @@ var exp = {
     return res;
   },
   seeDataBase: (res, uni, name) => {
-    console.log(new Date());
     let respuesta = "";
     let cursor = mongo.db(uni).collection(name).find();
     cursor.forEach((doc, err) => {

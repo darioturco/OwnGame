@@ -1,7 +1,7 @@
 var toggle = "void";
 var url = "./api/";
 var colorImg = [];
-var colorButton = null;
+var colorButton = null, cancelButton = null;
 var startImg = 0;
 var container;
 var universeSpeed = 0;
@@ -15,8 +15,6 @@ var max = 0;
 var energy_res;
 var doing = false, canPress = false;
 var descriptionText, resourcesText, resourcesIcon, timeText, nameText, levelText, imgInfo, posibleText;
-
-// hay que hecer que se pueda cancelar la contruccion de un edificio y verificar que el contador de tiempo funciona bien
 
 setTimeout(initial, 0);
 
@@ -43,14 +41,13 @@ function initial(){
   inputCant = document.getElementById('number');
   maxlink = document.getElementById('maxlink');
   energy_res = document.getElementById('resources_energy');
+  cancelButton = document.getElementById('cancelButton');
   url += getDireccionApi(body);
   loadJSON(url, (res) => {
     info = res;
     doing = info.doing != false;
     for(let i = 0 ; i<colorImg.length ; i++){
-      if(info[info.listInfo[startImg + i]].tech == false){
-        colorImg[i].classList.add('off');
-      }else{
+      if(info[info.listInfo[startImg + i]].tech == true){
         if(document.getElementById("resources_metal").innerHTML < info[info.listInfo[startImg + i]].metal || document.getElementById("resources_crystal").innerHTML < info[info.listInfo[startImg + i]].crystal || document.getElementById("resources_deuterium").innerHTML < info[info.listInfo[startImg + i]].deuterium || doing){
           if(doing == true && info.doing.item == info.listInfo[startImg + i]){
             timeContdown = info.doing.time - Math.floor((new Date().getTime() - info.doing.init)/1000);
@@ -67,6 +64,8 @@ function initial(){
             colorImg[i].classList.add('disabled');
           }
         }
+      }else{
+        colorImg[i].classList.add('off');
       }
     }
   });
@@ -129,9 +128,8 @@ function setInfo(){
     canPress = false;
     colorButton.classList.add("build-it_disabled");
     posibleText.innerHTML = segundosATiempo(minimoPara(totalRosources, resourcesList));
-    if(info[toggle].tech == false){
-      posibleText.innerHTML = " req. are no met";
-    }
+    if(info[toggle].tech == false) posibleText.innerHTML = " req. are no met";
+    if(doing) cancelButton.style.display = (info.doing.item == toggle) ? 'block' : 'none';
   }else{
     posibleText.innerHTML = " now";
     colorButton.classList.remove("build-it_disabled");
@@ -168,10 +166,18 @@ function setMax(){
 
 function sendInproveRequest(){
   if(canPress == true){
-    //probar que pasa si hago doble click
     loadJSON('./api/set/sendBuildRequest?obj=' + toggle, (obj) => {
       console.log(obj);
-      if(obj.ok == true) location.reload();//recargo la pagina
+      if(obj.ok == true) location.reload();
+    });
+  }
+}
+
+function sendResearchRequest(){
+  if(canPress == true){
+    loadJSON('./api/set/sendResearchRequest?obj=' + toggle, (obj) => {
+      console.log(obj);
+      if(obj.ok == true) location.reload();
     });
   }
 }
@@ -179,7 +185,14 @@ function sendInproveRequest(){
 function cancelBuilding(){
   loadJSON('./api/set/cancelBuildRequest', (obj) => {
     console.log(obj);
-    if(obj.ok == true) location.reload();//recargo la pagina
+    if(obj.ok == true) location.reload();
+  });
+}
+
+function cancelResearch(){
+  loadJSON('./api/set/cancelResearchRequest', (obj) => {
+    console.log(obj);
+    if(obj.ok == true) location.reload();
   });
 }
 

@@ -9,6 +9,7 @@ block content
           a.techtree_link.tooltip.overlay(href='./Ogame_Tecnology.html')
             .techtree_img
             span.label Techtree
+          a#cancelButton.tooltip.abort_link(href='javascript:void(0);' onclick='cancelBuilding();')
         #content
           h2#nameText
           a#close.close_details(href='javascript:void(0);' onclick='toggleDescription("void");return false;')
