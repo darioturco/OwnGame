@@ -3673,7 +3673,7 @@ body#fleet{overflow:visible}
 }
 .h_battleships,.h_civilships,#fleet .h_half_w{display:inline-block}
 .h_battleships{
-  background: url("../Imagenes/Shipyard/Shipyard_hader.gif") 100% 2px no-repeat;
+  background: url("../Imagenes/Shipyard/Shipyard_Hader.gif") 100% 2px no-repeat;
   width:390px;
 }
 .h_civilships{width:275px}#fleet .h_half_w{width:315px}#fleet #buttonz #battleships{width:360px;

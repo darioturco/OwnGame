@@ -13,7 +13,7 @@ var inputCant = null, maxlink = null, contdownText = null;
 var timeContdown = 0, contContdown = 0;
 var max = 0;
 var energy_res;
-var doing = false, canPress = false;
+var doing = false, canPress = false, shipyard = false;
 var descriptionText, resourcesText, resourcesIcon, timeText, nameText, levelText, imgInfo, posibleText;
 
 setTimeout(initial, 0);
@@ -21,6 +21,7 @@ setTimeout(initial, 0);
 function initial(){
   let body = document.body.id;
   if(body == "research") level = "Level: ";
+  if(body == "shipyard" || body == "defense") shipyard = true;
   if(body == "resources" || body == "station"){
     if(body == "station") startImg = 9;
     size = "300";
@@ -45,7 +46,7 @@ function initial(){
   url += getDireccionApi(body);
   loadJSON(url, (res) => {
     info = res;
-    doing = info.doing != false;
+    doing = info.doing != false && shipyard == false;
     for(let i = 0 ; i<colorImg.length ; i++){
       if(info[info.listInfo[startImg + i]].tech == true){
         if(document.getElementById("resources_metal").innerHTML < info[info.listInfo[startImg + i]].metal || document.getElementById("resources_crystal").innerHTML < info[info.listInfo[startImg + i]].crystal || document.getElementById("resources_deuterium").innerHTML < info[info.listInfo[startImg + i]].deuterium || doing){
@@ -182,6 +183,15 @@ function sendResearchRequest(){
   }
 }
 
+function sendShipyardRequest(){
+  if(canPress == true){
+    loadJSON('./api/set/sendShipyardRequest?obj=' + toggle + '&cant=' + inputCant.value, (obj) => {
+      console.log(obj);
+      if(obj.ok == true) location.reload();
+    });
+  }
+}
+
 function cancelBuilding(){
   loadJSON('./api/set/cancelBuildRequest', (obj) => {
     console.log(obj);
@@ -196,23 +206,10 @@ function cancelResearch(){
   });
 }
 
-/*<li id="button1" class="on">
-                                <div class="item_box supply1 tooltip js_hideTipOnMobile" title="">
-	<div class="stationlarge buildingimg">
-
-            <a href="javascript:void(0);">
-                <span class="time" id="test">1h 10m</span>
-            </a>
-
-			<a class="detail_button slideIn active" id="details1" ref="1" href="javascript:void(0);">
-				<span class="eckeoben">
-					<span style="font-size:11px;" class="undermark">22</span>
-				</span>
-				<span class="ecke">
-					<span class="level">21                                            </span>
-				</span>
-			</a>
-	</div>
-</div>
-
-                        </li>*/
+function cancelShipyard(shipyardName = null){
+  if(shipyardName == null) shipyardName = toggle;
+  loadJSON('./api/set/cancelShipyardRequest?obj=' + shipyardName, (obj) => {
+    console.log(obj);
+    if(obj.ok == true) location.reload();
+  });
+}

@@ -9,7 +9,7 @@ block content
           a.techtree_link.tooltip.overlay(href='./Ogame_Tecnology.html')
             .techtree_img
             span.label Techtree
-          a#cancelButton.tooltip.abort_link(href='javascript:void(0);' onclick='cancelBuilding();')
+          a#cancelButton.tooltip.abort_link(href='javascript:void(0);' onclick='cancelShipyard();')
         #content
           h2#nameText
           a#close.close_details(href='javascript:void(0);' onclick='toggleDescription("void"); return false;')
@@ -31,7 +31,7 @@ block content
             .clearfix.maxlink_wrap
               input#number.amount_input(type='number' pattern='[0-9,.]*' size='5' value='')
               .maxlink_arrow
-              a#maxlink.tooltip(href='javascript:void(0);' onclick="setMax();") [max. 5]
+              a#maxlink.tooltip(href='javascript:void(0);' onclick="setMax();") [max. 0]
           .costs_wrap
             p.costs_info Costs per piece:
             ul#costs
@@ -46,7 +46,7 @@ block content
                 #cost3.cost -
           .build-it_wrap
             .premium_info_placeholder
-            a#build-it.build-it(href='javascript:void(0);' onclick='sendInproveRequest()')
+            a#build-it.build-it(href='javascript:void(0);' onclick='sendShipyardRequest()')
               span Build
         br
         #description

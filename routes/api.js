@@ -80,12 +80,20 @@ router.get('/set/sendResearchRequest', function(req, res, next) {
   uni.proccesResearchRequest(uni.planeta, req.query.obj, res);
 });
 
+router.get('/set/sendShipyardRequest', function(req, res, next) {
+  uni.proccesShipyardRequest(uni.planeta, req.query.obj, req.query.cant, res);
+});
+
 router.get('/set/cancelBuildRequest', function(req, res, next) {
   uni.cancelBuildRequest(uni.planeta, res);
 });
 
 router.get('/set/cancelResearchRequest', function(req, res, next) {
   uni.cancelResearchRequest(res);
+});
+
+router.get('/set/cancelShipyardRequest', function(req, res, next) {
+  uni.cancelShipyardRequest(uni.planeta, req.query.obj, res);
 });
 
 module.exports = router;

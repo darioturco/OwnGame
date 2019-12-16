@@ -5,7 +5,7 @@ var router = express.Router();
 
 console.log('\x1b[35m%s\x1b[0m', new Date());
 router.all('/*', (req, res, next) => {
-  if(req.url.slice(1,4) != 'api'){
+  if(req.url.slice(1,4) != 'api' && req.url.slice(1,9) != 'Imagenes'){
     if(isFinite(req.query.planet)){
       uni.planeta = parseInt(req.query.planet);
     }
@@ -13,6 +13,7 @@ router.all('/*', (req, res, next) => {
   }else{
     next();
   }
+
 });
 
 router.get('/', (req, res, next) => {
@@ -21,7 +22,7 @@ router.get('/', (req, res, next) => {
   //uni.addNewPlayer("dturco", 1);
   //uni.setPlanetData({galaxy: 1, system: 1, pos: 7}, "dturco");
   //uni.sendMessage("dturco", {type: 1, title: "Nuevo titulo", text: "Mensaje oficial", data: {}});
-  //uni.colonize({galaxy: 1, system: 6, pos: 5}, 'dturco');
+  //uni.colonize({galaxy: 1, system: 8, pos: 5}, 'dturco');
   uni.seeDataBase(res, process.env.UNIVERSE_NAME, "jugadores");
 });
 
