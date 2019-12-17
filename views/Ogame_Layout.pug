@@ -48,18 +48,19 @@ body(id=bodyId onLoad='initFunction();')
               a(href='./GodMain.html') God Mode
             li#Clock.OGameClock 07.12.2019 16:17:18
         ul#resources
+
           li#metal_box.metal
             .resourceIcon.metal
             span.value
-              span#resources_metal #{Math.floor(basic.resources.metal)}
+              span#resources_metal(class=basic.classObjResources.metal) #{Math.floor(basic.resources.metal)}
           li#crystal_box.crystal
             .resourceIcon.crystal
             span.value
-              span#resources_crystal #{Math.floor(basic.resources.crystal)}
+              span#resources_crystal(class=basic.classObjResources.crystal) #{Math.floor(basic.resources.crystal)}
           li#deuterium_box.deuterium
             .resourceIcon.deuterium
             span.value
-              span#resources_deuterium #{Math.floor(basic.resources.deuterium)}
+              span#resources_deuterium(class=basic.classObjResources.deuterium) #{Math.floor(basic.resources.deuterium)}
           li#energy_box.energy
             .resourceIcon.energy
             span.value

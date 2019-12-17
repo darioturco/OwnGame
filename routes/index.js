@@ -27,10 +27,15 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/Highscore.html', (req, res, next) => {
+  let initVal = req.query.init;
+  if(initVal == undefined || initVal <= 0 || initVal > uni.cantPlayers) initVal = uni.player.highscore;
+  console.log(initVal);
   res.render('Highscore', {bodyId: "highscore",
     url: req._parsedOriginalUrl.pathname,
+    init: initVal,
+    max: 850,//uni.cantPlayers,
     basic: uni.getActualBasicInfo(uni.planeta),
-    listScript: []
+    listScript: ['./Scripts/Highscore.js']
   });
 });
 

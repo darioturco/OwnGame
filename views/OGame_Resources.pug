@@ -28,6 +28,12 @@ block content
             li
               | Construction possible:
               span#possibleInTime.time
+          .enter#inputCantConteiner
+            p.amount Number:
+            .clearfix.maxlink_wrap
+              input#number.amount_input(type='number' pattern='[0-9,.]*' size='5' value='')
+              .maxlink_arrow
+              a#maxlink.tooltip(href='javascript:void(0);' onclick="setMax();") [max. 0]
           .costs_wrap
             p.costs_info Required to improve to the next level:
             ul#costs

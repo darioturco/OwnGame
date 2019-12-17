@@ -60,7 +60,6 @@ var exp = {
     if(help == true){
       let timeLastUpdate = new Date().getTime() - this.player.lastVisit;
       let updateResourcesAddOfAllPlanets = false;
-      console.log(timeLastUpdate);
       if((this.player.researchConstrucction != false) && (this.player.researchConstrucction.time - Math.floor((new Date().getTime() - this.player.researchConstrucction.init)/1000) <= 0)){
         objSet['researchConstrucction'] = false;
         objInc['research.' + this.player.researchConstrucction.item] = 1;
@@ -76,35 +75,43 @@ var exp = {
           this.player.planets[i].buildings[this.player.planets[i].buildingConstrucction.item] += 1;
         }
         if(this.player.planets[i].shipConstrucction.length > 0){
-          let timeLastUpdateAux = timeLastUpdate/1000;
-          timeLastUpdateAux -= this.player.planets[i].shipConstrucction[0].timeNow;
-          if(timeLastUpdateAux < 0){ // no termino ni la primer nave de la lista
-            this.player.planets[i].shipConstrucction[0].timeNow -= timeLastUpdate/1000;//actualiza timeNow y no hace nada mas
+          if(this.player.planets[i].shipConstrucction[0].new == true){
+            this.player.planets[i].shipConstrucction[0].new = false;
             listShip = this.player.planets[i].shipConstrucction;
-          }else{ // contruyo la primer nave y va por el resto
-            this.player.planets[i].shipConstrucction[0].cant -= 1;
-            this.player.planets[i].shipConstrucction[0].metal -= this.player.planets[i].shipConstrucction[0].metalOne;
-            this.player.planets[i].shipConstrucction[0].crystal -= this.player.planets[i].shipConstrucction[0].crystalOne;
-            this.player.planets[i].shipConstrucction[0].deuterium -= this.player.planets[i].shipConstrucction[0].deuteriumOne;
-            for(let j = 0 ; j<this.player.planets[i].shipConstrucction.length ; j++){
-              if(timeLastUpdateAux > 0){
-                let cantAux = 0;
-                let totalTimeJ = this.player.planets[i].shipConstrucction[j].time * this.player.planets[i].shipConstrucction[j].cant;
-                cantAux = timeLastUpdateAux / this.player.planets[i].shipConstrucction[j].time;
-                objInc['planets.' + i + '.fleet.' + this.player.planets[i].shipConstrucction[j].item] = Math.min(Math.floor(cantAux), this.player.planets[i].shipConstrucction[j].cant);
-                this.player.planets[i].shipConstrucction[j].timeNow = (cantAux > 0) ? (this.player.planets[i].shipConstrucction[j].time - (timeLastUpdateAux - Math.floor(cantAux)*this.player.planets[i].shipConstrucction[j].time)) : (this.player.planets[i].shipConstrucction[j].timeNow - (timeLastUpdateAux - Math.floor(cantAux)*this.player.planets[i].shipConstrucction[j].time));
-                this.player.planets[i].shipConstrucction[j].cant -= Math.floor(cantAux);
-                this.player.planets[i].shipConstrucction[j].metal -= Math.floor(cantAux)*this.player.planets[i].shipConstrucction[j].metalOne;
-                this.player.planets[i].shipConstrucction[j].crystal -= Math.floor(cantAux)*this.player.planets[i].shipConstrucction[j].crystalOne;
-                this.player.planets[i].shipConstrucction[j].deuterium -= Math.floor(cantAux)*this.player.planets[i].shipConstrucction[j].deuteriumOne;
-                timeLastUpdateAux -= totalTimeJ;
-
+          }else{
+            let timeLastUpdateAux = timeLastUpdate/1000;
+            timeLastUpdateAux -= this.player.planets[i].shipConstrucction[0].timeNow;
+            if(timeLastUpdateAux < 0){ // no termino ni la primer nave de la lista
+              this.player.planets[i].shipConstrucction[0].timeNow -= timeLastUpdate/1000;//actualiza timeNow y no hace nada mas
+              listShip = this.player.planets[i].shipConstrucction;
+            }else{ // contruyo la primer nave y va por el resto
+              let lugar = this.player.planets[i].shipConstrucction[0].def ? '.defense.' : '.fleet.';
+              this.player.planets[i].shipConstrucction[0].cant -= 1;
+              this.player.planets[i].shipConstrucction[0].metal -= this.player.planets[i].shipConstrucction[0].metalOne;
+              this.player.planets[i].shipConstrucction[0].crystal -= this.player.planets[i].shipConstrucction[0].crystalOne;
+              this.player.planets[i].shipConstrucction[0].deuterium -= this.player.planets[i].shipConstrucction[0].deuteriumOne;
+              objInc['planets.' + i + lugar + this.player.planets[i].shipConstrucction[0].item] = 1;
+              for(let j = 0 ; j<this.player.planets[i].shipConstrucction.length ; j++){
+                this.player.planets[i].shipConstrucction[j].new = false;
+                if(timeLastUpdateAux > 0){
+                  lugar = this.player.planets[i].shipConstrucction[j].def ? '.defense.' : '.fleet.';
+                  let cantAux = 0;
+                  let totalTimeJ = this.player.planets[i].shipConstrucction[j].time * this.player.planets[i].shipConstrucction[j].cant;
+                  cantAux = timeLastUpdateAux / this.player.planets[i].shipConstrucction[j].time;
+                  if(objInc['planets.' + i + lugar + this.player.planets[i].shipConstrucction[j].item] == undefined) objInc['planets.' + i + lugar + this.player.planets[i].shipConstrucction[j].item] = 0;
+                  objInc['planets.' + i + lugar + this.player.planets[i].shipConstrucction[j].item] += Math.min(Math.floor(cantAux), this.player.planets[i].shipConstrucction[j].cant);
+                  this.player.planets[i].shipConstrucction[j].timeNow = (cantAux > 0) ? (this.player.planets[i].shipConstrucction[j].time - (timeLastUpdateAux - Math.floor(cantAux)*this.player.planets[i].shipConstrucction[j].time)) : (this.player.planets[i].shipConstrucction[j].timeNow - (timeLastUpdateAux - Math.floor(cantAux)*this.player.planets[i].shipConstrucction[j].time));
+                  this.player.planets[i].shipConstrucction[j].cant -= Math.floor(cantAux);
+                  this.player.planets[i].shipConstrucction[j].metal -= Math.floor(cantAux)*this.player.planets[i].shipConstrucction[j].metalOne;
+                  this.player.planets[i].shipConstrucction[j].crystal -= Math.floor(cantAux)*this.player.planets[i].shipConstrucction[j].crystalOne;
+                  this.player.planets[i].shipConstrucction[j].deuterium -= Math.floor(cantAux)*this.player.planets[i].shipConstrucction[j].deuteriumOne;
+                  timeLastUpdateAux -= totalTimeJ;
+                }
+                if(this.player.planets[i].shipConstrucction[j].cant > 0) listShip.push(this.player.planets[i].shipConstrucction[j]);
               }
-              if(this.player.planets[i].shipConstrucction[j].cant > 0) listShip.push(this.player.planets[i].shipConstrucction[j]);
             }
           }
         }
-        console.log(listShip);
         objSet['planets.' + i + '.shipConstrucction'] = listShip;
         if(updateDataThisPlanet || updateResourcesAddOfAllPlanets){
           this.updateResourcesData(() => {}, i);//updatea la energia y resourcesAdd
@@ -113,11 +120,12 @@ var exp = {
           objSet['planets.' + i + '.resourcesAdd.crystal'] = this.player.planets[i].resourcesAdd.crystal;
           objSet['planets.' + i + '.resourcesAdd.deuterium'] = this.player.planets[i].resourcesAdd.deuterium;
         }
+        let almacen = this.getAlmacen(i);
         // deberia fijarce hace cuanto tiempo se aumento el edificio y que repercuciones tiene en la produccion de recursos
         // deberia fijarce en la capacidad maxima de los almacenes
-        objInc['planets.' + i + '.resources.metal'] = this.player.planets[i].resourcesAdd.metal*timeLastUpdate/(1000*3600);
-        objInc['planets.' + i + '.resources.crystal'] = this.player.planets[i].resourcesAdd.crystal*timeLastUpdate/(1000*3600);
-        objInc['planets.' + i + '.resources.deuterium'] = this.player.planets[i].resourcesAdd.deuterium*timeLastUpdate/(1000*3600);
+        objInc['planets.' + i + '.resources.metal'] = Math.max(0, Math.min(this.player.planets[i].resourcesAdd.metal*timeLastUpdate/(1000*3600), almacen.metal - this.player.planets[i].resources.metal));
+        objInc['planets.' + i + '.resources.crystal'] = Math.max(0, Math.min(this.player.planets[i].resourcesAdd.crystal*timeLastUpdate/(1000*3600), almacen.crystal - this.player.planets[i].resources.crystal));
+        objInc['planets.' + i + '.resources.deuterium'] = Math.max(0, Math.min(this.player.planets[i].resourcesAdd.deuterium*timeLastUpdate/(1000*3600), almacen.deuterium - this.player.planets[i].resources.deuterium));
       }
 
       objSet.lastVisit = new Date().getTime();
@@ -153,7 +161,7 @@ var exp = {
       buildingConstrucction: false,
       shipConstrucction: [],
       resources: {metal: 500, crystal: 500, deuterium: 0, energy: 0},
-      resourcesAdd: {metal: 30*this.universo.speed, crystal: 15*this.universo.speed, deuterium: 0},
+      resourcesAdd: {metal: 30*this.universo.speed, crystal: 15*this.universo.speed, deuterium: 0, energy: 0},
       resourcesPercentage: {metal: '10', crystal: '10', deuterium: '10', energy: '10'},
       buildings: {metalMine: 0, crystalMine: 0, deuteriumMine: 0, solarPlant: 0, fusionReactor: 0, metalStorage: 0, crystalStorage: 0, deuteriumStorage: 0, robotFactory: 0, shipyard: 0, researchLab: 0, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0},
       fleet: {lightFighter: 0, heavyFighter: 0, cruiser: 0, battleship: 0, battlecruiser: 0, bomber: 0, destroyer: 0, deathstar: 0, smallCargo: 0, largeCargo: 0, colony: 0, recycler: 0, espionageProbe: 0, solarSatellite: 0},
@@ -225,8 +233,38 @@ var exp = {
   },
   getActualBasicInfo: function(planet) {
     let list = [];
+    let resourcesObj = this.player.planets[planet].resources;
+    let classObj = {};
+    let objStorage = this.getAlmacen(planet);
     for(var i = 0 ; i<this.player.planets.length ; i++){
       list.push({name: this.player.planets[i].name, coordinates: this.player.planets[i].coordinates, type: this.player.planets[i].type, color: this.player.planets[i].color});
+    }
+    if(resourcesObj.metal >= objStorage.metal){
+      classObj.metal = 'overmark';// rojo
+    }else{
+      if(resourcesObj.metal >= objStorage.metal*4/5){
+        classObj.metal = 'middlemark';// amarillo
+      }else{
+        classObj.metal = '';// normal
+      }
+    }
+    if(resourcesObj.crystal >= objStorage.crystal){
+      classObj.crystal = 'overmark';// rojo
+    }else{
+      if(resourcesObj.crystal >= objStorage.crystal*4/5){
+        classObj.crystal = 'middlemark';// amarillo
+      }else{
+        classObj.crystal = '';// normal
+      }
+    }
+    if(resourcesObj.deuterium >= objStorage.deuterium){
+      classObj.deuterium = 'overmark';// rojo
+    }else{
+      if(resourcesObj.deuterium >= objStorage.deuterium*4/5){
+        classObj.deuterium = 'middlemark';// amarillo
+      }else{
+        classObj.deuterium = '';// normal
+      }
     }
     return {name: this.universo.name,
       speed: this.universo.speed,
@@ -235,16 +273,20 @@ var exp = {
       donutSystem: (this.universo.donutSystem) ? 'true' : 'false',
       playerName: this.player.name,
       highscore: this.player.highscore,
-      resources: this.player.planets[planet].resources,
+      resources: resourcesObj,
       add: this.player.planets[planet].resourcesAdd,
       dark: this.player.dark,
       messagesNoRead: this.player.messagesCant,
+      classObjResources: classObj,
       cantPlanets: this.player.planets.length,
       maxPlanets: this.player.maxPlanets,
       numPlanet: planet,
       planets: list,
       format: this.formatNumber
     };
+  },
+  getAlmacen: function(planet){
+    return {metal: 5000*Math.floor(2.5*Math.pow(Math.E, 0.61*this.player.planets[planet].buildings.metalStorage)), crystal: 5000*Math.floor(2.5*Math.pow(Math.E, 0.61*this.player.planets[planet].buildings.crystalStorage)),deuterium: 5000*Math.floor(2.5*Math.pow(Math.E, 0.61*this.player.planets[planet].buildings.deuteriumStorage))};
   },
   resourcesSetting: function(planet) {
     let spd = this.universo.speed;
@@ -324,7 +366,7 @@ var exp = {
             impulse: {metal: 2000*Math.pow(2, research.impulse), crystal: 4000*Math.pow(2, research.impulse), deuterium: 600*Math.pow(2, research.impulse), energy: 0, tech: lab >= 2 && research.energy >= 2, level: research.impulse, name: "Impulse Drive", description: "The impulse drive is based on the reaction principle. Further development of this drive makes some ships faster, although each level increases speed by only 20 % of the base value."},
             hyperspace_drive: {metal: 10000*Math.pow(2, research.hyperspace_drive), crystal: 20000*Math.pow(2, research.hyperspace_drive), deuterium: 6000*Math.pow(2, research.hyperspace_drive), energy: 0, tech: lab >= 7 && research.hyperspace >= 3, level: research.hyperspace, name: "Hyperspace Drive", description: "Hyperspace drive warps space around a ship. The development of this drive makes some ships faster, although each level increases speed by only 30 % of the base value."},
             weapons: {metal: 800*Math.pow(2, research.weapons), crystal: 200*Math.pow(2, research.weapons), deuterium: 0, energy: 0, tech: lab >= 4, level: research.weapons, name: "Weapons Technology", description: "Weapons technology makes weapons systems more efficient. Each level of weapons technology increases the weapon strength of units by 10 % of the base value."},
-            shielding: {metal: 200*Math.pow(2, research.shielding), crystal: 600*Math.pow(2, research.shielding), deuterium: 0, energy: 0, tech: lab >= 6 && research.research.energy >= 3, level: research.shielding, name: "Shielding Technology", description: "Shielding technology makes the shields on ships and defensive facilities more efficient. Each level of shield technology increases the strength of the shields by 10 % of the base value."},
+            shielding: {metal: 200*Math.pow(2, research.shielding), crystal: 600*Math.pow(2, research.shielding), deuterium: 0, energy: 0, tech: lab >= 6 && research.energy >= 3, level: research.shielding, name: "Shielding Technology", description: "Shielding technology makes the shields on ships and defensive facilities more efficient. Each level of shield technology increases the strength of the shields by 10 % of the base value."},
             armour: {metal: 1000*Math.pow(2, research.armour), crystal: 0, deuterium: 0, energy: 0, tech: lab >= 2, level: research.armour, name: "Armour Technology", description: "Special alloys improve the armour on ships and defensive structures. The effectiveness of the armour can be increased by 10 % per level."},
             listInfo: ["energy", "laser", "ion", "hyperspace", "plasma", "combustion", "impulse", "hyperspace_drive", "espionage", "computer", "astrophysics", "intergalactic", "graviton", "weapons", "shielding", "armour"],
             time: {mult: lab, elev: research.intergalactic},
@@ -369,7 +411,8 @@ var exp = {
             antiballisticMissile: {metal: 8000, crystal: 0, deuterium: 2000, energy: 0, tech: this.player.planets[planet].buildings.silo >= 2, level: defense.antiballisticMissile, name: "Anti-Ballistic Missiles", description: "Anti-Ballistic Missiles destroy attacking interplanetary missiles"},
             interplanetaryMissile: {metal: 12500, crystal: 2500, deuterium: 10000, energy: 0, tech: this.player.planets[planet].buildings.silo >= 4 && research.impulse >= 1 , level: defense.interplanetaryMissile, name: "Interplanetary Missiles", description: "Anti-Ballistic Missiles destroy attacking interplanetary missiles"},
             listInfo: ["rocketLauncher", "lightLaser", "heavyLaser", "gauss", "ion", "plasma", "smallShield", "largeShield", "antiballisticMissile", "interplanetaryMissile"],
-            time: {mult: yard, elev: this.player.planets[planet].buildings.naniteFactory}
+            time: {mult: yard, elev: this.player.planets[planet].buildings.naniteFactory},
+            doing: this.player.planets[planet].shipConstrucction
     };
   },
   fleetInfo: function(planet){
@@ -466,7 +509,7 @@ var exp = {
   proccesBuildRequest: function(planet, buildingName, res){
     if(this.player.planets[planet].buildingConstrucction == false){
       let objPrice = this.costBuildings(planet);
-      if(objPrice[buildingName].metal <= this.player.planets[planet].resources.metal && objPrice[buildingName].crystal <= this.player.planets[planet].resources.crystal && objPrice[buildingName].deuterium <= this.player.planets[planet].resources.deuterium && objPrice[buildingName].tech == true){
+      if(objPrice[buildingName].metal <= this.player.planets[planet].resources.metal && objPrice[buildingName].crystal <= this.player.planets[planet].resources.crystal && objPrice[buildingName].deuterium <= this.player.planets[planet].resources.deuterium && objPrice[buildingName].tech == true && (buildingName != 'terraformer'|| objPrice[buildingName].energy <= this.player.planets[planet].resourcesAdd.energy)){
         let buildingConstrucctionAux = {};
         let buildingConstrucction = {};
         let objInc = {};
@@ -495,7 +538,7 @@ var exp = {
   proccesResearchRequest: function(planet, researchName, res){
     if(this.player.researchConstrucction == false){
       let objPrice = this.costResearch(planet);
-      if(objPrice[researchName].metal <= this.player.planets[planet].resources.metal && objPrice[researchName].crystal <= this.player.planets[planet].resources.crystal && objPrice[researchName].deuterium <= this.player.planets[planet].resources.deuterium && objPrice[researchName].tech == true){
+      if(objPrice[researchName].metal <= this.player.planets[planet].resources.metal && objPrice[researchName].crystal <= this.player.planets[planet].resources.crystal && objPrice[researchName].deuterium <= this.player.planets[planet].resources.deuterium && objPrice[researchName].energy <= this.player.planets[planet].resourcesAdd.energy && objPrice[researchName].tech == true){
         let researchConstrucctionAux = {};
         let researchConstrucction = {};
         let objInc = {};
@@ -530,6 +573,7 @@ var exp = {
         let shipyardConstrucctionAux = {};
         let shipyardConstrucction = {};
         let objInc = {};
+        let def = false;
         shipyardConstrucctionAux.cant = shipyardCant;
         shipyardConstrucctionAux.metal = objPrice[shipyardName].metal*shipyardCant;
         shipyardConstrucctionAux.crystal = objPrice[shipyardName].crystal*shipyardCant;
@@ -538,9 +582,14 @@ var exp = {
         shipyardConstrucctionAux.crystalOne = objPrice[shipyardName].crystal;
         shipyardConstrucctionAux.deuteriumOne = objPrice[shipyardName].deuterium;
         shipyardConstrucctionAux.item = shipyardName;
+        shipyardConstrucctionAux.new = true;
         shipyardConstrucctionAux.init = new Date().getTime();
         shipyardConstrucctionAux.time = this.timeBuild(objPrice[shipyardName].metal + objPrice[shipyardName].crystal, objPrice.time.mult, objPrice.time.elev);
         shipyardConstrucctionAux.timeNow = shipyardConstrucctionAux.time;
+        for(let i = 0 ; i<objPrice.listInfo.length && !def ; i++){
+          if(objPrice.listInfo[i] == shipyardName) def = true;
+        }
+        shipyardConstrucctionAux.def = def;
         shipyardConstrucction['planets.' + planet + '.shipConstrucction'] = shipyardConstrucctionAux;
         this.player.planets[planet].shipConstrucction.push(shipyardConstrucctionAux);
         objInc['planets.' + planet + '.resources.metal'] = -objPrice[shipyardName].metal*shipyardCant;
@@ -631,11 +680,13 @@ var exp = {
     energyUsage = {metal: ((energyUsage.metal > maxEnergyAux.metal) ? maxEnergyAux.metal : energyUsage.metal), crystal: ((energyUsage.crystal > maxEnergyAux.crystal) ? maxEnergyAux.crystal : energyUsage.crystal), deuterium: ((energyUsage.deuterium > maxEnergyAux.deuterium) ? maxEnergyAux.deuterium : energyUsage.deuterium)};
     let energy = Math.floor(energyTotal - maxEnergyAux.metal - maxEnergyAux.crystal - maxEnergyAux.deuterium);
     objSet['resources.energy'] = energy;
+    objSet['resourcesAdd.energy'] = energyTotal;
     let deuteriumHour = spd*((isNaN(energyUsage.deuterium/maxEnergyAux.deuterium)) ? 0 : (energyUsage.deuterium/maxEnergyAux.deuterium))*parseInt(this.player.planets[planet].resourcesPercentage.deuterium)*minas.deuteriumMine*Math.pow(1.1, minas.deuteriumMine)*(1.36-0.004*temp)*(100+plasma/3)/100 + auxEnergy.fusionDeuterium;
     if(deuteriumHour < 0) deuteriumHour = 0;
     objSet.resourcesAdd = {metal: 30*spd+3*((isNaN(energyUsage.metal/maxEnergyAux.metal)) ? 0 : (energyUsage.metal/maxEnergyAux.metal))*spd*parseInt(this.player.planets[planet].resourcesPercentage.metal)*minas.metalMine*Math.pow(1.1, minas.metalMine)*(100+plasma)/100, crystal: 15*spd+2*((isNaN(energyUsage.crystal/maxEnergyAux.crystal)) ? 0 : (energyUsage.crystal/maxEnergyAux.crystal))*spd*parseInt(this.player.planets[planet].resourcesPercentage.crystal)*minas.crystalMine*Math.pow(1.1, minas.crystalMine)*(100+plasma*(2/3))/100, deuterium: deuteriumHour};
     this.player.planets[planet].resourcesAdd = objSet.resourcesAdd;
     this.player.planets[planet].resources.energy = energy;
+    this.player.planets[planet].resourcesAdd.energy = energyTotal;
     if(obj != null){
       mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({planets :{$elemMatch: {coordinates: {galaxy: this.player.planets[planet].coordinates.galaxy, system: this.player.planets[planet].coordinates.system, pos: this.player.planets[planet].coordinates.pos}}}}, {$set: {'planets.$.resourcesPercentage': objSet.resourcesPercentage, 'planets.$.resources.energy': objSet['resources.energy'], 'planets.$.resourcesAdd': objSet.resourcesAdd}}, () => {
         f();
@@ -645,7 +696,7 @@ var exp = {
   setPlanetData: function(cord, player){
     // cambiar para que no sean constantes
     let resources = {metal: 5000000, crystal: 4000000, deuterium: 1000000, energy: 0};
-    let building = {metalMine: 0, crystalMine: 1, deuteriumMine: 0, solarPlant: 0, fusionReactor: 12, metalStorage: 2, crystalStorage: 1, deuteriumStorage: 0, robotFactory: 0, shipyard: 0, researchLab: 5, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0};
+    let building = {metalMine: 0, crystalMine: 1, deuteriumMine: 0, solarPlant: 0, fusionReactor: 5, metalStorage: 2, crystalStorage: 20, deuteriumStorage: 9, robotFactory: 0, shipyard: 12, researchLab: 12, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0};
     let fleet = {lightFighter: 10, heavyFighter: 0, cruiser: 1, battleship: 10, battlecruiser: 0, bomber: 3, destroyer: 100, deathstar: 1, smallCargo: 20, largeCargo: 200, colony: 1, recycler: 10, espionageProbe: 30, solarSatellite: 15};
     let defenses = {rocketLauncher: 500, lightLaser: 0, heavyLaser: 0, gauss: 0, ion: 0, plasma: 0, smallShield: 0, largeShield: 0, antiballisticMissile: 0, interplanetaryMissile: 10};
     let moon = {active: false, size: 0};

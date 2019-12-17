@@ -11,7 +11,7 @@ setTimeout(() => {
     values.push(parseInt(selects[i-1].dataset.val));
     setDropdown(values[i-1]*10, i, true);
   }
-}, 0)
+}, 0);
 
 function clickSelect(num){
   for(let i = 0 ; i<4 ; i++){
@@ -47,7 +47,6 @@ function setDropdown(val, num, init = false){
 }
 
 function recalculateButton(){
-
   loadJSON('./api/set/updateResources?metal=' + values[0] + '&crystal=' + values[1] + '&deuterium=' + values[2] + '&energy=' + values[3], (obj) => {
     if(obj.ok == true) location.reload();
   });

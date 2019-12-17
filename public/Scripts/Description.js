@@ -1,7 +1,7 @@
-var toggle = "void";
+var toggle = "void", body = '';
 var url = "./api/";
 var colorImg = [];
-var colorButton = null, cancelButton = null;
+var colorButton = null, cancelButton = null, inputCantConteiner = null;
 var startImg = 0;
 var container;
 var universeSpeed = 0;
@@ -19,7 +19,7 @@ var descriptionText, resourcesText, resourcesIcon, timeText, nameText, levelText
 setTimeout(initial, 0);
 
 function initial(){
-  let body = document.body.id;
+  body = document.body.id;
   if(body == "research") level = "Level: ";
   if(body == "shipyard" || body == "defense") shipyard = true;
   if(body == "resources" || body == "station"){
@@ -39,10 +39,12 @@ function initial(){
   imgInfo = document.getElementById("imgBlackInfo");
   colorButton = document.getElementById("build-it");
   posibleText = document.getElementById("possibleInTime");
+  inputCantConteiner = document.getElementById('inputCantConteiner');
   inputCant = document.getElementById('number');
   maxlink = document.getElementById('maxlink');
   energy_res = document.getElementById('resources_energy');
   cancelButton = document.getElementById('cancelButton');
+  if(inputCant != null) inputCant.value = 0;
   url += getDireccionApi(body);
   loadJSON(url, (res) => {
     info = res;
@@ -62,7 +64,7 @@ function initial(){
               if((timeContdown - contContdown) < 0) setTimeout(() => {location.reload();}, 1000);
             }, 1000);
           }else{
-            colorImg[i].classList.add('disabled');
+            if(info[info.listInfo[startImg + i]].name != "Solar Satellite") colorImg[i].classList.add('disabled');
           }
         }
       }else{
@@ -77,6 +79,10 @@ function toggleDescription(id){
     toggle = id;
     container.style.height = size + "px";
     container.style.transform = "translateY(0px)";
+    if(inputCant != null){
+      inputCant.value = '';
+      inputCant.select();
+    }
     setInfo();//pone la info en el div
   }else{
     if(toggle == id || id == "void"){
@@ -117,6 +123,13 @@ function setInfo(){
       }
       if(totalRosources[i]/resourcesList[i] < max) max = Math.floor(totalRosources[i]/resourcesList[i]);
       cont++;
+    }
+  }
+  if(body == 'resources'){
+    if(toggle == "solarSatellite"){
+      inputCantConteiner.style.display = 'block';
+    }else{
+      inputCantConteiner.style.display = 'none';
     }
   }
   nameText.innerHTML = info[toggle].name;
@@ -166,11 +179,15 @@ function setMax(){
 }
 
 function sendInproveRequest(){
-  if(canPress == true){
-    loadJSON('./api/set/sendBuildRequest?obj=' + toggle, (obj) => {
-      console.log(obj);
-      if(obj.ok == true) location.reload();
-    });
+  if(toggle == "solarSatellite"){
+    sendShipyardRequest();
+  }else{
+    if(canPress == true){
+      loadJSON('./api/set/sendBuildRequest?obj=' + toggle, (obj) => {
+        console.log(obj);
+        if(obj.ok == true) location.reload();
+      });
+    }
   }
 }
 
