@@ -7,6 +7,10 @@ require('mongodb').MongoClient.connect(process.env.MONGO_URL, {useUnifiedTopolog
   mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").countDocuments({}, function(err, cant) {exp.cantPlayers = cant});
   exp.getListCord();
   exp.getPlayer(process.env.PLAYER, () => {console.log('\x1b[32m%s\x1b[0m', "Base de datos lista.");});
+  setInterval(() => {// Actualiza cada 1 segundo el estado primario del universo
+    // si son las 12 de la noche ordena por puntos la lista de jugadores
+
+  }, 1000);
 });
 var exp = {
   universo: null,
@@ -57,19 +61,24 @@ var exp = {
     let objSet = {};
     let objInc = {};
     let listShip = [];
+    //let mejoro = false;
     if(help == true){
       let timeLastUpdate = new Date().getTime() - this.player.lastVisit;
       let updateResourcesAddOfAllPlanets = false;
+      objSet['puntosAcum'] = this.player.puntosAcum;
       if((this.player.researchConstrucction != false) && (this.player.researchConstrucction.time - Math.floor((new Date().getTime() - this.player.researchConstrucction.init)/1000) <= 0)){
         objSet['researchConstrucction'] = false;
+        objSet['puntosAcum'] += this.player.researchConstrucction.metal + this.player.researchConstrucction.crystal + this.player.researchConstrucction.deuterium;
         objInc['research.' + this.player.researchConstrucction.item] = 1;
         this.player.research[this.player.researchConstrucction.item] += 1;
+        //mejoro = true;
         if(this.player.researchConstrucction.item == 'energy' || this.player.researchConstrucction.item == 'plasma') updateResourcesAddOfAllPlanets = true;
       }
       for(let i = 0 ; i<this.player.planets.length ; i++){
         let updateDataThisPlanet = false;
         if((this.player.planets[i].buildingConstrucction != false) && (this.player.planets[i].buildingConstrucction.time - Math.floor((new Date().getTime() - this.player.planets[i].buildingConstrucction.init)/1000) <= 0)){
           objSet['planets.' + i + '.buildingConstrucction'] = false;
+          objSet['puntosAcum'] += this.player.planets[i].buildingConstrucction.metal + this.player.planets[i].buildingConstrucction.crystal + this.player.planets[i].buildingConstrucction.deuterium;
           objInc['planets.' + i + '.buildings.' + this.player.planets[i].buildingConstrucction.item] = 1;
           updateDataThisPlanet = true;
           this.player.planets[i].buildings[this.player.planets[i].buildingConstrucction.item] += 1;
@@ -91,6 +100,7 @@ var exp = {
               this.player.planets[i].shipConstrucction[0].crystal -= this.player.planets[i].shipConstrucction[0].crystalOne;
               this.player.planets[i].shipConstrucction[0].deuterium -= this.player.planets[i].shipConstrucction[0].deuteriumOne;
               objInc['planets.' + i + lugar + this.player.planets[i].shipConstrucction[0].item] = 1;
+              objSet['puntosAcum'] += this.player.planets[i].shipConstrucction[0].metalOne + this.player.planets[i].shipConstrucction[0].crystalOne + this.player.planets[i].shipConstrucction[0].deuteriumOne;
               for(let j = 0 ; j<this.player.planets[i].shipConstrucction.length ; j++){
                 this.player.planets[i].shipConstrucction[j].new = false;
                 if(timeLastUpdateAux > 0){
@@ -100,6 +110,7 @@ var exp = {
                   cantAux = timeLastUpdateAux / this.player.planets[i].shipConstrucction[j].time;
                   if(objInc['planets.' + i + lugar + this.player.planets[i].shipConstrucction[j].item] == undefined) objInc['planets.' + i + lugar + this.player.planets[i].shipConstrucction[j].item] = 0;
                   objInc['planets.' + i + lugar + this.player.planets[i].shipConstrucction[j].item] += Math.min(Math.floor(cantAux), this.player.planets[i].shipConstrucction[j].cant);
+                  objSet['puntosAcum'] += Math.min(Math.floor(cantAux), this.player.planets[i].shipConstrucction[j].cant)*this.player.planets[i].shipConstrucction[j].metalOne + Math.min(Math.floor(cantAux), this.player.planets[i].shipConstrucction[j].cant)*this.player.planets[i].shipConstrucction[j].crystalOne + Math.min(Math.floor(cantAux), this.player.planets[i].shipConstrucction[j].cant)*this.player.planets[i].shipConstrucction[j].deuteriumOne;
                   this.player.planets[i].shipConstrucction[j].timeNow = (cantAux > 0) ? (this.player.planets[i].shipConstrucction[j].time - (timeLastUpdateAux - Math.floor(cantAux)*this.player.planets[i].shipConstrucction[j].time)) : (this.player.planets[i].shipConstrucction[j].timeNow - (timeLastUpdateAux - Math.floor(cantAux)*this.player.planets[i].shipConstrucction[j].time));
                   this.player.planets[i].shipConstrucction[j].cant -= Math.floor(cantAux);
                   this.player.planets[i].shipConstrucction[j].metal -= Math.floor(cantAux)*this.player.planets[i].shipConstrucction[j].metalOne;
@@ -113,6 +124,8 @@ var exp = {
           }
         }
         objSet['planets.' + i + '.shipConstrucction'] = listShip;
+        objInc['puntos'] = Math.floor(objSet['puntosAcum']/1000);
+        objSet['puntosAcum'] = objSet['puntosAcum'] % 1000;
         if(updateDataThisPlanet || updateResourcesAddOfAllPlanets){
           this.updateResourcesData(() => {}, i);//updatea la energia y resourcesAdd
           objSet['planets.' + i + '.resources.energy'] = this.player.planets[i].resources.energy;
@@ -127,14 +140,12 @@ var exp = {
         objInc['planets.' + i + '.resources.crystal'] = Math.max(0, Math.min(this.player.planets[i].resourcesAdd.crystal*timeLastUpdate/(1000*3600), almacen.crystal - this.player.planets[i].resources.crystal));
         objInc['planets.' + i + '.resources.deuterium'] = Math.max(0, Math.min(this.player.planets[i].resourcesAdd.deuterium*timeLastUpdate/(1000*3600), almacen.deuterium - this.player.planets[i].resources.deuterium));
       }
-
       objSet.lastVisit = new Date().getTime();
       mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOneAndUpdate({name: player}, {$set: objSet, $inc: objInc}, {returnOriginal: false}, (err, res) => {
         if(err) throw err;
         f(res.value);
       });
     }else{
-
       mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOne({name: player}, (err, res) => {
         if(err) throw err;
         //tiene que hacer lo mismo que hace abajo pero en lugar de usar el objeto hhelp usar el res que encontro
@@ -177,6 +188,7 @@ var exp = {
       planets: [newPlanet],
       maxPlanets: 1,
       highscore: this.cantPlayers+1,//get la ultima position
+      lastHighscore: this.cantPlayers+1,
       puntos: 0,
       puntosAcum: 0,
       vacas: [],
@@ -318,7 +330,7 @@ var exp = {
       camposMax: cam,
       campos: this.player.planets[planet].campos,
       cantPlayers: this.cantPlayers,
-      points: this.player.points
+      points: this.formatNumber(this.player.puntos)
     };
   },
   buildingsActualInfo: function (planet) {
@@ -484,6 +496,15 @@ var exp = {
         }
         res.send({ok: true, 'names': names, 'coors': coors});
       }
+    });
+  },
+  highscoreData: function(res){
+    listInfo = [];
+    cursor = mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").find({});
+    cursor.forEach((doc, err) => {
+      listInfo.push({name: doc.name, coor: doc.planets[0].coordinates, points: doc.puntos, rank: doc.highscore, lastRank: doc.lastHighscore});
+    }, () => {
+      res.send({ok: true, info: listInfo});
     });
   },
   toggleVaca: function(res, query){
@@ -720,6 +741,81 @@ var exp = {
     this.player.messagesCant = 0;
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: this.player.name}, {$set: {messagesCant: 0}});
   },
+  contPoint: function(player){
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOne({name: player}, (err, res) => {
+      if(err) throw err;
+      let puntos = 0;// no cuenta los puntos de las naves en vuelo
+      let costShipyard = {
+        lightFighter: {metal: 3000, crystal: 1000, deuterium: 0},
+        heavyFighter: {metal: 6000, crystal: 4000, deuterium: 0},
+        cruiser: {metal: 2000, crystal: 7000, deuterium: 2000},
+        battleship: {metal: 45000, crystal: 15000, deuterium: 0},
+        battlecruiser: {metal: 30000, crystal: 40000, deuterium: 15000},
+        bomber: {metal: 50000, crystal: 25000, deuterium: 15000},
+        destroyer: {metal: 60000, crystal: 50000, deuterium: 15000},
+        deathstar: {metal: 5000000, crystal: 4000000, deuterium: 1000000},
+        smallCargo: {metal: 2000, crystal: 2000, deuterium: 0},
+        largeCargo: {metal: 6000, crystal: 6000, deuterium: 0},
+        colony: {metal: 10000, crystal: 20000, deuterium: 10000},
+        recycler: {metal: 10000, crystal: 6000, deuterium: 2000},
+        espionageProbe: {metal: 0, crystal: 1000, deuterium: 0},
+        solarSatellite: {metal: 0, crystal: 2000, deuterium: 500},
+        rocketLauncher: {metal: 2000, crystal: 0, deuterium: 0},
+        lightLaser: {metal: 1500, crystal: 500, deuterium: 0},
+        heavyLaser: {metal: 6000, crystal: 2000, deuterium: 0},
+        gauss: {metal: 20000, crystal: 15000, deuterium: 0},
+        ion: {metal: 2000, crystal: 6000, deuterium: 0},
+        plasma: {metal: 50000, crystal: 50000, deuterium: 30000},
+        smallShield: {metal: 10000, crystal: 10000, deuterium: 0},
+        largeShield: {metal: 50000, crystal: 50000, deuterium: 0},
+        antiballisticMissile: {metal: 8000, crystal: 0, deuterium: 2000},
+        interplanetaryMissile: {metal: 12500, crystal: 2500, deuterium: 10000}
+      }
+      for(let j = 0 ; j<15 ; j++){
+        puntos += (j <= res.research.energy) ? 800*Math.pow(2, j) +  400*Math.pow(2, j) : 0;
+        puntos += (j <= res.research.laser) ? 200*Math.pow(2, j) + 100*Math.pow(2, j) : 0;
+        puntos += (j <= res.research.ion) ? 1000*Math.pow(2, j) + 300*Math.pow(2, j) +  100*Math.pow(2, j) : 0;
+        puntos += (j <= res.research.hyperspace) ? 4000*Math.pow(2, j) +  2000*Math.pow(2, j) : 0;
+        puntos += (j <= res.research.plasma) ? 2000*Math.pow(2, j) + 4000*Math.pow(2, j) +  1000*Math.pow(2, j) : 0;
+        puntos += (j <= res.research.espionage) ? 200*Math.pow(2, j) + 1000*Math.pow(2, j) +  200*Math.pow(2, j) : 0;
+        puntos += (j <= res.research.computer) ? 400*Math.pow(2, j) +  600*Math.pow(2, j) : 0;
+        puntos += (j <= res.research.astrophysics) ? 4000*Math.pow(2, j) + 8000*Math.pow(2, j) +  4000*Math.pow(2, j) : 0;
+        puntos += (j <= res.research.intergalactic) ? 240000*Math.pow(2, j) + 400000*Math.pow(2, j) +  160000*Math.pow(2, j) : 0;
+        puntos += (j <= res.research.combustion) ? 400*Math.pow(2, j) + 600*Math.pow(2, j) : 0;
+        puntos += (j <= res.research.impulse) ? 2000*Math.pow(2, j) + 4000*Math.pow(2, j) +  600*Math.pow(2, j) : 0;
+        puntos += (j <= res.research.hyperspace_drive) ? 10000*Math.pow(2, j) + 20000*Math.pow(2, j) +  6000*Math.pow(2, j) : 0;
+        puntos += (j <= res.research.weapon) ? 800*Math.pow(2, j) + 200*Math.pow(2, j) : 0;
+        puntos += (j <= res.research.shielding) ? 200*Math.pow(2, j) + 600*Math.pow(2, j) : 0;
+        puntos += (j <= res.research.armour) ? 1000*Math.pow(2, j) : 0;
+      }
+      for(let i = 0 ; i<res.planets.length ; i++){
+        for(let obj in res.planets[i].fleet){
+          puntos += costShipyard[obj].metal * res.planets[i].fleet[obj] + costShipyard[obj].crystal * res.planets[i].fleet[obj] + costShipyard[obj].deuterium * res.planets[i].fleet[obj];
+        }
+        for(let obj in res.planets[i].defense){
+          puntos += costShipyard[obj].metal * res.planets[i].defense[obj] + costShipyard[obj].crystal * res.planets[i].defense[obj] + costShipyard[obj].deuterium * res.planets[i].defense[obj];
+        }
+        for(let j = 0 ; j<15 ; j++){
+          puntos += (j <= res.planets[i].buildings.metalMine) ? Math.floor(60*Math.pow(1.5, j)) + Math.floor(15*Math.pow(1.5, j)) : 0;
+          puntos += (j <= res.planets[i].buildings.crystalMine) ? Math.floor(48*Math.pow(1.6, j)) + Math.floor(24*Math.pow(1.6, j)) : 0;
+          puntos += (j <= res.planets[i].buildings.deuteriumMine) ? Math.floor(225*Math.pow(1.5, j)) + Math.floor(75*Math.pow(1.5, j)) : 0;
+          puntos += (j <= res.planets[i].buildings.solarPlant) ? Math.floor(75*Math.pow(1.5, j)) + Math.floor(30*Math.pow(1.5, j)) : 0;
+          puntos += (j <= res.planets[i].buildings.fusionReactor) ? Math.floor(900*Math.pow(1.8, j)) + Math.floor(360*Math.pow(1.8, j)) + Math.floor(180*Math.pow(1.8, j)) : 0;
+          puntos += (j <= res.planets[i].buildings.metalStorage) ? 1000*Math.pow(2, j) : 0;
+          puntos += (j <= res.planets[i].buildings.crystalStorage) ? 1000*Math.pow(2, j) + 500*Math.pow(2, j) : 0;
+          puntos += (j <= res.planets[i].buildings.deuteriumStorage) ? 1000*Math.pow(2, j) + 1000*Math.pow(2, j) : 0;
+          puntos += (j <= res.planets[i].buildings.robotFactory) ? 400*Math.pow(2, j) + 120*Math.pow(2, j) + 200*Math.pow(2, j) : 0;
+          puntos += (j <= res.planets[i].buildings.shipyard) ? 400*Math.pow(2, j) + 200*Math.pow(2, j) + 100*Math.pow(2, j) : 0;
+          puntos += (j <= res.planets[i].buildings.researchLab) ? 200*Math.pow(2, j) + 400*Math.pow(2, j) + 200*Math.pow(2, j) : 0;
+          puntos += (j <= res.planets[i].buildings.alliance) ? 20000*Math.pow(2, j) + 40000*Math.pow(2, j) : 0;
+          puntos += (j <= res.planets[i].buildings.silo) ? 20000*Math.pow(2, j) + 20000*Math.pow(2, j) + 1000*Math.pow(2, j) : 0;
+          puntos += (j <= res.planets[i].buildings.naniteFactory) ? 1000000*Math.pow(2, j) + 500000*Math.pow(2, j) + 100000*Math.pow(2, j) : 0;
+          puntos += (j <= res.planets[i].buildings.terraformer) ? 50000*Math.pow(2, j) + 100000*Math.pow(2, j): 0;
+        }
+      }
+      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: player}, {$set: {'puntos': Math.floor(puntos/1000), puntosAcum: (puntos%1000)}});
+    });
+  },
   normalRandom: (min, max, podaMin = -Infinity, podaMax = Infinity) => {// la esperanza es (max+min)/2
     let u = 0, v = 0, num = 1;
     while(u == 0) u = Math.random(); //Converting [0,1) to (0,1)
@@ -793,3 +889,12 @@ var exp = {
 };
 
 module.exports = exp;
+
+//Lista de cosas por hacer
+
+/* Terminar el hangar y el mostrar las naves que se estan construyendo
+/* Hacer el ordenamiento diario de la lista de jugadores
+/* Mejorar el calculo de recursos de tiempos medios
+/* En el view de galaxy hay que poner el boton para colonizar
+/* El abandonar el planeta en Overview
+*/

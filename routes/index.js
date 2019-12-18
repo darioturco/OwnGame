@@ -23,17 +23,17 @@ router.get('/', (req, res, next) => {
   //uni.setPlanetData({galaxy: 1, system: 1, pos: 7}, "dturco");
   //uni.sendMessage("dturco", {type: 1, title: "Nuevo titulo", text: "Mensaje oficial", data: {}});
   //uni.colonize({galaxy: 1, system: 8, pos: 5}, 'dturco');
+  uni.contPoint('dturco');
   uni.seeDataBase(res, process.env.UNIVERSE_NAME, "jugadores");
 });
 
 router.get('/Highscore.html', (req, res, next) => {
   let initVal = req.query.init;
   if(initVal == undefined || initVal <= 0 || initVal > uni.cantPlayers) initVal = uni.player.highscore;
-  console.log(initVal);
   res.render('Highscore', {bodyId: "highscore",
     url: req._parsedOriginalUrl.pathname,
-    init: initVal,
-    max: 850,//uni.cantPlayers,
+    init: initVal, // posicion en la que esta player
+    max: uni.cantPlayers,
     basic: uni.getActualBasicInfo(uni.planeta),
     listScript: ['./Scripts/Highscore.js']
   });

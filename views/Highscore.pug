@@ -7,13 +7,13 @@ block content
       .content
         div#highscoreContent
           span.dropdown.currentlySelected.changeSite.fright(style='width: 150px; margin-right: 32px;')
-            a#dropDown(href='javascript:void(0);')  1 - 100
-          ul#dropDownList.dropdown.dropdownList.initialized(style='left: 488px; top: 34px; min-width: 150px; display:block;')
+            a#dropDown(data-pag=(Math.floor(init/100)+1) href='javascript:void(0);' onclick='clickDropDown();')  1 - 100
+          ul#dropDownList.dropdown.dropdownList.initialized(style='left: 488px; top: 34px; min-width: 150px; display:none;')
             - var n = 1;
             - var tope = Math.floor(max/100) + 1
             while n <= tope
               li
-                a(onclick='setDropdown(100, 1)') #{(n*100-99) + ' - ' + (n*100)}
+                a(onclick='changePag(' + n + ')') #{(n*100-99) + ' - ' + (n*100)}
               - n++
           #highscoreHeadline.fleft
             | Points
@@ -30,17 +30,16 @@ block content
             tbody
               - var i = 1
               while i <= 100
-                tr#position1.alt
-                  td.position
+                tr#position(class=( i%2==0 ? '' : 'alt'))
+                  td.positionField
                     | #{i}
                   td.movement
-                    span.undermark
-                      span.stats_counter (3)
+                    span.stats_counter
                   td.name
-                    a.dark_highlight_tablet(href='')
+                    a.dark_highlight_tablet(href='javascript:void(0);' onclick='goToGalaxyByHishcore(' + i + ')')
                       span.playername
                         | -
-                  td.score
+                  td.scoreField
                     | -
                 - i++
       .footer

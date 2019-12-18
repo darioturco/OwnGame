@@ -49,6 +49,10 @@ router.get('/searchPlayer', function(req, res, next) {
   uni.searchPlayer(res, req.query.name);
 });
 
+router.get('/highscore', function(req, res, next) {
+  uni.highscoreData(res);
+});
+
 //Se usa set para las direcciones que cambian cosas en la base de datos
 
 router.get('/set/updateResources', function(req, res, next) {// updatea los valores de resourcesSettings

@@ -5765,10 +5765,17 @@ height:46px}
   margin: auto;
   table-layout:fixed;
 }
-#highscoreContent #ranks .score{font-size:13px;
-font-weight:bold;
-text-align:right}#highscoreContent #ranks td.score .small{font-size:11px;
-font-weight:100}#highscoreContent a:link,#highscoreContent a:visited{color:#848484;
+#highscoreContent #ranks .score{
+  font-size:13px;
+  font-weight:bold;
+  text-align:right;
+}
+#highscoreContent #ranks .scoreField{text-align:right}
+#highscoreContent #ranks td.score .small{
+  font-size:11px;
+  font-weight:100;
+}
+#highscoreContent a:link,#highscoreContent a:visited{color:#848484;
 text-decoration:none}#highscoreContent a:hover{color:#9b9b9b;
 text-decoration:underline}#highscoreContent a:active{color:#848484;
 text-decoration:none}#highscoreContent div.content table#ranks th{padding:3px;
@@ -5787,7 +5794,8 @@ width:40px}
 #highscoreContent #ranks .name{width:210px}#highscoreContent #ranks .sendmsg{padding:4px 0;
 width:50px;
 }
-#highscoreContent #ranks .member_count{width:60px}#highscoreContent #ranks .score{width:150px}
+#highscoreContent #ranks .member_count{width:60px}
+#highscoreContent #ranks .score{width:150px}
 #highscoreContent #ranks .sendmsg_content{width:50px}#highscoreContent #ranks .sendmsg a{margin:0 3px}
 #highscoreContent div.content table#ranks td span.scoreAverage{font-size:8px}
 #highscoreContent table.top10 td.alt{background-color:#13181d}
