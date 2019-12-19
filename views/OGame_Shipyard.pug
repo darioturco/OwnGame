@@ -3,7 +3,7 @@ block content
   #inhalt
     #planet(style='background-image:url(./Imagenes/Shipyard/Shipyard.jpg)')
       #header_text
-        h2 Shipyard - #{basic.planets[basic.numPlanet].name}
+        h2 Shipyard - #{(basic.moon) ? basic.planets[basic.numPlanet].moon.name : basic.planets[basic.numPlanet].name}
       #detail.detail_screen(style='height: 0px; display: block; overflow: hidden; margin-top: 0px;')
         #imgBlackInfo.pic
           a.techtree_link.tooltip.overlay(href='./Ogame_Tecnology.html')

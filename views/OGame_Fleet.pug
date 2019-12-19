@@ -2,7 +2,7 @@ extends Ogame_Layout
 block content
   #inhalt
     #planet.shortHeader
-      h2 Fleet Dispatch - #{basic.planets[basic.numPlanet].name}
+      h2 Fleet Dispatch - #{(basic.moon) ? basic.planets[basic.numPlanet].moon.name : basic.planets[basic.numPlanet].name}
     .fleetStatus
       #slots.fleft
         .fleft

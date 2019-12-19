@@ -21,7 +21,11 @@ router.get('/collection', function(req, res, next) {
 
 /* Api */
 router.get('/buildings', function(req, res, next) {
-  res.send(uni.costBuildings(uni.planeta));
+  if(uni.moon){
+    res.send(uni.costMoon(uni.planeta));
+  }else{
+    res.send(uni.costBuildings(uni.planeta));
+  }
 });
 
 router.get('/research', function(req, res, next) {

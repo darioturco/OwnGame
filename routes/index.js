@@ -6,9 +6,9 @@ var router = express.Router();
 console.log('\x1b[35m%s\x1b[0m', new Date());
 router.all('/*', (req, res, next) => {
   if(req.url.slice(1,4) != 'api' && req.url.slice(1,9) != 'Imagenes'){
-    if(isFinite(req.query.planet)){
-      uni.planeta = parseInt(req.query.planet);
-    }
+    if(isFinite(req.query.planet)) uni.planeta = parseInt(req.query.planet);
+    if(req.query.moon != undefined) uni.moon = (req.query.moon == 'true');
+    if(uni.moon == true && uni.player.planets[uni.planeta].moon.active == false) uni.moon = false;
     uni.getPlayer(process.env.PLAYER, next);
   }else{
     next();
@@ -23,7 +23,7 @@ router.get('/', (req, res, next) => {
   //uni.setPlanetData({galaxy: 1, system: 1, pos: 7}, "dturco");
   //uni.sendMessage("dturco", {type: 1, title: "Nuevo titulo", text: "Mensaje oficial", data: {}});
   //uni.colonize({galaxy: 1, system: 8, pos: 5}, 'dturco');
-  uni.contPoint('dturco');
+  //uni.contPoint('dturco');
   uni.seeDataBase(res, process.env.UNIVERSE_NAME, "jugadores");
 });
 
@@ -103,7 +103,7 @@ router.get('/OGame_Overview.html', (req, res, next) => {
   if(req.query.newName != undefined && req.query.newName != "" && req.query.newName.length <= 23){
     uni.setPlanetName(uni.player.planets[uni.planeta].coordinates, req.query.newName);//cambia el nombre al planeta
   }
-  if(req.query.newName == "abandon" && req.query.abaNdon == "si"){
+  if(req.query.newName == "abandon" && req.query.abaNdon == "si" && uni.moon == false){
     //se fija que no sea su unico planeta y elimina el planeta
     console.log("Despedite de tu planeta");
   }
@@ -125,12 +125,16 @@ router.get('/OGame_Research.html', (req, res, next) => {
 });
 
 router.get('/OGame_Resources.html', (req, res, next) => {
-  res.render('OGame_Resources', {bodyId: "resources",
-    url: req._parsedOriginalUrl.pathname,
-    info: uni.buildingsActualInfo(uni.planeta),
-    basic: uni.getActualBasicInfo(uni.planeta),
-    listScript: ['./Scripts/Description.js']
-  });
+  if(uni.moon == true){
+    res.redirect('./OGame_Facilities.html');
+  }else {
+    res.render('OGame_Resources', {bodyId: "resources",
+      url: req._parsedOriginalUrl.pathname,
+      info: uni.buildingsActualInfo(uni.planeta),
+      basic: uni.getActualBasicInfo(uni.planeta),
+      listScript: ['./Scripts/Description.js']
+    });
+  }
 });
 
 router.get('/OGame_ResourceSetings.html', (req, res, next) => {
@@ -152,9 +156,10 @@ router.get('/OGame_Reward.html', (req, res, next) => {
 });
 
 router.get('/OGame_Shipyard.html', (req, res, next) => {
+  console.log(uni.player.planets[uni.planeta].moon);
   res.render('OGame_Shipyard', {bodyId: "shipyard",
     url: req._parsedOriginalUrl.pathname,
-    info: uni.player.planets[uni.planeta].fleet,
+    info: (uni.moon) ? uni.player.planets[uni.planeta].moon.fleet : uni.player.planets[uni.planeta].fleet,
     basic: uni.getActualBasicInfo(uni.planeta),
     listScript: ['./Scripts/Description.js']
   });

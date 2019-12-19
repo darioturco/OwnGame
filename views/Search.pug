@@ -1,9 +1,9 @@
 extends Ogame_Layout
 block content
   #inhalt
-    #planet(style='background-image:url(./Imagenes/search.jpg)')
+    #planet(style='background-image:url(./Imagenes/Search.jpg)')
       #header_text
-        h2 Search - #{basic.planets[basic.numPlanet].name}
+        h2 Search - #{(basic.moon) ? basic.planets[basic.numPlanet].moon.name : basic.planets[basic.numPlanet].name}
     .c-left
     .c-right
     #buttonz

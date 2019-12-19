@@ -15,7 +15,7 @@ head
   meta(name='ogame-add-metal' content=basic.add.metal)
   meta(name='ogame-add-crystal' content=basic.add.crystal)
   meta(name='ogame-add-deuterium' content=basic.add.deuterium)
-  meta(name='ogame-planet-type' content='planet')
+  meta(name='ogame-moon' content=basic.moon.toString())
   link(rel='stylesheet' type='text/css' href='./Css/General_Style.css' media='screen')
   link(rel='icon' type='image/x-icon' href='Imagenes/Favicon.ico')
   script(src='./Scripts/General_Player.js')
@@ -154,8 +154,12 @@ body(id=bodyId onLoad='initFunction();')
             #planetList
               each item, index in basic.planets
                 .smallplanet
-                  - var clase = (index == basic.numPlanet) ? 'active' : '';
-                  a.planetlink.Right.Close(class=clase href=url + '?planet=' + index)
+                  - var clase = (index == basic.numPlanet && basic.moon != true) ? 'active' : '';
+                  - var claseLuna = (index == basic.numPlanet && basic.moon == true) ? 'active' : '';
+                  a.planetlink.Right.Close(class=clase href=url + '?planet=' + index + '&moon=false')
+
                     img.planetPic(alt='Planet' src="./Imagenes/Planets/Miniatures/Planet_" + item.type + "_" + item.color + ".gif" width='48' height='48')
                     span.planet-name #{item.name}
                     span.planet-koords [#{item.coordinates.galaxy}:#{item.coordinates.system}:#{item.coordinates.pos}]
+                  a.moonlink.tooltipLeft.tooltipClose.tpd-hideOnClickOutside(class=claseLuna href=(url + '?planet=' + index + '&moon=true') style='display: ' + ((item.moon.active == true) ? 'block' : 'none'))
+                    img.icon-moon(alt=' ' src='./Imagenes/Planets/Moon.gif' width='20' heigth='20')

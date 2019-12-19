@@ -1523,10 +1523,10 @@ a.abortNow{
 #costs li{
   float:left;
   text-align:center;
-  width:70px;
+  width:90px;
 }
 #costs .resourceIcon{
-  margin:0 11px 3px 11px;
+  margin:0 22px 4px 22px;
   background-position: 100px;
 }
 .build-it_wrap{
@@ -6396,8 +6396,9 @@ tr.alt td {
   margin: 12px 20px;
 }
 #search #controlSearch{
-  width: 270px;
-  margin: 0 auto 10px auto;
+  width: 360px;
+  margin: 2px calc((100% - 360px)/2);
+  padding-bottom: 8px;
 }
 #search #controlSearch #inputSearchPlayer{
   margin-right: 20px;

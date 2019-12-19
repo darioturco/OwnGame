@@ -3,7 +3,7 @@ block content
   #inhalt
     #planet(style='background-image:url(./Imagenes/Options.jpg)')
       #header_text
-        h2 Options - #{basic.planets[basic.numPlanet].name}
+        h2 Options - #{(basic.moon) ? basic.planets[basic.numPlanet].moon.name : basic.planets[basic.numPlanet].name}
     .c-left
     .c-right
     #buttonz

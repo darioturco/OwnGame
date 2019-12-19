@@ -3,7 +3,7 @@ block content
   #inhalt
     #planet(style='background-image: url(./Imagenes/Research/Research.jpg)')
       #header_text
-        h2 Research - #{basic.planets[basic.numPlanet].name}
+        h2 Research - #{(basic.moon) ? basic.planets[basic.numPlanet].moon.name : basic.planets[basic.numPlanet].name}
       #detail.detail_screen
         #imgBlackInfo.pic
           a.techtree_link.tooltip.overlay(href='./Ogame_Tecnology.html')

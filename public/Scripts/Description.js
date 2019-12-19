@@ -13,21 +13,22 @@ var inputCant = null, maxlink = null, contdownText = null;
 var timeContdown = 0, contContdown = 0;
 var max = 0;
 var energy_res;
-var doing = false, canPress = false, shipyard = false;
+var doing = false, canPress = false, shipyard = false, inMoon = false;
 var descriptionText, resourcesText, resourcesIcon, timeText, nameText, levelText, imgInfo, posibleText;
 
 setTimeout(initial, 0);
 
 function initial(){
   body = document.body.id;
+  inMoon = (document.getElementsByName('ogame-moon')[0].content == 'true');
+  universeSpeed = parseInt(document.getElementsByName('ogame-universe-speed')[0].content);
   if(body == "research") level = "Level: ";
   if(body == "shipyard" || body == "defense") shipyard = true;
   if(body == "resources" || body == "station"){
-    if(body == "station") startImg = 9;
+    if(body == "station" && inMoon == false) startImg = 9;
     size = "300";
     level = "Level: ";
   }
-  universeSpeed = parseInt(document.getElementsByName('ogame-universe-speed')[0].content);
   container = document.getElementById("detail");
   descriptionText = document.getElementById("descriptionText");
   colorImg = document.getElementsByClassName('on');
@@ -50,7 +51,7 @@ function initial(){
     info = res;
     doing = info.doing != false && shipyard == false;
     for(let i = 0 ; i<colorImg.length ; i++){
-      if(info[info.listInfo[startImg + i]].tech == true){
+      if(info[info.listInfo[startImg + i]].tech == true && inMoon == false){
         if(document.getElementById("resources_metal").innerHTML < info[info.listInfo[startImg + i]].metal || document.getElementById("resources_crystal").innerHTML < info[info.listInfo[startImg + i]].crystal || document.getElementById("resources_deuterium").innerHTML < info[info.listInfo[startImg + i]].deuterium || doing){
           if(doing == true && info.doing.item == info.listInfo[startImg + i]){
             timeContdown = info.doing.time - Math.floor((new Date().getTime() - info.doing.init)/1000);
@@ -147,6 +148,11 @@ function setInfo(){
   }else{
     posibleText.innerHTML = " now";
     colorButton.classList.remove("build-it_disabled");
+  }
+  if(inMoon){
+    posibleText.innerHTML = " unknown";
+    colorButton.classList.add("build-it_disabled");
+    if(body == 'defense') levelText.innerHTML = 'Number: 0';
   }
   if(maxlink != null) maxlink.innerText = '[max. ' + max + ']'; //setea el maximo de objetos a contruir
 }

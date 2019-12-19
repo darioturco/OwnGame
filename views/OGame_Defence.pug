@@ -3,7 +3,7 @@ block content
   #inhalt
     #planet(style='background-image:url(./Imagenes/Shipyard/Defence.jpg)')
       #header_text
-        h2 Defence - #{basic.planets[basic.numPlanet].name}
+        h2 Defence - #{(basic.moon) ? basic.planets[basic.numPlanet].moon.name : basic.planets[basic.numPlanet].name}
       #detail.detail_screen
         #imgBlackInfo.pic
           a.techtree_link.tooltip.overlay(href='./Ogame_Tecnology.html')
@@ -67,7 +67,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Rocket Launcher
-                      | #{info.rocketLauncher}
+                      | #{basic.moon ? '0' : info.rocketLauncher}
           li#defense2.on
             .item_box.defense402
               .buildingimg
@@ -75,7 +75,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Light Laser
-                      | #{info.lightLaser}
+                      | #{basic.moon ? '0' : info.lightLaser}
           li#defense3.on
             .item_box.defense403
               .buildingimg
@@ -83,7 +83,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Heavy Laser
-                      | #{info.heavyLaser}
+                      | #{basic.moon ? '0' : info.heavyLaser}
           li#defense4.on
             .item_box.defense404
               .buildingimg
@@ -91,7 +91,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Gauss Cannon
-                      | #{info.gauss}
+                      | #{basic.moon ? '0' : info.gauss}
           li#defense5.on
             .item_box.defense405
               .buildingimg
@@ -99,7 +99,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Ion Cannon
-                      | #{info.ion}
+                      | #{basic.moon ? '0' : info.ion}
           li#defense6.on
             .item_box.defense406
               .buildingimg
@@ -107,7 +107,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Plasma Turret
-                      | #{info.plasma}
+                      | #{basic.moon ? '0' : info.plasma}
           li#defense7.on
             .item_box.defense407
               .buildingimg
@@ -115,7 +115,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Small Shield Dome
-                      | #{info.smallShield}
+                      | #{basic.moon ? '0' : info.smallShield}
           li#defense8.on
             .item_box.defense408
               .buildingimg
@@ -123,7 +123,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Large Shield Dome
-                      | #{info.largeShield}
+                      | #{basic.moon ? '0' : info.largeShield}
           li#defense9.on
             .item_box.defense502
               .buildingimg
@@ -131,7 +131,7 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Anti-Ballistic Missiles
-                      | #{info.antiballisticMissile}
+                      | #{basic.moon ? '0' : info.antiballisticMissile}
           li#defense10.on
             .item_box.defense503
               .buildingimg
@@ -139,6 +139,6 @@ block content
                   span.ecke
                     span.level
                       span.textlabel Interplanetary Missiles
-                      | #{info.interplanetaryMissile}
+                      | #{basic.moon ? '0' : info.interplanetaryMissile}
         br.clearfloat
         .footer

@@ -3,7 +3,7 @@ block content
   #inhalt
     #planet(style='background-image:url(./Imagenes/Shipyard/Vacas.jpg)')
       #header_text
-        h2 Vacas - #{basic.planets[basic.numPlanet].name}
+        h2 Vacas - #{(basic.moon) ? basic.planets[basic.numPlanet].moon.name : basic.planets[basic.numPlanet].name}
     .c-left
     .c-right
     #buttonz

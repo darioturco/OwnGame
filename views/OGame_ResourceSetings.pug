@@ -2,7 +2,7 @@ extends Ogame_Layout
 block content
   #inhalt
     #planet.shortHeader
-      h2 Resource settings - Planeta Principal
+      h2 Resource settings - #{(basic.moon) ? basic.planets[basic.numPlanet].moon.name : basic.planets[basic.numPlanet].name}
     .contentRS
       .headerRS
         a.close_details.close_ressources(href='./Ogame_Resources.html')

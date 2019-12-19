@@ -16,6 +16,7 @@ var exp = {
   universo: null,
   player: null,
   planeta: 0,
+  moon: false,
   cantPlayers: 0,
   allCord: {},
   comienzoBusquedaNewConrd: 1,
@@ -181,6 +182,19 @@ var exp = {
       debris: {active:false, metal:0, crystal: 0}
     };
   },
+  createNewMoon: function(newSize){
+    return {active: true,
+      size: newSize,
+      name: 'Luna',
+      camposMax: 1,
+      campos: 0,
+      type: Math.floor(Math.random()*5)+1,
+      resources: {metal: 0, crystal: 0, deuterium: 0, energy: 0},
+      buildingConstrucction: false,
+      buildings: {lunarBase: 0, phalanx: 0, spaceDock: 0, marketplace: 0, lunarSunshade: 0, lunarBeam: 0, jumpGate: 0, moonShield: 0},
+      fleet: {lightFighter: 0, heavyFighter: 0, cruiser: 0, battleship: 0, battlecruiser: 0, bomber: 0, destroyer: 0, deathstar: 0, smallCargo: 0, largeCargo: 0, colony: 0, recycler: 0, espionageProbe: 0, solarSatellite: 0}
+    }
+  },
   addNewPlayer: function(name, styleGame) {
     var newPlanet = exp.createNewPlanet(exp.newCord(), "Planeta Principal", name, 'activo');
     var newPlayer = {'name': name,
@@ -245,11 +259,11 @@ var exp = {
   },
   getActualBasicInfo: function(planet) {
     let list = [];
-    let resourcesObj = this.player.planets[planet].resources;
+    let resourcesObj = (this.moon) ? this.player.planets[planet].moon.resources : this.player.planets[planet].resources;
     let classObj = {};
-    let objStorage = this.getAlmacen(planet);
+    let objStorage = this.getAlmacen(planet, this.moon);
     for(var i = 0 ; i<this.player.planets.length ; i++){
-      list.push({name: this.player.planets[i].name, coordinates: this.player.planets[i].coordinates, type: this.player.planets[i].type, color: this.player.planets[i].color});
+      list.push({name: this.player.planets[i].name, coordinates: this.player.planets[i].coordinates, type: this.player.planets[i].type, color: this.player.planets[i].color, moon: this.player.planets[i].moon});
     }
     if(resourcesObj.metal >= objStorage.metal){
       classObj.metal = 'overmark';// rojo
@@ -294,11 +308,18 @@ var exp = {
       maxPlanets: this.player.maxPlanets,
       numPlanet: planet,
       planets: list,
+      moon: this.moon,
       format: this.formatNumber
     };
   },
-  getAlmacen: function(planet){
-    return {metal: 5000*Math.floor(2.5*Math.pow(Math.E, 0.61*this.player.planets[planet].buildings.metalStorage)), crystal: 5000*Math.floor(2.5*Math.pow(Math.E, 0.61*this.player.planets[planet].buildings.crystalStorage)),deuterium: 5000*Math.floor(2.5*Math.pow(Math.E, 0.61*this.player.planets[planet].buildings.deuteriumStorage))};
+  getAlmacen: function(planet, moon = false){
+    let res = {};
+    if(moon == true){
+      res = {metal: 0, crystal: 0, deuterium: 0};
+    }else{
+      res = {metal: 5000*Math.floor(2.5*Math.pow(Math.E, 0.61*this.player.planets[planet].buildings.metalStorage)), crystal: 5000*Math.floor(2.5*Math.pow(Math.E, 0.61*this.player.planets[planet].buildings.crystalStorage)),deuterium: 5000*Math.floor(2.5*Math.pow(Math.E, 0.61*this.player.planets[planet].buildings.deuteriumStorage))};
+    }
+    return res;
   },
   resourcesSetting: function(planet) {
     let spd = this.universo.speed;
@@ -323,12 +344,13 @@ var exp = {
       plasma: this.player.research.plasma}
   },
   overviewActualInfo: function (planet) {
-    let cam = this.player.planets[planet].camposMax;
-    return {diameter: cam*66 + ' Km',
+    let camMax = (this.moon) ? this.player.planets[planet].moon.camposMax : this.player.planets[planet].camposMax;
+    let cam = (this.moon) ? this.player.planets[planet].moon.campos : this.player.planets[planet].campos;
+    return {diameter: (this.moon) ? this.player.planets[planet].moon.size + ' Km' : (camMax*66 + ' Km'),
       type: this.player.planets[planet].type,
       temperature: this.player.planets[planet].temperature,
-      camposMax: cam,
-      campos: this.player.planets[planet].campos,
+      camposMax: camMax,
+      campos: cam,
       cantPlayers: this.cantPlayers,
       points: this.formatNumber(this.player.puntos)
     };
@@ -338,7 +360,6 @@ var exp = {
   },
   costBuildings: function (planet){
     let build = this.player.planets[planet].buildings;
-    let divisor = 2500 * (1 + build.robotFactory) * Math.pow(2,build.naniteFactory) * this.universo.speed;
     let energyAux = {metal: Math.floor(10*(build.metalMine+1)*Math.pow(1.1, (build.metalMine+1))), crystal: Math.floor(10*(build.crystalMine+1)*Math.pow(1.1, (build.crystalMine+1))), deuterium: Math.floor(20*(build.deuteriumMine+1)*Math.pow(1.1, (build.deuteriumMine+1)))}
     return {metalMine: {metal: Math.floor(60*Math.pow(1.5, build.metalMine)), crystal: Math.floor(15*Math.pow(1.5, build.metalMine)), deuterium: 0, energy: energyAux.metal, energyNeed: energyAux.metal-Math.floor(10*(build.metalMine)*Math.pow(1.1, (build.metalMine))), tech: true, level: build.metalMine, name: "Metal Mine", description: "Used in the extraction of metal ore, metal mines are of primary importance to all emerging and established empires."},
             crystalMine: {metal: Math.floor(48*Math.pow(1.6, build.crystalMine)), crystal: Math.floor(24*Math.pow(1.6, build.crystalMine)), deuterium: 0, energy: energyAux.crystal, energyNeed: energyAux.crystal-Math.floor(10*(build.crystalMine)*Math.pow(1.1, (build.crystalMine))), tech: true, level: build.crystalMine, name: "Crystal Mine", description: "Crystals are the main resource used to build electronic circuits and form certain alloy compounds."},
@@ -359,6 +380,22 @@ var exp = {
             listInfo: ["metalMine", "crystalMine", "deuteriumMine", "solarPlant", "fusionReactor", "solarSatellite", "metalStorage", "crystalStorage", "deuteriumStorage", "robotFactory", "shipyard", "researchLab", "alliance", "silo", "naniteFactory", "terraformer"],
             time: {mult: build.robotFactory, elev: build.naniteFactory},
             doing: this.player.planets[planet].buildingConstrucction
+    };
+  },
+  costMoon: function (planet){
+    let build = this.player.planets[planet].moon.buildings;
+    let research = this.player.research;
+    return {lunarBase: {metal: 10000*Math.pow(2, build.lunarBase), crystal: 20000*Math.pow(2, build.lunarBase), deuterium: 10000*Math.pow(2, build.lunarBase), energy: 0, tech: true, level: build.lunarBase, name: "Lunar Base", description: "Since the moon has no atmosphere, a lunar base is required to generate habitable space."},
+            phalanx: {metal: 20000*Math.pow(2, build.phalanx), crystal: 40000*Math.pow(2, build.phalanx), deuterium: 20000*Math.pow(2, build.phalanx), energy: 0, tech: build.lunarBase >= 3, level: build.phalanx, name: "Phalanx", description: "Using the sensor phalanx, fleets of other empires can be discovered and observed. The bigger the sensor phalanx array, the larger the range it can scan."},
+            spaceDock: {metal: 200*Math.pow(4, build.spaceDock), crystal: 10*Math.pow(3, build.spaceDock), deuterium: 50*Math.pow(5, build.spaceDock), energy: 0, tech: build.lunarBase >= 1, level: build.spaceDock, name: "Space Dock", description: "Wreckages can be repaired in the Space Dock."},
+            marketplace: {metal: 6000000*Math.pow(2, build.marketplace), crystal: 4000000*Math.pow(2, build.marketplace), deuterium: 2000000*Math.pow(2, build.marketplace), energy: 0, tech: build.lunarBase >= 2 && research.computer >= 3, level: build.marketplace, name: "Marketplace", description: "The place for change resources with other empires, recolectors or even mysterious and dangerous people."},
+            lunarSunshade: {metal: 15000*Math.pow(2, build.lunarSunshade), crystal: 0, deuterium: 50000*Math.pow(2, build.lunarSunshade), energy: 0, tech: build.lunarBase >= 1 && research.laser >= 12, level: build.lunarSunshade, name: "Lunar Sunshade", description: "The system that get cold your planet. For each level you can reduce 3 degrees the minimun temperature from your planet, growing up the deuterium producction but getting worse the energy levels."},
+            lunarBeam: {metal: 0, crystal: 75000*Math.pow(2, build.lunarBeam), deuterium: 90000*Math.pow(2, build.lunarBeam), energy: 0, tech: build.lunarBase >= 1 && research.ion >= 12, level: build.lunarBeam, name: "Lunar Beam", description: "The system that warn your planet. For each level you can reduce 3 degrees the maximun temperature from your planet. The solar satellites will improve the energy."},
+            jumpGate: {metal: 2000000*Math.pow(2, build.jumpGate), crystal: 4000000*Math.pow(2, build.jumpGate), deuterium: 2000000*Math.pow(2, build.jumpGate), energy: 0, tech: build.lunarBase >= 1 && research.hyperspace >= 7, level: build.jumpGate, name: "Jump Gate", description: "Jump gates are huge transceivers capable of sending even the biggest fleet in no time to a distant jump gate."},
+            moonShield: {metal: 9000000*Math.pow(3, build.moonShield), crystal: 5000000*Math.pow(3, build.moonShield), deuterium: 2000000*Math.pow(3, build.moonShield), energy: 0, tech: build.lunarBase >= 4 && research.graviton >= 1 && research.shielding >= 12, level: build.moonShield, name: "Moon Shield", description: "The ultimate defense system. Even the deadstars be afraid of the shield."},
+            listInfo: ["lunarBase", "phalanx", "spaceDock", "marketplace", "lunarSunshade", "lunarBeam", "jumpGate", "moonShield"],
+            time: {mult: build.lunarBase, elev: this.player.planets[planet].buildings.naniteFactory},
+            doing: this.player.planets[planet].moon.buildingConstrucction
     };
   },
   costResearch: function (planet){
@@ -386,7 +423,7 @@ var exp = {
     };
   },
   costShipyard: function(planet){
-    let fleet = this.player.planets[planet].fleet;
+    let fleet = (this.moon) ? this.player.planets[planet].moon.fleet : this.player.planets[planet].fleet;
     let research = this.player.research;
     let yard = this.player.planets[planet].buildings.shipyard;
     return {lightFighter: {metal: 3000, crystal: 1000, deuterium: 0, energy: 0, tech: yard >= 1 && research.combustion >= 1, level: fleet.lightFighter, name: "Light Fighter", description: "This is the first fighting ship all emperors will build. The light fighter is an agile ship, but vulnerable on its own. In mass numbers, they can become a great threat to any empire. They are the first to accompany small and large cargoes to hostile planets with minor defences."},
@@ -524,8 +561,15 @@ var exp = {
     });
   },
   setPlanetName: function(cord, newName){
-    this.player.planets[this.planeta].name = newName;
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({planets :{$elemMatch: {coordinates: {galaxy: cord.galaxy, system: cord.system, pos: cord.pos}}}}, {$set: {'planets.$.name': newName}});
+    let objSet = {};
+    if(this.moon == true){
+      objSet['planets.$.moon.name'] = newName;
+      this.player.planets[this.planeta].moon.name = newName;
+    }else{
+      objSet['planets.$.name'] = newName;
+      this.player.planets[this.planeta].name = newName;
+    }
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({planets :{$elemMatch: {coordinates: {galaxy: cord.galaxy, system: cord.system, pos: cord.pos}}}}, {$set: objSet});
   },
   proccesBuildRequest: function(planet, buildingName, res){
     if(this.player.planets[planet].buildingConstrucction == false){
@@ -720,7 +764,7 @@ var exp = {
     let building = {metalMine: 0, crystalMine: 1, deuteriumMine: 0, solarPlant: 0, fusionReactor: 5, metalStorage: 2, crystalStorage: 20, deuteriumStorage: 9, robotFactory: 0, shipyard: 12, researchLab: 12, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0};
     let fleet = {lightFighter: 10, heavyFighter: 0, cruiser: 1, battleship: 10, battlecruiser: 0, bomber: 3, destroyer: 100, deathstar: 1, smallCargo: 20, largeCargo: 200, colony: 1, recycler: 10, espionageProbe: 30, solarSatellite: 15};
     let defenses = {rocketLauncher: 500, lightLaser: 0, heavyLaser: 0, gauss: 0, ion: 0, plasma: 0, smallShield: 0, largeShield: 0, antiballisticMissile: 0, interplanetaryMissile: 10};
-    let moon = {active: false, size: 0};
+    let moon = this.createNewMoon(8888);//{active: false, size: 0};
     let debris = {active: false, metal:0, crystal: 0};
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({planets :{$elemMatch: {coordinates: {galaxy: cord.galaxy, system: cord.system, pos: cord.pos}}}}, {$set: {'planets.$.resources': resources,'planets.$.buildings': building, 'planets.$.fleet': fleet, 'planets.$.defense': defenses,'planets.$.moon': moon, 'planets.$.debris': debris}});
   },
@@ -893,6 +937,8 @@ module.exports = exp;
 //Lista de cosas por hacer
 
 /* Terminar el hangar y el mostrar las naves que se estan construyendo
+/* Al mejorar los edicios tienen que subir los numeros de campos
+/* Al intentar mejorar un edificio se tiene que fijar en el numero de campos
 /* Hacer el ordenamiento diario de la lista de jugadores
 /* Mejorar el calculo de recursos de tiempos medios
 /* En el view de galaxy hay que poner el boton para colonizar

@@ -1,9 +1,13 @@
 extends Ogame_Layout
 block content
   #inhalt
-    #planet(style='background-image:url(./Imagenes/Planets/Facilities_Planet_' + basic.planets[basic.numPlanet].type + '.jpg)')
+    - var urlImg = (basic.moon ? './Imagenes/Planets/Buildings_Moon_' + basic.planets[basic.numPlanet].moon.type + '.jpg' : './Imagenes/Planets/Facilities_Planet_' + basic.planets[basic.numPlanet].type + '.jpg')
+    #planet(style='background-image:url(' + urlImg + ');')
       #header_text(style='opacity: 1; display: block;')
-        h2 Facilities - #{basic.planets[basic.numPlanet].name}
+        h2 Facilities - #{(basic.moon) ? basic.planets[basic.numPlanet].moon.name : basic.planets[basic.numPlanet].name}
+      if basic.moon
+        #slot01.slot
+          a(href='./Ogame_ResourceSetings.html') Lunar Buildings
       #detail.detail_screen
         #imgBlackInfo.pic
           a.techtree_link.tooltip.overlay(href='./Ogame_Tecnology.html')
@@ -53,61 +57,127 @@ block content
         h2 Facility buildings
       .content
         ul#stationbuilding
-          li#button0.on
-            // disable = rayado; on = prendido; off = blanco y negro
-            .item_box.station14
-              .stationlarge.buildingimg
-                a#details14.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("robotFactory");return false;')
-                  span.ecke
-                    span.level
-                      span.textlabel Robotics Factory
-                      | #{info.buildings.robotFactory}
-          li#button1.on
-            .item_box.station21
-              .stationlarge.buildingimg
-                a.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("shipyard");return false;')
-                  span.ecke
-                    span.level
-                      span.textlabel Shipyard
-                      | #{info.buildings.shipyard}
-          li#button2.on
-            .item_box.station31
-              .stationlarge.buildingimg
-                a.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("researchLab");return false;')
-                  span.ecke
-                    span.level
-                      span.textlabel Research Lab
-                      | #{info.buildings.researchLab}
-          li#button3.on
-            .item_box.station34
-              .stationlarge.buildingimg
-                a#details34.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("alliance");return false;')
-                  span.ecke
-                    span.level
-                      span.textlabel Alliance Depot
-                      | #{info.buildings.alliance}
-          li#button4.on
-            .item_box.station44
-              .stationlarge.buildingimg
-                a#details44.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("silo");return false;')
-                  span.ecke
-                    span.level
-                      span.textlabel Missile Silo
-                      | #{info.buildings.silo}
-          li#button5.on
-            .item_box.station15
-              .stationlarge.buildingimg
-                a#details15.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("naniteFactory");return false;')
-                  span.ecke
-                    span.level
-                      span.textlabel Nanite Factory
-                      | #{info.buildings.naniteFactory}
-          li#button6.on
-            .item_box.station33
-              .stationlarge.buildingimg
-                a#details33.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("terraformer");return false;')
-                  span.ecke
-                    span.level
-                      span.textlabel Terraformer
-                      | #{info.buildings.terraformer}
+          if basic.moon
+            li#button0.on
+              .item_box.station14
+                .stationlarge.buildingimg
+                  a#details14.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("lunarBase");return false;')
+                    span.ecke
+                      span.level
+                        span.textlabel Lunar Base
+                        | 0
+            li#button1.on
+              .item_box.station21
+                .stationlarge.buildingimg
+                  a.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("phalanx");return false;')
+                    span.ecke
+                      span.level
+                        span.textlabel Sensor Phalanx
+                        | 0
+            li#button2.on
+              .item_box.station31
+                .stationlarge.buildingimg
+                  a.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("spaceDock");return false;')
+                    span.ecke
+                      span.level
+                        span.textlabel Space Dock
+                        | 0
+            li#button3.on
+              .item_box.station34
+                .stationlarge.buildingimg
+                  a#details34.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("marketplace");return false;')
+                    span.ecke
+                      span.level
+                        span.textlabel Marketplace
+                        | 0
+            li#button4.on
+              .item_box.station44
+                .stationlarge.buildingimg
+                  a#details44.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("lunarSunshade");return false;')
+                    span.ecke
+                      span.level
+                        span.textlabel Lunar Sunshade
+                        | 0
+            li#button5.on
+              .item_box.station15
+                .stationlarge.buildingimg
+                  a#details15.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("lunarBeam");return false;')
+                    span.ecke
+                      span.level
+                        span.textlabel Lunar Beam
+                        | 0
+            li#button6.on
+              .item_box.station33
+                .stationlarge.buildingimg
+                  a#details33.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("jumpGate");return false;')
+                    span.ecke
+                      span.level
+                        span.textlabel Jump Gate
+                        | 0
+            li#button7.on
+              .item_box.station33
+                .stationlarge.buildingimg
+                  a#details33.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("moonShield");return false;')
+                    span.ecke
+                      span.level
+                        span.textlabel Moon Shield
+                        | 0
+          else
+            li#button0.on
+              // disable = rayado; on = prendido; off = blanco y negro
+              .item_box.station14
+                .stationlarge.buildingimg
+                  a#details14.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("robotFactory");return false;')
+                    span.ecke
+                      span.level
+                        span.textlabel Robotics Factory
+                        | #{info.buildings.robotFactory}
+            li#button1.on
+              .item_box.station21
+                .stationlarge.buildingimg
+                  a.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("shipyard");return false;')
+                    span.ecke
+                      span.level
+                        span.textlabel Shipyard
+                        | #{info.buildings.shipyard}
+            li#button2.on
+              .item_box.station31
+                .stationlarge.buildingimg
+                  a.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("researchLab");return false;')
+                    span.ecke
+                      span.level
+                        span.textlabel Research Lab
+                        | #{info.buildings.researchLab}
+            li#button3.on
+              .item_box.station34
+                .stationlarge.buildingimg
+                  a#details34.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("alliance");return false;')
+                    span.ecke
+                      span.level
+                        span.textlabel Alliance Depot
+                        | #{info.buildings.alliance}
+            li#button4.on
+              .item_box.station44
+                .stationlarge.buildingimg
+                  a#details44.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("silo");return false;')
+                    span.ecke
+                      span.level
+                        span.textlabel Missile Silo
+                        | #{info.buildings.silo}
+            li#button5.on
+              .item_box.station15
+                .stationlarge.buildingimg
+                  a#details15.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("naniteFactory");return false;')
+                    span.ecke
+                      span.level
+                        span.textlabel Nanite Factory
+                        | #{info.buildings.naniteFactory}
+            li#button6.on
+              .item_box.station33
+                .stationlarge.buildingimg
+                  a#details33.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("terraformer");return false;')
+                    span.ecke
+                      span.level
+                        span.textlabel Terraformer
+                        | #{info.buildings.terraformer}
         .footer
