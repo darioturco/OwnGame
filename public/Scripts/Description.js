@@ -15,6 +15,7 @@ var max = 0;
 var energy_res;
 var doing = false, canPress = false, shipyard = false, inMoon = false;
 var descriptionText, resourcesText, resourcesIcon, timeText, nameText, levelText, imgInfo, posibleText;
+var firstShipName, unityDuration, totalDuration, firstLavel, firstImg, otherShips;
 
 setTimeout(initial, 0);
 
@@ -70,6 +71,34 @@ function initial(){
         }
       }else{
         colorImg[i].classList.add('off');
+      }
+    }
+    if(shipyard == true){
+      if(info.doing.length > 0){
+        let timeContShip = 0;
+        console.log(info.doing);
+        firstShipName = document.getElementById("firstShipName");
+        unityDuration = document.getElementById("Unityduration");
+        totalDuration = document.getElementById("Totalduration");
+        otherShips = document.getElementById("otherShips");
+        firstLavel = document.getElementById("firstLavel");
+        firstImg = document.getElementsByClassName("imgFirstShip")[0];
+        firstShipName.innerText = info[info.doing[0].item].name;
+        unityDuration.innerText = segundosATiempo(Math.floor(info.doing[0].timeNow));
+        firstLavel.innerText = info.doing[0].cant;
+        firstImg.id = info.doing[0].item;
+        timeContShip += info.doing[0].time*info.doing[0].cant + info.doing[0].timeNow;
+        for(let i=1 ; i<info.doing.length ; i++){
+          timeContShip += info.doing[i].time*info.doing[i].cant;
+          let elemAux = document.createElement("div");
+          elemAux.classList.add("imgListShip");
+          elemAux.id = info.doing[i].item;
+          elemAux.innerText = info.doing[i].cant;
+          otherShips.appendChild(elemAux);
+        }
+        totalDuration.innerText = segundosATiempo(Math.floor(timeContShip));
+      }else{
+         //document.getElementById("shipInfoBuilding").style.display = 'none';
       }
     }
   });

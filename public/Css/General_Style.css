@@ -1041,7 +1041,7 @@ font-weight:bold}
 .colonize-inactive{background-position:-119px}
 #planetdata td{padding:2px 5px}
 #planetdata .date{font-weight:700}
-#planetdata .date,td.desc{color:#6f9fc8}
+#planetdata .date,td.desc, #actualShip .desc{color:#6f9fc8}
 #planetdata td.desc{font-weight:700}
 #planetdata .data{text-align:right}
 #planetdata a:link,#planetdata a:visited,#planetdata a:hover,#planetdata a:active{
@@ -4736,21 +4736,49 @@ div.techImage.ship.tech215.notBuilt a{background-position:-1042px -162px}
   background-image: url("../Imagenes/Shipyard/Shipyard_Nave.jpg");
   background-repeat:no-repeat;
 }
-#shipyard #lightFighter,#techinfo div.techwrapper div.ship.tech204 img{background-position:0 0}
-#shipyard #heavyFighter,#techinfo div.techwrapper div.ship.tech205 img{background-position:-200px 0}
-#shipyard #cruiser,#techinfo div.techwrapper div.ship.tech206 img{background-position:-400px 0}
-#shipyard #battleship,#techinfo div.techwrapper div.ship.tech207 img{background-position:-600px 0}
-#shipyard #battlecruiser,#techinfo div.techwrapper div.ship.tech215 img{background-position:-800px 0}
-#shipyard #bomber,#techinfo div.techwrapper div.ship.tech211 img{background-position:-1000px 0}
-#shipyard #destroyer,#techinfo div.techwrapper div.ship.tech213 img{background-position:-1200px 0}
-#shipyard #deathstar,#techinfo div.techwrapper div.ship.tech214 img{background-position:-1400px 0}
-#shipyard #smallCargo,#techinfo div.techwrapper div.ship.tech202 img{background-position:-1600px 0}
-#shipyard #largeCargo,#techinfo div.techwrapper div.ship.tech203 img{background-position:-1800px 0}
-#shipyard #colony,#techinfo div.techwrapper div.ship.tech208 img{background-position:-2000px 0}
-#shipyard #recycler,#techinfo div.techwrapper div.ship.tech209 img{background-position:-2200px 0}
-#shipyard #espionageProbe,#techinfo div.techwrapper div.ship.tech210 img{background-position:-2400px 0}
-#shipyard #solarSatellite,#techinfo div.techwrapper div.ship.tech212 img{background-position:-2600px 0}
-#shipyard div.detail_screen{
+#shipyard #lightFighter{background-position:0 0}
+#shipyard #heavyFighter{background-position:-200px 0}
+#shipyard #cruiser{background-position:-400px 0}
+#shipyard #battleship{background-position:-600px 0}
+#shipyard #battlecruiser{background-position:-800px 0}
+#shipyard #bomber{background-position:-1000px 0}
+#shipyard #destroyer{background-position:-1200px 0}
+#shipyard #deathstar{background-position:-1400px 0}
+#shipyard #smallCargo{background-position:-1600px 0}
+#shipyard #largeCargo{background-position:-1800px 0}
+#shipyard #colony{background-position:-2000px 0}
+#shipyard #recycler{background-position:-2200px 0}
+#shipyard #espionageProbe{background-position:-2400px 0}
+#shipyard #solarSatellite{background-position:-2600px 0}
+#shipInfoBuilding #firstImg #lightFighter{background-position:0 0}
+#shipInfoBuilding #firstImg #heavyFighter{background-position:-50px 0}
+#shipInfoBuilding #firstImg #cruiser{background-position:-100px 0}
+#shipInfoBuilding #firstImg #battleship{background-position:-150px 0}
+#shipInfoBuilding #firstImg #battlecruiser{background-position:-200px 0}
+#shipInfoBuilding #firstImg #bomber{background-position:-250px 0}
+#shipInfoBuilding #firstImg #destroyer{background-position:-300px 0}
+#shipInfoBuilding #firstImg #deathstar{background-position:-350px 0}
+#shipInfoBuilding #firstImg #smallCargo{background-position:-400px 0}
+#shipInfoBuilding #firstImg #largeCargo{background-position:-450px 0}
+#shipInfoBuilding #firstImg #colony{background-position:-500px 0}
+#shipInfoBuilding #firstImg #recycler{background-position:-550px 0}
+#shipInfoBuilding #firstImg #espionageProbe{background-position:-600px 0}
+#shipInfoBuilding #firstImg #solarSatellite{background-position:-650px 0}
+#shipInfoBuilding #otherShips #lightFighter{background-position:0 0}
+#shipInfoBuilding #otherShips #heavyFighter{background-position:-40px 0}
+#shipInfoBuilding #otherShips #cruiser{background-position:-80px 0}
+#shipInfoBuilding #otherShips #battleship{background-position:-120px 0}
+#shipInfoBuilding #otherShips #battlecruiser{background-position:-160px 0}
+#shipInfoBuilding #otherShips #bomber{background-position:-200px 0}
+#shipInfoBuilding #otherShips #destroyer{background-position:-240px 0}
+#shipInfoBuilding #otherShips #deathstar{background-position:-280px 0}
+#shipInfoBuilding #otherShips #smallCargo{background-position:-320px 0}
+#shipInfoBuilding #otherShips #largeCargo{background-position:-360px 0}
+#shipInfoBuilding #otherShips #colony{background-position:-400px 0}
+#shipInfoBuilding #otherShips #recycler{background-position:-440px 0}
+#shipInfoBuilding #otherShips #espionageProbe{background-position:-480px 0}
+#shipInfoBuilding #otherShips #solarSatellite{background-position:-520px 0}
+#shipInfoBuilding div.detail_screen{
   height:250px;
   background-image: url("../Imagenes/Details_small.gif");
 }
@@ -6435,3 +6463,67 @@ tr.alt td {
 #reward #imgReward_9{background-position: -1600px 0}
 #reward #imgReward_10{background-position: -1800px 0}
 #inhalt #cancelButton{display: none}
+#shipInfoBuilding{
+  display: flex;
+  flex-direction: row;
+}
+.content #actualShip{
+  width: 170px;
+  height: 120px;
+  background: red;
+  margin: 4px 0 0 30px;
+  border-radius: 10px;
+  background: -webkit-linear-gradient(top,#171d23 0,#101419 100%);
+  background: -o-linear-gradient(top,#171d23 0,#101419 100%);
+  background: -ms-linear-gradient(top,#171d23 0,#101419 100%);
+}
+.content #actualShip #firstImg{
+  width: 50px;
+  height: 100%;
+}
+.content #actualShip #firstImg #firstLavel{
+  width: 50px;
+  height: 100%;
+  margin: auto;
+  top: 32px;
+  position: relative;
+  text-align: center;
+  padding-left: 10px;
+}
+.content #actualShip #firstImg .imgFirstShip{
+  width: 50px;
+  height: 50px;
+  top: 32px;
+  position: relative;
+  margin: auto;
+  background-image: url('../Imagenes/Shipyard/Shipyard_Nave.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 4px;
+}
+.content #actualShip #shipData{
+  position: relative;
+  bottom: 100px;
+  left: 60px;
+}
+.content #actualShip .corrido{
+  position: relative;
+  left: 8px;
+}
+.content #otherShips{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 120px;
+  width: 420px;
+  padding: 6px;
+}
+.content .imgListShip{
+  width: 40px;
+  height: 40px;
+  margin: 4px;
+  background-image: url('../Imagenes/Shipyard/Shipyard_Nave.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 4px;
+}
