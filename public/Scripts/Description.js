@@ -52,7 +52,7 @@ function initial(){
     info = res;
     doing = info.doing != false && shipyard == false;
     for(let i = 0 ; i<colorImg.length ; i++){
-      if(info[info.listInfo[startImg + i]].tech == true && inMoon == false){
+      if(info[info.listInfo[startImg + i]].tech == true && (!inMoon || body == 'station')){
         if(document.getElementById("resources_metal").innerHTML < info[info.listInfo[startImg + i]].metal || document.getElementById("resources_crystal").innerHTML < info[info.listInfo[startImg + i]].crystal || document.getElementById("resources_deuterium").innerHTML < info[info.listInfo[startImg + i]].deuterium || doing){
           if(doing == true && info.doing.item == info.listInfo[startImg + i]){
             timeContdown = info.doing.time - Math.floor((new Date().getTime() - info.doing.init)/1000);
@@ -73,18 +73,19 @@ function initial(){
         colorImg[i].classList.add('off');
       }
     }
+    if(inMoon == true && body == 'station') imgInfo.classList.add('moonImg');
     if(shipyard == true){
       if(info.doing.length > 0){
         let timeContShip = 0;
-        console.log(info.doing);
+        let timeNowAux = Math.floor(info.doing[0].timeNow);
         firstShipName = document.getElementById("firstShipName");
         unityDuration = document.getElementById("Unityduration");
         totalDuration = document.getElementById("Totalduration");
         otherShips = document.getElementById("otherShips");
         firstLavel = document.getElementById("firstLavel");
         firstImg = document.getElementsByClassName("imgFirstShip")[0];
-        firstShipName.innerText = info[info.doing[0].item].name;
-        unityDuration.innerText = segundosATiempo(Math.floor(info.doing[0].timeNow));
+        firstShipName.innerText = info.doing[0].name;
+        unityDuration.innerText = segundosATiempo(timeNowAux);
         firstLavel.innerText = info.doing[0].cant;
         firstImg.id = info.doing[0].item;
         timeContShip += info.doing[0].time*info.doing[0].cant + info.doing[0].timeNow;
@@ -96,9 +97,26 @@ function initial(){
           elemAux.innerText = info.doing[i].cant;
           otherShips.appendChild(elemAux);
         }
-        totalDuration.innerText = segundosATiempo(Math.floor(timeContShip));
+        timeContShip = Math.floor(timeContShip);
+        totalDuration.innerText = segundosATiempo(timeContShip);
+        setInterval(() => {
+          timeNowAux -= 1;
+          timeContShip -= 1;
+          if(timeNowAux < 0){
+            info.doing[0].cant--;
+            if(info.doing[0].cant <= 0){
+                location.reload();
+            }else{
+              timeNowAux = info.doing[0].time;
+              firstLavel.innerText = info.doing[0].cant;
+            }
+          }
+          unityDuration.innerText = segundosATiempo(timeNowAux);
+          totalDuration.innerText = segundosATiempo(timeContShip);
+          if(timeContShip < 0) location.reload();
+        }, 1000);
       }else{
-         //document.getElementById("shipInfoBuilding").style.display = 'none';
+         document.getElementById("shipInfoBuilding").style.display = 'none';
       }
     }
   });
@@ -168,7 +186,7 @@ function setInfo(){
   descriptionText.innerHTML = info[toggle].description;
   imgInfo.id = toggle;
   canPress = true;
-  if((info[toggle].tech == false) || doing ||(totalRosources[0] < info[toggle].metal) || (totalRosources[1] < info[toggle].crystal) || (totalRosources[2] < info[toggle].deuterium)){
+  if((info[toggle].tech == false) || doing || (inMoon && body != 'station') || (totalRosources[0] < info[toggle].metal) || (totalRosources[1] < info[toggle].crystal) || (totalRosources[2] < info[toggle].deuterium)){
     canPress = false;
     colorButton.classList.add("build-it_disabled");
     posibleText.innerHTML = segundosATiempo(minimoPara(totalRosources, resourcesList));
@@ -180,7 +198,6 @@ function setInfo(){
   }
   if(inMoon){
     posibleText.innerHTML = " unknown";
-    colorButton.classList.add("build-it_disabled");
     if(body == 'defense') levelText.innerHTML = 'Number: 0';
   }
   if(maxlink != null) maxlink.innerText = '[max. ' + max + ']'; //setea el maximo de objetos a contruir

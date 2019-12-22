@@ -21,9 +21,11 @@ router.get('/', (req, res, next) => {
   //uni.createUniverse(process.env.UNIVERSE_NAME, 5, {name: "", inicio: 0, maxGalaxies: 9,donutGalaxy: true,donutSystem: true,speed: 1,speedFleet: 1,fleetDebris: 30,defenceDebris: 0,maxMoon: 20});
   //uni.addNewPlayer("dturco", 1);
   //uni.setPlanetData(uni.player.planets[0].coordinates, "dturco");
+  //uni.setMoonData(uni.player.planets[0].coordinates, "dturco");
   //uni.sendMessage("dturco", {type: 1, title: "Nuevo titulo", text: "Mensaje oficial", data: {}});
   //uni.colonize({galaxy: 1, system: 8, pos: 5}, 'dturco');
   //uni.contPoint('dturco');
+  //uni.contMoonFields(uni.planeta);
   uni.seeDataBase(res, process.env.UNIVERSE_NAME, "jugadores");
 });
 
@@ -138,6 +140,7 @@ router.get('/OGame_Resources.html', (req, res, next) => {
 });
 
 router.get('/OGame_ResourceSetings.html', (req, res, next) => {
+  uni.moon = false;
   res.render('OGame_ResourceSetings', {bodyId: "resourceSettings",
     url: req._parsedOriginalUrl.pathname,
     info: uni.resourcesSetting(uni.planeta),

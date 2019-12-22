@@ -81,9 +81,19 @@ var exp = {
         if((this.player.planets[i].buildingConstrucction != false) && (this.player.planets[i].buildingConstrucction.time - Math.floor((new Date().getTime() - this.player.planets[i].buildingConstrucction.init)/1000) <= 0)){
           objSet['planets.' + i + '.buildingConstrucction'] = false;
           objSet['puntosAcum'] += this.player.planets[i].buildingConstrucction.metal + this.player.planets[i].buildingConstrucction.crystal + this.player.planets[i].buildingConstrucction.deuterium;
+          objInc['planets.' + i + '.campos'] = 1;
           objInc['planets.' + i + '.buildings.' + this.player.planets[i].buildingConstrucction.item] = 1;
           updateDataThisPlanet = true;
           this.player.planets[i].buildings[this.player.planets[i].buildingConstrucction.item] += 1;
+          if(this.player.planets[i].buildingConstrucction.item == "terraformer") objInc['planets.' + i + '.camposMax'] = 5;
+        }
+        if(this.player.planets[i].moon.active == true && this.player.planets[i].moon.buildingConstrucction != false && (this.player.planets[i].moon.buildingConstrucction.time - Math.floor((new Date().getTime() - this.player.planets[i].moon.buildingConstrucction.init)/1000) <= 0)){
+          objSet['planets.' + i + '.moon.buildingConstrucction'] = false;
+          objSet['puntosAcum'] += this.player.planets[i].moon.buildingConstrucction.metal + this.player.planets[i].moon.buildingConstrucction.crystal + this.player.planets[i].moon.buildingConstrucction.deuterium;
+          objInc['planets.' + i + '.moon.campos'] = 1;
+          objInc['planets.' + i + '.moon.buildings.' + this.player.planets[i].moon.buildingConstrucction.item] = 1;
+          this.player.planets[i].moon.buildings[this.player.planets[i].moon.buildingConstrucction.item] += 1;
+          if(this.player.planets[i].moon.buildingConstrucction.item == "lunarBase") objInc['planets.' + i + '.moon.camposMax'] = 3;
         }
         if(this.player.planets[i].shipConstrucction.length > 0){
           if(this.player.planets[i].shipConstrucction[0].new == true){
@@ -120,7 +130,6 @@ var exp = {
                   this.player.planets[i].shipConstrucction[j].deuterium -= Math.floor(cantAux)*this.player.planets[i].shipConstrucction[j].deuteriumOne;
                   timeLastUpdateAux -= totalTimeJ;
                 }
-                console.log(listShip);
                 if(this.player.planets[i].shipConstrucction[j].cant > 0) listShip.push(this.player.planets[i].shipConstrucction[j]);
               }
             }
@@ -358,7 +367,14 @@ var exp = {
     };
   },
   buildingsActualInfo: function (planet) {
-    return {buildings: this.player.planets[planet].buildings, solarSatellite: this.player.planets[planet].fleet.solarSatellite};
+    let res;
+    if(this.moon == true){
+      console.log(this.player.planets[planet].moon);
+      res = this.player.planets[planet].moon.buildings;
+    }else{
+      res = {buildings: this.player.planets[planet].buildings, solarSatellite: this.player.planets[planet].fleet.solarSatellite};
+    }
+    return res;
   },
   costBuildings: function (planet){
     let build = this.player.planets[planet].buildings;
@@ -576,7 +592,7 @@ var exp = {
   proccesBuildRequest: function(planet, buildingName, res){
     if(this.player.planets[planet].buildingConstrucction == false){
       let objPrice = this.costBuildings(planet);
-      if(objPrice[buildingName].metal <= this.player.planets[planet].resources.metal && objPrice[buildingName].crystal <= this.player.planets[planet].resources.crystal && objPrice[buildingName].deuterium <= this.player.planets[planet].resources.deuterium && objPrice[buildingName].tech == true && (buildingName != 'terraformer'|| objPrice[buildingName].energy <= this.player.planets[planet].resourcesAdd.energy)){
+      if(objPrice[buildingName].metal <= this.player.planets[planet].resources.metal && objPrice[buildingName].crystal <= this.player.planets[planet].resources.crystal && objPrice[buildingName].deuterium <= this.player.planets[planet].resources.deuterium && objPrice[buildingName].tech && (buildingName != 'terraformer'|| objPrice[buildingName].energy <= this.player.planets[planet].resourcesAdd.energy) && (buildingName == 'terraformer'|| this.player.planets[planet].campos+1 < this.player.planets[planet].camposMax)){
         let buildingConstrucctionAux = {};
         let buildingConstrucction = {};
         let objInc = {};
@@ -591,6 +607,35 @@ var exp = {
         objInc['planets.' + planet + '.resources.metal'] = -objPrice[buildingName].metal;
         objInc['planets.' + planet + '.resources.crystal'] = -objPrice[buildingName].crystal;
         objInc['planets.' + planet + '.resources.deuterium'] = -objPrice[buildingName].deuterium;
+        mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: this.player.name}, {$set: buildingConstrucction, $inc: objInc}, (err, result) => {
+          if(err) throw err;
+          res.send({ok: true})
+        });
+      }else{
+        res.send({ok: false});
+      }
+    }else{
+      res.send({ok: false});
+    }
+  },
+  proccesMoonRequest: function(planet, buildingName, res){
+    if(this.player.planets[planet].moon.buildingConstrucction == false){
+      let objPrice = this.costMoon(planet);
+      if(objPrice[buildingName].metal <= this.player.planets[planet].moon.resources.metal && objPrice[buildingName].crystal <= this.player.planets[planet].moon.resources.crystal && objPrice[buildingName].deuterium <= this.player.planets[planet].moon.resources.deuterium && objPrice[buildingName].tech && (buildingName == 'lunarBase'|| this.player.planets[planet].moon.campos+1 < this.player.planets[planet].moon.camposMax)){
+        let buildingConstrucctionAux = {};
+        let buildingConstrucction = {};
+        let objInc = {};
+        buildingConstrucctionAux.metal = objPrice[buildingName].metal;
+        buildingConstrucctionAux.crystal = objPrice[buildingName].crystal;
+        buildingConstrucctionAux.deuterium = objPrice[buildingName].deuterium;
+        buildingConstrucctionAux.item = buildingName;
+        buildingConstrucctionAux.init = new Date().getTime();
+        buildingConstrucctionAux.time = this.timeBuild(objPrice[buildingName].metal + objPrice[buildingName].crystal, objPrice.time.mult, objPrice.time.elev);
+        buildingConstrucction['planets.' + planet + '.moon.buildingConstrucction'] = buildingConstrucctionAux;
+        this.player.planets[planet].buildingConstrucction = buildingConstrucctionAux;
+        objInc['planets.' + planet + '.moon.resources.metal'] = -objPrice[buildingName].metal;
+        objInc['planets.' + planet + '.moon.resources.crystal'] = -objPrice[buildingName].crystal;
+        objInc['planets.' + planet + '.moon.resources.deuterium'] = -objPrice[buildingName].deuterium;
         mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: this.player.name}, {$set: buildingConstrucction, $inc: objInc}, (err, result) => {
           if(err) throw err;
           res.send({ok: true})
@@ -648,6 +693,7 @@ var exp = {
         shipyardConstrucctionAux.metalOne = objPrice[shipyardName].metal;
         shipyardConstrucctionAux.crystalOne = objPrice[shipyardName].crystal;
         shipyardConstrucctionAux.deuteriumOne = objPrice[shipyardName].deuterium;
+        shipyardConstrucctionAux.name = objPrice[shipyardName].name;
         shipyardConstrucctionAux.item = shipyardName;
         shipyardConstrucctionAux.new = true;
         shipyardConstrucctionAux.init = new Date().getTime();
@@ -681,6 +727,22 @@ var exp = {
       objInc['planets.' + planet + '.resources.metal'] = this.player.planets[planet].buildingConstrucction.metal;
       objInc['planets.' + planet + '.resources.crystal'] = this.player.planets[planet].buildingConstrucction.crystal;
       objInc['planets.' + planet + '.resources.deuterium'] = this.player.planets[planet].buildingConstrucction.deuterium;
+      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: this.player.name}, {$set: objSet, $inc: objInc}, (err, result) => {
+        if(err) throw err;
+        res.send({ok: true});
+      });
+    }else{
+      res.send({ok: false});
+    }
+  },
+  cancelMoonRequest: function(planet, res){
+    if(this.player.planets[planet].moon.active == true && this.player.planets[planet].moon.buildingConstrucction != false){
+      let objSet = {};
+      let objInc = {};
+      objSet['planets.' + planet + '.moon.buildingConstrucction'] = false;
+      objInc['planets.' + planet + '.moon.resources.metal'] = this.player.planets[planet].moon.buildingConstrucction.metal;
+      objInc['planets.' + planet + '.moon.resources.crystal'] = this.player.planets[planet].moon.buildingConstrucction.crystal;
+      objInc['planets.' + planet + '.moon.resources.deuterium'] = this.player.planets[planet].moon.buildingConstrucction.deuterium;
       mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: this.player.name}, {$set: objSet, $inc: objInc}, (err, result) => {
         if(err) throw err;
         res.send({ok: true});
@@ -770,6 +832,13 @@ var exp = {
     let moon = this.createNewMoon(8888);//{active: false, size: 0};
     let debris = {active: false, metal:0, crystal: 0};
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({planets :{$elemMatch: {coordinates: {galaxy: cord.galaxy, system: cord.system, pos: cord.pos}}}}, {$set: {'planets.$.resources': resources,'planets.$.buildings': building, 'planets.$.fleet': fleet, 'planets.$.defense': defenses,'planets.$.moon': moon, 'planets.$.debris': debris}});
+  },
+  setMoonData: function(cord, player){ // asume el planeta tiene luna
+    // cambiar para que no sean constantes
+    let resources = {metal: 5000000, crystal: 4000000, deuterium: 1000000, energy: 0};
+    let building = {lunarBase: 3, phalanx: 2, spaceDock: 0, marketplace: 0, lunarSunshade: 0, lunarBeam: 0, jumpGate: 0, moonShield: 0};
+    let fleet = {lightFighter: 0, heavyFighter: 0, cruiser: 0, battleship: 0, battlecruiser: 0, bomber: 0, destroyer: 0, deathstar: 100, smallCargo: 0, largeCargo: 0, colony: 0, recycler: 0, espionageProbe: 0, solarSatellite: 0};
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({planets :{$elemMatch: {coordinates: {galaxy: cord.galaxy, system: cord.system, pos: cord.pos}}}}, {$set: {'planets.$.moon.resources': resources,'planets.$.moon.buildings': building, 'planets.$.moon.fleet': fleet}});
   },
   colonize: function(cord, player){
     let newPlanet = this.createNewPlanet(cord, 'Colony', player, 'activo'); // no deberia estar siempre activo
@@ -863,6 +932,18 @@ var exp = {
       mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: player}, {$set: {'puntos': Math.floor(puntos/1000), puntosAcum: (puntos%1000)}});
     });
   },
+  contMoonFields: function(planet){
+    if(this.player.planets[planet].moon.active == true){
+      let campos = 0;
+      let objSet = {};
+      for(let item in this.player.planets[planet].moon.buildings){
+        campos += this.player.planets[planet].moon.buildings[item];
+      }
+      objSet['planets.' + planet + '.moon.campos'] = campos;
+      objSet['planets.' + planet + '.moon.camposMax'] = this.player.planets[planet].moon.buildings.lunarBase*3 + 1;
+      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: this.player.name}, {$set: objSet});
+    }
+  },
   normalRandom: (min, max, podaMin = -Infinity, podaMax = Infinity) => {// la esperanza es (max+min)/2
     let u = 0, v = 0, num = 1;
     while(u == 0) u = Math.random(); //Converting [0,1) to (0,1)
@@ -939,11 +1020,9 @@ module.exports = exp;
 
 //Lista de cosas por hacer
 
-/* Terminar el hangar y el mostrar las naves que se estan construyendo
-/* Al mejorar los edicios tienen que subir los numeros de campos
-/* Al intentar mejorar un edificio se tiene que fijar en el numero de campos
 /* Mejorar el calculo de recursos de tiempos medios
 /* En el view de galaxy hay que poner el boton para colonizar
 /* El abandonar el planeta en Overview
+/* La funcion de contar puntos tiene que contar los puntos de la luna
 /* Cuando estas haciendo una contruccion en un planeta se tiene que poner la llavecita indicando eso
 */

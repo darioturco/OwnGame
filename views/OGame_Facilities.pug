@@ -59,73 +59,72 @@ block content
         ul#stationbuilding
           if basic.moon
             li#button0.on
-              .item_box.station14
-                .stationlarge.buildingimg
+              .item_box.station1
+                .stationlargeMoon.buildingimg
                   a#details14.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("lunarBase");return false;')
                     span.ecke
                       span.level
                         span.textlabel Lunar Base
-                        | 0
+                        | #{info.lunarBase}
             li#button1.on
-              .item_box.station21
-                .stationlarge.buildingimg
+              .item_box.station2
+                .stationlargeMoon.buildingimg
                   a.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("phalanx");return false;')
                     span.ecke
                       span.level
                         span.textlabel Sensor Phalanx
-                        | 0
+                        | #{info.phalanx}
             li#button2.on
-              .item_box.station31
-                .stationlarge.buildingimg
+              .item_box.station3
+                .stationlargeMoon.buildingimg
                   a.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("spaceDock");return false;')
                     span.ecke
                       span.level
                         span.textlabel Space Dock
-                        | 0
+                        | #{info.spaceDock}
             li#button3.on
-              .item_box.station34
-                .stationlarge.buildingimg
+              .item_box.station4
+                .stationlargeMoon.buildingimg
                   a#details34.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("marketplace");return false;')
                     span.ecke
                       span.level
                         span.textlabel Marketplace
-                        | 0
+                        | #{info.marketplace}
             li#button4.on
-              .item_box.station44
-                .stationlarge.buildingimg
+              .item_box.station5
+                .stationlargeMoon.buildingimg
                   a#details44.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("lunarSunshade");return false;')
                     span.ecke
                       span.level
                         span.textlabel Lunar Sunshade
-                        | 0
+                        | #{info.lunarSunshade}
             li#button5.on
-              .item_box.station15
-                .stationlarge.buildingimg
+              .item_box.station6
+                .stationlargeMoon.buildingimg
                   a#details15.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("lunarBeam");return false;')
                     span.ecke
                       span.level
                         span.textlabel Lunar Beam
-                        | 0
+                        | #{info.lunarBeam}
             li#button6.on
-              .item_box.station33
-                .stationlarge.buildingimg
+              .item_box.station7
+                .stationlargeMoon.buildingimg
                   a#details33.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("jumpGate");return false;')
                     span.ecke
                       span.level
                         span.textlabel Jump Gate
-                        | 0
+                        | #{info.jumpGate}
             li#button7.on
-              .item_box.station33
-                .stationlarge.buildingimg
+              .item_box.station8
+                .stationlargeMoon.buildingimg
                   a#details33.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("moonShield");return false;')
                     span.ecke
                       span.level
                         span.textlabel Moon Shield
-                        | 0
+                        | #{info.moonShield}
           else
             li#button0.on
-              // disable = rayado; on = prendido; off = blanco y negro
-              .item_box.station14
+              .item_box.station1
                 .stationlarge.buildingimg
                   a#details14.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("robotFactory");return false;')
                     span.ecke
@@ -133,7 +132,7 @@ block content
                         span.textlabel Robotics Factory
                         | #{info.buildings.robotFactory}
             li#button1.on
-              .item_box.station21
+              .item_box.station2
                 .stationlarge.buildingimg
                   a.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("shipyard");return false;')
                     span.ecke
@@ -141,7 +140,7 @@ block content
                         span.textlabel Shipyard
                         | #{info.buildings.shipyard}
             li#button2.on
-              .item_box.station31
+              .item_box.station3
                 .stationlarge.buildingimg
                   a.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("researchLab");return false;')
                     span.ecke
@@ -149,7 +148,7 @@ block content
                         span.textlabel Research Lab
                         | #{info.buildings.researchLab}
             li#button3.on
-              .item_box.station34
+              .item_box.station4
                 .stationlarge.buildingimg
                   a#details34.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("alliance");return false;')
                     span.ecke
@@ -157,7 +156,7 @@ block content
                         span.textlabel Alliance Depot
                         | #{info.buildings.alliance}
             li#button4.on
-              .item_box.station44
+              .item_box.station5
                 .stationlarge.buildingimg
                   a#details44.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("silo");return false;')
                     span.ecke
@@ -165,7 +164,7 @@ block content
                         span.textlabel Missile Silo
                         | #{info.buildings.silo}
             li#button5.on
-              .item_box.station15
+              .item_box.station6
                 .stationlarge.buildingimg
                   a#details15.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("naniteFactory");return false;')
                     span.ecke
@@ -173,7 +172,7 @@ block content
                         span.textlabel Nanite Factory
                         | #{info.buildings.naniteFactory}
             li#button6.on
-              .item_box.station33
+              .item_box.station7
                 .stationlarge.buildingimg
                   a#details33.detail_button.tooltip.slideIn(href='#' onclick='toggleDescription("terraformer");return false;')
                     span.ecke

@@ -81,7 +81,11 @@ router.get('/set/setOptions', function(req, res, next) {
 });
 
 router.get('/set/sendBuildRequest', function(req, res, next) {
-  uni.proccesBuildRequest(uni.planeta, req.query.obj, res);
+  if(uni.moon){
+    uni.proccesMoonRequest(uni.planeta, req.query.obj, res);
+  }else{
+    uni.proccesBuildRequest(uni.planeta, req.query.obj, res);
+  }
 });
 
 router.get('/set/sendResearchRequest', function(req, res, next) {
@@ -93,7 +97,11 @@ router.get('/set/sendShipyardRequest', function(req, res, next) {
 });
 
 router.get('/set/cancelBuildRequest', function(req, res, next) {
-  uni.cancelBuildRequest(uni.planeta, res);
+  if(uni.moon){
+    uni.cancelMoonRequest(uni.planeta, res);
+  }else{
+    uni.cancelBuildRequest(uni.planeta, res);
+  }
 });
 
 router.get('/set/cancelResearchRequest', function(req, res, next) {

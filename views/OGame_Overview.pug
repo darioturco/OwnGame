@@ -1,12 +1,12 @@
 extends Ogame_Layout
 block content
   #inhalt
-    - var urlImg = (basic.moon ? './Imagenes/Planets/Overview_Moon.jpg' : './Imagenes/Planets/Overview_Planet_' + info.type + '.jpg')
+    - var urlImg = (basic.moon ? './Imagenes/Planets/Overview_Moon_' + basic.planets[basic.numPlanet].moon.type + '.jpg' : './Imagenes/Planets/Overview_Planet_' + info.type + '.jpg')
     #planet(style='background-image:url(' + urlImg + ');')
       #detailWrapper
         #moon(style='display: ' + ((basic.planets[basic.numPlanet].moon.active == true && basic.moon == false) ? 'block' : 'none'))
           a.tooltipBottom.tpd-hideOnClickOutside(href='/Ogame_Overview.html?moon=true')
-            img(alt=' ' src='./Imagenes/Planets/Moon.gif')
+            img(alt=' ' src='./Imagenes/Planets/Moon_Big_' + basic.planets[basic.numPlanet].moon.type + '.gif')
         #header_text
           h2
             span.openPlanetRenameGiveupBox

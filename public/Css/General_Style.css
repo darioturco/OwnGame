@@ -1901,16 +1901,6 @@ width:20px;
   overflow:hidden;
   white-space:nowrap;
 }
-#station #buttonz ul#building li.on div.station1 div.buildingimg,#station #buttonz ul#building li.off div.station1 div.buildingimg,#station #buttonz ul#building li.disabled div.station1 div.buildingimg{background-position:-400px 0}
-#station #buttonz ul#building li.on div.station2 div.buildingimg,#station #buttonz ul#building li.off div.station2 div.buildingimg,#station #buttonz ul#building li.disabled div.station2 div.buildingimg{background-position:-300px 0}
-#station #buttonz ul#building li.on div.station3 div.buildingimg,#station #buttonz ul#building li.off div.station3 div.buildingimg,#station #buttonz ul#building li.disabled div.station3 div.buildingimg{background-position:-200px 0}
-#station #buttonz ul#building li.on div.station4 div.buildingimg,#station #buttonz ul#building li.off div.station4 div.buildingimg,#station #buttonz ul#building li.disabled div.station4 div.buildingimg{background-position:-100px 0}
-#station #buttonz ul#building li.on div.station5 div.buildingimg,#station #buttonz ul#building li.off div.station5 div.buildingimg,#station #buttonz ul#building li.disabled div.station5 div.buildingimg{background-position:0 0}
-#station #buttonz ul#building li.on div.station6 div.buildingimg,#station #buttonz ul#building li.off div.station6 div.buildingimg,#station #buttonz ul#building li.disabled div.station6 div.buildingimg{background-position:-500px 0}
-#station #buttonz ul#building li{
-  padding:0;
-  margin:0;
-}
 .clearfloat{
   clear:both;
   height:0;
@@ -4892,16 +4882,36 @@ div.techImage.defense.tech503.notBuilt a{background-position:-802px -162px}
   background-image: url("../Imagenes/Shipyard/Defense_Build.jpg");
   background-repeat:no-repeat;
 }
-#defense #rocketLauncher,#techinfo div.techwrapper div.defense.tech401 img{background-position:0 0}
-#defense #lightLaser,#techinfo div.techwrapper div.defense.tech402 img{background-position:-200px 0}
-#defense #heavyLaser,#techinfo div.techwrapper div.defense.tech403 img{background-position:-400px 0}
-#defense #gauss,#techinfo div.techwrapper div.defense.tech404 img{background-position:-600px 0}
-#defense #ion,#techinfo div.techwrapper div.defense.tech405 img{background-position:-800px 0}
-#defense #plasma,#techinfo div.techwrapper div.defense.tech406 img{background-position:-1000px 0}
-#defense #smallShield,#techinfo div.techwrapper div.defense.tech407 img{background-position:-1200px 0}
-#defense #largeShield,#techinfo div.techwrapper div.defense.tech408 img{background-position:-1400px 0}
-#defense #antiballisticMissile,#techinfo div.techwrapper div.defense.tech502 img{background-position:-1600px 0}
-#defense #interplanetaryMissile,#techinfo div.techwrapper div.defense.tech503 img{background-position:-1800px 0}
+#defense #rocketLauncher{background-position:0 0}
+#defense #lightLaser{background-position:-200px 0}
+#defense #heavyLaser{background-position:-400px 0}
+#defense #gauss{background-position:-600px 0}
+#defense #ion{background-position:-800px 0}
+#defense #plasma{background-position:-1000px 0}
+#defense #smallShield{background-position:-1200px 0}
+#defense #largeShield{background-position:-1400px 0}
+#defense #antiballisticMissile{background-position:-1600px 0}
+#defense #interplanetaryMissile{background-position:-1800px 0}
+#shipInfoBuilding #firstImg #rocketLauncher{background-position:-700px 0}
+#shipInfoBuilding #firstImg #lightLaser{background-position:-750px 0}
+#shipInfoBuilding #firstImg #heavyLaser{background-position:-800px 0}
+#shipInfoBuilding #firstImg #gauss{background-position:-850px 0}
+#shipInfoBuilding #firstImg #ion{background-position:-900px 0}
+#shipInfoBuilding #firstImg #plasma{background-position:-950px 0}
+#shipInfoBuilding #firstImg #smallShield{background-position:-1000px 0}
+#shipInfoBuilding #firstImg #largeShield{background-position:-1050px 0}
+#shipInfoBuilding #firstImg #antiballisticMissile{background-position:-1100px 0}
+#shipInfoBuilding #firstImg #interplanetaryMissile{background-position:-1150px 0}
+#shipInfoBuilding #otherShips #rocketLauncher{background-position:-560px 0}
+#shipInfoBuilding #otherShips #lightLaser{background-position:-600px 0}
+#shipInfoBuilding #otherShips #heavyLaser{background-position:-640px 0}
+#shipInfoBuilding #otherShips #gauss{background-position:-680px 0}
+#shipInfoBuilding #otherShips #ion{background-position:-720px 0}
+#shipInfoBuilding #otherShips #plasma{background-position:-760px 0}
+#shipInfoBuilding #otherShips #smallShield{background-position:-800px 0}
+#shipInfoBuilding #otherShips #largeShield{background-position:-840px 0}
+#shipInfoBuilding #otherShips #antiballisticMissile{background-position:-880px 0}
+#shipInfoBuilding #otherShips #interplanetaryMissile{background-position:-920px 0}
 #detailtable td{
   vertical-align:top;
   font-size:11px;
@@ -4931,11 +4941,6 @@ list-style-type:none;
 margin-right:6px;
 margin-bottom:6px}
 #station-moon #stationbuilding li{margin:0 12px}
-#stationbuilding .buildingimg{
-  background-image: url("../Imagenes/Facilities/Facilities.png");
-  background-repeat:no-repeat;
-  position:relative;
-}
 #stationbuilding a,#stationbuilding a:active{
   display:block;
   height:100px;
@@ -4975,61 +4980,34 @@ background-repeat:no-repeat}
   background-image: url("../Imagenes/Facilities/Facilities.png");
   background-repeat:no-repeat;
 }
-div.techImage.station.tech14.built a{background-position:-2px -2px}
-div.techImage.station.tech14.notBuilt a{background-position:-2px -162px}
-.station14>.buildingimg{background-position:0 0}
-.disabled>.station14>.buildingimg{background-position:0 -100px}
-.off>.station14>.buildingimg{background-position:0 -200px}
-div.techImage.station.tech15.built a{background-position:-322px -2px}
-div.techImage.station.tech15.notBuilt a{background-position:-322px -162px}
-.station15>.buildingimg{background-position:-400px 0}
-.disabled>.station15>.buildingimg{background-position:-400px -100px}
-.off>.station15>.buildingimg{background-position:-400px -200px}
-div.techImage.station.tech21.built a{background-position:-242px -2px}
-div.techImage.station.tech21.notBuilt a{background-position:-242px -162px}
-.station21>.buildingimg{background-position:-300px 0}
-.disabled>.station21>.buildingimg{background-position:-300px -100px}
-.off>.station21>.buildingimg{background-position:-300px -200px}
-div.techImage.station.tech31.built a{background-position:-82px -2px}
-div.techImage.station.tech31.notBuilt a{background-position:-82px -162px}
-.station31>.buildingimg{background-position:-100px 0}
-.disabled>.station31>.buildingimg{background-position:-100px -100px}
-.off>.station31>.buildingimg{background-position:-100px -200px}
-div.techImage.station.tech33.built a{background-position:-402px -2px}
-div.techImage.station.tech33.notBuilt a{background-position:-402px -162px}
-.station33>.buildingimg{background-position:-500px 0}
-.disabled>.station33>.buildingimg{background-position:-500px -100px}
-.off>.station33>.buildingimg{background-position:-500px -200px}
-div.techImage.station.tech34.built a{background-position:-162px -2px}
-div.techImage.station.tech34.notBuilt a{background-position:-162px -162px}
-.station34>.buildingimg{background-position:-200px 0}
-.disabled>.station34>.buildingimg{background-position:-200px -100px}
-.off>.station34>.buildingimg{background-position:-200px -200px}
-div.techImage.station.tech44.built a{background-position:-482px -2px}
-div.techImage.station.tech44.notBuilt a{background-position:-482px -162px}
-.station44>.buildingimg{background-position:-600px 0}
-.disabled>.station44>.buildingimg{background-position:-600px -100px}
-.off>.station44>.buildingimg{background-position:-600px -200px}
-div.techImage.station.tech36.built a{background-position:-802px -2px}
-div.techImage.station.tech36.notBuilt a{background-position:-802px -162px}
-.station36>.buildingimg{background-position:-1000px 0}
-.disabled>.station36>.buildingimg{background-position:-1000px -100px}
-.off>.station36>.buildingimg{background-position:-1000px -200px}
-div.techImage.station.tech41.built a{background-position:-562px -2px}
-div.techImage.station.tech41.notBuilt a{background-position:-562px -162px}
-.on .station41 .buildingimg{background-position:-700px 0}
-.disabled .station41 .buildingimg{background-position:-700px -100px}
-.off .station41 .buildingimg{background-position:-700px -200px}
-div.techImage.station.tech42.built a{background-position:-644px -2px}
-div.techImage.station.tech42.notBuilt a{background-position:-644px -162px}
-.on .station42 .buildingimg{background-position:-800px 0}
-.disabled .station42 .buildingimg{background-position:-800px -100px}
-.off .station42 .buildingimg{background-position:-800px -200px}
-div.techImage.station.tech43.built a{background-position:-724px -2px}
-div.techImage.station.tech43.notBuilt a{background-position:-725px -162px}
-.on .station43 .buildingimg{background-position:-900px 0}
-.disabled .station43 .buildingimg{background-position:-900px -100px}
-.off .station43 .buildingimg{background-position:-900px -200px}
+#station .stationlargeMoon{
+  background-image: url("../Imagenes/Facilities/Facilities_Moon.png");
+  background-repeat:no-repeat;
+}
+.station1>.buildingimg{background-position:0 0}
+.disabled>.station1>.buildingimg{background-position:0 -100px}
+.off>.station1>.buildingimg{background-position:0 -200px}
+.station2>.buildingimg{background-position:-100px 0}
+.disabled>.station2>.buildingimg{background-position:-100px -100px}
+.off>.station2>.buildingimg{background-position:-100px -200px}
+.station3>.buildingimg{background-position:-200px 0}
+.disabled>.station3>.buildingimg{background-position:-200px -100px}
+.off>.station3>.buildingimg{background-position:-200px -200px}
+.station4>.buildingimg{background-position:-300px 0}
+.disabled>.station4>.buildingimg{background-position:-300px -100px}
+.off>.station4>.buildingimg{background-position:-300px -200px}
+.station5>.buildingimg{background-position:-400px 0}
+.disabled>.station5>.buildingimg{background-position:-400px -100px}
+.off>.station5>.buildingimg{background-position:-400px -200px}
+.station6>.buildingimg{background-position:-500px 0}
+.disabled>.station6>.buildingimg{background-position:-500px -100px}
+.off>.station6>.buildingimg{background-position:-500px -200px}
+.station7>.buildingimg{background-position:-600px 0}
+.disabled>.station7>.buildingimg{background-position:-600px -100px}
+.off>.station7>.buildingimg{background-position:-600px -200px}
+.station8>.buildingimg{background-position:-700px 0}
+.disabled>.station8>.buildingimg{background-position:-700px -100px}
+.off>.station8>.buildingimg{background-position:-700px -200px}
 #station .detail_screen div.pic,#station-moon .detail_screen div.pic,#supplydepotlayer #inner>img,#techinfo div.techwrapper div.leftcol.station img{
   float:left;
   height:200px;
@@ -5037,21 +5015,30 @@ div.techImage.station.tech43.notBuilt a{background-position:-725px -162px}
   position:relative;
   width:200px;
 }
-#station .detail_screen div.pic,#station-moon .detail_screen div.pic,#supplydepotlayer #inner>img,#rocketsilo #inner>img,#techinfo div.techwrapper div.station img{
+#station .detail_screen div.pic{
   background-image: url("../Imagenes/Facilities/Faclities_Deatails.jpg");
   background-repeat:no-repeat;
 }
-#station .detail_screen #robotFactory,#station-moon .detail_screen #robotFactory,#techinfo div.techwrapper div.station.tech14 img{background-position:0 0}
-#station .detail_screen #shipyard,#station-moon .detail_screen #shipyard,#techinfo div.techwrapper div.station.tech21 img{background-position:-200px 0}
-#station .detail_screen #researchLab,#techinfo div.techwrapper div.station.tech31 img{background-position:-400px 0}
-#station .detail_screen #alliance,#supplydepotlayer #inner>img,#techinfo div.techwrapper div.station.tech34 img{background-position:-600px 0}
-#station .detail_screen #silo,#techinfo div.techwrapper div.station.tech44 img,#rocketsilo #inner img{background-position:-800px 0}
-#station .detail_screen #naniteFactory,#techinfo div.techwrapper div.station.tech15 img{background-position:-1000px 0}
-#station .detail_screen #terraformer,#techinfo div.techwrapper div.station.tech33 img{background-position:-1200px 0}
-#station-moon .detail_screen #station_41_large,#techinfo div.techwrapper div.station.tech41 img{background-position:-1400px 0}
-#station-moon .detail_screen #station_42_large,#techinfo div.techwrapper div.station.tech42 img{background-position:-1600px 0}
-#station-moon .detail_screen #station_43_large,#techinfo div.techwrapper div.station.tech43 img{background-position:-1800px 0}
-#station .detail_screen #station_36_large,#techinfo div.techwrapper div.station.tech36 img,#repairdock #inner img{background-position:-2000px 0}
+#station .detail_screen div.moonImg{
+  background-image: url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg");
+  background-repeat:no-repeat;
+}
+#station .detail_screen #robotFactory{background-position:0 0}
+#station .detail_screen #shipyard{background-position:-200px 0}
+#station .detail_screen #researchLab{background-position:-400px 0}
+#station .detail_screen #alliance{background-position:-600px 0}
+#station .detail_screen #silo{background-position:-800px 0}
+#station .detail_screen #naniteFactory{background-position:-1000px 0}
+#station .detail_screen #terraformer{background-position:-1200px 0}
+
+#station .detail_screen #lunarBase{background-position:0 0}
+#station .detail_screen #phalanx{background-position:-200px 0}
+#station .detail_screen #spaceDock{background-position:-400px 0}
+#station .detail_screen #marketplace{background-position:-600px 0}
+#station .detail_screen #lunarSunshade{background-position:-800px 0}
+#station .detail_screen #lunarBeam{background-position:-1000px 0}
+#station .detail_screen #jumpGate{background-position:-1200px 0}
+#station .detail_screen #moonShield{background-position:-1400px 0}
 #jumpgate,#fleetTemplatesEdit #submit_std{
   color:#6f9fc8;
   overflow:hidden;
@@ -6488,7 +6475,6 @@ tr.alt td {
   top: 32px;
   position: relative;
   text-align: center;
-  padding-left: 10px;
 }
 .content #actualShip #firstImg .imgFirstShip{
   width: 50px;
@@ -6496,7 +6482,7 @@ tr.alt td {
   top: 32px;
   position: relative;
   margin: auto;
-  background-image: url('../Imagenes/Shipyard/Shipyard_Nave.jpg');
+  background-image: url('../Imagenes/Shipyard/ShipyardAll.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   border-radius: 4px;
@@ -6522,7 +6508,7 @@ tr.alt td {
   width: 40px;
   height: 40px;
   margin: 4px;
-  background-image: url('../Imagenes/Shipyard/Shipyard_Nave.jpg');
+  background-image: url('../Imagenes/Shipyard/ShipyardAll.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   border-radius: 4px;
