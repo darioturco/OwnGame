@@ -3,7 +3,7 @@ var galaxy = 1, system = 1;
 var galaxyText, systemText;
 var playerName, planetName, moons, debris, actions, colonized;
 var debrisConteiner, debrisMetal, debrisCrystal, debrisNeed, debrisCord;
-var moonContainer;
+var moonContainer, moonSize, moonCord;
 var debrisList;
 var debrisActive = -1, moonActive = -1;
 
@@ -14,6 +14,8 @@ setTimeout(() => {
   debrisCrystal = document.getElementById('DebrisCrystal');
   debrisNeed = document.getElementById('DebrisNeed');
   debrisCord = document.getElementById('DebrisCord');
+  moonSize = document.getElementById('MoonSize');
+  moonCord = document.getElementById('MoonCord');
   galaxyText = document.getElementById('galaxy_input');
   systemText = document.getElementById('system_input');
   colonized = document.getElementById('colonized');
@@ -38,8 +40,9 @@ function loadSystem(gal, sys){
     console.log(obj);
     let cont = 0;
     debrisList = [];
+    moonList = [];
     estados = [];
-    pressMoon(-1);//apaga el carten de la luna
+    pressMoon(-1);//apaga el cartel de la luna
     pressDebris(-1);//apaga el cartel de los escombros
     for(let i = 1 ; i<=15 ; i++){
       if(obj['pos'+i].active == true){
@@ -53,7 +56,7 @@ function loadSystem(gal, sys){
         if(obj['pos'+i].moon == true) moons[i-1].classList.add('activeMoon');
         if(obj['pos'+i].debris == true) debris[i-1].classList.add('debrisField');
       }else{
-        planets[i-1].src = '';
+        planets[i-1].src = './Imagenes/None.gif';
         playerName[i-1].innerHTML = '';
         planetName[i-1].innerHTML = '';
         actions[i-1].style.display = 'none';
@@ -62,6 +65,7 @@ function loadSystem(gal, sys){
       }
       estados.push(obj['pos'+i].estado);
       debrisList.push({debris: obj['pos'+i].debris, metal: obj['pos'+i].metalDebris, crystal: obj['pos'+i].crystalDebris});
+      moonList.push({active: obj['pos'+i].moon, size: obj['pos'+i].moonSize, name: obj['pos'+i].moonName});
     }
     colonized.innerHTML = cont + " Planets colonised";
   });
@@ -79,10 +83,12 @@ function pressMoon(num){
     moonConteiner.style.display = 'none';//cierra el div
   }else{
     moonActive = num;
-    if(num >= 0){
-      //actualiza datos de la luna
+    if(num >= 0){//actualiza datos de la luna
+      moonCord.innerHTML = '['+galaxy+':'+system+':'+num+']';
+      moonSize.innerHTML = moonList[num-1].size + ' Km';
       moonConteiner.style.top = ((num-1)*33+76) + 'px';
       moonConteiner.style.display = 'block';
+      debrisConteiner.style.display = 'none'; // cierra el div de debris
     }else{
       moonConteiner.style.display = 'none';
     }
@@ -102,6 +108,7 @@ function pressDebris(num){
       debrisCord.innerHTML = '['+galaxy+':'+system+':'+num+']';
       debrisConteiner.style.top = ((num-1)*33+76) + 'px';
       debrisConteiner.style.display = 'block';
+      moonConteiner.style.display = 'none'; // cierra el div de moon
     }else{
       debrisConteiner.style.display = 'none';
     }

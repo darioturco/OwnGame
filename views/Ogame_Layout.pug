@@ -48,7 +48,6 @@ body(id=bodyId onLoad='initFunction();')
               a(href='./GodMain.html') God Mode
             li#Clock.OGameClock 07.12.2019 16:17:18
         ul#resources
-
           li#metal_box.metal
             .resourceIcon.metal
             span.value
@@ -103,7 +102,7 @@ body(id=bodyId onLoad='initFunction();')
                 span.textlabel Overview
             li
               span.menu_icon
-                a(href='./Ogame_ResourceSetings.html' target='_self')
+                a(href=(basic.moon) ? './MoonBuildings.html' : './Ogame_ResourceSetings.html' target='_self')
                   .menuImage.resources(class=(bodyId == "resources" || bodyId == "resourceSettings")?'highlighted':'')
               a.menubutton(href='./Ogame_Resources.html' target='_self' class=(bodyId == "resources" || bodyId == "resourceSettings")?'selected':'')
                 span.textlabel Resources

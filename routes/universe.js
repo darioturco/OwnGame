@@ -510,8 +510,7 @@ var exp = {
       for(let i = 0 ; i<doc.planets.length ; i++){
         if(doc.planets[i].coordinatesCod == gal+'_'+sys){
           let pos = doc.planets[i].coordinates.pos;
-          //siempre da que luna y debris es falso (cambiar)
-          respuesta['pos' + pos] = {active: true, player: doc.name, type: doc.planets[i].type, color: doc.planets[i].color, name: doc.planets[i].name, moon: false, moonName: "", moonSize: 0, debris: false, metalDebris: 500, crystalDebris: 100, estado: "activo"};
+          respuesta['pos' + pos] = {active: true, player: doc.name, type: doc.planets[i].type, color: doc.planets[i].color, name: doc.planets[i].name, moon: doc.planets[i].moon.active, moonName: doc.planets[i].moon.name, moonSize: doc.planets[i].moon.size, debris: doc.planets[i].debris.active, metalDebris: doc.planets[i].debris.metal, crystalDebris: doc.planets[i].debris.crystal, estado: "activo"};
         }
       }
     }, () => {
@@ -1022,6 +1021,7 @@ module.exports = exp;
 
 /* Mejorar el calculo de recursos de tiempos medios
 /* En el view de galaxy hay que poner el boton para colonizar
+/* Al conintruir misiles tiene que fijarse en la capacidad del silo
 /* El abandonar el planeta en Overview
 /* La funcion de contar puntos tiene que contar los puntos de la luna
 /* Cuando estas haciendo una contruccion en un planeta se tiene que poner la llavecita indicando eso

@@ -41,6 +41,14 @@ router.get('/Highscore.html', (req, res, next) => {
   });
 });
 
+router.get('/MoonBuildings.html', (req, res, next) => {
+  res.render('MoonBuildings', {bodyId: "moon",
+    url: req._parsedOriginalUrl.pathname,
+    basic: uni.getActualBasicInfo(uni.planeta),
+    listScript: []
+  });
+});
+
 router.get('/OGame_Defence.html', (req, res, next) => {
   res.render('OGame_Defence', {bodyId: "defense",
     url: req._parsedOriginalUrl.pathname,
@@ -129,7 +137,7 @@ router.get('/OGame_Research.html', (req, res, next) => {
 router.get('/OGame_Resources.html', (req, res, next) => {
   if(uni.moon == true){
     res.redirect('./OGame_Facilities.html');
-  }else {
+  }else{
     res.render('OGame_Resources', {bodyId: "resources",
       url: req._parsedOriginalUrl.pathname,
       info: uni.buildingsActualInfo(uni.planeta),
@@ -140,13 +148,16 @@ router.get('/OGame_Resources.html', (req, res, next) => {
 });
 
 router.get('/OGame_ResourceSetings.html', (req, res, next) => {
-  uni.moon = false;
-  res.render('OGame_ResourceSetings', {bodyId: "resourceSettings",
-    url: req._parsedOriginalUrl.pathname,
-    info: uni.resourcesSetting(uni.planeta),
-    basic: uni.getActualBasicInfo(uni.planeta),
-    listScript: ['./Scripts/Resources_Info.js']
-  });
+  if(uni.moon == true){
+    res.redirect('./MoonBuildings.html');
+  }else{
+    res.render('OGame_ResourceSetings', {bodyId: "resourceSettings",
+      url: req._parsedOriginalUrl.pathname,
+      info: uni.resourcesSetting(uni.planeta),
+      basic: uni.getActualBasicInfo(uni.planeta),
+      listScript: ['./Scripts/Resources_Info.js']
+    });
+  }
 });
 
 router.get('/OGame_Reward.html', (req, res, next) => {
