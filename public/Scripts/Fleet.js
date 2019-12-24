@@ -8,6 +8,8 @@ var distanceText, cargaText, durationText, arrivalText, returnText, speedText, c
 var galaxy, system, position, destination = 1, speedActive = 10, dis = 5, minSpeed = 0, time = Infinity, missionSelected = -1;
 var galVal, sysVal, posVal;
 var systemDonut, galaxyDonut, fleetUniverseSpeed;
+var ready = true;
+
 setTimeout(() => {
   inputsFleets = document.getElementsByClassName('fleetValues');
   cantFleets = document.getElementsByClassName('level');
@@ -243,8 +245,7 @@ function changeButtonMision(){
     if(isNaN(aux)) aux = 0;
     if(aux > 0) emptyFleet = false;
   }
-  if(emptyFleet == true){
-    //elimina el selected
+  if(emptyFleet == true){//elimina el selected
     for(let i = 0 ; i<buttonsMision.length ; i++){
       buttonsMision[i].classList.add('off');
     }
@@ -284,5 +285,23 @@ function pressButtonMision(num){
     if(missionSelected != -1) buttonsMision[missionSelected].children[0].classList.remove('selected')
     buttonsMision[num].children[0].classList.add('selected');
     missionSelected = num;
+  }
+}
+
+async function sendFleetMovement(){
+  if(ready){
+    ready = false;
+    let data = {};
+    for(let i = 0 ; i<inputsFleets.length ; i++){
+      data['ships.' + inputsFleets[i].name] = parseInt((inputsFleets[i].value == "") ? 0 : inputsFleets[i].value);
+    }
+    data.coorDesde = {gal: galaxy, sys: system, pos: position};
+    data.coorHasta = {gal: galVal.value, sys: sysVal.value, pos: posVal.value};
+    data.destination = destination;
+    data.porce = speedActive;
+    data.mission = missionSelected;
+    data.resources = {metal: 0, crystal: 0, deuterium: 0};
+    let res = await fetch('./api/set/addFleetMovement', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+    setTimeout(() => {location.reload()}, 50);
   }
 }

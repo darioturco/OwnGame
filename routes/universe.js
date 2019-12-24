@@ -10,7 +10,7 @@ require('mongodb').MongoClient.connect(process.env.MONGO_URL, {useUnifiedTopolog
   exp.getPlayer(process.env.PLAYER, () => {console.log('\x1b[32m%s\x1b[0m', "Base de datos lista.");});
   setInterval(() => {// Actualiza cada 0.999 segundos el estado primario del universo
     /*date = new Date();
-    if(date.getHours() == 0 &&  date.getMinutes() == 0 &&  date.getSeconds() == 0){
+    if(date.getHours() == 0 && date.getMinutes() == 0 && date.getSeconds() == 0){
       console.log("Actualizacion diaria");
     }*/
   }, 999);
@@ -822,8 +822,42 @@ var exp = {
       });
     }
   },
+  addFleetMovement: function(player, planet, moon, obj, res){
+    // Falta terminar la funcion
+
+
+
+    let validMission = false;
+    let fleetVoid = true;
+    for(let item in obj.ships){
+      if(obj.ships >= 0){
+
+      }
+    }
+    if(validMission){
+
+      let pushObjAux = {}
+      let pushObj = {};
+      pushObjAux['ships'] = obj.ships;
+      pushObjAux['moon'] = moon;
+      pushObjAux['coorDesde'] = obj.coorDesde;
+      pushObjAux['coorHasta'] = obj.coorHasta;
+      pushObjAux['destination'] = data.destination; // planeta, luna, escombros
+      pushObjAux['resources'] = {metal: obj.resources.metal, crystal: obj.resources.crystal, deuterium: obj.resources.deuterium};
+      pushObjAux['speed'] = data.porce;
+      pushObjAux['mission'] = data.mission;
+      pushObj['planets.' + planet + '.movement'] = pushObjAux;
+
+      //mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: player}, {$push: pushObj});
+      res.send({ok: true});
+
+    }else{
+      res.send({ok: false});
+    }
+
+  },
   setPlanetData: function(cord, player){
-    // cambiar para que no sean constantes
+    // cambiar para que no sean constantes ???
     let resources = {metal: 5000000, crystal: 4000000, deuterium: 1000000, energy: 0};
     let building = {metalMine: 0, crystalMine: 1, deuteriumMine: 0, solarPlant: 30, fusionReactor: 5, metalStorage: 10, crystalStorage: 9, deuteriumStorage: 8, robotFactory: 0, shipyard: 12, researchLab: 12, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0};
     let fleet = {lightFighter: 10, heavyFighter: 0, cruiser: 1, battleship: 10, battlecruiser: 0, bomber: 3, destroyer: 100, deathstar: 1, smallCargo: 20, largeCargo: 200, colony: 1, recycler: 10, espionageProbe: 30, solarSatellite: 15};
@@ -833,7 +867,7 @@ var exp = {
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({planets :{$elemMatch: {coordinates: {galaxy: cord.galaxy, system: cord.system, pos: cord.pos}}}}, {$set: {'planets.$.resources': resources,'planets.$.buildings': building, 'planets.$.fleet': fleet, 'planets.$.defense': defenses,'planets.$.moon': moon, 'planets.$.debris': debris}});
   },
   setMoonData: function(cord, player){ // asume el planeta tiene luna
-    // cambiar para que no sean constantes
+    // cambiar para que no sean constantes ???
     let resources = {metal: 5000000, crystal: 4000000, deuterium: 1000000, energy: 0};
     let building = {lunarBase: 3, phalanx: 2, spaceDock: 0, marketplace: 0, lunarSunshade: 0, lunarBeam: 0, jumpGate: 0, moonShield: 0};
     let fleet = {lightFighter: 0, heavyFighter: 0, cruiser: 0, battleship: 0, battlecruiser: 0, bomber: 0, destroyer: 0, deathstar: 100, smallCargo: 0, largeCargo: 0, colony: 0, recycler: 0, espionageProbe: 0, solarSatellite: 0};
@@ -1019,6 +1053,7 @@ module.exports = exp;
 
 //Lista de cosas por hacer
 
+/* Terminar la funcion addFleetMovement
 /* Mejorar el calculo de recursos de tiempos medios
 /* En el view de galaxy hay que poner el boton para colonizar
 /* Al conintruir misiles tiene que fijarse en la capacidad del silo
