@@ -1,2 +1,276 @@
 extends Ogame_Layout
 block content
+  #inhalt
+    #planet.shortHeader
+      h2 Moon settings - #{basic.planets[basic.numPlanet].moon.name}
+    .contentRS
+      .headerRS
+        a.close_details.close_ressources(href='./Ogame_Resources.html')
+      .mainRS
+        table.list.listOfResourceSettingsPerPlanet(cellpadding='0' cellspacing='0' style='margin-top:0px;')
+          tbody
+            tr
+              td#factor(colspan='7')
+                .secondcol
+                  div(style='width:376px; margin: 0px auto;')
+                    span.factorkey Moon Size: #{basic.planets[basic.numPlanet].moon.size} Km
+                    span.factorbutton
+                      input.btn_blue(type='button' value='Recalculate' onclick='recalculateButton();')
+                    br.clearfloat
+            tr
+              th
+              th Data
+              th Controls
+            tr.alt
+              td.label Lunar Base (Level #{info.buildings.lunarBase})
+              td.normalmark.textRight
+                span.tooltipCustom Campos: #{info.campos.campos}/#{info.campos.camposMax}
+              td
+            tr
+              td.label Phalanx (Level #{info.buildings.phalanx})
+              td.normalmark
+                span.tooltipCustom Alcance: #{info.buildings.phalanx*info.buildings.phalanx-1}
+              td
+            tr.alt
+              td.label Space Dock (Level #{info.buildings.spaceDock})
+              td.normalmark
+                span.tooltipCustom 0
+              td
+            tr
+              td.label Lunar Sunshade(Level #{info.buildings.lunarSunshade})
+              td.normalmark
+                span.tooltipCustom Cambio de temperatura: #{-Math.floor(info.buildings.lunarSunshade*4*info.values.sunshade/10)}
+              td
+                span.dropdown.currentlySelected.undermark(style='width: 67px;')
+                  a#downButton1.undermark(value='100' href='javascript:void(0);' onclick='clickSelect(1)') 100%
+                ul#dropdown1.dropdown.dropdownList.initialized(data-val=info.values.sunshade style='left: 568px; top: 236px; min-width: 67px; display:none;')
+                  li
+                    a.undermark(value='100' onclick='setDropdown(100, 1)') 100%
+                  li
+                    a.undermark(value='90' onclick='setDropdown(90, 1)') 90%
+                  li
+                    a.undermark(value='80' onclick='setDropdown(80, 1)') 80%
+                  li
+                    a.undermark(value='70' onclick='setDropdown(70, 1)') 70%
+                  li
+                    a.middlemark(value='60' onclick='setDropdown(60, 1)') 60%
+                  li
+                    a.middlemark(value='50' onclick='setDropdown(50, 1)') 50%
+                  li
+                    a.middlemark(value='40' onclick='setDropdown(40, 1)') 40%
+                  li
+                    a.overmark(value='30' onclick='setDropdown(30, 1)') 30%
+                  li
+                    a.overmark(value='20' onclick='setDropdown(20, 1)') 20%
+                  li
+                    a.overmark(value='10' onclick='setDropdown(10, 1)') 10%
+                  li
+                    a.overmark(value='0' onclick='setDropdown(0, 1)') 0%
+            tr.alt
+              td.label Lunar Beam (Level #{info.buildings.lunarBeam})
+              td.normalmark
+                span.tooltipCustom Cambio de temperatura: #{Math.floor(info.buildings.lunarBeam*4*info.values.beam/10)}
+              td
+                span.dropdown.currentlySelected.overmark(style='width: 67px;')
+                  a#downButton2.undermark(value='0' href='javascript:void(0);' onclick='clickSelect(2)') 100%
+                ul#dropdown2.dropdown.dropdownList.initialized(data-val=info.values.beam style='left: 568px; top: 261px; min-width: 67px; display:none;')
+                  li
+                    a.undermark(value='100' onclick='setDropdown(100, 2)') 100%
+                  li
+                    a.undermark(value='90' onclick='setDropdown(90, 2)') 90%
+                  li
+                    a.undermark(value='80' onclick='setDropdown(80, 2)') 80%
+                  li
+                    a.undermark(value='70' onclick='setDropdown(70, 2)') 70%
+                  li
+                    a.middlemark(value='60' onclick='setDropdown(60, 2)') 60%
+                  li
+                    a.middlemark(value='50' onclick='setDropdown(50, 2)') 50%
+                  li
+                    a.middlemark(value='40' onclick='setDropdown(40, 2)') 40%
+                  li
+                    a.overmark(value='30' onclick='setDropdown(30, 2)') 30%
+                  li
+                    a.overmark(value='20' onclick='setDropdown(20, 2)') 20%
+                  li
+                    a.overmark(value='10' onclick='setDropdown(10, 2)') 10%
+                  li
+                    a.overmark(value='0' onclick='setDropdown(0, 2)') 0%
+      .footerRS
+    br.clearfloat
+    #buttonz
+      .header
+        h2
+          span.h_battleships Combat ships
+          span.h_civilships Civil ships
+      #selectNaves.content
+        if info.buildings.jumpGate > 0
+          #battleships
+            ul#military
+              li#button204(class=((info.fleets.lightFighter > 0) ? 'on' : 'off'))
+                .buildingimg
+                  a.tooltip(href='javascript:void(0);' onClick='selectAllNave(0);')
+                    span.ecke
+                      span.level
+                        span.textlabel
+                        | #{info.fleets.lightFighter}
+                input.fleetValues(name='lightFighter' tabindex='1' type='number' value='' onchange='changeFleet();')
+              li#button205(class=((info.fleets.heavyFighter > 0) ? 'on' : 'off'))
+                .buildingimg
+                  a.tooltip(href='javascript:void(0);' onClick='selectAllNave(1);')
+                    span.ecke
+                      span.level
+                        span.textlabel
+                        | #{info.fleets.heavyFighter}
+                input.fleetValues(name='heavyFighter' tabindex='2' type='number' value='' onchange='changeFleet();')
+              li#button206(class=((info.fleets.cruiser > 0) ? 'on' : 'off'))
+                .buildingimg
+                  a.tooltip(href='javascript:void(0);' onClick='selectAllNave(2);')
+                    span.ecke
+                      span.level
+                        span.textlabel
+                        | #{info.fleets.cruiser}
+                input.fleetValues(name='cruiser' tabindex='3' type='number' value='' onchange='changeFleet();')
+              li#button207(class=((info.fleets.battleship > 0) ? 'on' : 'off'))
+                .buildingimg
+                  a.tooltip(href='javascript:void(0);' onClick='selectAllNave(3);')
+                    span.ecke
+                      span.level
+                        span.textlabel
+                        | #{info.fleets.battleship}
+                input.fleetValues(name='battleship' tabindex='4' type='number' value='' onchange='changeFleet();')
+              li#button215(class=((info.fleets.battlecruiser > 0) ? 'on' : 'off'))
+                .buildingimg
+                  a.tooltip(href='javascript:void(0);' onClick='selectAllNave(4);')
+                    span.ecke
+                      span.level
+                        span.textlabel
+                        | #{info.fleets.battlecruiser}
+                input.fleetValues(name='battlecruiser' tabindex='5' type='number' value='' onchange='changeFleet();')
+              li#button211(class=((info.fleets.bomber > 0) ? 'on' : 'off'))
+                .buildingimg
+                  a.tooltip(href='javascript:void(0);' onClick='selectAllNave(5);')
+                    span.ecke
+                      span.level
+                        span.textlabel
+                        | #{info.fleets.bomber}
+                input.fleetValues(name='bomber' tabindex='6' type='number' value='' onchange='changeFleet();')
+              li#button213(class=((info.fleets.destroyer > 0) ? 'on' : 'off'))
+                .buildingimg
+                  a.tooltip(href='javascript:void(0);' onClick='selectAllNave(6);')
+                    span.ecke
+                      span.level
+                        span.textlabel
+                        | #{info.fleets.destroyer}
+                input.fleetValues(name='destroyer' tabindex='7' type='number' value='' onchange='changeFleet();')
+              li#button214(class=((info.fleets.deathstar > 0) ? 'on' : 'off'))
+                .buildingimg
+                  a.tooltip(href='javascript:void(0);' onClick='selectAllNave(7);')
+                    span.ecke
+                      span.level
+                        span.textlabel
+                        | #{info.fleets.deathstar}
+                input.fleetValues(name='deathstar' tabindex='8' type='number' value='' onchange='changeFleet();')
+          #spacer
+          #civilships
+            ul#civil
+              li#button202(class=((info.fleets.smallCargo > 0) ? 'on' : 'off'))
+                .buildingimg
+                  a.tooltip(href='javascript:void(0);' onClick='selectAllNave(8);')
+                    span.ecke
+                      span.level
+                        span.textlabel
+                        | #{info.fleets.smallCargo}
+                input.fleetValues(name='smallCargo' tabindex='9' type='number' value='' onchange='changeFleet();')
+              li#button203(class=((info.fleets.largeCargo > 0) ? 'on' : 'off'))
+                .buildingimg
+                  a.tooltip(href='javascript:void(0);' onClick='selectAllNave(9);')
+                    span.ecke
+                      span.level
+                        span.textlabel
+                        | #{info.fleets.largeCargo}
+                input.fleetValues(name='largeCargo' tabindex='10' type='number' value='' onchange='changeFleet();')
+              li#button208(class=((info.fleets.colony > 0) ? 'on' : 'off'))
+                .buildingimg
+                  a.tooltip(href='javascript:void(0);' onClick='selectAllNave(10);')
+                    span.ecke
+                      span.level
+                        span.textlabel
+                        | #{info.fleets.colony}
+                input.fleetValues(name='colony' tabindex='11' type='number' value='' onchange='changeFleet();')
+              li#button209(class=((info.fleets.recycler > 0) ? 'on' : 'off'))
+                .buildingimg
+                  a.tooltip(href='javascript:void(0);' onClick='selectAllNave(11);')
+                    span.ecke
+                      span.level
+                        span.textlabel
+                        | #{info.fleets.recycler}
+                input.fleetValues(name='recycler' tabindex='12' type='number' value='' onchange='changeFleet();')
+              li#button210(class=((info.fleets.espionageProbe > 0) ? 'on' : 'off'))
+                .buildingimg
+                  a.tooltip(href='javascript:void(0);' onClick='selectAllNave(12);')
+                    span.ecke
+                      span.level
+                        span.textlabel
+                        | #{info.fleets.espionageProbe}
+                input.fleetValues(name='espionageProbe' tabindex='13' type='number' value='' onchange='changeFleet();')
+
+          .clearfloat
+          div#cuanticDiv
+            div#cuanticTime Recovery Time:
+              br
+              span#cuanticTimeCont(data-val=info.cuanticTime) -
+            div#moonSelecter
+              span.dropdown.currentlySelected.overmark(style='width: 120px;')
+                a#downButton3(value=basic.planets[basic.numPlanet].moon.cord href='javascript:void(0);' onclick='clickSelectMoon()') -
+              ul#dropdown3.dropdown.dropdownList.initialized(data-val=0 style='left: 30px; top: 0px; min-width: 120px; display:none;')
+                each item in info.cuanticMoonsCord
+                  li
+                    a(value=item.num onclick='setDropdownMoon(' + item.num + ', this.innerText)') #{item.name+' ['+item.cord.galaxy+':'+item.cord.system+':'+item.cord.pos+']'}
+            div#cuanticButton
+              a#start.on(href='javascript:void(0);' onclick='sendFleetMovement();')
+                span Send fleet
+        else
+          h2 You have no jump gate
+        .footer
+    #buttonz
+      .header
+        h2 Marketplace
+      .content.buy_resources
+        if info.buildings.marketplace > 0
+          .fill_resource
+            .resource_box
+              .resource_img.metal
+              .resource_name Metal
+            .clearfix.fill_resource_ctn
+              .resource_capacity
+                p.marketLavel Vender:
+                input.marketInput(name='MetalCant' tabindex='14' type='number' value='')
+                p.marketLavel por:
+                input.btn(type='button' value='0 Crystal')
+                input.btn(type='button' value='0 Deuterium')
+          .fill_resource
+            .resource_box
+              .resource_img.crystal
+              .resource_name Crystal
+            .clearfix.fill_resource_ctn
+              .resource_capacity
+                p.marketLavel Vender:
+                input.marketInput(name='CrystalCant' tabindex='15' type='number' value='')
+                p.marketLavel por:
+                input.btn(type='button' value='0 Metal')
+                input.btn(type='button' value='0 Deuterium')
+          .fill_resource
+            .resource_box
+              .resource_img.deuterium
+              .resource_name Deuterium
+            .clearfix.fill_resource_ctn
+              .resource_capacity
+                p.marketLavel Vender:
+                input.marketInput(name='DeuteriumCant' tabindex='16' type='number' value='')
+                p.marketLavel por:
+                input.btn(type='button' value='0 Metal')
+                input.btn(type='button' value='0 Crystal')
+        else
+          h2 You have no marketplace
+        .footer

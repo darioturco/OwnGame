@@ -42,11 +42,16 @@ router.get('/Highscore.html', (req, res, next) => {
 });
 
 router.get('/MoonBuildings.html', (req, res, next) => {
-  res.render('MoonBuildings', {bodyId: "moon",
-    url: req._parsedOriginalUrl.pathname,
-    basic: uni.getActualBasicInfo(uni.planeta),
-    listScript: []
-  });
+  if(uni.moon == true){
+    res.render('MoonBuildings', {bodyId: "resourceSettings",
+      url: req._parsedOriginalUrl.pathname,
+      info: uni.moonSetting(uni.planeta),
+      basic: uni.getActualBasicInfo(uni.planeta),
+      listScript: ['./Scripts/Moon_Settings.js']
+    });
+  }else{
+    res.redirect('./Ogame_ResourceSetings.html');
+  }
 });
 
 router.get('/OGame_Defence.html', (req, res, next) => {
@@ -71,9 +76,11 @@ router.get('/OGame_Fleet.html', (req, res, next) => {
   if(req.query.gal == undefined) req.query.gal = uni.player.planets[uni.planeta].coordinates.galaxy;
   if(req.query.sys == undefined) req.query.sys = uni.player.planets[uni.planeta].coordinates.system;
   if(req.query.pos == undefined) req.query.pos = uni.player.planets[uni.planeta].coordinates.pos;
+  console.log(uni.moon);
   res.render('OGame_Fleet', {bodyId: "fleet",
     url: req._parsedOriginalUrl.pathname,
-    info: uni.fleetInfo(uni.planeta),
+    //(uni.moon) ? uni.player.planets[uni.planeta].moon.fleet : uni.player.planets[uni.planeta].fleet,
+    info: uni.fleetInfo(uni.planeta, uni.moon),
     basic: uni.getActualBasicInfo(uni.planeta),
     objCord: {galaxy: req.query.gal, system: req.query.sys, pos: req.query.pos},
     listScript: ['./Scripts/Fleet.js']

@@ -160,4 +160,4 @@ body(id=bodyId onLoad='initFunction();')
                     span.planet-name #{item.name}
                     span.planet-koords [#{item.coordinates.galaxy}:#{item.coordinates.system}:#{item.coordinates.pos}]
                   a.moonlink.tooltipLeft.tooltipClose.tpd-hideOnClickOutside(class=claseLuna href=(url + '?planet=' + index + '&moon=true') style='display: ' + ((item.moon.active == true) ? 'block' : 'none'))
-                    img.icon-moon(alt=' ' src='./Imagenes/Planets/Moon_Big_' + basic.planets[basic.numPlanet].moon.type + '.gif' width='20' heigth='20')
+                    img.icon-moon(alt=' ' src='./Imagenes/Planets/Moon_Big_' + basic.planets[index].moon.type + '.gif' width='20' heigth='20')

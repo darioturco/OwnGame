@@ -63,6 +63,11 @@ router.get('/set/updateResources', function(req, res, next) {// updatea los valo
   uni.updateResourcesData(() => {res.send({ok: true});}, uni.planeta, req.query);
 });
 
+router.get('/set/updateResourcesMoon', function(req, res, next) {// updatea los valores de resourcesSettings de la luna
+  console.log(req.query);
+  uni.updateResourcesDataMoon(() => {res.send({ok: true});}, uni.planeta, req.query);
+});
+
 router.get('/set/deleteMessages', function(req, res, next) {
   uni.deleteMessage(uni.player.name, req.query.all == 'true', req.query.id);
   res.send({ok: true});

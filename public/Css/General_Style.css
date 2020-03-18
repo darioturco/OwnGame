@@ -130,7 +130,8 @@ line-height:15px}.box_highlight .header,.contentbox .header,.header h2,#eventHea
 font:700 12px Verdana,Arial,Helvetica,sans-serif;
 line-height:28px;
 text-align:center}#chat .content,#buddies .content{color:#848484;
-font-size:11px}.float_right,.fright{float:right}.float_left,.fleft{float:left}.margin_10_0{margin:10px 0}.border5px,#activeBuffDetails .anythingWindow{-khtml-border-radius:5px;
+font-size:11px}.float_right,.fright{float:right}.float_left,.fleft{float:left}.margin_10_0{margin:10px 0}
+.border5px,#activeBuffDetails .anythingWindow{-khtml-border-radius:5px;
 -webkit-border-radius:5px;
 -moz-border-radius:5px;
 border-radius:5px;
@@ -215,66 +216,117 @@ background:linear-gradient(to bottom,#848484 0,#939393 17%,#9b9b9b 51%,#727272 5
 border:1px solid #4d4d4d;
 color:#fff!important;
 cursor:default;
-text-shadow:none}.btn,.btn:before,.btn:after{background-color:#000;
-background-image: url("../Imagenes/Background.jpg");
-background-repeat:repeat-x;
-height:38px}.btn{color:#fff;
-cursor:pointer;
-display:inline-block;
-font-size:12px;
-font-weight:bold;
-line-height:38px;
-padding:0 16px;
-position:relative;
-text-shadow:0 0 1px #000}.btn:before{content:'';
-display:block;
-background-position:0 0;
-left:-2px;
-position:absolute;
-top:0;
-width:17px}.btn:after{content:'';
-display:block;
-background-position:-23px 0;
-position:absolute;
-right:-2px;
-top:0;
-width:17px}a.btn{color:#fff;
-text-decoration:none}.btn_premium{background:transparent  url("../Imagenes/Background.jpg") no-repeat 0 0;
-color:#fff;
-cursor:pointer;
-display:table-cell;
-font-size:14px;
-font-weight:bold;
-line-height:20px;
-padding:0 16px 0 52px;
-position:relative;
-text-shadow:0 0 1px #000;
-height:52px;
-vertical-align:middle;
-width:204px;
--webkit-box-sizing:border-box;
--moz-box-sizing:border-box;
--ms-box-sizing:border-box;
-box-sizing:border-box}a.btn_premium:active{background-position:0 -52px;
-color:#fff}.btn_premium[disabled]:active,.btn_premium[disabled]{background-position:0 -104px;
-cursor:default}.btn_premium.small{background-position:0 -156px;
-font-size:13px;
-height:40px;
-padding:0 0 0 30px;
-width:152px}.btn_confirm{background-position:0 -228px}.btn_confirm:hover{background-position:0 -266px}.btn_confirm:hover:before{background-position:0 -38px}.btn_confirm:hover:after{background-position:-23px -38px}.btn_cancel{background-position:0 -304px}.btn.btn_cancel:before{background-position:0 -76px}.btn.btn_cancel:after{background-position:-23px -76px}.btn_cancel:hover{background-position:0 -342px}.btn_cancel:hover:before{background-position:0 -114px}.btn_cancel:hover:after{background-position:-23px -114px}.btn_dark{background-position:0 -532px}.btn.btn_dark:before{background-position:0 -456px}.btn.btn_dark:after{background-position:-23px -456px}.buy_resources .fillup .btn_blue:before,.buy_resources .fillup .btn_blue:after,.buy_resources .fillup .btn_blue[disabled]:hover,.buy_resources .fillup .btn_blue{background-image: url("../Imagenes/Background.jpg");
-background-repeat:repeat-x;
-border:0;
-height:38px}.buy_resources .fillup .btn_blue{color:#fff!important;
-display:table-cell;
-padding:0 5px;
-position:relative;
-vertical-align:middle;
-width:138px}.buy_resources .fillup .btn_wrap{margin:0 0 0 12px;
+text-shadow:none}
+.btn,.btn:before,.btn:after{
+  background-color:#000;
+  background-image: url("../Imagenes/Buttons.png");
+  background-repeat:repeat-x;
+  height:38px;
+}
+.btn{
+  color:#fff;
+  cursor:pointer;
+  display:inline-block;
+  font-size:12px;
+  font-weight:bold;
+  line-height:38px;
+  padding:0 16px;
+  position:relative;
+  text-shadow:0 0 1px #000;
+}
+.btn:before{
+  content:'';
+  display:block;
+  background-position:0 0;
+  left:-2px;
+  position:absolute;
+  top:0;
+  width:17px;
+}
+.btn:after{
+  content:'';
+  display:block;
+  background-position:-23px 0;
+  position:absolute;
+  right:-2px;
+  top:0;
+  width:17px;
+}
+a.btn{
+  color:#fff;
+  text-decoration:none;
+}
+.btn_premium{
+  background:transparent  url("../Imagenes/Buttons.png") no-repeat 0 0;
+  color:#fff;
+  cursor:pointer;
+  display:table-cell;
+  font-size:14px;
+  font-weight:bold;
+  line-height:20px;
+  padding:0 16px 0 52px;
+  position:relative;
+  text-shadow:0 0 1px #000;
+  height:52px;
+  vertical-align:middle;
+  width:204px;
+  -webkit-box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  -ms-box-sizing:border-box;
+  box-sizing:border-box;
+}
+a.btn_premium:active{
+  background-position:0 -52px;
+  color:#fff;
+}
+.btn_premium[disabled]:active,.btn_premium[disabled]{
+  background-position:0 -104px;
+  cursor:default;
+}
+.btn_premium.small{
+  background-position:0 -156px;
+  font-size:13px;
+  height:40px;
+  padding:0 0 0 30px;
+  width:152px;
+}
+.btn_confirm{background-position:0 -228px}
+.btn_confirm:hover{background-position:0 -266px}
+.btn_confirm:hover:before{background-position:0 -38px}
+.btn_confirm:hover:after{background-position:-23px -38px}
+.btn_cancel{background-position:0 -304px}
+.btn.btn_cancel:before{background-position:0 -76px}
+.btn.btn_cancel:after{background-position:-23px -76px}
+.btn_cancel:hover{background-position:0 -342px}
+.btn_cancel:hover:before{background-position:0 -114px}
+.btn_cancel:hover:after{background-position:-23px -114px}
+.btn_dark{background-position:0 -532px}
+.btn.btn_dark:before{background-position:0 -456px}
+.btn.btn_dark:after{background-position:-23px -456px}
+.buy_resources .fillup .btn_blue:before,.buy_resources .fillup .btn_blue:after,.buy_resources .fillup .btn_blue[disabled]:hover,.buy_resources .fillup .btn_blue{
+  background-image: url("../Imagenes/Buttons.png");
+  background-repeat:repeat-x;
+  border:0;
+  height:38px;
+}
+.buy_resources .fillup .btn_blue{
+  color:#fff!important;
+  display:table-cell;
+  padding:0 5px;
+  position:relative;
+  vertical-align:middle;
+  width:138px;
+}
+.buy_resources .fillup .btn_wrap{margin:0 0 0 12px;
 position:relative;
 width:148px}.buy_resources .premium .btn_wrap{margin:0 0 0 10px;
 position:relative;
-width:152px}.buy_resources .fillup .btn_blue{background-position:0 0}.buy_resources .fillup .btn_blue:hover{background-position:0 -38px}.buy_resources .fillup .btn_blue[disabled]:hover,.buy_resources .fillup .btn_blue[disabled]{background-position:0 -76px}.buy_resources .fillup .btn_blue:before{background-position:0 -114px}.buy_resources .fillup .btn_blue:hover:before{background-position:0 -152px}.buy_resources .fillup .btn_blue[disabled]:before{background-position:0 -190px}.buy_resources .fillup .btn_blue:after{background-position:-10px -114px}.buy_resources .fillup .btn_blue:hover:after{background-position:-10px -152px}.buy_resources .fillup .btn_blue[disabled]:after{background-position:-10px -190px}.buy_resources .fillup .btn_premium{color:#fff!important;
-text-align:center}.scroll_to_top{background:#38505f;
+width:152px}
+.buy_resources .fillup .btn_blue{background-position:0 0}
+.buy_resources .fillup .btn_blue:hover{background-position:0 -38px}.buy_resources .fillup .btn_blue[disabled]:hover,.buy_resources .fillup .btn_blue[disabled]{background-position:0 -76px}.buy_resources .fillup .btn_blue:before{background-position:0 -114px}.buy_resources .fillup .btn_blue:hover:before{background-position:0 -152px}.buy_resources .fillup .btn_blue[disabled]:before{background-position:0 -190px}.buy_resources .fillup .btn_blue:after{background-position:-10px -114px}
+.buy_resources .fillup .btn_blue:hover:after{background-position:-10px -152px}.buy_resources .fillup .btn_blue[disabled]:after{background-position:-10px -190px}.buy_resources .fillup .btn_premium{color:#fff!important;
+text-align:center}
+.scroll_to_top{background:#38505f;
 background:-moz-linear-gradient(top,#38505f 0,#1c2830 100%);
 background:-webkit-gradient(linear,left top,left bottom,color-stop(0%,#38505f),color-stop(100%,#1c2830));
 background:-webkit-linear-gradient(top,#38505f 0,#1c2830 100%);
@@ -430,7 +482,7 @@ color:#fff}#feedback .dropdown a{width:150px}
 }.input_replacement{display:inline-block;
 -webkit-appearance:inherit}::-webkit-input-placeholder{color:#666}:-moz-placeholder{color:#666}:focus::-webkit-input-placeholder{color:transparent}:focus::-moz-placeholder{color:transparent}
 input.hideNumberSpin::-webkit-outer-spin-button,input.hideNumberSpin::-webkit-inner-spin-button{-webkit-appearance:none}
-#fleet .content input[type="text"], #fleet .content input[type="number"]{
+#resourceSettings .content input[type="text"], #resourceSettings .content input[type="number"], #fleet .content input[type="text"], #fleet .content input[type="number"]{
   height:17px;
   line-height:17px;
 }
@@ -1203,11 +1255,21 @@ top:7px;
 left:50px}#rechts .planet-koords{font-size:10px}#rechts #norm .planet-name{white-space:nowrap}#rechts .planet-koords{top:22px}#rechts #norm .planet-koords{font-size:11px;
 left:auto;
 position:static;
-top:auto}#rechts a.planetlink .planetPic{border-radius:24px}#rechts #cutty a.planetlink .planetPic{border-radius:15px}#rechts a.moonlink .icon-moon{border-radius:8px}#rechts a.planetlink.active .planetPic{box-shadow:0 0 6px 1px #ff9600,inset 0 0 3px 4px #ff9600}#rechts a.planetlink:hover .planetPic,#rechts a.planetlink:active .planetPic{box-shadow:0 0 6px 1px #9C0,inset 0 0 3px 4px #9C0}#rechts a.moonlink.active .icon-moon{box-shadow:0 0 6px 2px #ff9600,inset 0 0 3px 2px #ff9600}#rechts a.moonlink:hover .icon-moon,#rechts a.moonlink:active .icon-moon{box-shadow:0 0 6px 2px #9C0,inset 0 0 3px 2px #9C0}#officers{height:32px;
+top:auto}
+#rechts a.planetlink .planetPic{border-radius:24px}
+#rechts #cutty a.planetlink .planetPic{border-radius:15px}
+#rechts a.moonlink .icon-moon{border-radius:8px}
+#rechts a.planetlink.active .planetPic{box-shadow:0 0 6px 1px #ff9600,inset 0 0 3px 4px #ff9600}
+#rechts a.planetlink:hover .planetPic,#rechts a.planetlink:active .planetPic{box-shadow:0 0 6px 1px #9C0,inset 0 0 3px 4px #9C0}
+#rechts a.moonlink.active .icon-moon{box-shadow:0 0 6px 2px #ff9600,inset 0 0 3px 2px #ff9600}
+#rechts a.moonlink:hover .icon-moon,#rechts a.moonlink:active .icon-moon{box-shadow:0 0 6px 2px #9C0,inset 0 0 3px 2px #9C0}
+#officers{
+  height:32px;
 left:769px;
 position:absolute;
 text-align:left;
-top:40px}#officers a:link,#officers a:visited,#officers a:hover,#officers a:active{margin-right:0;
+top:40px}
+#officers a:link,#officers a:visited,#officers a:hover,#officers a:active{margin-right:0;
 text-decoration:none;
 display:inline-block;
 height:32px;
@@ -1236,9 +1298,8 @@ width:670px}#fleet #sendfleet{margin:13px auto 10px auto}
   padding:10px 0 0;
   position:relative;
 }
-#fleet #buttonz #selectNaves{
-  height: 256px;
-}
+#fleet #buttonz #selectNaves{height: 256px;}
+#resourceSettings #buttonz #selectNaves{height: 322px;}
 #buttonz .footer,#fleet #sendfleet .footer{
   background: url("../Imagenes/Footer.png") no-repeat;
   bottom:-20px;
@@ -3476,9 +3537,16 @@ font-weight:700}
 #fleet #inhalt h3{color:#6f9fc8;
 margin:6px 0 3px;
 font-weight:700}#fleet #mission{width:640px;
-margin:-37px auto 0 auto}ul.fleetBriefing{margin:12px 0 12px 20px}ul#fleetBriefingPart1_2{margin-left:30px}ul.fleetBriefing{width:290px}#fleet #mission th{color:#6f9fc8;
-font-weight:bold;
-padding:7px 0 5px 10px}#fleet #buttonz{text-align:center}
+margin:-37px auto 0 auto}
+ul.fleetBriefing{margin:12px 0 12px 20px}
+ul#fleetBriefingPart1_2{margin-left:30px}
+ul.fleetBriefing{width:290px}
+#fleet #mission th{
+  color:#6f9fc8;
+  font-weight:bold;
+  padding:7px 0 5px 10px;
+}
+#fleet #buttonz, #resourceSettings #buttonz{text-align:center}
 #fleet #start,#fleet #target,#fleet #roundup,#fleet #sendfleet #resources{
   background:#0d151b  url("../Imagenes/Background.jpg") 0 -1130px repeat-x;
 background:-moz-linear-gradient(top,#0d1014 0,#0d1014 48%,#192026 100%);
@@ -3487,8 +3555,10 @@ background:-webkit-linear-gradient(top,#0d1014 0,#0d1014 48%,#192026 100%);
 background:-o-linear-gradient(top,#0d1014 0,#0d1014 48%,#192026 100%);
 background:-ms-linear-gradient(top,#0d1014 0,#0d1014 48%,#192026 100%);
 background:linear-gradient(top,#0d1014 0,#0d1014 48%,#192026 100%)}
-#fleet #start{width:170px}#fleet #distance{width:115px}
-#fleet #target{width:165px}#fleet #shortcuts{width:190px}
+#fleet #start{width:170px}
+#fleet #distance{width:115px}
+#fleet #target{width:165px}
+#fleet #shortcuts{width:190px}
 #fleet #start a,#fleet #target a{
   display:block;
   float:left;
@@ -3653,26 +3723,30 @@ background-color:#181f26}
   z-index:2;
 }
 body#fleet{overflow:visible}
-#fleet #buttonz #battleships,#fleet #buttonz #spacer,#fleet #buttonz #civilships{
+#resourceSettings #buttonz #battleships,#resourceSettings #buttonz #spacer,#resourceSettings #buttonz #civilships,#fleet #buttonz #battleships,#fleet #buttonz #spacer,#fleet #buttonz #civilships{
   float:left;
   height:246px;
 }
-.h_battleships,.h_civilships,#fleet .h_half_w{display:inline-block}
+.h_battleships,.h_civilships,#fleet .h_half_w,#resourceSettings .h_half_w{display:inline-block}
 .h_battleships{
   background: url("../Imagenes/Shipyard/Shipyard_Hader.gif") 100% 2px no-repeat;
   width:390px;
 }
-.h_civilships{width:275px}#fleet .h_half_w{width:315px}#fleet #buttonz #battleships{width:360px;
-margin-left:10px;
-display:inline}
-#fleet #buttonz #spacer{width:21px}
-#fleet #buttonz #civilships{width:275px}
-#fleet #buttonz ul{
+.h_civilships{width:275px}
+#resourceSettings .h_half_w,#fleet .h_half_w{width:315px}
+#resourceSettings #buttonz #battleships, #fleet #buttonz #battleships{
+  width:360px;
+  margin-left:10px;
+  display:inline;
+}
+#resourceSettings #buttonz #spacer,#fleet #buttonz #spacer{width:21px}
+#resourceSettings #buttonz #civilships,#fleet #buttonz #civilships{width:275px}
+#resourceSettings #buttonz ul,#fleet #buttonz ul{
   position:relative;
   list-style-type:none;
   padding:0;
 }
-#fleet #buttonz #military li, #fleet #buttonz #civil li{
+#resourceSettings #buttonz #military li, #resourceSettings #buttonz #civil li,#fleet #buttonz #military li, #fleet #buttonz #civil li{
   background-repeat:no-repeat;
   height:107px;
   float:left;
@@ -3680,7 +3754,7 @@ display:inline}
   position:relative;
   width:80px;
 }
-#fleet #buttonz .fleetValues[type="text"],#fleet #buttonz .fleetValues[type="number"]{
+#resourceSettings #buttonz .fleetValues[type="text"],#resourceSettings #buttonz .fleetValues[type="number"],#fleet #buttonz .fleetValues[type="text"],#fleet #buttonz .fleetValues[type="number"]{
   left:4px;
   position:absolute;
   text-align:center;
@@ -3704,8 +3778,10 @@ height:28px}
 .shipImage img.tech209{background-position:-196px 0}
 .shipImage img.tech210{background-position:-224px 0}
 .shipImage img.tech211{background-position:-252px 0}
-.shipImage img.tech212{background:transparent  url("../Imagenes/Background.jpg") 0 0 no-repeat;
-background-position:-56px -140px}
+.shipImage img.tech212{
+  background:transparent  url("../Imagenes/Background.jpg") 0 0 no-repeat;
+  background-position:-56px -140px;
+}
 .shipImage img.tech213{background-position:-308px 0}
 .shipImage img.tech214{background-position:-336px 0}
 .shipImage img.tech215{background-position:-364px 0}
@@ -3722,19 +3798,19 @@ background-position:-56px -140px}
 .shipImage img.tech213.off{background-position:-308px -56px}
 .shipImage img.tech214.off{background-position:-336px -56px}
 .shipImage img.tech215.off{background-position:-364px -56px}
-#fleet #buttonz ul li .tooltip,#div_traderScrap .image a,#div_traderScrap div.anythingWindow li div.buildingimg{
+#resourceSettings #buttonz ul li .tooltip,#fleet #buttonz ul li .tooltip,#div_traderScrap .image a,#div_traderScrap div.anythingWindow li div.buildingimg{
   display:block;
   width:80px;
   height:80px;
 }
-#fleet #buttonz ul li a:link,#fleet #buttonz ul li a:visited,#div_traderScrap div.anythingWindow li a:link,#div_traderScrap div.anythingWindow li a:visited{
+#resourceSettings #buttonz ul li a:link,#resourceSettings #buttonz ul li a:visited,#fleet #buttonz ul li a:link,#fleet #buttonz ul li a:visited,#div_traderScrap div.anythingWindow li a:link,#div_traderScrap div.anythingWindow li a:visited{
   background: url("../Imagenes/Select_Footer2.gif") no-repeat;
   color:#ff9600;
   text-decoration:none;
 }
-#fleet #buttonz ul li a:hover,#fleet #buttonz ul li a:focus,#fleet #buttonz ul li a.active,#div_traderScrap div.anythingWindow li a:hover{background: url("../Imagenes/Select_Footer2.gif") no-repeat}
-#fleet #buttonz ul li a:active{background: url("../Imagenes/Select_Footer2.gif") no-repeat}
-#fleet #buttonz ul span.ecke,#rocketattack #number span.ecke{
+#resourceSettings #buttonz ul li a:hover,#resourceSettings #buttonz ul li a:focus,#resourceSettings #buttonz ul li a.active,#fleet #buttonz ul li a:hover,#fleet #buttonz ul li a:focus,#fleet #buttonz ul li a.active,#div_traderScrap div.anythingWindow li a:hover{background: url("../Imagenes/Select_Footer2.gif") no-repeat}
+#resourceSettings #buttonz ul li a:active,#fleet #buttonz ul li a:active{background: url("../Imagenes/Select_Footer2.gif") no-repeat}
+#fleet #buttonz ul span.ecke,#resourceSettings #buttonz ul span.ecke,#rocketattack #number span.ecke{
   position:relative;
   float:left;
   top:65px;
@@ -3742,8 +3818,11 @@ background-position:-56px -140px}
   width:60px;
   text-align:right;
 }
-#fleet #buttonz ul span.level,#rocketattack #number span.level{color:#ff9600;
-font-size:11px}#fleet #buttonz ul span.textlabel{height:1px;
+#resourceSettings #buttonz ul span.level,#fleet #buttonz ul span.level,#rocketattack #number span.level{
+  color:#ff9600;
+  font-size:11px;
+}
+#fleet #buttonz ul span.textlabel{height:1px;
 left:-9999px;
 overflow:hidden;
 position:absolute;
@@ -3755,12 +3834,17 @@ z-index:2}#fleet #allornone .info{color:#848484;
 text-align:right}#fleet .allornonewrap{background:#13181d;
 border:1px solid #030303;
 padding:15px 7px;
-width:623px}#fleet .allornonewrap .secondcol,#div_traderScrap .allornonewrap{background:#13181d;
+width:623px}
+#fleet .allornonewrap .secondcol,#div_traderScrap .allornonewrap{
+  background:#13181d;
 display:inline;
 margin-right:13px;
 padding:5px 10px;
 border:1px solid #030303;
-width:78px}#fleet #allornone img{vertical-align:middle}#fleet #sendfleet #options,#fleet #sendfleet #resources{
+width:78px;
+}
+#fleet #allornone img{vertical-align:middle}
+#fleet #sendfleet #options,#fleet #sendfleet #resources{
   float:left;
 height:165px;
 width:305px;
@@ -3833,7 +3917,7 @@ padding:0 2px}
   padding-bottom:5px;
 }
 #fleet #sendfleet #summary .order,#fleet #sendfleet #summary .destination{color:#fff}
-#fleet a#start:link,#fleet a#start:visited,#fleet a#start:hover,#fleet a#start:active{
+#resourceSettings a#start:link,#resourceSettings a#start:visited,#resourceSettings a#start:hover,#resourceSettings a#start:active,#fleet a#start:link,#fleet a#start:visited,#fleet a#start:hover,#fleet a#start:active{
   display:block;
   cursor:pointer;
   width:276px;
@@ -3844,8 +3928,15 @@ padding:0 2px}
   font-weight:bold;
   margin: auto;
 }
+#resourceSettings a#start:link,#resourceSettings a#start:visited,#resourceSettings a#start:hover,#resourceSettings a#start:active{
+  background: url("../Imagenes/CuanticJump.jpg") no-repeat 0 -56px;
+  width:100%;
+  height:56px;
+}
 #fleet a#start:hover{background: url("../Imagenes/SendFleet.jpg") no-repeat}
-#fleet a#start.off:link,#fleet a#start.off:visited,#fleet a#start.off:hover,#fleet a#start.off:active{background: url("../Imagenes/Background.jpg") 0 -112px no-repeat}
+#resourceSettings a#start:hover{background: url("../Imagenes/CuanticJump.jpg") no-repeat}
+#fleet a#start.off:link,#fleet a#start.off:visited,#fleet a#start.off:hover,#fleet a#start.off:active{background: url("../Imagenes/SendFleet.jpg") 0 -112px no-repeat}
+#resourceSettings a#start.off:link,#resourceSettings a#start.off:visited,#resourceSettings a#start.off:hover,#resourceSettings a#start.off:active{background: url("../Imagenes/CuanticJump.jpg") 0 -112px no-repeat}
 #fleet #roundup{
   padding-top: 30px;
   float:left;
@@ -3943,26 +4034,32 @@ margin:1px auto}
 #fleet #warning p img,#fleet #warning p img,#movement #warning p img{vertical-align:top;
 padding-right:5px}
 #fleet .icon_warning{margin:0 0 -3px 0}
-#fleet #buttonz ul{
+#resourceSettings #buttonz ul,#fleet #buttonz ul{
   list-style-type:square;
   color:#848484;
   float:left;
   display:inline;
   text-align:left;
 }
-#fleet #buttonz ul li{
+#resourceSettings #buttonz ul li,#fleet #buttonz ul li{
   color:#6f9fc8;
   font:700 11px/15px Verdana,Arial,Helvetica,sans-serif;
   list-style-type: none;
 }
-#fleet #buttonz ul li span{color:#6f9fc8;
-font-weight:100}#fleet #buttonz ul li span.value{float:right}#fleet a#continue.on:link,#fleet a#continue.off:link{margin:0;
-padding:0;
-height:38px;
-width:104px;
-float:right;
-position:static;
-display:inline}
+#resourceSettings #buttonz ul li span,#fleet #buttonz ul li span{
+  color:#6f9fc8;
+  font-weight:100;
+}
+#resourceSettings #buttonz ul li span.value,#fleet #buttonz ul li span.value{float:right}
+#fleet a#continue.on:link,#fleet a#continue.off:link{
+  margin:0;
+  padding:0;
+  height:38px;
+  width:104px;
+  float:right;
+  position:static;
+  display:inline;
+}
 #fleetTemplatesEdit .fleet_tpl_name{display:inline-block;
 min-height:30px;
 padding:5px;
@@ -4590,12 +4687,15 @@ z-index:3;
   width:60px;
   text-align:right;
 }
-#shipyard #buttonz .eckeoben{top:0}#shipyard #buttonz .textlabel{height:1px;
-left:-9999px;
-overflow:hidden;
-position:absolute;
-width:1px}
-#fleet #buttonz div.buildingimg{max-height:80px}
+#shipyard #buttonz .eckeoben{top:0}
+#shipyard #buttonz .textlabel{
+  height:1px;
+  left:-9999px;
+  overflow:hidden;
+  position:absolute;
+  width:1px;
+}
+#resourceSettings #buttonz div.buildingimg,#fleet #buttonz div.buildingimg{max-height:80px}
 .ship_list_28 .buildingimg{
   background-image: url("../Imagenes/Shipyard/Spacecraft.png");
   background-repeat:no-repeat;
@@ -4636,59 +4736,60 @@ width:1px}
 .ship_list_28 .military215.off{background-position:-364px -56px}
 .ship_list_28 .civil212{background-position:-280px 0}
 .ship_list_28 .civil212.off{background-position:-280px -56px}
-.ship_list_80 .buildingimg,#shipyard .buildingimg,#div_traderScrap ul.ships .buildingimg,#fleet #buttonz div.buildingimg,div.techWrapper div.techImage.ship a,div.techtree ul.neededFor div.techImage.ship a{
+.ship_list_80 .buildingimg,#shipyard .buildingimg,#div_traderScrap ul.ships .buildingimg,#resourceSettings #buttonz div.buildingimg,#fleet #buttonz div.buildingimg,div.techWrapper div.techImage.ship a,div.techtree ul.neededFor div.techImage.ship a{
   background-image: url("../Imagenes/Shipyard/Spacecraft.png");
   background-repeat:no-repeat;
 }
 div.techImage.ship.tech202.built a{background-position:-2px -2px}
 div.techImage.ship.tech202.notBuilt a{background-position:-2px -162px}
-.ship_list_80 .civil202,#shipyard .civil202 .buildingimg,#div_traderScrap #button202 .buildingimg,#fleet #buttonz ul#civil li#button202 div.buildingimg{background-position:0 0}
-#shipyard .disabled .civil202 .buildingimg,#fleet #buttonz ul#civil li#button202.disabled div.buildingimg{background-position:0 -80px}
-.ship_list_80 .civil202.off,#shipyard .off .civil202 .buildingimg,#div_traderScrap .off#button202 .buildingimg,#fleet #buttonz ul#civil li#button202.off div.buildingimg{background-position:0 -160px}
+.ship_list_80 .civil202,#shipyard .civil202 .buildingimg,#div_traderScrap #button202 .buildingimg,#fleet #buttonz ul#civil li#button202 div.buildingimg,#resourceSettings #buttonz ul#civil li#button202 div.buildingimg{background-position:0 0}
+#shipyard .disabled .civil202 .buildingimg,#fleet #buttonz ul#civil li#button202.disabled div.buildingimg,#resourceSettings #buttonz ul#civil li#button202.disabled div.buildingimg{background-position:0 -80px}
+.ship_list_80 .civil202.off,#shipyard .off .civil202 .buildingimg,#div_traderScrap .off#button202 .buildingimg,#fleet #buttonz ul#civil li#button202.off div.buildingimg,#resourceSettings #buttonz ul#civil li#button202.off div.buildingimg{background-position:0 -160px}
 div.techImage.ship.tech203.built a{background-position:-82px -2px}
 div.techImage.ship.tech203.notBuilt a{background-position:-82px -162px}
-.ship_list_80 .civil203,#shipyard .civil203 .buildingimg,#div_traderScrap #button203 .buildingimg,#fleet #buttonz ul#civil li#button203 div.buildingimg{background-position:-80px 0}
-#shipyard .disabled .civil203 .buildingimg,#fleet #buttonz ul#civil li#button203.disabled div.buildingimg{background-position:-80px -80px}
-.ship_list_80 .civil203.off,#shipyard .off .civil203 .buildingimg,#div_traderScrap .off#button203 .buildingimg,#fleet #buttonz ul#civil li#button203.off div.buildingimg{background-position:-80px -160px}
+.ship_list_80 .civil203,#shipyard .civil203 .buildingimg,#div_traderScrap #button203 .buildingimg,#fleet #buttonz ul#civil li#button203 div.buildingimg,#resourceSettings #buttonz ul#civil li#button203 div.buildingimg{background-position:-80px 0}
+#shipyard .disabled .civil203 .buildingimg,#fleet #buttonz ul#civil li#button203.disabled div.buildingimg,#resourceSettings #buttonz ul#civil li#button203.disabled div.buildingimg{background-position:-80px -80px}
+.ship_list_80 .civil203.off,#shipyard .off .civil203 .buildingimg,#div_traderScrap .off#button203 .buildingimg,#fleet #buttonz ul#civil li#button203.off div.buildingimg,#resourceSettings #buttonz ul#civil li#button203.off div.buildingimg{background-position:-80px -160px}
 div.techImage.ship.tech204.built a{background-position:-162px -2px}
 div.techImage.ship.tech204.notBuilt a{background-position:-162px -162px}
-.ship_list_80 .military204,#shipyard .military204 .buildingimg,#div_traderScrap #button204 .buildingimg,#fleet #buttonz ul#military li#button204 div.buildingimg{background-position:-160px 0}
-#shipyard .disabled .military204 .buildingimg,#fleet #buttonz ul#military li#button204.disabled div.buildingimg{background-position:-160px -80px}
-.ship_list_80 .military204.off,#shipyard .off .military204 .buildingimg,#div_traderScrap .off#button204 .buildingimg,#fleet #buttonz ul#military li#button204.off div.buildingimg{background-position:-160px -160px}
+.ship_list_80 .military204,#shipyard .military204 .buildingimg,#div_traderScrap #button204 .buildingimg,#fleet #buttonz ul#military li#button204 div.buildingimg,#resourceSettings #buttonz ul#military li#button204 div.buildingimg{background-position:-160px 0}
+#shipyard .disabled .military204 .buildingimg,#fleet #buttonz ul#military li#button204.disabled div.buildingimg,#resourceSettings #buttonz ul#military li#button204.disabled div.buildingimg{background-position:-160px -80px}
+.ship_list_80 .military204.off,#shipyard .off .military204 .buildingimg,#div_traderScrap .off#button204 .buildingimg,#fleet #buttonz ul#military li#button204.off div.buildingimg,#resourceSettings #buttonz ul#military li#button204.off div.buildingimg{background-position:-160px -160px}
 div.techImage.ship.tech205.built a{background-position:-242px -2px}
 div.techImage.ship.tech205.notBuilt a{background-position:-242px -162px}
-.ship_list_80 .military205,#shipyard .military205 .buildingimg,#div_traderScrap #button205 .buildingimg,#fleet #buttonz ul#military li#button205 div.buildingimg{background-position:-240px 0}
-#shipyard .disabled .military205 .buildingimg,#fleet #buttonz ul#military li#button205.disabled div.buildingimg{background-position:-240px -80px}
-.ship_list_80 .military205.off,#shipyard .off .military205 .buildingimg,#div_traderScrap .off#button205 .buildingimg,#fleet #buttonz ul#military li#button205.off div.buildingimg{background-position:-240px -160px}
+.ship_list_80 .military205,#shipyard .military205 .buildingimg,#div_traderScrap #button205 .buildingimg,#fleet #buttonz ul#military li#button205 div.buildingimg,#resourceSettings #buttonz ul#military li#button205 div.buildingimg{background-position:-240px 0}
+#shipyard .disabled .military205 .buildingimg,#fleet #buttonz ul#military li#button205.disabled div.buildingimg,#resourceSettings #buttonz ul#military li#button205.disabled div.buildingimg{background-position:-240px -80px}
+.ship_list_80 .military205.off,#shipyard .off .military205 .buildingimg,#div_traderScrap .off#button205 .buildingimg,#fleet #buttonz ul#military li#button205.off div.buildingimg,#resourceSettings #buttonz ul#military li#button205.off div.buildingimg{background-position:-240px -160px}
 div.techImage.ship.tech206.built a{background-position:-322px -2px}
 div.techImage.ship.tech206.notBuilt a{background-position:-322px -162px}
-.ship_list_80 .military206,#shipyard .military206 .buildingimg,#div_traderScrap #button206 .buildingimg,#fleet #buttonz ul#military li#button206 div.buildingimg{background-position:-320px 0}
-#shipyard .disabled .military206 .buildingimg,#fleet #buttonz ul#military li#button206.disabled div.buildingimg{background-position:-320px -80px}
-.ship_list_80 .military206.off,#shipyard .off .military206 .buildingimg,#div_traderScrap .off#button206 .buildingimg,#fleet #buttonz ul#military li#button206.off div.buildingimg{background-position:-320px -160px}
+.ship_list_80 .military206,#shipyard .military206 .buildingimg,#div_traderScrap #button206 .buildingimg,#fleet #buttonz ul#military li#button206 div.buildingimg,#resourceSettings #buttonz ul#military li#button206 div.buildingimg{background-position:-320px 0}
+#shipyard .disabled .military206 .buildingimg,#fleet #buttonz ul#military li#button206.disabled div.buildingimg,#resourceSettings #buttonz ul#military li#button206.disabled div.buildingimg{background-position:-320px -80px}
+.ship_list_80 .military206.off,#shipyard .off .military206 .buildingimg,#div_traderScrap .off#button206 .buildingimg,#fleet #buttonz ul#military li#button206.off div.buildingimg,#resourceSettings #buttonz ul#military li#button206.off div.buildingimg{background-position:-320px -160px}
 div.techImage.ship.tech207.built a{background-position:-402px -2px}
 div.techImage.ship.tech207.notBuilt a{background-position:-402px -162px}
-.ship_list_80 .military207,#shipyard .military207 .buildingimg,#div_traderScrap #button207 .buildingimg,#fleet #buttonz ul#military li#button207 div.buildingimg{background-position:-400px 0}
-#shipyard .disabled .military207 .buildingimg,#fleet #buttonz ul#military li#button207.disabled div.buildingimg{background-position:-400px -80px}
-.ship_list_80 .military207.off,#shipyard .off .military207 .buildingimg,#div_traderScrap .off#button207 .buildingimg,#fleet #buttonz ul#military li#button207.off div.buildingimg{background-position:-400px -160px}
+.ship_list_80 .military207,#shipyard .military207 .buildingimg,#div_traderScrap #button207 .buildingimg,#fleet #buttonz ul#military li#button207 div.buildingimg,#resourceSettings #buttonz ul#military li#button207 div.buildingimg{background-position:-400px 0}
+#shipyard .disabled .military207 .buildingimg,#fleet #buttonz ul#military li#button207.disabled div.buildingimg,#resourceSettings #buttonz ul#military li#button207.disabled div.buildingimg{background-position:-400px -80px}
+.ship_list_80 .military207.off,#shipyard .off .military207 .buildingimg,#div_traderScrap .off#button207 .buildingimg,#fleet #buttonz ul#military li#button207.off div.buildingimg,#resourceSettings #buttonz ul#military li#button207.off div.buildingimg{background-position:-400px -160px}
 div.techImage.ship.tech208.built a{background-position:-482px -2px}
 div.techImage.ship.tech208.notBuilt a{background-position:-482px -162px}
-.ship_list_80 .civil208,#shipyard .civil208 .buildingimg,#div_traderScrap #button208 .buildingimg,#fleet #buttonz ul#civil li#button208 div.buildingimg{background-position:-480px 0}
-#shipyard .disabled .civil208 .buildingimg,#fleet #buttonz ul#civil li#button208.disabled div.buildingimg{background-position:-480px -80px}
-.ship_list_80 .civil208.off,#shipyard .off .civil208 .buildingimg,#div_traderScrap .off#button208 .buildingimg,#fleet #buttonz ul#civil li#button208.off div.buildingimg{background-position:-480px -160px}
+.ship_list_80 .civil208,#shipyard .civil208 .buildingimg,#div_traderScrap #button208 .buildingimg,#fleet #buttonz ul#civil li#button208 div.buildingimg,#resourceSettings #buttonz ul#civil li#button208 div.buildingimg{background-position:-480px 0}
+#shipyard .disabled .civil208 .buildingimg,#fleet #buttonz ul#civil li#button208.disabled div.buildingimg,#resourceSettings #buttonz ul#civil li#button208.disabled div.buildingimg{background-position:-480px -80px}
+.ship_list_80 .civil208.off,#shipyard .off .civil208 .buildingimg,#div_traderScrap .off#button208 .buildingimg,#fleet #buttonz ul#civil li#button208.off div.buildingimg,#resourceSettings #buttonz ul#civil li#button208.off div.buildingimg{background-position:-480px -160px}
 div.techImage.ship.tech209.built a{background-position:-562px -2px}
 div.techImage.ship.tech209.notBuilt a{background-position:-562px -162px}
-.ship_list_80 .civil209,#shipyard .civil209 .buildingimg,#div_traderScrap #button209 .buildingimg,#fleet #buttonz ul#civil li#button209 div.buildingimg{background-position:-560px 0}
-#shipyard .disabled .civil209 .buildingimg,#fleet #buttonz ul#civil li#button209.disabled div.buildingimg{background-position:-560px -80px}.ship_list_80 .civil209.off,#shipyard .off .civil209 .buildingimg,#div_traderScrap .off#button209 .buildingimg,#fleet #buttonz ul#civil li#button209.off div.buildingimg{background-position:-560px -160px}
+.ship_list_80 .civil209,#shipyard .civil209 .buildingimg,#div_traderScrap #button209 .buildingimg,#fleet #buttonz ul#civil li#button209 div.buildingimg,#resourceSettings #buttonz ul#civil li#button209 div.buildingimg{background-position:-560px 0}
+#shipyard .disabled .civil209 .buildingimg,#fleet #buttonz ul#civil li#button209.disabled div.buildingimg,#resourceSettings #buttonz ul#civil li#button209.disabled div.buildingimg{background-position:-560px -80px}
+.ship_list_80 .civil209.off,#shipyard .off .civil209 .buildingimg,#div_traderScrap .off#button209 .buildingimg,#fleet #buttonz ul#civil li#button209.off div.buildingimg,#resourceSettings #buttonz ul#civil li#button209.off div.buildingimg{background-position:-560px -160px}
 div.techImage.ship.tech210.built a{background-position:-642px -2px}
 div.techImage.ship.tech210.notBuilt a{background-position:-642px -162px}
-.ship_list_80 .civil210,#shipyard .civil210 .buildingimg,#div_traderScrap #button210 .buildingimg,#fleet #buttonz ul#civil li#button210 div.buildingimg{background-position:-640px 0}
-#shipyard .disabled .civil210 .buildingimg,#fleet #buttonz ul#civil li#button210.disabled div.buildingimg{background-position:-640px -80px}
-.ship_list_80 .civil210.off,#shipyard .off .civil210 .buildingimg,#div_traderScrap .off#button210 .buildingimg,#fleet #buttonz ul#civil li#button210.off div.buildingimg{background-position:-640px -160px}
+.ship_list_80 .civil210,#shipyard .civil210 .buildingimg,#div_traderScrap #button210 .buildingimg,#fleet #buttonz ul#civil li#button210 div.buildingimg,#resourceSettings #buttonz ul#civil li#button210 div.buildingimg{background-position:-640px 0}
+#shipyard .disabled .civil210 .buildingimg,#fleet #buttonz ul#civil li#button210.disabled div.buildingimg,#resourceSettings #buttonz ul#civil li#button210.disabled div.buildingimg{background-position:-640px -80px}
+.ship_list_80 .civil210.off,#shipyard .off .civil210 .buildingimg,#div_traderScrap .off#button210 .buildingimg,#fleet #buttonz ul#civil li#button210.off div.buildingimg,#resourceSettings #buttonz ul#civil li#button210.off div.buildingimg{background-position:-640px -160px}
 div.techImage.ship.tech211.built a{background-position:-722px -2px}
 div.techImage.ship.tech211.notBuilt a{background-position:-722px -162px}
-.ship_list_80 .military211,#shipyard .military211 .buildingimg,#div_traderScrap #button211 .buildingimg,#fleet #buttonz ul#military li#button211 div.buildingimg{background-position:-720px 0}
-#shipyard .disabled .military211 .buildingimg,#fleet #buttonz ul#military li#button211.disabled div.buildingimg{background-position:-720px -80px}
-.ship_list_80 .military211.off,#shipyard .off .military211 .buildingimg,#div_traderScrap .off#button211 .buildingimg,#fleet #buttonz ul#military li#button211.off div.buildingimg{background-position:-720px -160px}
+.ship_list_80 .military211,#shipyard .military211 .buildingimg,#div_traderScrap #button211 .buildingimg,#resourceSettings #buttonz ul#military li#button211 div.buildingimg,#fleet #buttonz ul#military li#button211 div.buildingimg{background-position:-720px 0}
+#shipyard .disabled .military211 .buildingimg,#fleet #buttonz ul#military li#button211.disabled div.buildingimg,#resourceSettings #buttonz ul#military li#button211.disabled div.buildingimg{background-position:-720px -80px}
+.ship_list_80 .military211.off,#shipyard .off .military211 .buildingimg,#div_traderScrap .off#button211 .buildingimg,#fleet #buttonz ul#military li#button211.off div.buildingimg,#resourceSettings #buttonz ul#military li#button211.off div.buildingimg{background-position:-720px -160px}
 div.techImage.ship.tech212.built a{
   background-image: url("../Imagenes/Background.jpg");
   background-position:-802px -2px;
@@ -4702,19 +4803,19 @@ div.techImage.ship.tech212.notBuilt a{
 .ship_list_80 .civil212.off,#div_traderScrap .off#button212 .buildingimg,#shipyard .off .civil212 .buildingimg{background-position:-800px -160px}
 div.techImage.ship.tech213.built a{background-position:-882px -2px}
 div.techImage.ship.tech213.notBuilt a{background-position:-882px -162px}
-.ship_list_80 .military213,#shipyard .military213 .buildingimg,#div_traderScrap #button213 .buildingimg,#fleet #buttonz ul#military li#button213 div.buildingimg{background-position:-880px 0}
-#shipyard .disabled .military213 .buildingimg,#fleet #buttonz ul#military li#button213.disabled div.buildingimg{background-position:-880px -80px}
-.ship_list_80 .military213.off,#shipyard .off .military213 .buildingimg,#div_traderScrap .off#button213 .buildingimg,#fleet #buttonz ul#military li#button213.off div.buildingimg{background-position:-880px -160px}
+.ship_list_80 .military213,#shipyard .military213 .buildingimg,#div_traderScrap #button213 .buildingimg,#fleet #buttonz ul#military li#button213 div.buildingimg,#resourceSettings #buttonz ul#military li#button213 div.buildingimg{background-position:-880px 0}
+#shipyard .disabled .military213 .buildingimg,#fleet #buttonz ul#military li#button213.disabled div.buildingimg,#resourceSettings #buttonz ul#military li#button213.disabled div.buildingimg{background-position:-880px -80px}
+.ship_list_80 .military213.off,#shipyard .off .military213 .buildingimg,#div_traderScrap .off#button213 .buildingimg,#fleet #buttonz ul#military li#button213.off div.buildingimg,#resourceSettings #buttonz ul#military li#button213.off div.buildingimg{background-position:-880px -160px}
 div.techImage.ship.tech214.built a{background-position:-962px -2px}
 div.techImage.ship.tech214.notBuilt a{background-position:-962px -162px}
-.ship_list_80 .military214,#shipyard .military214 .buildingimg,#div_traderScrap #button214 .buildingimg,#fleet #buttonz ul#military li#button214 div.buildingimg{background-position:-960px 0}
-#shipyard .disabled .military214 .buildingimg,#fleet #buttonz ul#military li#button214.disabled div.buildingimg{background-position:-960px -80px}
-.ship_list_80 .military214.off,#shipyard .off .military214 .buildingimg,#div_traderScrap .off#button214 .buildingimg,#fleet #buttonz ul#military li#button214.off div.buildingimg{background-position:-960px -160px}
+.ship_list_80 .military214,#shipyard .military214 .buildingimg,#div_traderScrap #button214 .buildingimg,#fleet #buttonz ul#military li#button214 div.buildingimg,#resourceSettings #buttonz ul#military li#button214 div.buildingimg{background-position:-960px 0}
+#shipyard .disabled .military214 .buildingimg,#fleet #buttonz ul#military li#button214.disabled div.buildingimg,#resourceSettings #buttonz ul#military li#button214.disabled div.buildingimg{background-position:-960px -80px}
+.ship_list_80 .military214.off,#shipyard .off .military214 .buildingimg,#div_traderScrap .off#button214 .buildingimg,#fleet #buttonz ul#military li#button214.off div.buildingimg,#resourceSettings #buttonz ul#military li#button214.off div.buildingimg{background-position:-960px -160px}
 div.techImage.ship.tech215.built a{background-position:-1042px -2px}
 div.techImage.ship.tech215.notBuilt a{background-position:-1042px -162px}
-.ship_list_80 .military215,#shipyard .military215 .buildingimg,#div_traderScrap #button215 .buildingimg,#fleet #buttonz ul#military li#button215 div.buildingimg{background-position:-1040px 0}
-#shipyard .disabled .military215 .buildingimg,#fleet #buttonz ul#military li#button215.disabled div.buildingimg{background-position:-1040px -80px}
-.ship_list_80 .military215.off,#shipyard .off .military215 .buildingimg,#div_traderScrap .off#button215 .buildingimg,#fleet #buttonz ul#military li#button215.off div.buildingimg{background-position:-1040px -160px}
+.ship_list_80 .military215,#shipyard .military215 .buildingimg,#div_traderScrap #button215 .buildingimg,#fleet #buttonz ul#military li#button215 div.buildingimg,#resourceSettings #buttonz ul#military li#button215 div.buildingimg{background-position:-1040px 0}
+#shipyard .disabled .military215 .buildingimg,#fleet #buttonz ul#military li#button215.disabled div.buildingimg,#resourceSettings #buttonz ul#military li#button215.disabled div.buildingimg{background-position:-1040px -80px}
+.ship_list_80 .military215.off,#shipyard .off .military215 .buildingimg,#div_traderScrap .off#button215 .buildingimg,#fleet #buttonz ul#military li#button215.off div.buildingimg,#resourceSettings #buttonz ul#military li#button215.off div.buildingimg{background-position:-1040px -160px}
 #shipyard .detail_screen div.pic{
   float:left;
   height:200px;
@@ -6512,4 +6613,107 @@ tr.alt td {
   background-size: cover;
   background-repeat: no-repeat;
   border-radius: 4px;
+}
+#resourceSettings #cuanticDiv{
+  width: 90%;
+  height: 80px;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+#resourceSettings #cuanticDiv #moonSelecter{
+  box-sizing: border-box;
+  width: 30%;
+  height: 80%;
+  margin: auto;
+  padding-top: 16px;
+}
+#resourceSettings #cuanticDiv #cuanticTime{
+  box-sizing: border-box;
+  width: 30%;
+  height: 80%;
+  padding-top: 12px;
+  margin: auto;
+  font-weight: 700;
+}
+#resourceSettings #cuanticDiv #cuanticTime span{
+  font-weight: 500;
+}
+#resourceSettings #cuanticDiv #cuanticButton{
+  width: 30%;
+  height: 80%;
+  margin: auto;
+}
+#resourceSettings #cuanticDiv #cuanticButton a span{
+  display: block;
+  padding: 14px 28px 0 0;
+}
+.buy_resources .resource_box,.buy_resources .resource_capacity{
+    background-image: url("../Imagenes/Marketplace.png");
+    background-repeat: no-repeat;
+}
+.buy_resources .resource_img{
+  background-image: url("../Imagenes/Resources.png");
+  background-repeat: no-repeat;
+  height: 74px;
+  margin: 3px 8px;
+  width: 76px;
+}
+.buy_resources .resource_capacity {
+    background-position: -92px 0;
+    height: 44px;
+    padding: 0 16px;
+    width: 492px;
+    display: flex;
+}
+.buy_resources .fill_resource_ctn {margin: 0 0 0 92px;}
+.clearfix {display: block;}
+.buy_resources .capacity_txt {
+    color: #6f9fc8;
+    font-weight: bold;
+    line-height: 24px;
+    width: 100%;
+}
+.buy_resources .current_stock {
+    float: right;
+    line-height: 14px;
+    width: 155px;
+}
+.buy_resources .resource_box {
+    background-position: 0 0;
+    float: left;
+    height: 99px;
+    width: 92px;
+}
+.buy_resources .fill_resource {padding: 0 0 27px 2px;}
+.buy_resources .resource_name{
+    margin: 0 8px;
+    text-align: center;
+}
+.buy_resources .resource_img.metal {background-position: -2px -2px;}
+.buy_resources .resource_img.crystal {background-position: -82px -2px;}
+.buy_resources .resource_img.deuterium {background-position: -162px -2px;}
+#resourceSettings .resource_box {color: #848484;}
+.buy_resources{padding-left: 24px !important;}
+.buy_resources .marketLavel{
+  margin: 0 20px;
+  color: #6f9fc8;
+  font: 700 12px/28px Verdana,Arial,Helvetica,sans-serif;
+}
+.buy_resources .marketInput{
+  margin-top: 6px;
+  top: 85px;
+  width: 100px;
+}
+.buy_resources .btn{
+  box-sizing: border-box;
+  top: 50px;
+  right: 250px;
+  width: 102px;
+  min-width: 102px;
+  margin: 0 22px;
+  background-position-y: -240px;
+  font-weight: normal;
+  overflow-x: visible;
 }

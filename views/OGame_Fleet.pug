@@ -158,11 +158,11 @@ block content
               th
             tr
               td#start.border5px
-                .planetname #{basic.planets[basic.numPlanet].name}
+                .planetname #{(basic.moon) ? basic.planets[basic.numPlanet].moon.name : basic.planets[basic.numPlanet].name}
                 .target
-                  a.planet_source_selected
+                  a(class= ((basic.moon) ? "planet_source" : "planet_source_selected"))
                     span.textlabel Planet
-                  a.moon_source
+                  a(class= ((basic.moon) ? "moon_source_selected" : "moon_source"))
                     span.textlabel Moon
                   br.clearfloat
                 .coords

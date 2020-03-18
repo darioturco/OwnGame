@@ -179,6 +179,7 @@ var exp = {
       type: typePlanet.type,
       color: typePlanet.color,
       temperature: typePlanet.temperature,
+      temperatureNormal: typePlanet.temperature,
       camposMax: typePlanet.campos,
       campos: 0,
       buildingConstrucction: false,
@@ -203,6 +204,7 @@ var exp = {
       resources: {metal: 0, crystal: 0, deuterium: 0, energy: 0},
       buildingConstrucction: false,
       buildings: {lunarBase: 0, phalanx: 0, spaceDock: 0, marketplace: 0, lunarSunshade: 0, lunarBeam: 0, jumpGate: 0, moonShield: 0},
+      values: {sunshade: 10, beam: 10},
       fleet: {lightFighter: 0, heavyFighter: 0, cruiser: 0, battleship: 0, battlecruiser: 0, bomber: 0, destroyer: 0, deathstar: 0, smallCargo: 0, largeCargo: 0, colony: 0, recycler: 0, espionageProbe: 0, solarSatellite: 0}
     }
   },
@@ -354,6 +356,19 @@ var exp = {
       storage: {metal: 5000*Math.floor(2.5*Math.pow(Math.E, 0.61*minas.metalStorage)), crystal: 5000*Math.floor(2.5*Math.pow(Math.E, 0.61*minas.crystalStorage)),deuterium: 5000*Math.floor(2.5*Math.pow(Math.E, 0.61*minas.deuteriumStorage))},
       plasma: this.player.research.plasma}
   },
+  moonSetting: function (planet) {
+    cuanticMoonsCordAux = [];
+    for(let i = 0 ; i<this.player.planets.length ; i++){
+      if(this.player.planets[i].moon.active && this.player.planets[i].moon.buildings.jumpGate > 0) cuanticMoonsCordAux.push({name: this.player.planets[planet].moon.name, cord: this.player.planets[planet].coordinates, num: i});
+    }
+    return {buildings: this.player.planets[planet].moon.buildings,
+      values: {sunshade: this.player.planets[planet].moon.values.sunshade, beam: this.player.planets[planet].moon.values.beam},//cambiar por los valores guardados
+      fleets: this.player.planets[planet].moon.fleet,
+      cuanticTime: (this.player.planets[planet].moon.buildings.jumpGate == 0) ? 'Infinity' : 100,//this.player.planets[planet].moon.cuanticTime //cambiar para que calcule cuanto falta para poder usar el salto cuantico
+      cuanticMoonsCord: cuanticMoonsCordAux,
+      campos: {campos: this.player.planets[planet].moon.campos, camposMax: this.player.planets[planet].moon.camposMax}
+    };
+  },
   overviewActualInfo: function (planet) {
     let camMax = (this.moon) ? this.player.planets[planet].moon.camposMax : this.player.planets[planet].camposMax;
     let cam = (this.moon) ? this.player.planets[planet].moon.campos : this.player.planets[planet].campos;
@@ -482,10 +497,10 @@ var exp = {
             doing: this.player.planets[planet].shipConstrucction
     };
   },
-  fleetInfo: function(planet){
-    return {fleets: this.player.planets[planet].fleet,
+  fleetInfo: function(planet, moon){
+    return {fleets: (moon) ? this.player.planets[planet].moon.fleet : this.player.planets[planet].fleet,
             speed: this.getListSpeed(),
-            misil: this.player.planets[planet].defense.interplanetaryMissile,
+            misil: (moon) ? 0 : this.player.planets[planet].defense.interplanetaryMissile,
             expeditions: 0, //es la cantidad de expediciones realizadas en ese momento
             maxExpeditions: Math.floor(Math.sqrt(this.player.research.astrophysics)),
             slot: 0, //es la cantidad de flotas volando (Cambiar)
@@ -792,6 +807,7 @@ var exp = {
     return Math.floor(60*recursos/divisor);
   },
   updateResourcesData: function(f, planet, obj = null) { //updatea los multiplicadores de los recursos(NO toca los recursos)
+    console.log(obj);
     let objSet = {};
     let spd = this.universo.speed;
     let plasma = this.player.research.plasma;
@@ -821,6 +837,18 @@ var exp = {
         f();
       });
     }
+  },
+  updateResourcesDataMoon: function(f, planet, obj = null){
+    if(obj != null){
+      obj.sunshade = parseInt(obj.sunshade);
+      obj.beam = parseInt(obj.beam);
+      newTemperature = {max: Math.floor(this.player.planets[planet].temperatureNormal.max+this.player.planets[planet].moon.buildings.lunarBeam*4*obj.beam/10-this.player.planets[planet].moon.buildings.sunshade*4*obj.sunshade/10), min: Math.floor(this.player.planets[planet].temperatureNormal.min+this.player.planets[planet].moon.buildings.lunarBeam*4*obj.beam/10-this.player.planets[planet].moon.buildings.sunshade*4*obj.sunshade/10)}
+      //recalcular minas del planeta
+      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({planets :{$elemMatch: {coordinates: {galaxy: this.player.planets[planet].coordinates.galaxy, system: this.player.planets[planet].coordinates.system, pos: this.player.planets[planet].coordinates.pos}}}}, {$set: {'planets.$.temperature': newTemperature, 'planets.$.moon.values': obj, 'planets.$.resourcesAdd': objSet.resourcesAdd}}, () => {
+        f();
+      });
+    }
+    f();// borrar
   },
   addFleetMovement: function(player, planet, moon, obj, res){
     // Falta terminar la funcion
