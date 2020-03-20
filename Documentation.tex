@@ -1,0 +1,263 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[legalpaper, margin=0.8in]{geometry}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+\newcommand\negtab[1][-1cm]{\hspace*{#1}}
+
+\title{OwnGame}
+\author{Dario Turco}
+\date{18 March 2020}
+
+\begin{document}
+\section{Proyecto}
+    \subsection{Infonmacion}
+        \subsubsection{Objetivo}
+        El objetivo del projecto es crear una copia local del ogame, en la que se uno pueda crear su propio universo configurable, y progrmar los bots que pueblen en universo. Ademas algunas reglas fueron modificadas con el objetivo de hacer el juego mas dinamico y variado.
+        \subsubsection{Cambios}
+        \begin{itemize}
+            \item El maximo de planetas por jugador es 8.
+            \item El cambio de nombre de los planetas y lunas se hace el la vision general directamente.
+            \item No exiesten las alianzas.
+            \item Se cambiaron misiones del tutorial para que tenga ma sentido y ayuden mas al jugador nuevo.
+            \item Se pueden desplegar naves a planetas de otros jugadores.
+            \item Se pede mantener la poscion en cualquier planeta o luna.
+            \item Se cambio la vista de fleet movment.
+            \item Un jugador upede atacarce a si mismo.
+            \item La luna tiene edificios nuevos, la hacen un objeto mas deseale.
+            \item Existe el edificio lunar, sun shade, el cual puede bajar la temperatura del planeta.
+            \item Existe el edificio lunar, lunar beam, el cual puede subir la temperatura del planeta.
+            \item Existe el edificio lunar, market place, en el cual se puede cambiar recursos y ganar ofertas.
+            \item Existe el edificio lunar, lunar shield, el cual hac mas dificil de destruir una luna.
+            \item El spacial dock ahora es un edicio lunar.
+        \end{itemize}
+        \subsubsection{Juego original}
+    \subsection{Objetos Importantes}
+        \subsubsection{uni} Objeto con todas las funciones a del juego
+        \subsubsection{player} El objeto que guarda toda la informacion de un jugados, su compocicion es la siguiente: \\
+            \tab id: id en la base de datos del jugador \\
+            \tab name: nombre del jugador \\
+            \tab styleGame: \\
+            \tab planets: lista que guarda los objetos de los planetas del jugador \\
+            \tab maxPlanets: cantidad maxima de planetas que puede tenes el jugador \\
+            \tab highscore: posicion en el ranking del universo\\
+            \tab lastHighscore: \\
+            \tab puntos: puntos del jugador(cada 1000 unidades gastadas de cada recurso se da 1 punto)\\
+            \tab puntosAcum: cantidad de recursos que se gasto pero no alcazo a llegar a 1000 para convertirce en 1 punto\\
+            \tab vacas: lista de jugadores que el jugador puede modificar, son para hacer mas rapidos los ataques\\
+            \tab sendEspionage: cantidad de sondas de espionaje que se envia al apretar espiar en la vista de la galaxia\\
+            \tab sendSmall: cantidad de small cargos que se envia al atcar a una vaca \\
+            \tab sendLarge: cantidad de large cargos que se envia al atcar a una vaca\\
+            \tab dark: cantidad de materia os   cura del jugador  \\
+            \tab messagesCant: cantidad de mensajes sin leer del jugador\\
+            \tab messages: lista con todos los mensajes del jugador\\
+            \tab movement: lista con todos los movimientos de flota del jugador\\
+            \tab researchConstrucction: bool que es true cuando se esta invstigando algo\\
+            \tab tutorial: lista de booleanos que dicen cual tutorial fue completado y cual no\\
+            \tab research: objeto con los niveles de todas las tecnologias del jugador\\
+            \tab lastVisit: numero que determina en que instante de tiempo se actualizaron los datos de ese jugador por ultima vez\\
+            \tab type: tipo de jugador en la vista de galaxia\\
+        \subsubsection{planeta} El objeto que guarda toda la informacion de un planeta\\
+            \tab idPlanet: id del planeta\\
+            \tab coordinates: objeto con las cordenadas del planeta\\
+            \tab\tab galaxy: numero de galaxia\\
+            \tab\tab system: numero de systema dentro de la galaxia\\
+            \tab\tab pos: numero de posicion dentro del sistema\\
+            \tab coordinatesCod: string con el codigo de las cordenadas galaxy\_system\\
+            \tab player: nombre del jugador al que pertenece el planeta\\
+            \tab playerType: tipo de jugador en la vista de galaxia\\
+            \tab name: nombre del planeta\\
+            \tab type: tipo del planeta\\
+            \tab color: color del planeta\\
+            \tab temperature: objeto que guarda la temperatura maxima y minima del planeta con modificaciones\\
+            \tab\tab max: temperatura maxima\\
+            \tab\tab min: temperatura minima\\
+            \tab temperatureNormal: objeto que guarda la temperatura maxima y minima sin modificaciones, no cambia\\
+            \tab\tab max: temperaturaNormal maxima\\
+            \tab\tab min: temperaturaNormal minima\\
+            \tab camposMax: campos maximos del planeta\\
+            \tab campos: campos que se estan usando en el planeta\\
+            \tab buildingConstrucction: booleano que es true cuando se esta construllendo un edificio\\
+            \tab shipConstrucction: lista de naves que se estan construllendo en el hangar\\
+            \tab resources: objeto que guarda la cantidad que hay en el planeta de cada recurso\\
+            \tab\tab metal: cantidad de metal\\
+            \tab\tab crystal: cantidad de cristal\\
+            \tab\tab deuterium: cantidad de deuterio\\
+            \tab\tab energy: cantidad de energia que se produce\\
+            \tab resourcesAdd: objeto que guarda la cantidad que se produce por hora de cada recurso\\
+            \tab\tab metal: produccion de metal por hora\\
+            \tab\tab crystal: produccion de metal por hora\\
+            \tab\tab deuterium: produccion de metal por hora\\
+            \tab\tab energy: cantidad de energia que sobra o falta\\
+            \tab resourcesPercentage: numero del 0 al 10 que regula la producion y consumo de energia de las minas\\
+            \tab\tab metal: porcentaje de produccion de la mina de metal\\
+            \tab\tab crystal: porcentaje de produccion de la mina de cristal\\
+            \tab\tab deuterium: porcentaje de produccion de la mina de deuterio\\
+            \tab\tab energy: porcentaje de produccion del reactor de fusion\\
+            \tab buildings: objeto que guarda el nivel de todos los edificion del planeta\\
+            \tab\tab metalMine: nivel del edificio\\
+            \tab\tab crystalMine: nivel del edificio\\
+            \tab\tab deuteriumMine: nivel del edificio\\
+            \tab\tab solarPlant: nivel del edificio\\
+            \tab\tab fusionReactor: nivel del edificio\\
+            \tab\tab metalStorage: nivel del edificio\\
+            \tab\tab crystalStorage: nivel del edificio\\
+            \tab\tab deuteriumStorage: nivel del edificio\\
+            \tab\tab robotFactory: nivel del edificio\\
+            \tab\tab shipyard: nivel del edificio\\
+            \tab\tab researchLab: nivel del edificio\\
+            \tab\tab alliance: nivel del edificio\\
+            \tab\tab silo: nivel del edificio\\
+            \tab\tab naniteFactory: nivel del edificio\\
+            \tab\tab terraformer: nivel del edificio\\
+            \tab fleet: objeto que guarda la cantidad de cada nave que hay en el planeta\\
+            \tab\tab lightFighter: cantidad de esa nave\\
+            \tab\tab heavyFighter: cantidad de esa nave\\
+            \tab\tab cruiser: cantidad de esa nave\\
+            \tab\tab battleship: cantidad de esa nave\\
+            \tab\tab battlecruiser: cantidad de esa nave\\
+            \tab\tab bomber: cantidad de esa nave\\
+            \tab\tab destroyer: cantidad de esa nave\\
+            \tab\tab deathstar: cantidad de esa nave\\
+            \tab\tab smallCargo: cantidad de esa nave\\
+            \tab\tab largeCargo: cantidad de esa nave\\
+            \tab\tab colony: cantidad de esa nave\\
+            \tab\tab recycler: cantidad de esa nave\\
+            \tab\tab espionageProbe: cantidad de esa nave\\
+            \tab\tab solarSatellite: cantidad de esa nave\\
+            \tab defense: objeto que guarda la cantidad de cada defensa que hay en el planeta\\
+            \tab\tab rocketLauncher: cantidad de esa defensa\\
+            \tab\tab lightLaser: cantidad de esa defensa\\
+            \tab\tab heavyLaser: cantidad de esa defensa\\
+            \tab\tab gauss: cantidad de esa defensa\\
+            \tab\tab ion: cantidad de esa defensa\\
+            \tab\tab plasma: cantidad de esa defensa\\
+            \tab\tab smallShield: cantidad de esa defensa\\
+            \tab\tab largeShield: cantidad de esa defensa\\
+            \tab\tab antiballisticMissile: cantidad de esa defensa\\
+            \tab\tab interplanetaryMissile: cantidad de esa defensa\\
+            \tab moon: objeto que guarda los datos de la luna\\
+            \tab debris: objeto que guarda la informacion de los escombros de ese planeta\\
+            \tab\tab active: bool que guarda si hay escombros activos o no\\
+            \tab\tab metal: cantidad de metal en los escombros, si active es false esta variable es 0\\
+            \tab\tab crystal: cantidad de cristal en los escombros, si active es false esta variable es 0\\
+        \subsubsection{moon} Es el objeto que guarda la informacion de la luna, tiene dos campos que estan siempre disponibles exista la luna o no, los cuales son active y size\\
+            \tab active: boolenao que si es true entonces ese planeta tiene luna\\
+            \tab size: size de la luna. Si active es falso size es igual a 0\\
+            \tab name: nombre de la luna\\
+            \tab camposMax: campos maximos de la luna\\
+            \tab campos: campos que se estan usando en la luna\\
+            \tab type: tipo de luna\\
+            \tab resources: objeto que dice cuantos recursos hay en la luna\\
+            \tab buildingConstrucction: bool que dice si se esta contrullendo un edificio\\
+            \tab buildings: objeto que dice el nivel de cada edificio en la luna\\
+            \tab\tab lunarBase: nivel del edificio lunar\\
+            \tab\tab phalanx: nivel del edificio lunar\\
+            \tab\tab spaceDock: nivel del edificio lunar\\
+            \tab\tab marketplace: nivel del edificio lunar\\
+            \tab\tab lunarSunshade: nivel del edificio lunar\\
+            \tab\tab lunarBeam: nivel del edificio lunar\\
+            \tab\tab jumpGate: nivel del edificio lunar\\
+            \tab\tab moonShield: nivel del edificio lunar\\
+            \tab values: numero del 0 al 10 que representa el porcentaje de actividad del sun shade y del lunar beam\\
+            \tab\tab sunshade: porcentaje de produccion del edificio lunar\\
+            \tab\tab beam: porcentaje de produccion del edificio lunar\\
+            \tab fleet: objeto que dice cuantas naves hay en la luna, la compocicion es similar al objeto fleet de planeta\\
+    \subsection{Funciones importantes}
+        \subsubsection{updatePlayer(player, f, help = false)}
+            Actualiza la informacion de 'player'(objeto) y guarda el objeto actualizado en la base de datos, despues de actualizar ejecuta la funcion f
+        \subsubsection{createNewPlanet(cord, planetName, playerName, playerTypeNew)}
+            Crea un nuevo objeto de tipo planeta, con las cordenadas 'cord', de nombre ' planetaName', que pertenece al jugador 'playerName'
+        \subsubsection{createNewMoon(newSize)}
+            Crea un nuevo objeto de tipo luna, esa nueva luna tiene de tamanio 'newSize'
+        \subsubsection{addNewPlayer(name, styleGame)}
+            Agrega un jugador nuevo al universo de nombre 'name' y con 'styleGame', despues lo guarda en la base de datos
+        \subsubsection{getActualBasicInfo(planet)}
+            Devuelve un objeto con la informacion basica del planeta numero 'planet'. Es usado por todo view con el nombre de 'basic'. Ese objeto se compone de la siguiente manera:\\
+            \tab name: nombre del universo\\
+            \tab speed: velocidad de produccion del universo\\
+            \tab speedFleet: velocidad de flota del universo\\
+            \tab donutGalaxy: bool que dice si las galaxias son circulares o no\\
+            \tab donutSystem: bool que dice si los sistemas son circulares o no\\
+            \tab playerName: nombre del jugador que tiene la cuenta abierta\\
+            \tab highscore: posicion del jugador abierto\\
+            \tab resources: objeto que dice los recursos que tiene el planeta o luna en la que se esta\\
+            \tab add: \\
+            \tab dark: cantidad de materia oscura que tiene el jugador abierto\\
+            \tab messagesNoRead: cantidad de mensajes sin leer que tiene el jugador abierto\\
+            \tab classObjResources: objeto que dicta los colores que tiene cada recurso(si el almacen esta lleno o no)\\
+            \tab cantPlanets: cantidad de planetas colonizados del jugador abierto\\
+            \tab maxPlanets: cantidad maxima de planetas que puede tener el jugador abierto\\
+            \tab numPlanet: el index de planeta en la lista de planetas del jugador abierto\\
+            \tab planets: lista con todos los planetas(objetos) del jugador abierto\\
+            \tab moon: booleano que dice si estas en una luna o no\\
+            \tab format: funcion que formatea un numero a un formato lindo\\
+        \subsubsection{resourcesSetting(planet)}
+            Devuelve el objeto 'info' del view ResourceSetings. El objeto tiene el siguiente formato:
+            \tab basic: objeto que dice los ingresos basicos de metal y de cristal en ese universo\\
+            \tab values: objetos con numeros de 0 al 10 que dicta los porcentajes de cada mina\\
+            \tab buildings: objeto con los niveles de cada mina del planeta\\
+            \tab solarSatelite: cantidad de satelites solares en ese planeta\\
+            \tab mines: objeto que dice cuanto produce por hora cada mina\\
+            \tab energy: objeto que dice cuanta energia producen los satelites solares(satellite: ), la planta de fusion(fusion: ) y la planta de energia solar(solar: )\\
+            \tab maxEnergy: objeto que dice cuanto es el consumo de energia requerido para cada mina\\
+            \tab usageEnergy: objeto que dice cuanto de enrgia puede usar cada mina\\
+            \tab resourcesHour: objeto que dice cuanto ganas por hora de cada recurso\\
+            \tab storage: objeto que dice cuanto es el almacenamiento maximo de cada recurso\\
+            \tab plasma: nivel de la tecnologia de plasma del jugador\\
+        \subsubsection{moonSetting(planet)}
+          Devuelve el objeto 'info' del view MoonBuildings. El objeto tiene el siguiente formato:
+          \tab buildings: objeto que dice los niveles de todos los edificio de la luna\\
+          \tab values: objeto que da los porcentajes del lunar beam y del sunshade. Su formato es:\\
+          \tab\tab sunshade: numero del 0 al 10\\
+          \tab\tab beam: numero del 0 al 10\\
+          \tab fleets: objeto con la cantida de cada nave en la luna\\
+          \tab cuanticTime: numero que dice cuanto tiempo falta para poder usar el salto cuantico\\
+          \tab cuanticMoonsCord: lista que tiene las cordenadas de todas las lunas a la que se puede hacer un salto cuantico\\
+          \tab campos: objeto que tiene la informacion de los campos maximos y campos usados de la luna. Tiene el formato:
+          \tab\tab campos: campos actualmente usados de la luna\\
+          \tab\tab camposMax: campos maximo de la luna\\
+        \subsubsection{overviewActualInfo(planet)}
+          Devuelve el objeto 'info' del view Overview. El objeto tiene el siguiente formato:
+          \tab diameter: tamanio del planeta o luna\\
+          \tab type: tipo del planeta\\
+          \tab temperature: objeto con la temperatura efectiva del planeta\\
+          \tab camposMax: campos maximos del planeta o luna\\
+          \tab campos: campos usados en el planeta o luna\\
+          \tab cantPlayers: cantidad de jugadores en todo el universo\\
+          \tab points: cantidad de puntos del jugador\\
+        \subsubsection{buildingsActualInfo(planet)}
+          Devuelve el objeto 'info' del view Resources y Facilities. Es un objeto que tiene los niveles de todos los edificons del planeta o luna, si es un planeta ademas da el numero de satelites solares del planeta.
+        \subsubsection{costBuildings(planet)}
+          Funcion llamada por la api para saber el coste de cada edificio de un planeta. Devuelve un objeto que por cada edificio tiene un campo con otro objeto que dice el cuanto cuesta y otras cosas. Los campos del objeto principal son:\\
+          metalMine: ,crystalMine: ,deuteriumMine: ,solarPlant: ,fusionReactor: ,metalStorage: ,crystalStorage: ,deuteriumStorage: ,robotFactory: ,shipyard: ,researchLab: ,alliance: ,silo: ,naniteFactory: ,terraformer: ,solarSatellite:, listInfo: ,time: ,doing:\\
+          Los unicos campos que son distintos del resto son listInfo: que es una lista con los nombre de los campos principales, time: que tiene un objeto con los campos mult: y elev: que contienen el nivel de las fabricas de robot y nanobot respectivamente. El campo doing: contiene el booleno que indica si se esta construllendo un edificio.\\
+          Cada campo principal tiene un objeto con el formato:\\
+          \tab metal: cantidad de metal que se necesita para poder iniciar la construccion para el proximo nivel\\
+          \tab crystal: cantidad de cristal que se necesita para poder iniciar la construccion para el proximo nivel\\
+          \tab deuterium: cantidad de deuterio que se necesita para poder iniciar la construccion para el proximo nivel\\
+          \tab energy: \\
+          \tab energyNeed: \\
+          \tab tech: bool que dice si ya se alcanzaron los requisitos para contruir el edificio\\
+          \tab level: nivel del edificio\\
+          \tab name: nombre posta del edificio\\
+          \tab description: informacion para el usuario sobre el edificion\\
+        \subsubsection{costMoon(planet)}
+        \subsubsection{costResearch(planet)}
+        \subsubsection{costShipyard(planet)}
+        \subsubsection{costDefense(planet)}
+        \subsubsection{fleetInfo(planet, moon)}
+        \subsubsection{galaxyInfo(planet)}
+        \subsubsection{systemInfo(res, gal, sys)}
+        \subsubsection{proccesBuildRequest(planet, buildingName, res)}
+        \subsubsection{proccesMoonRequest(planet, buildingName, res)}
+        \subsubsection{proccesResearchRequest(planet, researchName, res)}
+        \subsubsection{proccesShipyardRequest(planet, shipyardName, shipyardCant, res)}
+        \subsubsection{cancelBuildRequest(planet, res)}
+        \subsubsection{cancelMoonRequest(planet, res)}
+        \subsubsection{cancelResearchRequest(res)}
+        \subsubsection{cancelShipyardRequest(planet, shipyardName, res)}
+        \subsubsection{updateResourcesData(f, planet, obj = null)}
+        \subsubsection{updateResourcesDataMoon(f, planet, obj)}
+        \subsubsection{contPoint(player)}
+    \subsection{Scripts}
+\end{document}

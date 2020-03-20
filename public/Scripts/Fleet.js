@@ -135,14 +135,18 @@ function changeFleet(){
   let consumDeu = 0;
   for(let i = 0 ; i<inputsFleets.length ; i++){
     let aux = parseInt(inputsFleets[i].value);
-    if(isNaN(aux)) aux = 0;
-    carga += aux*cargaList[i];
-    consumDeu += Math.floor(aux*deuteriumList[i]*dis*Math.pow(0.7+speedActive/100,2)/40000);
-
-    if(aux > 0 && parseInt(inputsFleets[i].dataset.vel) < newMin){
-      newMin = parseInt(inputsFleets[i].dataset.vel);
+    if(isNaN(aux) || aux < 0){// si el dato de entrada no es valido escribe un 0 en el input box
+      if(aux != "") inputsFleets[i].value = "";
+      aux = 0;
     }
-  };
+    if(aux > cantFleets[i].innerText){ // si el numero ingresado es mayor al maximo entonces se carga el maximo valor
+      inputsFleets[i].value = cantFleets[i].innerText;
+      aux = parseInt(cantFleets[i].innerText);
+    }
+    carga += aux*cargaList[i];// suma a la carga total de la flota
+    consumDeu += Math.floor(aux*deuteriumList[i]*dis*Math.pow(0.7+speedActive/100,2)/40000); // suma al consumo de deuterio
+    if(aux > 0 && parseInt(inputsFleets[i].dataset.vel) < newMin) newMin = parseInt(inputsFleets[i].dataset.vel); // busca la nave mas lenta para calcular la velocidad del viaje
+  }
   if(newMin == Infinity) newMin = 0;
   minSpeed = newMin;
   speedText.innerText = minSpeed;

@@ -5,13 +5,17 @@ var values = [];
 var inputsFleets, cantFleets;
 var cuanticTimeText = null;
 var cuanticTime = 0, valueMoon = -1;
-var dropDownMoonOpen = false;
+var dropDownMoonOpen = false, ready = true;
 var selectMoon, controlMoon;
+var galaxyHasta, systemHasta, positionHasta;
 
 setTimeout(() => {
   inputsFleets = document.getElementsByClassName('fleetValues');
   cantFleets = document.getElementsByClassName('level');
   cuanticTimeText = document.getElementById('cuanticTimeCont');
+  galaxyHasta = parseInt(document.getElementsByName('ogame-planet-galaxy')[0].content);
+  systemHasta = parseInt(document.getElementsByName('ogame-planet-system')[0].content);
+  positionHasta = parseInt(document.getElementsByName('ogame-planet-position')[0].content);
   if(cuanticTimeText != null){
     cuanticTime = parseInt(cuanticTimeText.dataset.val);
     cuanticTimeText.innerText = segundosATiempo(cuanticTime);
@@ -80,15 +84,57 @@ function clickSelectMoon(){
   dropDownMoonOpen = !dropDownMoonOpen;
 }
 
-function setDropdownMoon(val, text){
+function setDropdownMoon(val, text, gal, sys, pos){
   controlMoon.innerText = text;
   valueMoon = parseInt(val);
+  galaxyHasta = gal;
+  systemHasta = sys;
+  positionHasta = pos;
   clickSelectMoon();
+}
+
+function selectAllNave(num){
+  if(inputsFleets[num].readOnly == false){
+    if(inputsFleets[num].value == cantFleets[num].innerText){
+      inputsFleets[num].value = '';
+    }else{
+      inputsFleets[num].value = cantFleets[num].innerText;
+    }
+    changeFleet();
+  }
+}
+
+function changeFleet(){
+  for(let i = 0 ; i<inputsFleets.length ; i++){
+    let aux = parseInt(inputsFleets[i].value);
+    if(isNaN(aux) || aux < 0){// si el dato de entrada no es valido escribe un 0 en el input box
+      if(aux != "") inputsFleets[i].value = "";
+      aux = 0;
+    }
+    if(aux > cantFleets[i].innerText){ // si el numero ingresado es mayor al maximo entonces se carga el maximo valor
+      inputsFleets[i].value = cantFleets[i].innerText;
+      aux = parseInt(cantFleets[i].innerText);
+    }
+  }
 }
 
 function recalculateButton(){
   console.log("Recalcula la pagina");
   loadJSON('./api/set/updateResourcesMoon?sunshade=' + values[0] + '&beam=' + values[1], (obj) => {
+    console.log(obj);
     if(obj.ok == true) location.reload();
   });
+}
+
+async function sendCuanticFleet(){
+  if(ready){
+    ready = false;
+    let data = {};
+    for(let i = 0 ; i<inputsFleets.length ; i++){
+      data['ships.' + inputsFleets[i].name] = parseInt((inputsFleets[i].value == "") ? 0 : inputsFleets[i].value);
+    }
+    data.coorHasta = {gal: galaxyHasta, sys: systemHasta, pos: positionHasta};
+    let res = await fetch('./api/set/moveCuanticFleet', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+    if(res.ok == true) setTimeout(() => {location.reload()}, 50);
+  }
 }

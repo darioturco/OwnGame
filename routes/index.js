@@ -17,13 +17,14 @@ router.all('/*', (req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
+  console.log(uni.player.planets[0].moon);
   //uni.deleteCollection(process.env.UNIVERSE_NAME, ["jugadores", "universo"]);
   //uni.createUniverse(process.env.UNIVERSE_NAME, 5, {name: "", inicio: 0, maxGalaxies: 9,donutGalaxy: true,donutSystem: true,speed: 1,speedFleet: 1,fleetDebris: 30,defenceDebris: 0,maxMoon: 20});
   //uni.addNewPlayer("dturco", 1);
-  //uni.setPlanetData(uni.player.planets[0].coordinates, "dturco");
-  //uni.setMoonData(uni.player.planets[0].coordinates, "dturco");
+  //uni.setPlanetData(uni.player.planets[2].coordinates, "dturco");
+  //uni.setMoonData(uni.player.planets[2].coordinates, "dturco");
   //uni.sendMessage("dturco", {type: 1, title: "Nuevo titulo", text: "Mensaje oficial", data: {}});
-  //uni.colonize({galaxy: 1, system: 8, pos: 5}, 'dturco');
+  //uni.colonize({galaxy: 1, system: 3, pos: 8}, 'dturco');
   //uni.contPoint('dturco');
   //uni.contMoonFields(uni.planeta);
   uni.seeDataBase(res, process.env.UNIVERSE_NAME, "jugadores");

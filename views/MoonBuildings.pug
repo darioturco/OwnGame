@@ -114,7 +114,7 @@ block content
                       span.level
                         span.textlabel
                         | #{info.fleets.lightFighter}
-                input.fleetValues(name='lightFighter' tabindex='1' type='number' value='' onchange='changeFleet();')
+                input.fleetValues(name='lightFighter' tabindex='1' type='text' value='' onchange='changeFleet();')
               li#button205(class=((info.fleets.heavyFighter > 0) ? 'on' : 'off'))
                 .buildingimg
                   a.tooltip(href='javascript:void(0);' onClick='selectAllNave(1);')
@@ -122,7 +122,7 @@ block content
                       span.level
                         span.textlabel
                         | #{info.fleets.heavyFighter}
-                input.fleetValues(name='heavyFighter' tabindex='2' type='number' value='' onchange='changeFleet();')
+                input.fleetValues(name='heavyFighter' tabindex='2' type='text' value='' onchange='changeFleet();')
               li#button206(class=((info.fleets.cruiser > 0) ? 'on' : 'off'))
                 .buildingimg
                   a.tooltip(href='javascript:void(0);' onClick='selectAllNave(2);')
@@ -130,7 +130,7 @@ block content
                       span.level
                         span.textlabel
                         | #{info.fleets.cruiser}
-                input.fleetValues(name='cruiser' tabindex='3' type='number' value='' onchange='changeFleet();')
+                input.fleetValues(name='cruiser' tabindex='3' type='text' value='' onchange='changeFleet();')
               li#button207(class=((info.fleets.battleship > 0) ? 'on' : 'off'))
                 .buildingimg
                   a.tooltip(href='javascript:void(0);' onClick='selectAllNave(3);')
@@ -138,7 +138,7 @@ block content
                       span.level
                         span.textlabel
                         | #{info.fleets.battleship}
-                input.fleetValues(name='battleship' tabindex='4' type='number' value='' onchange='changeFleet();')
+                input.fleetValues(name='battleship' tabindex='4' type='text' value='' onchange='changeFleet();')
               li#button215(class=((info.fleets.battlecruiser > 0) ? 'on' : 'off'))
                 .buildingimg
                   a.tooltip(href='javascript:void(0);' onClick='selectAllNave(4);')
@@ -146,7 +146,7 @@ block content
                       span.level
                         span.textlabel
                         | #{info.fleets.battlecruiser}
-                input.fleetValues(name='battlecruiser' tabindex='5' type='number' value='' onchange='changeFleet();')
+                input.fleetValues(name='battlecruiser' tabindex='5' type='text' value='' onchange='changeFleet();')
               li#button211(class=((info.fleets.bomber > 0) ? 'on' : 'off'))
                 .buildingimg
                   a.tooltip(href='javascript:void(0);' onClick='selectAllNave(5);')
@@ -154,7 +154,7 @@ block content
                       span.level
                         span.textlabel
                         | #{info.fleets.bomber}
-                input.fleetValues(name='bomber' tabindex='6' type='number' value='' onchange='changeFleet();')
+                input.fleetValues(name='bomber' tabindex='6' type='text' value='' onchange='changeFleet();')
               li#button213(class=((info.fleets.destroyer > 0) ? 'on' : 'off'))
                 .buildingimg
                   a.tooltip(href='javascript:void(0);' onClick='selectAllNave(6);')
@@ -162,7 +162,7 @@ block content
                       span.level
                         span.textlabel
                         | #{info.fleets.destroyer}
-                input.fleetValues(name='destroyer' tabindex='7' type='number' value='' onchange='changeFleet();')
+                input.fleetValues(name='destroyer' tabindex='7' type='text' value='' onchange='changeFleet();')
               li#button214(class=((info.fleets.deathstar > 0) ? 'on' : 'off'))
                 .buildingimg
                   a.tooltip(href='javascript:void(0);' onClick='selectAllNave(7);')
@@ -170,7 +170,7 @@ block content
                       span.level
                         span.textlabel
                         | #{info.fleets.deathstar}
-                input.fleetValues(name='deathstar' tabindex='8' type='number' value='' onchange='changeFleet();')
+                input.fleetValues(name='deathstar' tabindex='8' type='text' value='' onchange='changeFleet();')
           #spacer
           #civilships
             ul#civil
@@ -181,7 +181,7 @@ block content
                       span.level
                         span.textlabel
                         | #{info.fleets.smallCargo}
-                input.fleetValues(name='smallCargo' tabindex='9' type='number' value='' onchange='changeFleet();')
+                input.fleetValues(name='smallCargo' tabindex='9' type='text' value='' onchange='changeFleet();')
               li#button203(class=((info.fleets.largeCargo > 0) ? 'on' : 'off'))
                 .buildingimg
                   a.tooltip(href='javascript:void(0);' onClick='selectAllNave(9);')
@@ -189,7 +189,7 @@ block content
                       span.level
                         span.textlabel
                         | #{info.fleets.largeCargo}
-                input.fleetValues(name='largeCargo' tabindex='10' type='number' value='' onchange='changeFleet();')
+                input.fleetValues(name='largeCargo' tabindex='10' type='text' value='' onchange='changeFleet();')
               li#button208(class=((info.fleets.colony > 0) ? 'on' : 'off'))
                 .buildingimg
                   a.tooltip(href='javascript:void(0);' onClick='selectAllNave(10);')
@@ -197,7 +197,7 @@ block content
                       span.level
                         span.textlabel
                         | #{info.fleets.colony}
-                input.fleetValues(name='colony' tabindex='11' type='number' value='' onchange='changeFleet();')
+                input.fleetValues(name='colony' tabindex='11' type='text' value='' onchange='changeFleet();')
               li#button209(class=((info.fleets.recycler > 0) ? 'on' : 'off'))
                 .buildingimg
                   a.tooltip(href='javascript:void(0);' onClick='selectAllNave(11);')
@@ -205,7 +205,7 @@ block content
                       span.level
                         span.textlabel
                         | #{info.fleets.recycler}
-                input.fleetValues(name='recycler' tabindex='12' type='number' value='' onchange='changeFleet();')
+                input.fleetValues(name='recycler' tabindex='12' type='text' value='' onchange='changeFleet();')
               li#button210(class=((info.fleets.espionageProbe > 0) ? 'on' : 'off'))
                 .buildingimg
                   a.tooltip(href='javascript:void(0);' onClick='selectAllNave(12);')
@@ -213,7 +213,7 @@ block content
                       span.level
                         span.textlabel
                         | #{info.fleets.espionageProbe}
-                input.fleetValues(name='espionageProbe' tabindex='13' type='number' value='' onchange='changeFleet();')
+                input.fleetValues(name='espionageProbe' tabindex='13' type='text' value='' onchange='changeFleet();')
 
           .clearfloat
           div#cuanticDiv
@@ -226,9 +226,9 @@ block content
               ul#dropdown3.dropdown.dropdownList.initialized(data-val=0 style='left: 30px; top: 0px; min-width: 120px; display:none;')
                 each item in info.cuanticMoonsCord
                   li
-                    a(value=item.num onclick='setDropdownMoon(' + item.num + ', this.innerText)') #{item.name+' ['+item.cord.galaxy+':'+item.cord.system+':'+item.cord.pos+']'}
+                    a(value=item.num onclick='setDropdownMoon(' + item.num + ', this.innerText, ' + item.cord.galaxy + ', ' + item.cord.system +', ' + item.cord.pos + ')') #{item.name+' ['+item.cord.galaxy+':'+item.cord.system+':'+item.cord.pos+']'}
             div#cuanticButton
-              a#start.on(href='javascript:void(0);' onclick='sendFleetMovement();')
+              a#start.on(href='javascript:void(0);' onclick='sendCuanticFleet();')
                 span Send fleet
         else
           h2 You have no jump gate

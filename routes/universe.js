@@ -77,7 +77,7 @@ var exp = {
         if(this.player.researchConstrucction.item == 'energy' || this.player.researchConstrucction.item == 'plasma') updateResourcesAddOfAllPlanets = true;
       }
       for(let i = 0 ; i<this.player.planets.length ; i++){
-        let updateDataThisPlanet = false;
+        let updateDataThisPlanet = false; // se fija que en ese planeta se halla terminado una contruccion, si es asi actualiza los campos y los valores
         if((this.player.planets[i].buildingConstrucction != false) && (this.player.planets[i].buildingConstrucction.time - Math.floor((new Date().getTime() - this.player.planets[i].buildingConstrucction.init)/1000) <= 0)){
           objSet['planets.' + i + '.buildingConstrucction'] = false;
           objSet['puntosAcum'] += this.player.planets[i].buildingConstrucction.metal + this.player.planets[i].buildingConstrucction.crystal + this.player.planets[i].buildingConstrucction.deuterium;
@@ -359,10 +359,10 @@ var exp = {
   moonSetting: function (planet) {
     cuanticMoonsCordAux = [];
     for(let i = 0 ; i<this.player.planets.length ; i++){
-      if(this.player.planets[i].moon.active && this.player.planets[i].moon.buildings.jumpGate > 0) cuanticMoonsCordAux.push({name: this.player.planets[planet].moon.name, cord: this.player.planets[planet].coordinates, num: i});
+      if(this.player.planets[i].moon.active && this.player.planets[i].moon.buildings.jumpGate > 0) cuanticMoonsCordAux.push({name: this.player.planets[i].moon.name, cord: this.player.planets[i].coordinates, num: i});
     }
     return {buildings: this.player.planets[planet].moon.buildings,
-      values: {sunshade: this.player.planets[planet].moon.values.sunshade, beam: this.player.planets[planet].moon.values.beam},//cambiar por los valores guardados
+      values: {sunshade: this.player.planets[planet].moon.values.sunshade, beam: this.player.planets[planet].moon.values.beam},
       fleets: this.player.planets[planet].moon.fleet,
       cuanticTime: (this.player.planets[planet].moon.buildings.jumpGate == 0) ? 'Infinity' : 100,//this.player.planets[planet].moon.cuanticTime //cambiar para que calcule cuanto falta para poder usar el salto cuantico
       cuanticMoonsCord: cuanticMoonsCordAux,
@@ -807,7 +807,6 @@ var exp = {
     return Math.floor(60*recursos/divisor);
   },
   updateResourcesData: function(f, planet, obj = null) { //updatea los multiplicadores de los recursos(NO toca los recursos)
-    console.log(obj);
     let objSet = {};
     let spd = this.universo.speed;
     let plasma = this.player.research.plasma;
@@ -838,17 +837,15 @@ var exp = {
       });
     }
   },
-  updateResourcesDataMoon: function(f, planet, obj = null){
+  updateResourcesDataMoon: function(f, planet, obj){
     if(obj != null){
       obj.sunshade = parseInt(obj.sunshade);
-      obj.beam = parseInt(obj.beam);
-      newTemperature = {max: Math.floor(this.player.planets[planet].temperatureNormal.max+this.player.planets[planet].moon.buildings.lunarBeam*4*obj.beam/10-this.player.planets[planet].moon.buildings.sunshade*4*obj.sunshade/10), min: Math.floor(this.player.planets[planet].temperatureNormal.min+this.player.planets[planet].moon.buildings.lunarBeam*4*obj.beam/10-this.player.planets[planet].moon.buildings.sunshade*4*obj.sunshade/10)}
-      //recalcular minas del planeta
-      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({planets :{$elemMatch: {coordinates: {galaxy: this.player.planets[planet].coordinates.galaxy, system: this.player.planets[planet].coordinates.system, pos: this.player.planets[planet].coordinates.pos}}}}, {$set: {'planets.$.temperature': newTemperature, 'planets.$.moon.values': obj, 'planets.$.resourcesAdd': objSet.resourcesAdd}}, () => {
-        f();
+      obj.beam = parseInt(obj.beam);// recalcula la temperatura del planeta
+      newTemperature = {max: Math.floor(this.player.planets[planet].temperatureNormal.max+this.player.planets[planet].moon.buildings.lunarBeam*4*obj.beam/10-this.player.planets[planet].moon.buildings.lunarSunshade*4*obj.sunshade/10), min: Math.floor(this.player.planets[planet].temperatureNormal.min+this.player.planets[planet].moon.buildings.lunarBeam*4*obj.beam/10-this.player.planets[planet].moon.buildings.lunarSunshade*4*obj.sunshade/10)}
+      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({planets :{$elemMatch: {coordinates: {galaxy: this.player.planets[planet].coordinates.galaxy, system: this.player.planets[planet].coordinates.system, pos: this.player.planets[planet].coordinates.pos}}}}, {$set: {'planets.$.temperature': newTemperature, 'planets.$.moon.values': obj}}, () => {
+        this.updateResourcesData(f, planet, this.player.planets[planet].resourcesPercentage);// recalcula la produccion de las minas y guarda todo en la base de datos
       });
     }
-    f();// borrar
   },
   addFleetMovement: function(player, planet, moon, obj, res){
     // Falta terminar la funcion
@@ -884,25 +881,37 @@ var exp = {
     }
 
   },
+  moveCuanticFleet: function(player, planeta, obj, res){
+    /*if(this.player.planets[planeta].moon.active == true && ){
+
+    }*/
+
+
+    res.send({ok: true});
+  },
   setPlanetData: function(cord, player){
     // cambiar para que no sean constantes ???
-    let resources = {metal: 5000000, crystal: 4000000, deuterium: 1000000, energy: 0};
-    let building = {metalMine: 0, crystalMine: 1, deuteriumMine: 0, solarPlant: 30, fusionReactor: 5, metalStorage: 10, crystalStorage: 9, deuteriumStorage: 8, robotFactory: 0, shipyard: 12, researchLab: 12, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0};
+    let resources = {metal: 1000, crystal: 1000, deuterium: 0, energy: 0};
+    let building = {metalMine: 0, crystalMine: 1, deuteriumMine: 0, solarPlant: 30, fusionReactor: 0, metalStorage: 10, crystalStorage: 9, deuteriumStorage: 8, robotFactory: 0, shipyard: 0, researchLab: 0, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0};
     let fleet = {lightFighter: 10, heavyFighter: 0, cruiser: 1, battleship: 10, battlecruiser: 0, bomber: 3, destroyer: 100, deathstar: 1, smallCargo: 20, largeCargo: 200, colony: 1, recycler: 10, espionageProbe: 30, solarSatellite: 15};
-    let defenses = {rocketLauncher: 500, lightLaser: 0, heavyLaser: 0, gauss: 10, ion: 0, plasma: 0, smallShield: 0, largeShield: 0, antiballisticMissile: 0, interplanetaryMissile: 10};
+    let defenses = {rocketLauncher: 0, lightLaser: 0, heavyLaser: 0, gauss: 10, ion: 0, plasma: 0, smallShield: 0, largeShield: 0, antiballisticMissile: 0, interplanetaryMissile: 0};
     let moon = this.createNewMoon(8888);//{active: false, size: 0};
     let debris = {active: false, metal:0, crystal: 0};
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({planets :{$elemMatch: {coordinates: {galaxy: cord.galaxy, system: cord.system, pos: cord.pos}}}}, {$set: {'planets.$.resources': resources,'planets.$.buildings': building, 'planets.$.fleet': fleet, 'planets.$.defense': defenses,'planets.$.moon': moon, 'planets.$.debris': debris}});
   },
-  setMoonData: function(cord, player){ // asume el planeta tiene luna
+  setMoonData: function(cord, player){ // asume el planeta tiene luna si no, no hace nada
     // cambiar para que no sean constantes ???
-    let resources = {metal: 5000000, crystal: 4000000, deuterium: 1000000, energy: 0};
-    let building = {lunarBase: 3, phalanx: 2, spaceDock: 0, marketplace: 0, lunarSunshade: 0, lunarBeam: 0, jumpGate: 0, moonShield: 0};
-    let fleet = {lightFighter: 0, heavyFighter: 0, cruiser: 0, battleship: 0, battlecruiser: 0, bomber: 0, destroyer: 0, deathstar: 100, smallCargo: 0, largeCargo: 0, colony: 0, recycler: 0, espionageProbe: 0, solarSatellite: 0};
+    let resources = {metal: 500000, crystal: 4000000, deuterium: 1000000, energy: 0};
+    let building = {lunarBase: 6, phalanx: 2, spaceDock: 0, marketplace: 1, lunarSunshade: 5, lunarBeam: 6, jumpGate: 1, moonShield: 0};
+    let fleet = {lightFighter: 1000, heavyFighter: 0, cruiser: 1, battleship: 30, battlecruiser: 0, bomber: 0, destroyer: 0, deathstar: 100, smallCargo: 0, largeCargo: 0, colony: 0, recycler: 0, espionageProbe: 0, solarSatellite: 0};
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({planets :{$elemMatch: {coordinates: {galaxy: cord.galaxy, system: cord.system, pos: cord.pos}}}}, {$set: {'planets.$.moon.resources': resources,'planets.$.moon.buildings': building, 'planets.$.moon.fleet': fleet}});
   },
   colonize: function(cord, player){
+    //se tiene que fijar que no halla nadie en esa posicion
+    //se tiene que fijar que la tecnologia de astrofisica permita colonizar
+    //se tiene que fijar que no supere el maximo de planetas permitidos(8 max.)
     let newPlanet = this.createNewPlanet(cord, 'Colony', player, 'activo'); // no deberia estar siempre activo
+
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: player}, {$push: {planets: newPlanet}});
   },
   sendMessage: function(player, info) {
@@ -1084,7 +1093,7 @@ module.exports = exp;
 /* Terminar la funcion addFleetMovement
 /* Mejorar el calculo de recursos de tiempos medios
 /* En el view de galaxy hay que poner el boton para colonizar
-/* Al conintruir misiles tiene que fijarse en la capacidad del silo
+/* Al construir misiles tiene que fijarse en la capacidad del silo
 /* El abandonar el planeta en Overview
 /* La funcion de contar puntos tiene que contar los puntos de la luna
 /* Cuando estas haciendo una contruccion en un planeta se tiene que poner la llavecita indicando eso

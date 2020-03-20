@@ -64,7 +64,6 @@ router.get('/set/updateResources', function(req, res, next) {// updatea los valo
 });
 
 router.get('/set/updateResourcesMoon', function(req, res, next) {// updatea los valores de resourcesSettings de la luna
-  console.log(req.query);
   uni.updateResourcesDataMoon(() => {res.send({ok: true});}, uni.planeta, req.query);
 });
 
@@ -120,6 +119,11 @@ router.get('/set/cancelShipyardRequest', function(req, res, next) {
 router.post('/set/addFleetMovement', function(req, res, next) {
   console.log(req.body);
   uni.addFleetMovement(uni.player.name, uni.planeta, uni.moon, req.body, res);
+});
+
+router.post('/set/moveCuanticFleet', function(req, res, next) {
+  console.log(req.body);
+  uni.moveCuanticFleet(uni.player.name, uni.planeta, req.body, res);
 });
 
 module.exports = router;
