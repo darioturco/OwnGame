@@ -7,6 +7,7 @@ var targetPlanetName, destinationImgPlanet, destinationImgMoon, destinationImgDe
 var distanceText, cargaText, durationText, arrivalText, returnText, speedText, consumText, cargeResources, cargeResourcesMax;
 var galaxy, system, position, destination = 1, speedActive = 10, dis = 5, minSpeed = 0, time = Infinity, missionSelected = -1;
 var galVal, sysVal, posVal;
+var selects = [], open = [], controls = [];
 var systemDonut, galaxyDonut, fleetUniverseSpeed;
 var ready = true;
 
@@ -44,7 +45,45 @@ setTimeout(() => {
       inputsFleets[i].readOnly = true;
     }
   }
+  for(let i = 1 ; i<=3 ; i++){
+    selects.push(document.getElementById("dropdown" + i));
+    controls.push(document.getElementById("downButton" + i));
+    open.push(false);
+    //setDropdown(undefined, i, true);
+  }
 }, 0);
+
+function clickSelect(num){
+  for(let i = 0 ; i<4 ; i++){
+    if(i == num-1){
+      if(open[i] == true){
+        selects[i].style.display = "none";
+      }else{
+        selects[i].style.display = "block";
+      }
+      open[i] = !open[i];
+    }else{
+      if(open[i] == true){
+        selects[i].style.display = "none";
+        open[i] = false;
+      }
+    }
+  }
+}
+
+function setDropdown(val, num, init = false){
+  galVal.value = val.dataset.gal;
+  sysVal.value = val.dataset.sys;
+  posVal.value = val.dataset.pos;
+  for(let i = 0 ; i<3 ; i++){
+    if(i == (num-1)){
+      controls[i].innerText = val.innerText;
+    }else{
+      controls[i].innerText = '-';
+    }
+  }
+  if(init == false) clickSelect(num);
+}
 
 function selectAllNave(num){
   if(inputsFleets[num].readOnly == false){
@@ -85,6 +124,8 @@ function pressPlanetMoonDebris(cla){
   }
   changeButtonMision();//cambia las misiones
 }
+
+
 
 function calculaDistancia(){//distancia desde {gal, sys, pos} hasta {galaxy, system, position}(posicion actual)
   if(galVal.value < 1) galVal.value = 1;
@@ -296,12 +337,13 @@ async function sendFleetMovement(){
   if(ready){
     ready = false;
     let data = {};
+    data.ships = {};
     for(let i = 0 ; i<inputsFleets.length ; i++){
-      data['ships.' + inputsFleets[i].name] = parseInt((inputsFleets[i].value == "") ? 0 : inputsFleets[i].value);
+      data.ships[inputsFleets[i].name] = parseInt((inputsFleets[i].value == "") ? 0 : inputsFleets[i].value);
     }
     data.coorDesde = {gal: galaxy, sys: system, pos: position};
     data.coorHasta = {gal: galVal.value, sys: sysVal.value, pos: posVal.value};
-    data.destination = destination;
+    data.destination = destination;//1 = planeta, 2 = moon, 3 = debris
     data.porce = speedActive;
     data.mission = missionSelected;
     data.resources = {metal: 0, crystal: 0, deuterium: 0};

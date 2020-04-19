@@ -188,30 +188,31 @@ block content
                 div
                   span Shortcuts:
                   .glow
-                    select.planets.dropdownInitialized(style='display: none;')
-                      option(value='-') -
-                      option(value='2#289#4#1#Planeta Principal')
-                        | Planeta Principal [2:289:4]
-
-                    span.dropdown.currentlySelected.planets(rel='dropdown662' style='width: 144px;')
-                      a.undefined(data-value='-' href='javascript:void(0);') -
-
+                    span.dropdown.currentlySelected.planets(style='width: 144px;')
+                      a#downButton1(value=basic.planets[basic.numPlanet].cord href='javascript:void(0);' onclick='clickSelect(1)') -
+                    ul#dropdown1.dropdown.dropdownList.initialized(style='top: 68px; min-width: 120px; display: none; position: absolute;')
+                      each item, index in basic.planets
+                        li
+                          a(data-gal=item.coordinates.galaxy data-sys=item.coordinates.system data-pos=item.coordinates.pos value=index onclick='setDropdown(this, 1)') #{item.name+' ['+item.coordinates.galaxy+':'+item.coordinates.system+':'+item.coordinates.pos+']'}
                 div
                   span Combat forces:
                   .glow
-                    select.combatunits.dropdownInitialized(style='display: none;')
-                      option(value='-') -
                     span.dropdown.currentlySelected.combatunits(style='width: 144px;')
-                      a.undefined(data-value='-' href='javascript:void(0);') -
-
+                      a#downButton2(value=0 href='javascript:void(0);' onclick='clickSelect(2)') -
+                    ul#dropdown2.dropdown.dropdownList.initialized(style='top: 112px; min-width: 120px; display: none; position: absolute;')
+                      //cambiar por la lista de movimientos de flotas del jugador
+                      each item, index in basic.planets
+                        li
+                          a(data-gal=item.coordinates.galaxy data-sys=item.coordinates.system data-pos=item.coordinates.pos value=index onclick='setDropdown(this, 2)') #{item.name+' ['+item.coordinates.galaxy+':'+item.coordinates.system+':'+item.coordinates.pos+']'}
                 div
                   span Vacas:
                   .glow
-                    select.combatunits.dropdownInitialized(style='display: none;')
-                      option(value='-') -
                     span.dropdown.currentlySelected.combatunits(style='width: 144px;')
-                      a.undefined(data-value='-' href='javascript:void(0);') -
-
+                      a#downButton3(value=basic.planets[basic.numPlanet].cord href='javascript:void(0);' onclick='clickSelect(3)') -
+                    ul#dropdown3.dropdown.dropdownList.initialized(style='top: 156px; min-width: 120px; display: none; position: absolute;')
+                      each item, index in info.vacas
+                        li
+                          a(data-gal=item.coordinates.galaxy data-sys=item.coordinates.system data-pos=item.coordinates.pos value=index onclick='setDropdown(this, 3)') #{item.planetName+' ['+item.coordinates.galaxy+':'+item.coordinates.system+':'+item.coordinates.pos+']'}
         .briefing.border5px
           h2 Briefing
           ul#fleetBriefingPart1.fleetBriefing

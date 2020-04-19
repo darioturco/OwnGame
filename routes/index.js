@@ -17,7 +17,6 @@ router.all('/*', (req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
-  console.log(uni.player.planets[0].moon);
   //uni.deleteCollection(process.env.UNIVERSE_NAME, ["jugadores", "universo"]);
   //uni.createUniverse(process.env.UNIVERSE_NAME, 5, {name: "", inicio: 0, maxGalaxies: 9,donutGalaxy: true,donutSystem: true,speed: 1,speedFleet: 1,fleetDebris: 30,defenceDebris: 0,maxMoon: 20});
   //uni.addNewPlayer("dturco", 1);

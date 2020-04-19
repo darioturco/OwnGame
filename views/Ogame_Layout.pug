@@ -159,5 +159,13 @@ body(id=bodyId onLoad='initFunction();')
                     img.planetPic(alt='Planet' src="./Imagenes/Planets/Miniatures/Planet_" + item.type + "_" + item.color + ".gif" width='48' height='48')
                     span.planet-name #{item.name}
                     span.planet-koords [#{item.coordinates.galaxy}:#{item.coordinates.system}:#{item.coordinates.pos}]
+                    div.divMini
+                      img.alertMini(style='display:' + ((false/*Si estan atacando ese planeta*/) ? 'inline' : 'none') src='./Imagenes/Alert_Mini.gif')
+                      img.buildMini(style='display:' + ((basic.planets[index].buildingConstrucction) ? 'inline' : 'none') src='./Imagenes/Llave_Mini.gif')
+                      img.fleetMini(style='display:' + ((basic.planets[index].shipConstrucction.length != 0) ? 'inline' : 'none') src='./Imagenes/Nave_Mini.gif')
+                      img.labMini(style='display:' + ((basic.researchConstrucction != false && basic.researchConstrucction.planet == index) ? 'inline' : 'none') src='./Imagenes/Lab_Mini.gif')
                   a.moonlink.tooltipLeft.tooltipClose.tpd-hideOnClickOutside(class=claseLuna href=(url + '?planet=' + index + '&moon=true') style='display: ' + ((item.moon.active == true) ? 'block' : 'none'))
-                    img.icon-moon(alt=' ' src='./Imagenes/Planets/Moon_Big_' + basic.planets[index].moon.type + '.gif' width='20' heigth='20')
+                    img.icon-moon(alt=' ' src=(basic.planets[index].moon.active) ? ('./Imagenes/Planets/Moon_Big_' + basic.planets[index].moon.type + '.gif') : ('') width='20' heigth='20')
+                    div.divMiniMoon
+                      img.alertMiniMoon(style='display:' + ((false/*Si estan atacando esta luna*/) ? 'inline' : 'none') src='./Imagenes/Alert_Mini.gif')
+                      img.buildMiniMoon(style='display:' + ((basic.planets[index].moon.buildingConstrucction) ? 'inline' : 'none') src='./Imagenes/Llave_Mini.gif')

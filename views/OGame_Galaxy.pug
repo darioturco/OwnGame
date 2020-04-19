@@ -2,6 +2,7 @@ extends Ogame_Layout
 block content
   #inhalt
     #galaxyHeader
+      -canColonyze = basic.cantPlanets < basic.maxPlanets;
       span.galaxy_icons.galaxy.tooltip(title='Galaxy')
       span.galaxy_icons.prev(onclick='galaxyChange(-1);')
       input#galaxy_input.hideNumberSpin(maxlength='1' type='number' value=coorInit.gal tabindex='1')
@@ -53,6 +54,7 @@ block content
                   img(id='Planet1' src='' width='30' height='30' alt=' ')
               td.planetname1(align='center')
                 span.planetName
+                img.colonyImg(onclick=(canColonyze) ? 'colonize(1)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon1
                 a(href='#' onclick='pressMoon(1); return false;')
                   #1_Moon.ListMoon
@@ -64,18 +66,23 @@ block content
               td.action
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_eye
+                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
                   //espiar (se pone verdecito si ya lo estas espiando)
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_adressbook
+                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
                   // leer reporte de espionaje (esta negro si no tenes reporte de ese jugador)
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_missile
+                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
                   // ataque personalisado
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_against
+                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
                   // ataca como si fuera una vaca
                 a.tooltip(href='#' onclick='addVaca(1); return false;')
                   span.icon.icon_mail
+                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
                   // agrega a la lista de vacas
 
 
@@ -87,6 +94,7 @@ block content
                   img(id='Planet2' src='' width='30' height='30' alt=' ')
               td.planetname1(align='center')
                 span.planetName
+                img.colonyImg(onclick=(canColonyze) ? 'colonize(2)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon2
                 a(href='#' onclick='pressMoon(2); return false;')
                   #2_Moon.ListMoon
@@ -98,14 +106,19 @@ block content
               td.action
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_eye
+                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_adressbook
+                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_missile
+                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_against
+                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
                 a.tooltip(href='#' onclick='addVaca(2); return false;')
                   span.icon.icon_mail
+                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
 
 
@@ -116,6 +129,7 @@ block content
                   img(id='Planet3' src='' width='30' height='30' alt=' ')
               td.planetname1(align='center')
                 span.planetName
+                img.colonyImg(onclick=(canColonyze) ? 'colonize(3)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon3
                 a(href='#' onclick='pressMoon(3); return false;')
                   #3_Moon.ListMoon
@@ -127,14 +141,19 @@ block content
               td.action
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_eye
+                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_adressbook
+                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_missile
+                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_against
+                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
                 a.tooltip(href='#' onclick='addVaca(3); return false;')
                   span.icon.icon_mail
+                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
 
 
@@ -145,6 +164,7 @@ block content
                   img(id='Planet4' src='' width='30' height='30' alt=' ')
               td.planetname1(align='center')
                 span.planetName
+                img.colonyImg(onclick=(canColonyze) ? 'colonize(4)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon4
                 a(href='#' onclick='pressMoon(4); return false;')
                   #4_Moon.ListMoon
@@ -156,14 +176,19 @@ block content
               td.action
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_eye
+                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_adressbook
+                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_missile
+                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_against
+                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
                 a.tooltip(href='#' onclick='addVaca(4); return false;')
                   span.icon.icon_mail
+                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
 
 
@@ -174,6 +199,7 @@ block content
                   img(id='Planet5' src='' width='30' height='30' alt=' ')
               td.planetname1(align='center')
                 span.planetName
+                img.colonyImg(onclick=(canColonyze) ? 'colonize(5)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon5
                 a(href='#' onclick='pressMoon(5); return false;')
                   #5_Moon.ListMoon
@@ -185,14 +211,19 @@ block content
               td.action
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_eye
+                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_adressbook
+                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_missile
+                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_against
+                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
                 a.tooltip(href='#' onclick='addVaca(5); return false;')
                   span.icon.icon_mail
+                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
 
 
@@ -203,6 +234,7 @@ block content
                   img(id='Planet6' src='' width='30' height='30' alt=' ')
               td.planetname1(align='center')
                 span.planetName
+                img.colonyImg(onclick=(canColonyze) ? 'colonize(6)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon6
                 a(href='#' onclick='pressMoon(6); return false;')
                   #6_Moon.ListMoon
@@ -214,14 +246,19 @@ block content
               td.action
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_eye
+                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_adressbook
+                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_missile
+                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_against
+                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
                 a.tooltip(href='#' onclick='addVaca(6); return false;')
                   span.icon.icon_mail
+                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
 
 
@@ -232,6 +269,7 @@ block content
                   img(id='Planet7' src='' width='30' height='30' alt=' ')
               td.planetname1(align='center')
                 span.planetName
+                img.colonyImg(onclick=(canColonyze) ? 'colonize(7)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon7
                 a(href='#' onclick='pressMoon(7); return false;')
                   #7_Moon.ListMoon
@@ -243,14 +281,19 @@ block content
               td.action
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_eye
+                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_adressbook
+                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_missile
+                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_against
+                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
                 a.tooltip(href='#' onclick='addVaca(7); return false;')
                   span.icon.icon_mail
+                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
 
 
@@ -261,6 +304,7 @@ block content
                   img(id='Planet8' src='' width='30' height='30' alt=' ')
               td.planetname1(align='center')
                 span.planetName
+                img.colonyImg(onclick=(canColonyze) ? 'colonize(8)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon8
                 a(href='#' onclick='pressMoon(8); return false;')
                   #8_Moon.ListMoon
@@ -272,14 +316,19 @@ block content
               td.action
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_eye
+                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_adressbook
+                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_missile
+                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_against
+                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
                 a.tooltip(href='#' onclick='addVaca(8); return false;')
                   span.icon.icon_mail
+                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
 
 
@@ -290,6 +339,7 @@ block content
                   img(id='Planet9' src='' width='30' height='30' alt=' ')
               td.planetname1(align='center')
                 span.planetName
+                img.colonyImg(onclick=(canColonyze) ? 'colonize(9)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon9
                 a(href='#' onclick='pressMoon(9); return false;')
                   #9_Moon.ListMoon
@@ -301,14 +351,19 @@ block content
               td.action
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_eye
+                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_adressbook
+                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_missile
+                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_against
+                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
                 a.tooltip(href='#' onclick='addVaca(9); return false;')
                   span.icon.icon_mail
+                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
 
 
@@ -319,6 +374,7 @@ block content
                   img(id='Planet10' src='' width='30' height='30' alt=' ')
               td.planetname1(align='center')
                 span.planetName
+                img.colonyImg(onclick=(canColonyze) ? 'colonize(10)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon10
                 a(href='#' onclick='pressMoon(10); return false;')
                   #10_Moon.ListMoon
@@ -330,14 +386,19 @@ block content
               td.action
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_eye
+                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_adressbook
+                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_missile
+                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_against
+                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
                 a.tooltip(href='#' onclick='addVaca(10); return false;')
                   span.icon.icon_mail
+                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
 
 
@@ -348,6 +409,7 @@ block content
                   img(id='Planet11' src='' width='30' height='30' alt=' ')
               td.planetname1(align='center')
                 span.planetName
+                img.colonyImg(onclick=(canColonyze) ? 'colonize(11)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon11
                 a(href='#' onclick='pressMoon(11); return false;')
                   #11_Moon.ListMoon
@@ -359,12 +421,16 @@ block content
               td.action
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_eye
+                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_adressbook
+                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_missile
+                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_against
+                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
                 a.tooltip(href='#' onclick='addVaca(11); return false;')
                   span.icon.icon_mail
 
@@ -377,6 +443,7 @@ block content
                   img(id='Planet12' src='' width='30' height='30' alt=' ')
               td.planetname1(align='center')
                 span.planetName
+                img.colonyImg(onclick=(canColonyze) ? 'colonize(12)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon12
                 a(href='#' onclick='pressMoon(12); return false;')
                   #12_Moon.ListMoon
@@ -388,14 +455,20 @@ block content
               td.action
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_eye
+                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_adressbook
+                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_missile
+                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_against
+                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
                 a.tooltip(href='#' onclick='addVaca(12); return false;')
                   span.icon.icon_mail
+                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
+
 
 
             tr.row
@@ -405,6 +478,7 @@ block content
                   img(id='Planet13' src='' width='30' height='30' alt=' ')
               td.planetname1(align='center')
                 span.planetName
+                img.colonyImg(onclick=(canColonyze) ? 'colonize(13)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon13
                 a(href='#' onclick='pressMoon(13); return false;')
                   #13_Moon.ListMoon
@@ -416,14 +490,20 @@ block content
               td.action
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_eye
+                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_adressbook
+                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_missile
+                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_against
+                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
                 a.tooltip(href='#' onclick='addVaca(13); return false;')
                   span.icon.icon_mail
+                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
+
 
 
             tr.row
@@ -433,6 +513,7 @@ block content
                   img(id='Planet14' src='' width='30' height='30' alt=' ')
               td.planetname1(align='center')
                 span.planetName
+                img.colonyImg(onclick=(canColonyze) ? 'colonize(14)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon14
                 a(href='#' onclick='pressMoon(14); return false;')
                   #14_Moon.ListMoon
@@ -444,14 +525,20 @@ block content
               td.action
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_eye
+                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_adressbook
+                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_missile
+                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_against
+                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
                 a.tooltip(href='#' onclick='addVaca(14); return false;')
                   span.icon.icon_mail
+                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
+
 
 
             tr.row
@@ -461,6 +548,7 @@ block content
                   img(id='Planet15' src='' width='30' height='30' alt=' ')
               td.planetname1(align='center')
                 span.planetName
+                img.colonyImg(onclick=(canColonyze) ? 'colonize(15)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon15
                 a(href='#' onclick='pressMoon(15); return false;')
                   #15_Moon.ListMoon
@@ -472,14 +560,19 @@ block content
               td.action
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_eye
+                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_adressbook
+                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_missile
+                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
                 a.tooltip(href='#' onclick='return false;')
                   span.icon.icon_against
+                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
                 a.tooltip(href='#' onclick='addVaca(15); return false;')
                   span.icon.icon_mail
+                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
     #canvasMoon.canvasMoon(style='left: 264px')
       div(style='width: auto; height: auto;')

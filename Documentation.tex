@@ -51,7 +51,14 @@
             \tab messagesCant: cantidad de mensajes sin leer del jugador\\
             \tab messages: lista con todos los mensajes del jugador\\
             \tab movement: lista con todos los movimientos de flota del jugador\\
-            \tab researchConstrucction: bool que es true cuando se esta invstigando algo\\
+            \tab researchConstrucction: si no se esta investigando nada es un bool que esta en false y si no es un objeto con el siguiente formato:\\
+            \tab\tab metal: metal que requirio la investigacion\\
+            \tab\tab crystal: cristal que requirio la investigacion\\
+            \tab\tab deuterium: deuterio que requirio la investigacion\\
+            \tab\tab item: nombre de la investigacion\\
+            \tab\tab planet: numero de planeta que inicio la investigacion\\
+            \tab\tab init: tiempo en que se incio la investigacion\\
+            \tab\tab time: duracion de la investigacion\\
             \tab tutorial: lista de booleanos que dicen cual tutorial fue completado y cual no\\
             \tab research: objeto con los niveles de todas las tecnologias del jugador\\
             \tab lastVisit: numero que determina en que instante de tiempo se actualizaron los datos de ese jugador por ultima vez\\
@@ -162,6 +169,11 @@
             \tab\tab sunshade: porcentaje de produccion del edificio lunar\\
             \tab\tab beam: porcentaje de produccion del edificio lunar\\
             \tab fleet: objeto que dice cuantas naves hay en la luna, la compocicion es similar al objeto fleet de planeta\\
+          \subsubsection{vaca}
+            \tab coordinates: cordenadas del planeta\\
+            \tab playerName: nombre del jugador\\
+            \tab planetName: nombre del planeta\\
+            \tab estado: estado de actividad del jugador\\
     \subsection{Funciones importantes}
         \subsubsection{updatePlayer(player, f, help = false)}
             Actualiza la informacion de 'player'(objeto) y guarda el objeto actualizado en la base de datos, despues de actualizar ejecuta la funcion f
@@ -242,12 +254,46 @@
           \tab name: nombre posta del edificio\\
           \tab description: informacion para el usuario sobre el edificion\\
         \subsubsection{costMoon(planet)}
+            Funcion llamada por la api para saber los costes de los edificios de una luna. El objeto que debuelve tiene la forma: lunarBase, phalanx, spaceDock, marketplace, lunarSunshade, lunarBeam, jumpGate, moonShield, listInfo, time, doing. Los campos de time son mult y elev que tienen los niveles de la base lunar y la fabrica de nanobots del planeta, respectivamente. El funcionamiento es similar al objeto de costBuildings.
         \subsubsection{costResearch(planet)}
+            Funcion llamada por la api para saber los costes de las investigaciones. El objeto tiene la forma: energy, laser, ion, hyperspace, plasma, espionage, computer, astrophysics, intergalactic, graviton, combustion, impulse, hyperspacedrive, weapons, shielding, armour, listInfo, time, doing.
         \subsubsection{costShipyard(planet)}
+            Funcion llamada por la api para saber los costes de las naves. El objeto tiene la forma: lightFighter, heavyFighter, cruiser, battleship, battlecruiser, bomber, destroyer, deathstar, smallCargo, largeCargo, colony, recycler, espionageProbe, solarSatellite, listInfo, time, doing.
         \subsubsection{costDefense(planet)}
+            Funcion llamada por la api para saber los costes de las defensas. El objeto tiene la forma: rocketLauncher, lightLaser, heavyLaser, gauss, ion, plasma, smallShield, largeShield, antiballisticMissile, interplanetaryMissile, listInfo, time, doing.
         \subsubsection{fleetInfo(planet, moon)}
+            Entrega el objeto info de la pagina Fleet. El objeto tiene la forma:\\
+            \tab fleets: objeto con la cantidad de naves del planeta/luna\\
+            \tab speed: lista con la velocidades base de todas las naves\\
+            \tab misil: cantidad de misiles en el planeta, si esta en una luna siempre es 0\\
+            \tab expeditions: cantdad de expediciones que se estan aciendo actualmente\\
+            \tab maxExpeditions: cantidad maxima de espediciones\\
+            \tab slot: catidad de flotas volando actualmente\\
+            \tab maxSlot: cantidad maxima de posibles flotas volando\\
+            \tab vacas: lista de vacas del jugador\\
         \subsubsection{galaxyInfo(planet)}
+            Entrega el objeto info de la pagina Galaxy. El objeto tiene la forma:\\
+            \tab espionage: cantidad de sondas de espionage en el planeta/luna\\
+            \tab recycler: cantadad de recicladores en el planeta/luna\\
+            \tab misil: cantadad de misiles interplanetarios en el planeta\\
+            \tab slot: cantidad de flotas volando\\
+            \tab maxSlot: cantidad de flotas maximas volando\\
         \subsubsection{systemInfo(res, gal, sys)}
+            Dada una galaxia y un systema solar retorna un objeto con todos los planetas en ese sistema.\\
+            El objeto esta compuesto por 15 claves que son 'pos + i' donde i es un numero entre 0 y 15 inclusive.\\
+            Si no hay nadie en la posicion 'pos + i' se guarda con esa clave el objeto {active: false}, si hay un planeta se guarda un objeto con la forma:\\
+            \tab active: booleano que dice si hay planeta o no en esa posicion\\
+            \tab player: nombre del jugador duenio del planeta de esa posicion\\
+            \tab type: tipo de planeta\\
+            \tab color: color del planeta\\
+            \tab name: nombre del planeta\\
+            \tab moon: booleano que dice si hay luna en ese planeta\\
+            \tab moonName: nombre de la luna\\
+            \tab moonSize: tamanio de la luna\\
+            \tab debris: booleano que dice si hay escombros en esa posicion\\
+            \tab metalDebris: cantidad de metal en los escombros\\
+            \tab crystalDebris: cantidad de cristal en los escombros\\
+            \tab estado: estado del jugador duenio del planeta en esa posicion\\
         \subsubsection{proccesBuildRequest(planet, buildingName, res)}
         \subsubsection{proccesMoonRequest(planet, buildingName, res)}
         \subsubsection{proccesResearchRequest(planet, researchName, res)}
@@ -259,5 +305,12 @@
         \subsubsection{updateResourcesData(f, planet, obj = null)}
         \subsubsection{updateResourcesDataMoon(f, planet, obj)}
         \subsubsection{contPoint(player)}
+          Cuenta todos los puntos de un jugador y los guarda en la base de datos.
     \subsection{Scripts}
+        \subsubsection{Funciones importantes}
+            'service mongod start' Arranca el servicio de mongo\\
+            'npm run start-dev' Arranca el servidor
+    \subsection{HTML tricks}
+        \subsubsection{dataset}
+          Para pasar un dato por html se puede usar la propiedad data-val='valor' y en javascript leerla con item.dataset.val
 \end{document}

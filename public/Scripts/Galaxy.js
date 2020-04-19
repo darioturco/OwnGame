@@ -1,4 +1,4 @@
-var planets = [], estados = [];
+var planets = [], estados = [], colonyImg = [];
 var galaxy = 1, system = 1;
 var galaxyText, systemText;
 var playerName, planetName, moons, debris, actions, colonized;
@@ -23,6 +23,7 @@ setTimeout(() => {
   planetName = document.getElementsByClassName('planetName');
   moons = document.getElementsByClassName('ListMoon');
   debris = document.getElementsByClassName('ListDebris');
+  colonyImg = document.getElementsByClassName('colonyImg');
   actions = document.getElementsByClassName('action');
   for(let i = 1 ; i<=15 ; i++){
     planets.push(document.getElementById('Planet'+i));
@@ -52,6 +53,7 @@ function loadSystem(gal, sys){
         //remover todas las posibles classes de estados
         playerName[i-1].classList.add(obj['pos'+i].estado);
         planetName[i-1].innerHTML = obj['pos'+i].name;
+        colonyImg[i-1].style.display = 'none';
         actions[i-1].style.display = 'block';
         if(obj['pos'+i].moon == true) moons[i-1].classList.add('activeMoon');
         if(obj['pos'+i].debris == true) debris[i-1].classList.add('debrisField');
@@ -59,6 +61,7 @@ function loadSystem(gal, sys){
         planets[i-1].src = './Imagenes/None.gif';
         playerName[i-1].innerHTML = '';
         planetName[i-1].innerHTML = '';
+        colonyImg[i-1].style.display = 'auto';
         actions[i-1].style.display = 'none';
         moons[i-1].classList.remove('activeMoon');
         debris[i-1].classList.remove('debrisField');
@@ -132,6 +135,9 @@ function pressGo(){
 }
 function doExpedition(){
 
+}
+function colonize(pos){
+  console.log(pos);
 }
 
 function addVaca(pos){

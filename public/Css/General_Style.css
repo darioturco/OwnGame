@@ -6717,3 +6717,40 @@ tr.alt td {
   font-weight: normal;
   overflow-x: visible;
 }
+#galaxy #galaxyContent tbody .colonyImg{
+  cursor: auto;
+}
+#galaxy .tooltip .tooltipText {
+  visibility: hidden;
+  width: 58px;
+  background-color: black;
+  color: #fff;
+  opacity: 0;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  transition-duration: 0.4s;
+}
+#galaxy .tooltip:hover .tooltipText {
+  opacity: 0.65;
+  visibility: visible;
+}
+.smallplanet .planetlink .divMini{
+  position: relative;
+  bottom: 84px;
+  left: 36px;
+}
+.smallplanet .planetlink .divMini .alertMini{
+  position: relative;
+  right: 46px;
+}
+.smallplanet .moonlink .divMiniMoon{
+  position: relative;
+  bottom: 30px;
+  left: 8px;
+}
+.smallplanet .moonlink .divMiniMoon .alertMiniMoon{
+  position: relative;
+  right: 16px;
+}

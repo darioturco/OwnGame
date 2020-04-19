@@ -6,8 +6,6 @@
     "start": "node ./bin/www",
     "start-dev": "nodemon ./bin/www --ignore public/"
   },
-  //'service mongod start' para arrancar el servicio de mongo
-  //'npm run start-dev' para empezar el server
   "dependencies": {
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
