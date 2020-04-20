@@ -191,7 +191,8 @@ var exp = {
       fleet: {lightFighter: 0, heavyFighter: 0, cruiser: 0, battleship: 0, battlecruiser: 0, bomber: 0, destroyer: 0, deathstar: 0, smallCargo: 0, largeCargo: 0, colony: 0, recycler: 0, espionageProbe: 0, solarSatellite: 0},
       defense: {rocketLauncher: 0, lightLaser: 0, heavyLaser: 0, gauss: 0, ion: 0, plasma: 0, smallShield: 0, largeShield: 0, antiballisticMissile: 0, interplanetaryMissile: 0},
       moon: {active: false, size: 0},
-      debris: {active:false, metal:0, crystal: 0}
+      debris: {active:false, metal:0, crystal: 0},
+      defenseFleets: []
     };
   },
   createNewMoon: function(newSize){
@@ -438,7 +439,7 @@ var exp = {
             plasma: {metal: 2000*Math.pow(2, research.plasma), crystal: 4000*Math.pow(2, research.plasma), deuterium: 1000*Math.pow(2, research.plasma), energy: 0, tech: lab >= 4 && research.energy >= 8 && research.laser >= 10 && research.ion >= 5, level: research.plasma, name: "Plasma Technology", description: "A further development of ion technology which accelerates high-energy plasma, which then inflicts devastating damage and additionally optimises the production of resources."},
             espionage: {metal: 200*Math.pow(2, research.espionage), crystal: 1000*Math.pow(2, research.espionage), deuterium: 200*Math.pow(2, research.espionage), energy: 0, tech: lab >= 3, level: research.espionage, name: "Espionage Technology", description: "Information about other planets and moons can be gained using this technology."},
             computer: {metal: 0, crystal: 400*Math.pow(2, research.computer), deuterium: 600*Math.pow(2, research.computer), energy: 0, tech: lab >= 1, level: research.computer, name: "Computer Technology", description: "More fleets can be commanded by increasing computer capacities. Each level of computer technology increases the maximum number of fleets by one."},
-            astrophysics: {metal: 4000*Math.pow(2, research.astrophysics), crystal: 8000*Math.pow(2, research.astrophysics), deuterium: 4000*Math.pow(2, research.astrophysics), energy: 0, tech: lab >= 3 && research.spionage >= 4 && research.impulse >= 3, level: research.astrophysics, name: "Astrophysics", description: "With an astrophysics research module, ships can undertake long expeditions. Every second level of this technology will allow you to colonise an extra planet."},
+            astrophysics: {metal: 4000*Math.pow(2, research.astrophysics), crystal: 8000*Math.pow(2, research.astrophysics), deuterium: 4000*Math.pow(2, research.astrophysics), energy: 0, tech: lab >= 3 && research.espionage >= 4 && research.impulse >= 3, level: research.astrophysics, name: "Astrophysics", description: "With an astrophysics research module, ships can undertake long expeditions. Every second level of this technology will allow you to colonise an extra planet."},
             intergalactic: {metal: 240000*Math.pow(2, research.intergalactic), crystal: 400000*Math.pow(2, research.intergalactic), deuterium: 160000*Math.pow(2, research.intergalactic), energy: 0, tech: lab >= 10 && research.computer >= 8 && research.hyperspace >= 8, level: research.intergalactic, name: "Intergalactic Research Network", description: "Researchers on different planets communicate via this network."},
             graviton: {metal: 0, crystal: 0, deuterium: 0, energy: 300000*Math.pow(2, research.graviton), tech: lab >= 12, level: research.graviton, name: "Graviton Technology", description: "Firing a concentrated charge of graviton particles can create an artificial gravity field, which can destroy ships or even moons."},
             combustion: {metal: 400*Math.pow(2, research.combustion), crystal: 0, deuterium: 600*Math.pow(2, research.combustion), energy: 0, tech: lab >= 1 && research.energy >= 1, level: research.combustion, name: "Combustion Drive", description: "The development of this drive makes some ships faster, although each level increases speed by only 10 % of the base value."},
@@ -505,6 +506,24 @@ var exp = {
             vacas: this.player.vacas
     };
   },
+  navesInfo: function(){
+    let speedList = this.getListSpeed();
+    return {lightFighter: {speed: speedList[0], carga: 50, consumo: 10},
+            heavyFighter: {speed: speedList[1], carga: 100, consumo: 20},
+            cruiser: {speed: speedList[2], carga: 800, consumo: 150},
+            battleship: {speed: speedList[3], carga: 1500, consumo: 250},
+            battlecruiser: {speed: speedList[4], carga: 750, consumo: 120},
+            bomber: {speed: speedList[5], carga: 500, consumo: 500},
+            destroyer: {speed: speedList[6], carga: 2000, consumo: 500},
+            deathstar: {speed: speedList[7], carga: 1000000, consumo: 1},
+            smallCargo: {speed: speedList[8], carga: 5000, consumo: 5},
+            largeCargo: {speed: speedList[9], carga: 25000, consumo: 25},
+            colony: {speed: speedList[10], carga: 7500, consumo: 500},
+            recycler: {speed: speedList[11], carga: 20000, consumo: 150},
+            espionageProbe: {speed: speedList[12], carga: 0, consumo: 0},
+            misil: {speed: speedList[13], carga: 0, consumo: 0}
+    };
+  },
   galaxyInfo: function(planet){
     return {espionage: this.player.planets[planet].fleet.espionageProbe,
             recycler: this.player.planets[planet].fleet.recycler,
@@ -547,7 +566,7 @@ var exp = {
         res.send({ok: (err == null) ? true : err});
       });
     }else{
-      res.send({ok: false, mes: "Parametros invalidos"});
+      res.send({ok: false, mes: "Algo salio mal. Parametros invalidos"});
     }
   },
   searchPlayer: function(res, playerName){
@@ -871,17 +890,20 @@ var exp = {
   },
   addFleetMovement: function(player, planet, moon, obj, res){
     // Falta terminar la funcion
-
-
-
+    if((obj.coorDesde.gal == obj.coorHasta.gal && obj.coorDesde.sys == obj.coorHasta.sys && obj.coorDesde.pos == obj.coorHasta.pos) && ((moon && obj.destination == 2) || (!moon && obj.destination == 1))){
+      res.json({ok: false, mes: "No se puede mandar una flota de un lugar a si mismo"});
+      return res;
+    }
     let validMission = false;
     let fleetVoid = true;
+    let thereIsNoFleet = false;
     let misil = obj.ships.misil > 0;
-    //Falta revisar la carga y la carga maxima de la flota
     for(let item in obj.ships){
+      if(obj.ships[item] > this.player.planets[planet].fleet[item]) thereIsNoFleet = true;
       if(obj.ships[item] > 0) fleetVoid = false;
       if(obj.ships[item] < 0) obj.ships[item] = 0;
     }
+    if(obj.ships['misil'] > this.player.planets[planet].fleet["interplanetaryMissile"]) thereIsNoFleet = true;
     switch (obj.mission) {
       case 0://Expedition
         validMission = obj.coorHasta.pos == 16 && !misil;
@@ -907,33 +929,58 @@ var exp = {
       case 7://Attack
         validMission = true;
         break;
-      case 8://ACS Attack
-        //validMission = /*Hay que ver que hace este tipo de ataque*/
-        break;
-      case 9://Moon Destruction
+      case 8://Moon Destruction
       validMission = obj.ships.deathstar > 0 && !misil;
         break;
     }
-    if(validMission && !fleetVoid){
+    if(validMission && !fleetVoid && !thereIsNoFleet){
+      if(this.player.planets[planet].resources.metal >= obj.resources.metal && this.player.planets[planet].resources.crystal >= obj.resources.crystal && this.player.planets[planet].resources.deuterium >= obj.resources.deuterium){
+        let navesInfo = this.navesInfo();
+        let maxCarga = 0;
+        for(let item in obj.ships){
+          maxCarga += obj.ships[item] * navesInfo[item].carga;
+        }
+        if(maxCarga >= obj.resources.metal + obj.resources.crystal + obj.resources.deuterium){
+          //Falta terminar de armar el objeto movment y guardarlo en la base de datos
+          /*
+          El objeto movent va a tener el formato: {
+            ships: objeto con la catidad de cada nave en la flota
+            moon: boolenao que esta en true si la flota salio de una luna y falso si sali desde un planeta
+            coorDesde: coordenadas simplificadas del lugar de partida de la flota
+            coorHasta: coordenadas simplificadas del lugar de llegada de la flota
+            destination: numero que indica si se el destino es un 1 = planeta, 2 = luna, 3 = debris
+            resources: objeto con el formato {metal, crystal ,deuterium} que indica cuato lleva la flota de cada recurso
+            speed: numero del 1 al 10 que indica a que velocidad va la flota
+            mission: numero del 0 al 8 que indica que numero de mission ejecuta esta flota
+            time: tiempo en que empezo el viaje
+            duracion: cuanto tarda el viaje
+            ida: bool si dice si es un viaje de ida o de vuelta
+          }
+          */
+          let pushObjAux = {};
+          let pushObj = {};
+          pushObjAux['ships'] = obj.ships;
+          pushObjAux['moon'] = moon;
+          pushObjAux['coorDesde'] = obj.coorDesde;
+          pushObjAux['coorHasta'] = obj.coorHasta;
+          pushObjAux['destination'] = obj.destination; // planeta, luna, escombros
+          pushObjAux['resources'] = {metal: obj.resources.metal, crystal: obj.resources.crystal, deuterium: obj.resources.deuterium};
+          pushObjAux['speed'] = obj.porce;
+          pushObjAux['mission'] = obj.mission;
+          pushObj['planets.' + planet + '.movement'] = pushObjAux;
 
-      //Falta revisar la carga y la carga maxima de la flota
-      let pushObjAux = {}
-      let pushObj = {};
-      pushObjAux['ships'] = obj.ships;
-      pushObjAux['moon'] = moon;
-      pushObjAux['coorDesde'] = obj.coorDesde;
-      pushObjAux['coorHasta'] = obj.coorHasta;
-      pushObjAux['destination'] = obj.destination; // planeta, luna, escombros
-      pushObjAux['resources'] = {metal: obj.resources.metal, crystal: obj.resources.crystal, deuterium: obj.resources.deuterium};
-      pushObjAux['speed'] = obj.porce;
-      pushObjAux['mission'] = obj.mission;
-      pushObj['planets.' + planet + '.movement'] = pushObjAux;
+          //Falta completar y guardar el objeto
 
-      //mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: player}, {$push: pushObj});
-      res.send({ok: true});
-
+          //mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: player}, {$push: pushObj});
+          res.json({ok: true});//usa json y no send por ser pedido via POST
+        }else{
+          res.json({ok: false, mes: "No se puede cargar tantos recursos."});
+        }
+      }else{
+        res.json({ok: false, mes: "Recursos no validos"});
+      }
     }else{
-      res.send({ok: false, mes: "Flota no valida"});
+      res.json({ok: false, mes: "Flota no valida"});
     }
 
   },
@@ -1178,6 +1225,7 @@ module.exports = exp;
 /* Mejorar el calculo de recursos de tiempos medios
 /* Al construir misiles tiene que fijarse en la capacidad del silo
 /* El abandonar el planeta en Overview
+/* Falta la administracion de flotas que te enviaron para defender tu planeta
 /* La funcion de contar puntos tiene que contar los puntos de las flotas que estan en movimiento
 /* El contruir satelites solares la energia no se actualiza
 */

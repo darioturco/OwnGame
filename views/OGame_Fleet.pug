@@ -283,16 +283,13 @@ block content
           li#button1.ButtonMision.off.on
             a#missionButton1(href='javascript:void(0);' onclick='pressButtonMision(7);')
               span.textlabel Attack
-          li#button2.ButtonMision.off.on
-            a#missionButton2(href='javascript:void(0);' onclick='pressButtonMision(8);')
-              span.textlabel ACS Attack
           li#button9.ButtonMision.off.on
-            a#missionButton9(href='javascript:void(0);' onclick='pressButtonMision(9);')
+            a#missionButton9(href='javascript:void(0);' onclick='pressButtonMision(8);')
               span.textlabel Moon Destruction
         #missionNameWrapper
           | Mission:
-          span#missionName.missionName Transport
-          p.mission_description Transports your resources to other planets.
+          span#missionName.missionName
+          p#missionDescription.mission_description -
     #sendfleet
       .header
         h2

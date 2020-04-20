@@ -1,10 +1,11 @@
 const cargaList = [50,100,800,1500,750,500,2000,1000000,5000,25000,7500,20000,0,0];
-const deuteriumList = [10, 20, 150, 250, 120, 500, 500, 1, 5, 25, 500, 150, 0, 0]
-const missionNameList = ['Expedition', 'Colonisation', 'Recycle', 'Transport', 'Deployment', 'Espionage', 'ACS Defend', 'Attack', 'ACS Attack', 'Moon Destruction'];
-const missionDescriptionList = ['Send your ships into the final frontier of space to encounter thrilling quests.', 'Colonizes a new planet.', 'Send your recyclers to a debris field to collect the resources floating around there.', 'Transports your resources to other planets.', 'Sends your fleet permanently to another planet.', 'Spy the worlds of foreign emperors.', 'Defend a planet.', 'Attacks the fleet and defence of your opponent.', 'Make a group attack.', 'Destroys the moon of your enemy.'];
+const deuteriumList = [10, 20, 150, 250, 120, 500, 500, 1, 5, 25, 500, 150, 0, 0];
+/*cazador ligero | casadorpesado | cruzero | nave de batalla | acorazado | bombardero | destructor | estrella de la muerte | nave pequenia de carga | nave grande de carga | colonizador | resiclador | sonde de espionage | misil*/
+const missionNameList = [' Expedition', ' Colonisation', ' Recycle', ' Transport', ' Deployment', ' Espionage', ' ACS Defend', ' Attack', ' Moon Destruction'];
+const missionDescriptionList = ['Send your ships into the final frontier of space to encounter thrilling quests.', 'Colonizes a new planet.', 'Send your recyclers to a debris field to collect the resources floating around there.', 'Transports your resources to other planets.', 'Sends your fleet permanently to another planet.', 'Spy the worlds of foreign emperors.', 'Defend a planet.', 'Attacks the fleet and defence of your opponent.', 'Destroys the moon of your enemy.'];
 var inputsFleets, cantFleets, speeds, cargeInputs, buttonsMision;
 var targetPlanetName, destinationImgPlanet, destinationImgMoon, destinationImgDebris, cargeBar;
-var distanceText, cargaText, durationText, arrivalText, returnText, speedText, consumText, cargeResources, cargeResourcesMax;
+var distanceText, cargaText, durationText, arrivalText, returnText, speedText, consumText, cargeResources, cargeResourcesMax, missionText, missionDescriptionText;
 var galaxy, system, position, destination = 1, speedActive = 10, dis = 5, minSpeed = 0, time = Infinity, missionSelected = -1;
 var galVal, sysVal, posVal;
 var selects = [], open = [], controls = [];
@@ -27,6 +28,8 @@ setTimeout(() => {
   returnText = document.getElementById('returnTime');
   cargaText = document.getElementById('storage');
   speedText = document.getElementById('speedText');
+  missionText = document.getElementById('missionName');
+  missionDescriptionText = document.getElementById('missionDescription');
   cargeResources = document.getElementById('remainingresources');
   cargeResourcesMax = document.getElementById('maxresources');
   cargeBar = document.getElementById('cargeBar');
@@ -124,8 +127,6 @@ function pressPlanetMoonDebris(cla){
   }
   changeButtonMision();//cambia las misiones
 }
-
-
 
 function calculaDistancia(){//distancia desde {gal, sys, pos} hasta {galaxy, system, position}(posicion actual)
   if(galVal.value < 1) galVal.value = 1;
@@ -304,8 +305,7 @@ function changeButtonMision(){
       prendeButtonMision(destination != 3 && inputsFleets[12].value > 0, 5); //espionaje
       prendeButtonMision(destination != 3, 6); //defend
       prendeButtonMision(destination != 3, 7); //ataque
-      prendeButtonMision(false, 8); //ACS atack(cambiar)(fijarse si las cordenadas coinciden con alguna flota que este atacando)
-      prendeButtonMision(destination == 2 && inputsFleets[7].value > 0, 9); //destruir luna
+      prendeButtonMision(destination == 2 && inputsFleets[7].value > 0, 8); //destruir luna
     }else{
       for(let i = 1 ; i<=9 ; i++){
         prendeButtonMision(false, i);
@@ -326,9 +326,14 @@ function pressButtonMision(num){
   if(num == missionSelected){
     buttonsMision[num].children[0].classList.remove('selected');
     missionSelected = -1;
+    missionText.innerText = '';
+    missionDescriptionText.innerText = '-';
+
   }else{
     if(missionSelected != -1) buttonsMision[missionSelected].children[0].classList.remove('selected')
     buttonsMision[num].children[0].classList.add('selected');
+    missionText.innerText = missionNameList[num];
+    missionDescriptionText.innerText = missionDescriptionList[num];
     missionSelected = num;
   }
 }
@@ -339,15 +344,22 @@ async function sendFleetMovement(){
     let data = {};
     data.ships = {};
     for(let i = 0 ; i<inputsFleets.length ; i++){
-      data.ships[inputsFleets[i].name] = parseInt((inputsFleets[i].value == "") ? 0 : inputsFleets[i].value);
+      data.ships[inputsFleets[i].name] = (inputsFleets[i].value == "") ? 0 : parseInt(inputsFleets[i].value);
     }
     data.coorDesde = {gal: galaxy, sys: system, pos: position};
-    data.coorHasta = {gal: galVal.value, sys: sysVal.value, pos: posVal.value};
+    data.coorHasta = {gal: parseInt(galVal.value), sys: parseInt(sysVal.value), pos: parseInt(posVal.value)};
     data.destination = destination;//1 = planeta, 2 = moon, 3 = debris
     data.porce = speedActive;
     data.mission = missionSelected;
     data.resources = {metal: 0, crystal: 0, deuterium: 0};
     let res = await fetch('./api/set/addFleetMovement', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
-    setTimeout(() => {location.reload()}, 50);
+    let objRes = await res.json();
+    console.log(objRes);
+    ready = true;
+    if(objRes.ok){
+      location.reload();
+    }else{
+      console.log("Algo fallo en el envio de flota."); //Notificar mejor porque no se envia la flota
+    }
   }
 }

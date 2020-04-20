@@ -76,7 +76,6 @@ router.get('/OGame_Fleet.html', (req, res, next) => {
   if(req.query.gal == undefined) req.query.gal = uni.player.planets[uni.planeta].coordinates.galaxy;
   if(req.query.sys == undefined) req.query.sys = uni.player.planets[uni.planeta].coordinates.system;
   if(req.query.pos == undefined) req.query.pos = uni.player.planets[uni.planeta].coordinates.pos;
-  console.log(uni.moon);
   res.render('OGame_Fleet', {bodyId: "fleet",
     url: req._parsedOriginalUrl.pathname,
     //(uni.moon) ? uni.player.planets[uni.planeta].moon.fleet : uni.player.planets[uni.planeta].fleet,

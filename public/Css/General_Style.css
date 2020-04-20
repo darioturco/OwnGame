@@ -3602,15 +3602,20 @@ font-size:11px;
 height:44px}#fleet #mission #shortcuts{color:#a1a1a1;
 font-size:11px}#fleet #mission #shortcuts a:link,#fleet #mission #shortcuts a:visited{text-decoration:none;
 color:#a1a1a1}#fleet #mission #shortcuts a:hover{text-decoration:underline;
-color:#a1a1a1}#fleet #mission #shortcuts div{text-align:left}#fleet #mission #shortcuts a:active,#fleet #mission #shortcuts a:focus{text-decoration:none;
+color:#a1a1a1}#fleet #mission #shortcuts div{text-align:left}
+#fleet #mission #shortcuts a:active,#fleet #mission #shortcuts a:focus{text-decoration:none;
 color:#a1a1a1}#fleet .planets,#fleet .combatunits,#fleet .combatunits{width:144px;
-overflow:hidden}#fleet .glow{-webkit-box-shadow:0 0 10px 3px #192026;
+overflow:hidden}
+#fleet .glow{-webkit-box-shadow:0 0 10px 3px #192026;
 box-shadow:0 0 10px 3px #192026;
 display:inline-block;
-margin:5px 0 0}#fleet #mission #shortcuts #shortlinks,#fleet #mission #shortcuts #combatunits,#fleet #buttonz a#combatunits{height:18px;
-width:125px;
-display:inline-block;
-cursor:pointer}#fleet .icon_combatunits{margin:0 0 -4px 0}
+margin:5px 0 0}
+#fleet #mission #shortcuts #shortlinks,#fleet #mission #shortcuts #combatunits,#fleet #buttonz a#combatunits{height:18px;
+  width:125px;
+  display:inline-block;
+  cursor:pointer;
+}
+#fleet .icon_combatunits{margin:0 0 -4px 0}
 #fleet #mission #shortcuts #shortlinks:hover,#fleet #buttonz a#combatunits:hover{text-decoration:underline}
 #fleet #mission #shortcuts #combatunits{cursor:auto}
 #fleet #mission #shortcuts #shortlinks{width:125px}
@@ -3621,9 +3626,17 @@ cursor:pointer}#fleet .icon_combatunits{margin:0 0 -4px 0}
 #fleet #slots{margin-left:10px}#fleet #slots div{line-height:24px;
 margin-left:10px;
 display:inline-block;
-vertical-align:middle}#fleet #slots div img{padding-top:4px;
-vertical-align:top}#fleet #shortcuts{padding:23px 0 0 23px}#fleet #buttonz a:link,#fleet #buttonz a:visited,#fleet #buttonz a:hover,#fleet #buttonz a:active{color:#848484;
-text-decoration:none}#fleet #buttonz a:hover{text-decoration:underline}
+vertical-align:middle}
+#fleet #slots div img{
+  padding-top:4px;
+  vertical-align:top;
+}
+#fleet #shortcuts{padding:23px 0 0 23px}
+#fleet #buttonz a:link,#fleet #buttonz a:visited,#fleet #buttonz a:hover,#fleet #buttonz a:active{
+  color:#848484;
+  text-decoration:none;
+}
+#fleet #buttonz a:hover{text-decoration:underline}
 #fleet .coords .galaxy,#fleet .coords .system,#fleet .coords .planet{
   margin:3px 1px 1px 1px;
   padding:0;
@@ -3631,20 +3644,27 @@ text-decoration:none}#fleet #buttonz a:hover{text-decoration:underline}
   font-weight:700;
   width:40px;
 }
-#fleet #buttonz ul#missions{width:648px;
-height:65px;
-margin:10px auto 0 15px;
-position:relative;
-list-style-type:none}
+#fleet #buttonz ul#missions{
+  width:648px;
+  height:65px;
+  margin:10px auto 0 15px;
+  position:relative;
+  list-style-type:none;
+}
 #fleet #buttonz ul#missions div.buildingimg{height:54px}
 #fleet #buttonz ul#missions li.on a,#fleet #buttonz ul#missions li.on a:hover,#fleet #buttonz ul#missions li.on a.active,#fleet #buttonz ul#missions li.off a{background: url("../Imagenes/MovementOptions.jpg") no-repeat}
-#fleet #buttonz ul#missions li{width:54px;
-height:54px;
-background-repeat:no-repeat;
-float:left;
-margin:0 5px}#fleet #buttonz ul#missions li a{display:block;
-width:54px;
-height:54px}
+#fleet #buttonz ul#missions li{
+  width:54px;
+  height:54px;
+  background-repeat:no-repeat;
+  float:left;
+  margin:0 6px;
+}
+#fleet #buttonz ul#missions li a{
+  display:block;
+  width:54px;
+  height:54px;
+}
 #fleet ul#missions span.textlabel,#fleet #mission span.textlabel{
   height:1px;
   left:-9999px;
@@ -4393,11 +4413,13 @@ margin:10px;
 #fleet .allornonewrap .firstcol{width:300px}
 #fleet #buttonz ul#missions{
   height:80px;
-  margin:0 15px;
+  margin:0 36px;
 }
-#fleet #buttonz ul#missions li a{font-size:9px;
-text-align:center;
-text-decoration:none}
+#fleet #buttonz ul#missions li a{
+  font-size:9px;
+  text-align:center;
+  text-decoration:none
+}
 #fleet ul#missions span.textlabel{
   display:inline-block;
   left:-3px;
@@ -6742,15 +6764,72 @@ tr.alt td {
   left: 36px;
 }
 .smallplanet .planetlink .divMini .alertMini{
-  position: relative;
-  right: 46px;
+  position: absolute;
+  right: 120px;
+}
+.smallplanet .planetlink .divMini .buildMini{
+  position: absolute;
+  left: 50px;
+}
+.smallplanet .planetlink .divMini .fleetMini{
+  position: absolute;
+  left: 62px;
+}
+.smallplanet .planetlink .divMini .labMini{
+  position: absolute;
+  left: 74px;
 }
 .smallplanet .moonlink .divMiniMoon{
   position: relative;
   bottom: 30px;
-  left: 8px;
+  left: 12px;
 }
 .smallplanet .moonlink .divMiniMoon .alertMiniMoon{
-  position: relative;
-  right: 16px;
+  position: absolute;
+  right: 30px;
+}
+#PopUpDiv{
+  display: none;
+  opacity: 0;
+  background: #242e3a;
+  border-color: #000106;
+  font-size: medium;
+  padding: 12px;
+  color: #6f9fc3;
+  position: fixed;
+  width: 100px;
+  height: 62px;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+  border-radius: 14px;
+  z-index: 999;
+  text-align: center;
+  overflow-y: visible;
+}
+#PopUpDiv.popUpActive{
+    animation: 3s popupAnim 1;
+}
+@keyframes popupAnim {
+  from{
+    display: block;
+  }
+  10%{
+    width: 220px;
+    height: 136px;
+    opacity: 1;
+    top: 50%;
+  }
+  90%{
+    width: 220px;
+    height: 136px;
+    opacity: 1;
+    top: 50%;
+  }
+  to{
+    width: 100px;
+    height: 62px;
+    opacity: 0;
+    top: 30%;
+  }
 }

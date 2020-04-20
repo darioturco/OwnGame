@@ -29,6 +29,8 @@
             \item Existe el edificio lunar, market place, en el cual se puede cambiar recursos y ganar ofertas.
             \item Existe el edificio lunar, lunar shield, el cual hac mas dificil de destruir una luna.
             \item El spacial dock ahora es un edicio lunar.
+            \item Se elimino la opcion de ataque ACS attack.
+            \item Se cambio la funcion del deposito de alianza, ahora por cada nivel se puede tener una flota extra defendiendo el planeta.
         \end{itemize}
         \subsubsection{Juego original}
     \subsection{Objetos Importantes}
@@ -47,7 +49,7 @@
             \tab sendEspionage: cantidad de sondas de espionaje que se envia al apretar espiar en la vista de la galaxia\\
             \tab sendSmall: cantidad de small cargos que se envia al atcar a una vaca \\
             \tab sendLarge: cantidad de large cargos que se envia al atcar a una vaca\\
-            \tab dark: cantidad de materia os   cura del jugador  \\
+            \tab dark: cantidad de materia oscura del jugador  \\
             \tab messagesCant: cantidad de mensajes sin leer del jugador\\
             \tab messages: lista con todos los mensajes del jugador\\
             \tab movement: lista con todos los movimientos de flota del jugador\\
@@ -60,7 +62,23 @@
             \tab\tab init: tiempo en que se incio la investigacion\\
             \tab\tab time: duracion de la investigacion\\
             \tab tutorial: lista de booleanos que dicen cual tutorial fue completado y cual no\\
-            \tab research: objeto con los niveles de todas las tecnologias del jugador\\
+            \tab research: objeto con los niveles de todas las tecnologias del jugador, su estructura es:\\
+            \tab\tab energy: nivel de la tecnologia de enrgia\\
+            \tab\tab laser: nivel de la tecnologia laser\\
+            \tab\tab ion: nivel de la tecnologia ionica\\
+            \tab\tab hyperspace: nivel de la tecnologia de hyperespacio\\
+            \tab\tab plasma: nivel de la tecnologia de plasma\\
+            \tab\tab espionage: nivel de la tecnologia de espionage\\
+            \tab\tab computer: nivel de la tecnologia de computacion\\
+            \tab\tab astrophysics: nivel de la tecnologia astrifisica\\
+            \tab\tab intergalactic: nivel de la tecnologia intergalactica\\
+            \tab\tab graviton: nivel de la tecnologia de graviton\\
+            \tab\tab combustion: nivel del motor de conbustion\\
+            \tab\tab impulse: nivel del motor de impulso\\
+            \tab\tab hyperspacedrive: nivel del motor de hyper espacio\\
+            \tab\tab weapons: nivel de la tecnologia militar\\
+            \tab\tab shielding: nivel de la tecnologia de defensa\\
+            \tab\tab armour: nivel de la tecnologia de blindaje\\
             \tab lastVisit: numero que determina en que instante de tiempo se actualizaron los datos de ese jugador por ultima vez\\
             \tab type: tipo de jugador en la vista de galaxia\\
         \subsubsection{planeta} El objeto que guarda toda la informacion de un planeta\\
@@ -147,6 +165,7 @@
             \tab\tab active: bool que guarda si hay escombros activos o no\\
             \tab\tab metal: cantidad de metal en los escombros, si active es false esta variable es 0\\
             \tab\tab crystal: cantidad de cristal en los escombros, si active es false esta variable es 0\\
+            \tab defenseFleets: lista de objetos con todas las flotas que estan defendiendo el planeta. La cantidad maxima de flotas defendiendo el planeta es 1 + el nivel del deposito de alianza. El objeto que guarda aun no esta definido como va a ser.\\
         \subsubsection{moon} Es el objeto que guarda la informacion de la luna, tiene dos campos que estan siempre disponibles exista la luna o no, los cuales son active y size\\
             \tab active: boolenao que si es true entonces ese planeta tiene luna\\
             \tab size: size de la luna. Si active es falso size es igual a 0\\
@@ -217,7 +236,7 @@
             \tab storage: objeto que dice cuanto es el almacenamiento maximo de cada recurso\\
             \tab plasma: nivel de la tecnologia de plasma del jugador\\
         \subsubsection{moonSetting(planet)}
-          Devuelve el objeto 'info' del view MoonBuildings. El objeto tiene el siguiente formato:
+          Devuelve el objeto 'info' del view MoonBuildings. El objeto tiene el siguiente formato:\\
           \tab buildings: objeto que dice los niveles de todos los edificio de la luna\\
           \tab values: objeto que da los porcentajes del lunar beam y del sunshade. Su formato es:\\
           \tab\tab sunshade: numero del 0 al 10\\
@@ -225,11 +244,11 @@
           \tab fleets: objeto con la cantida de cada nave en la luna\\
           \tab cuanticTime: numero que dice cuanto tiempo falta para poder usar el salto cuantico\\
           \tab cuanticMoonsCord: lista que tiene las cordenadas de todas las lunas a la que se puede hacer un salto cuantico\\
-          \tab campos: objeto que tiene la informacion de los campos maximos y campos usados de la luna. Tiene el formato:
+          \tab campos: objeto que tiene los campos maximos y campos usados de la luna. Tiene el formato:\\
           \tab\tab campos: campos actualmente usados de la luna\\
           \tab\tab camposMax: campos maximo de la luna\\
         \subsubsection{overviewActualInfo(planet)}
-          Devuelve el objeto 'info' del view Overview. El objeto tiene el siguiente formato:
+          Devuelve el objeto 'info' del view Overview. El objeto tiene el siguiente formato:\\
           \tab diameter: tamanio del planeta o luna\\
           \tab type: tipo del planeta\\
           \tab temperature: objeto con la temperatura efectiva del planeta\\
@@ -239,29 +258,7 @@
           \tab points: cantidad de puntos del jugador\\
         \subsubsection{buildingsActualInfo(planet)}
           Devuelve el objeto 'info' del view Resources y Facilities. Es un objeto que tiene los niveles de todos los edificons del planeta o luna, si es un planeta ademas da el numero de satelites solares del planeta.
-        \subsubsection{costBuildings(planet)}
-          Funcion llamada por la api para saber el coste de cada edificio de un planeta. Devuelve un objeto que por cada edificio tiene un campo con otro objeto que dice el cuanto cuesta y otras cosas. Los campos del objeto principal son:\\
-          metalMine: ,crystalMine: ,deuteriumMine: ,solarPlant: ,fusionReactor: ,metalStorage: ,crystalStorage: ,deuteriumStorage: ,robotFactory: ,shipyard: ,researchLab: ,alliance: ,silo: ,naniteFactory: ,terraformer: ,solarSatellite:, listInfo: ,time: ,doing:\\
-          Los unicos campos que son distintos del resto son listInfo: que es una lista con los nombre de los campos principales, time: que tiene un objeto con los campos mult: y elev: que contienen el nivel de las fabricas de robot y nanobot respectivamente. El campo doing: contiene el booleno que indica si se esta construllendo un edificio.\\
-          Cada campo principal tiene un objeto con el formato:\\
-          \tab metal: cantidad de metal que se necesita para poder iniciar la construccion para el proximo nivel\\
-          \tab crystal: cantidad de cristal que se necesita para poder iniciar la construccion para el proximo nivel\\
-          \tab deuterium: cantidad de deuterio que se necesita para poder iniciar la construccion para el proximo nivel\\
-          \tab energy: \\
-          \tab energyNeed: \\
-          \tab tech: bool que dice si ya se alcanzaron los requisitos para contruir el edificio\\
-          \tab level: nivel del edificio\\
-          \tab name: nombre posta del edificio\\
-          \tab description: informacion para el usuario sobre el edificion\\
-        \subsubsection{costMoon(planet)}
-            Funcion llamada por la api para saber los costes de los edificios de una luna. El objeto que debuelve tiene la forma: lunarBase, phalanx, spaceDock, marketplace, lunarSunshade, lunarBeam, jumpGate, moonShield, listInfo, time, doing. Los campos de time son mult y elev que tienen los niveles de la base lunar y la fabrica de nanobots del planeta, respectivamente. El funcionamiento es similar al objeto de costBuildings.
-        \subsubsection{costResearch(planet)}
-            Funcion llamada por la api para saber los costes de las investigaciones. El objeto tiene la forma: energy, laser, ion, hyperspace, plasma, espionage, computer, astrophysics, intergalactic, graviton, combustion, impulse, hyperspacedrive, weapons, shielding, armour, listInfo, time, doing.
-        \subsubsection{costShipyard(planet)}
-            Funcion llamada por la api para saber los costes de las naves. El objeto tiene la forma: lightFighter, heavyFighter, cruiser, battleship, battlecruiser, bomber, destroyer, deathstar, smallCargo, largeCargo, colony, recycler, espionageProbe, solarSatellite, listInfo, time, doing.
-        \subsubsection{costDefense(planet)}
-            Funcion llamada por la api para saber los costes de las defensas. El objeto tiene la forma: rocketLauncher, lightLaser, heavyLaser, gauss, ion, plasma, smallShield, largeShield, antiballisticMissile, interplanetaryMissile, listInfo, time, doing.
-        \subsubsection{fleetInfo(planet, moon)}
+        \subsubsection{navesInfo: function()}
             Entrega el objeto info de la pagina Fleet. El objeto tiene la forma:\\
             \tab fleets: objeto con la cantidad de naves del planeta/luna\\
             \tab speed: lista con la velocidades base de todas las naves\\
@@ -271,6 +268,11 @@
             \tab slot: catidad de flotas volando actualmente\\
             \tab maxSlot: cantidad maxima de posibles flotas volando\\
             \tab vacas: lista de vacas del jugador\\
+        \subsubsection{fleetInfo(planet, moon)}
+            Entrega un objeto que por cada nave que s pueda enviar en una flota retorna un objeto con la siguiente forma:\\
+            \tab speed: velocidad de la nave con respecto a las tecnologias del jugador\\
+            \tab carga: capacidad de carga de una nave de ese tipo\\
+            \tab consumo: consumo de deuterio de una sola nave\\
         \subsubsection{galaxyInfo(planet)}
             Entrega el objeto info de la pagina Galaxy. El objeto tiene la forma:\\
             \tab espionage: cantidad de sondas de espionage en el planeta/luna\\
@@ -294,6 +296,34 @@
             \tab metalDebris: cantidad de metal en los escombros\\
             \tab crystalDebris: cantidad de cristal en los escombros\\
             \tab estado: estado del jugador duenio del planeta en esa posicion\\
+        \subsubsection{updateResourcesData(f, planet, obj = null)}
+        \subsubsection{updateResourcesDataMoon(f, planet, obj)}
+        \subsubsection{contPoint(player)}
+          Cuenta todos los puntos de un jugador y los guarda en la base de datos.
+    \subsection{Funciones API}
+        \subsubsection{costBuildings(planet)}
+          Funcion llamada por la api para saber el coste de cada edificio de un planeta. Devuelve un objeto que por cada edificio tiene un campo con otro objeto que dice el cuanto cuesta y otras cosas. Los campos del objeto principal son:\\
+          metalMine: ,crystalMine: ,deuteriumMine: ,solarPlant: ,fusionReactor: ,metalStorage: ,crystalStorage: ,deuteriumStorage: ,robotFactory: ,shipyard: ,researchLab: ,alliance: ,silo: ,naniteFactory: ,terraformer: ,solarSatellite:, listInfo: ,time: ,doing:\\
+          Los unicos campos que son distintos del resto son listInfo: que es una lista con los nombre de los campos principales, time: que tiene un objeto con los campos mult: y elev: que contienen el nivel de las fabricas de robot y nanobot respectivamente. El campo doing: contiene el booleno que indica si se esta construllendo un edificio.\\
+          Cada campo principal tiene un objeto con el formato:\\
+          \tab metal: cantidad de metal que se necesita para poder iniciar la construccion para el proximo nivel\\
+          \tab crystal: cantidad de cristal que se necesita para poder iniciar la construccion para el proximo nivel\\
+          \tab deuterium: cantidad de deuterio que se necesita para poder iniciar la construccion para el proximo nivel\\
+          \tab energy: \\
+          \tab energyNeed: \\
+          \tab tech: bool que dice si ya se alcanzaron los requisitos para contruir el edificio\\
+          \tab level: nivel del edificio\\
+          \tab name: nombre posta del edificio\\
+          \tab description: informacion para el usuario sobre el edificion\\
+        \subsubsection{costMoon(planet)}
+            Funcion llamada por la api para saber los costes de los edificios de una luna. El objeto que debuelve tiene la forma: lunarBase, phalanx, spaceDock, marketplace, lunarSunshade, lunarBeam, jumpGate, moonShield, listInfo, time, doing. Los campos de time son mult y elev que tienen los niveles de la base lunar y la fabrica de nanobots del planeta, respectivamente. El funcionamiento es similar al objeto de costBuildings.
+        \subsubsection{costResearch(planet)}
+            Funcion llamada por la api para saber los costes de las investigaciones. El objeto tiene la forma: energy, laser, ion, hyperspace, plasma, espionage, computer, astrophysics, intergalactic, graviton, combustion, impulse, hyperspacedrive, weapons, shielding, armour, listInfo, time, doing.
+        \subsubsection{costShipyard(planet)}
+            Funcion llamada por la api para saber los costes de las naves. El objeto tiene la forma: lightFighter, heavyFighter, cruiser, battleship, battlecruiser, bomber, destroyer, deathstar, smallCargo, largeCargo, colony, recycler, espionageProbe, solarSatellite, listInfo, time, doing.
+        \subsubsection{costDefense(planet)}
+            Funcion llamada por la api para saber los costes de las defensas. El objeto tiene la forma: rocketLauncher, lightLaser, heavyLaser, gauss, ion, plasma, smallShield, largeShield, antiballisticMissile, interplanetaryMissile, listInfo, time, doing.
+
         \subsubsection{proccesBuildRequest(planet, buildingName, res)}
         \subsubsection{proccesMoonRequest(planet, buildingName, res)}
         \subsubsection{proccesResearchRequest(planet, researchName, res)}
@@ -302,15 +332,12 @@
         \subsubsection{cancelMoonRequest(planet, res)}
         \subsubsection{cancelResearchRequest(res)}
         \subsubsection{cancelShipyardRequest(planet, shipyardName, res)}
-        \subsubsection{updateResourcesData(f, planet, obj = null)}
-        \subsubsection{updateResourcesDataMoon(f, planet, obj)}
-        \subsubsection{contPoint(player)}
-          Cuenta todos los puntos de un jugador y los guarda en la base de datos.
-    \subsection{Scripts}
-        \subsubsection{Funciones importantes}
+    \subsection{Otros}
+        \subsubsection{Comandos para lanzar el servidor}
             'service mongod start' Arranca el servicio de mongo\\
             'npm run start-dev' Arranca el servidor
-    \subsection{HTML tricks}
         \subsubsection{dataset}
           Para pasar un dato por html se puede usar la propiedad data-val='valor' y en javascript leerla con item.dataset.val
+        \subsubsection{idea para el servidor}
+          Modularisar el script universe.js. Que contenga una lista de los scripts de cada jugador donde cada script de jugador contiene los algoritmos del jugador y el objeto player del propio jugador y cuando se cambia algo con una funcion de universe.js se pase ese objeto jugador desde el script.js.
 \end{document}
