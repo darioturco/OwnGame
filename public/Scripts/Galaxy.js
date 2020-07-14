@@ -46,7 +46,7 @@ function loadSystem(gal, sys){
     pressMoon(-1);//apaga el cartel de la luna
     pressDebris(-1);//apaga el cartel de los escombros
     for(let i = 1 ; i<=15 ; i++){
-      if(obj['pos'+i].active == true){
+      if(obj['pos'+i].active == true){    // Sie el plantea de la posicion i esta colonizado
         cont++;
         planets[i-1].src = './Imagenes/Planets/Miniatures/Planet_' + obj['pos'+i].type + '_' + obj['pos'+i].color + '_Mini.gif';
         playerName[i-1].innerHTML = obj['pos'+i].player + getEstado(obj['pos'+i].estado);
@@ -61,7 +61,7 @@ function loadSystem(gal, sys){
         planets[i-1].src = './Imagenes/None.gif';
         playerName[i-1].innerHTML = '';
         planetName[i-1].innerHTML = '';
-        colonyImg[i-1].style.display = 'auto';
+        colonyImg[i-1].style.display = 'inline';
         actions[i-1].style.display = 'none';
         moons[i-1].classList.remove('activeMoon');
         debris[i-1].classList.remove('debrisField');
@@ -83,10 +83,10 @@ function getEstado(est){
 function pressMoon(num){
   if(moonActive == num){
     moonActive = -1;
-    moonConteiner.style.display = 'none';//cierra el div
+    moonConteiner.style.display = 'none'; //cierra el div
   }else{
     moonActive = num;
-    if(num >= 0){//actualiza datos de la luna
+    if(num >= 0){ //actualiza datos de la luna
       moonCord.innerHTML = '['+galaxy+':'+system+':'+num+']';
       moonSize.innerHTML = moonList[num-1].size + ' Km';
       moonConteiner.style.top = ((num-1)*33+76) + 'px';
@@ -134,7 +134,7 @@ function pressGo(){
   loadSystem(parseInt(galaxyText.value), parseInt(systemText.value));
 }
 function doExpedition(){
-
+  console.log("Go to expedition!!!");
 }
 function colonize(pos){
   console.log(pos);
