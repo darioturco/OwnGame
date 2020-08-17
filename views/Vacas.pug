@@ -32,8 +32,8 @@ block content
                 th #{item.planetName}
                 th
                   div.coordinatesDiv
-                    a.coordinatesLink(href='./Ogame_Galaxy.html?gal=' + item.coordinates.galaxy + '&sys=' + item.coordinates.system target='_self')
-                      p [#{item.coordinates.galaxy}:#{item.coordinates.system}:#{item.coordinates.pos}]
+                    a.coordinatesLink(href='./Ogame_Galaxy.html?gal=' + item.coordinates.gal + '&sys=' + item.coordinates.sys target='_self')
+                      p [#{item.coordinates.gal}:#{item.coordinates.sys}:#{item.coordinates.pos}]
                 th.action
                   a.tooltip(href='#' onclick='return false;' title='espiar')
                     span.icon.icon_eye
@@ -43,6 +43,6 @@ block content
                     span.icon.icon_missile
                   a.tooltip(href='#' onclick='return false;' title='ataque vaca')
                     span.icon.icon_against
-                  a.tooltip(href='#' onclick='removeVaca(this, ' + item.coordinates.galaxy + ', ' + item.coordinates.system + ', ' + item.coordinates.pos + ');' title='eliminar')
+                  a.tooltip(href='#' onclick='removeVaca(this, ' + item.coordinates.gal + ', ' + item.coordinates.sys + ', ' + item.coordinates.pos + ');' title='eliminar')
                     span.icon.icon_mail
       .footer

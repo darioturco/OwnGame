@@ -57,6 +57,6 @@ function changePag(n){
 }
 
 function goToGalaxyByHishcore(pos){
-  window.location = './Ogame_Galaxy.html?gal=' + info[pos-1].coor.galaxy + '&sys=' + info[pos-1].coor.system;
+  window.location = './Ogame_Galaxy.html?gal=' + info[pos-1].coor.gal + '&sys=' + info[pos-1].coor.sys;
   console.log(pos);
 }

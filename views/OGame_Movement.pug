@@ -1,2 +1,102 @@
 extends Ogame_Layout
 block content
+  #movement
+    #inhalt
+      header#planet
+        h2 Fleet Movement - #{(basic.moon) ? basic.planets[basic.numPlanet].moon.name : basic.planets[basic.numPlanet].name}
+      .c-left
+      .c-right
+      .fleetStatus
+        span.reload
+          a.dark_highlight_tablet(href='javascript:void(0);' onclick='reloadPage();')
+            span.icon.icon_reload
+            span Reload
+        span.fleetSlots Fleets:
+          span.current #{info.slot}
+          | /
+          span.all #{info.maxSlot}
+        span.expSlots Expeditions:
+          span.current #{info.expeditions}
+          |  /
+          span.all #{info.maxExpeditions}
+      each val, index in info.movement
+        .fleetDetails.detailsOpened
+          span.timer.tooltip(id="timer"+index data-ida=(val.ida ? "True" : "False") data-time=val.llegada data-total=(Math.abs(val.time-val.llegada))) -
+          span.absTime #{new Date((val.ida ? val.time : val.llegada) - 10800000).toGMTString().slice(17, 25)}  Clock
+          span.mission.neutral.textBeefy #{basic.missionNumToString(val.mission)}
+          span.allianceName
+          span.originData
+            -
+              let coorDesde = "[" + val.coorDesde.gal + ":" + val.coorDesde.sys + ":" + val.coorDesde.pos + "]";
+              let coorHasta = "[" + val.coorHasta.gal + ":" + val.coorHasta.sys + ":" + val.coorHasta.pos + "]";
+              let coorDesdeLink = './Ogame_Galaxy.html?gal=' + val.coorDesde.gal + '&sys=' + val.coorDesde.sys;
+              let coorHastaLink = './Ogame_Galaxy.html?gal=' + val.coorHasta.gal + '&sys=' + val.coorHasta.sys;
+              let destino = "";
+              let imgDesde = "";
+              let imgHasta = "";
+              if(val.destination == 1){
+                destino = "Planet";
+              }else{
+                if(val.destination == 2){
+                  destino = "Moon";
+                }else{
+                  destino = "Debris";
+                }
+              }
+              if(val.moon){
+                imgDesde = "../Imagenes/Planets/Miniatures/MiniMoon.gif";
+              }else{
+                imgDesde = "../Imagenes/Planets/Miniatures/Planet_" + val.desdeType + "_" + val.desdeColor + "_Mini.gif";
+              }
+              if(val.coorHasta.pos == 16 || val.mission == 1){
+                imgHasta = "../Imagenes/Planets/Miniatures/Unknown.gif";
+              }else{
+                if(val.destination == 2){
+                  imgHasta = "../Imagenes/Planets/Miniatures/MiniDebris.gif";
+                }else{
+                  if(val.destination == 3){
+                    imgHasta = "../Imagenes/Planets/Miniatures/MiniMoon.gif";
+                  }else{
+                    imgHasta = "../Imagenes/Planets/Miniatures/Planet_" + val.hastaType + "_" + val.hastaColor + "_Mini.gif";
+                  }
+                }
+              }
+              let navesText = "";
+              console.log(val.ida);
+              for(let item in val.ships){
+                if(val.ships[item] != 0) navesText += item + ": " + val.ships[item] + " <br> ";
+              }
+              navesText += "<br> Metal: " + val.resources.metal + " <br> ";
+              navesText += "Crystal: " + val.resources.crystal + " <br> ";
+              navesText += "Deuterium: " + val.resources.deuterium + " <br> ";
+            span.originCoords.tooltip
+              a(href=coorDesdeLink) #{coorDesde}
+            span.originPlanet
+              figure.planetIcon.planet
+              | #{val.desdeName}
+          span.marker01
+          span.marker02
+          span.fleetDetailButton
+            a.tooltipRel.tooltipClose.fleet_icon_forward
+          span.reversal.reversal_time
+            a(style='display: ' + (val.ida ? 'inline' : 'none') href='javascript:void(0);' onclick='returnFleet(' + index + ');')
+              img(src='../Imagenes/movementBack.gif' width='16' height='16')
+          span.starStreak
+            div(style='position: relative;')
+              .origin.fixed
+                 img(src=imgDesde alt='' width='30' height='30')
+              .route.fixed
+                a(id="nave"+index class=(val.ida ? "fleet_icon_forward" : "fleet_icon_reverse") style='margin-left: 0px;' onclick='showFleet(' + index + ');')
+                  div.infoDiv(id="info"+index style=(val.ida ? '' : 'transform: rotateZ(180deg); ')) !{navesText}
+              .destination.fixed
+                img(src=imgHasta alt='' width='30' height='30')
+          span.destinationData
+            span.destinationPlanet
+              span
+                figure.planetIcon.planet
+                | #{destino}
+            span.destinationCoords.tooltip
+              a(href=coorHastaLink) #{coorHasta}
+          span.nextTimer #{basic.segundosATiempo(val.duracion)}
+          span.nextabsTime #{new Date((val.ida ? val.llegada : val.time) - 10800000).toGMTString().slice(17, 25)} Clock
+          span.nextMission.friendly.textBeefy #{val.ida ? "Going" : "Returning"}

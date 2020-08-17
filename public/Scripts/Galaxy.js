@@ -141,7 +141,7 @@ function colonize(pos){
 }
 
 function addVaca(pos){
-  loadJSON('./api/set/addVaca?coor={"galaxy":' + galaxy + ',"system":' + system + ',"pos":' + pos + '}&playerName=' + playerName[pos-1].innerText + '&planetName=' + planetName[pos-1].innerText + '&estado=' + estados[pos-1], (obj) => {
+  loadJSON('./api/set/addVaca?coor={"gal":' + galaxy + ',"sys":' + system + ',"pos":' + pos + '}&playerName=' + playerName[pos-1].innerText + '&planetName=' + planetName[pos-1].innerText + '&estado=' + estados[pos-1], (obj) => {
     console.log(obj);
   });
 }

@@ -1,4 +1,4 @@
-//Script que usa toda pagina del juego. Contiene funciones varis de uso general 
+//Script que usa toda pagina del juego. Contiene funciones varis de uso general
 var metal_res, crystal_res, deuterium_res, clock;
 var metal = 0, crystal = 0, deuterium = 0;
 var popUp, popUpText;
@@ -25,8 +25,7 @@ function actualizaFecha(){ // Se ejecuta cada un segunda y updatea el reloj de l
 }
 
 function segundosATiempo(seg){ // Dado un numero de segundos le da el formato tiempo (x dias n horas m minutos s segundos) xd nh mm ss
-  if(!isFinite(seg)) return " unknown";
-  if(seg < 0) return " now";
+  if(!isFinite(seg) || isNaN(seg) || seg < 0) return " unknown";
   let time = (seg%60) + "s";
   seg = Math.floor(seg/60);
   if(seg != 0){
@@ -43,7 +42,7 @@ function segundosATiempo(seg){ // Dado un numero de segundos le da el formato ti
 
 function removeVaca(own, gal, sys, pos){ // funcion utilizada para eliminar una vaca de la lista de vacas del jugador logeado
   own.parentElement.parentElement.style.display = 'none';
-  loadJSON('./api/set/addVaca?coor={"galaxy":' + gal + ',"system":' + sys + ',"pos":' + pos + '}', (obj) => {
+  loadJSON('./api/set/addVaca?coor={"gal":' + gal + ',"sys":' + sys + ',"pos":' + pos + '}', (obj) => {
     console.log(obj);
   });
 }
@@ -89,7 +88,7 @@ function completaDigitos (inn) { // apartir de un numero string si tiene 2 carac
   return result;
 }
 
-function sendPopUp(message){ // Aparece un mensage pop up por 3s que dice el texto message
+function sendPopUp(message, time = 3000){ // Aparece un mensage pop up por 3s que dice el texto message
   popUp.style.display = "block";
   popUp.classList.add("popUpActive");
   popUpText.innerText = message;
@@ -97,8 +96,7 @@ function sendPopUp(message){ // Aparece un mensage pop up por 3s que dice el tex
     console.log("Se apreto el boton");
     popUp.style.display = "none";
     popUp.classList.remove("popUpActive");
-  }, 3000);
-
+  }, time);
 }
 
 /*<div id="attack_alert" class="tooltip eventToggle soon" title="">

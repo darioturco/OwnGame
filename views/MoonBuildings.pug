@@ -226,7 +226,7 @@ block content
               ul#dropdown3.dropdown.dropdownList.initialized(data-val=0 style='left: 30px; top: 0px; min-width: 120px; display:none;')
                 each item in info.cuanticMoonsCord
                   li
-                    a(value=item.num onclick='setDropdownMoon(' + item.num + ', this.innerText, ' + item.cord.galaxy + ', ' + item.cord.system +', ' + item.cord.pos + ')') #{item.name+' ['+item.cord.galaxy+':'+item.cord.system+':'+item.cord.pos+']'}
+                    a(value=item.num onclick='setDropdownMoon(' + item.num + ', this.innerText, ' + item.cord.gal + ', ' + item.cord.sys +', ' + item.cord.pos + ')') #{item.name+' ['+item.cord.gal+':'+item.cord.sys+':'+item.cord.pos+']'}
             div#cuanticButton
               a#start.on(href='javascript:void(0);' onclick='sendCuanticFleet();')
                 span Send fleet

@@ -18,8 +18,8 @@ function setSearch(){
           rows[i].style.display = 'table-row';
           playerSearch[i].innerText = playerName;
           planetSearch[i].innerText = obj.names[i];
-          coorSearch[i].innerText = '[' + obj.coors[i].galaxy + ':' + obj.coors[i].system + ':' + obj.coors[i].pos + ']';
-          coordinatesLink[i].href = './Ogame_Galaxy.html?gal=' + obj.coors[i].galaxy + '&sys=' + obj.coors[i].system;//coordinatesLink
+          coorSearch[i].innerText = '[' + obj.coors[i].gal + ':' + obj.coors[i].sys + ':' + obj.coors[i].pos + ']';
+          coordinatesLink[i].href = './Ogame_Galaxy.html?gal=' + obj.coors[i].gal + '&sys=' + obj.coors[i].sys;//coordinatesLink
         }else{
           rows[i].style.display = 'none';
         }

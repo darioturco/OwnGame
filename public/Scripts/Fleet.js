@@ -72,6 +72,7 @@ function clickSelect(num){
       }
     }
   }
+  calculaDistancia();
 }
 
 function setDropdown(val, num, init = false){
@@ -134,7 +135,7 @@ function calculaDistancia(){//distancia desde {gal, sys, pos} hasta {galaxy, sys
   if(posVal.value < 1) posVal.value = 1;
   if(galVal.value > 9) galVal.value = 9;
   if(sysVal.value > 499) sysVal.value = 499;
-  if(posVal.value > 16) posVal.value = 15;
+  if(posVal.value > 17) posVal.value = 16;
   let gal = parseInt(galVal.value);
   let sys = parseInt(sysVal.value);
   let pos = parseInt(posVal.value);
@@ -185,7 +186,7 @@ function changeFleet(){
       inputsFleets[i].value = cantFleets[i].innerText;
       aux = parseInt(cantFleets[i].innerText);
     }
-    carga += aux*cargaList[i];// suma a la carga total de la flota
+    carga += aux*cargaList[i]; // suma a la carga total de la flota
     consumDeu += Math.floor(aux*deuteriumList[i]*dis*Math.pow(0.7+speedActive/100,2)/40000); // suma al consumo de deuterio
     if(aux > 0 && parseInt(inputsFleets[i].dataset.vel) < newMin) newMin = parseInt(inputsFleets[i].dataset.vel); // busca la nave mas lenta para calcular la velocidad del viaje
   }
@@ -196,8 +197,8 @@ function changeFleet(){
   cargaText.innerText = carga;
   cargeResourcesMax.innerText = carga;
   clearAllResourcesFunction();
-  updateSpeedPanel();//actualiza los datos
-  changeButtonMision();//cambia las misiones
+  updateSpeedPanel();   // Actualiza los datos
+  changeButtonMision(); // Cambia las misiones
 }
 
 function updateSpeedPanel(){
@@ -216,7 +217,7 @@ function updateSpeedPanel(){
     arrivalText.innerText = '-';
     returnText.innerText = '-';
   }
-  for(let i = 0 ; i<inputsFleets.length ; i++){//updatea el consumo de deuterio
+  for(let i = 0 ; i<inputsFleets.length ; i++){ // Updatea el consumo de deuterio
     let aux = parseInt(inputsFleets[i].value);
     if(isNaN(aux)) aux = 0;
     consumDeu += Math.floor(aux*deuteriumList[i]*dis*Math.pow(0.68+speedActive/100,2)/40000);
@@ -348,18 +349,20 @@ async function sendFleetMovement(){
     }
     data.coorDesde = {gal: galaxy, sys: system, pos: position};
     data.coorHasta = {gal: parseInt(galVal.value), sys: parseInt(sysVal.value), pos: parseInt(posVal.value)};
-    data.destination = destination;//1 = planeta, 2 = moon, 3 = debris
+    data.destination = destination; // 1 = planeta, 2 = moon, 3 = debris
     data.porce = speedActive;
     data.mission = missionSelected;
-    data.resources = {metal: 0, crystal: 0, deuterium: 0};
+    data.resources = {metal: cargeInputs[0].value, crystal: cargeInputs[1].value, deuterium: cargeInputs[2].value};
+    console.log(data);
     let res = await fetch('./api/set/addFleetMovement', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
     let objRes = await res.json();
     console.log(objRes);
+    if(objRes.ok == false) sendPopUp(objRes.mes);
     ready = true;
     if(objRes.ok){
       location.reload();
     }else{
-      console.log("Algo fallo en el envio de flota."); //Notificar mejor porque no se envia la flota
+      console.log("Algo fallo en el envio de flota."); /* Notificar mejor porque no se envia la flota */
     }
   }
 }

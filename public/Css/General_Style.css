@@ -4147,13 +4147,19 @@ margin:0 5px 0 0;
 text-align:center;
 width:100%}
 #fleet a#sendall:link,#fleet a#sendall:visited,#fleet a#sendall:hover,#fleet a#sendall:active{text-decoration:none}#sftcontainer a.close_details{margin:-1px 8px 0 0}#sftcontainer #fleetTemplatesEdit .shipDesc{padding:4px 5px}#sftcontainer #fleetTemplatesEdit .shipDesc img{float:left;
-margin:1px 10px 2px 0}#sftcontainer .fleetDesc a:link,#sftcontainer .fleetDesc a:visited,#sftcontainer .fleetDesc a:hover,#sftcontainer .fleetDesc a:active{display:block}#sftcontainer .fleetDesc-hover{background-color:#212933}#movement #planet{background-repeat:no-repeat;
-background-image: url("../Imagenes/Background.jpg");
-height:250px;
-margin:0 auto;
-position:relative;
-width:654px;
-margin-bottom:3px}#movement .c-left,#movement .c-right{height:39px;
+margin:1px 10px 2px 0}
+#sftcontainer .fleetDesc a:link,#sftcontainer .fleetDesc a:visited,#sftcontainer .fleetDesc a:hover,#sftcontainer .fleetDesc a:active{display:block}
+#sftcontainer .fleetDesc-hover{background-color:#212933}
+#movement #planet{
+  background-repeat:no-repeat;
+  background-image: url("../Imagenes/Movement.jpg");
+  height:250px;
+  margin:0 auto;
+  position:relative;
+  width:654px;
+  margin-bottom:3px;
+}
+#movement .c-left,#movement .c-right{height:39px;
 width:28px;
 position:absolute;
 top:214px}#movement .fromto{margin:0}#movement .fromto{width:669px}#movement .fromto .closed{height:28px;
@@ -4228,35 +4234,99 @@ line-height:15px;
 text-align:center;
 width:622px;
 padding:0;
-margin:0 0 10px 0}#movement #sftcontainer input.button{background-color:#848484;
-color:#0e1012}#movement #sftcontainer select{width:175px}#movement div.fleet span{float:left}#movement .info{margin:5px 0 0 7px}#movement .info img{border:0 none}#movement .info .countdown,#movement .info .mission{font-weight:700}#movement .info .mission{cursor:help}#movement .info .isolator,#movement .info .seperator,#movement .info .seperator2,#movement .info .direction{padding:0 3px}#movement .info .action{float:right;
-margin-right:15px}#movement .info .action a{display:inline}#movement div.fleet{font-size:11px;
-margin:0;
-overflow:hidden;
-padding:0;
-height:28px;
-cursor:pointer}#movement .friendly{color:#9c0}#movement .neutral{color:#d29d00}#movement .hostile{color:#d43635}#movement table.fleetinfo td.value{padding-left:5px;
-text-align:right}#movement div.fleetinfo{background:#10181f;
-border-left:1px solid #000;
-border-right:1px solid #000;
-border-bottom:1px solid #000;
-font-size:11px;
-margin:0 0 2px 6px;
-width:653px}#movement div.fleetinfo .wrapper{background:#0b1014  url("../Imagenes/Background.jpg") 0 no-repeat;
-height:42px;
-margin:0 auto;
-position:relative}#movement div.fleetinfo .wrapper .origin,#movement div.fleetinfo .wrapper .destination{height:30px;
-top:5px;
-width:30px}#movement .fixed{position:absolute}#movement div.fleetinfo .wrapper .origin{left:30px}#movement div.fleetinfo .wrapper .destination{left:594px}#movement .route{height:16px;
-left:62px;
-top:14px;
-width:530px}div#changefleetname{width:640px}div#changefleetname .wrap{background:#13181d;
-margin:0 0 10px 0;
-padding:5px}.wrap .col{float:left}#sftcontainer #h3{float:left;
-padding-bottom:15px}input.fix{height:18px;
-line-height:18px;
-width:150px}input.fix:focus{background-color:#1a2632;
-color:#848484}.eventboxHover{cursor:pointer}
+margin:0 0 10px 0}
+#movement #sftcontainer input.button{background-color:#848484;
+color:#0e1012}
+#movement #sftcontainer select{width:175px}
+#movement div.fleet span{float:left}
+#movement .info{margin:5px 0 0 7px}
+#movement .info img{border:0 none}
+#movement .info .countdown,#movement .info .mission{font-weight:700}
+#movement .info .mission{cursor:help}
+#movement .info .isolator,#movement .info .seperator,#movement .info .seperator2,#movement .info .direction{padding:0 3px}
+#movement .info .action{
+  float:right;
+  margin-right:15px;
+}
+#movement .info .action a{display:inline}
+#movement div.fleet{
+  font-size:11px;
+  margin:0;
+  overflow:hidden;
+  padding:0;
+  height:28px;
+  cursor:pointer;
+}
+#movement .friendly{color:#9c0}
+#movement .neutral{color:#d29d00}
+#movement .hostile{color:#d43635}
+#movement table.fleetinfo td.value{
+  padding-left:5px;
+  text-align:right;
+}
+#movement div.fleetinfo{
+  background:#10181f;
+  border-left:1px solid #000;
+  border-right:1px solid #000;
+  border-bottom:1px solid #000;
+  font-size:11px;
+  margin:0 0 2px 6px;
+  width:653px;
+}
+#movement div.fleetinfo .wrapper{
+  background:#0b1014  url("../Imagenes/Background.jpg") 0 no-repeat;
+  height:42px;
+  margin:0 auto;
+  position:relative;
+}
+#movement div.fleetinfo .wrapper .origin,#movement div.fleetinfo .wrapper .destination{
+  height:30px;
+  top:5px;
+  width:30px;
+}
+#movement .fixed{position:absolute}
+#movement div.fleetinfo .wrapper .origin{left:30px}
+#movement div.fleetinfo .wrapper .destination{left:594px}
+#movement .route{
+  height:16px;
+  left:62px;
+  top:14px;
+  width:530px;
+}
+#movement .route a{cursor: pointer}
+#movement .route .infoDiv{
+  display: none;
+  position: relative;
+  top: 22px;
+  right: 50px;
+  z-index: 999;
+  background: #2c3949;
+  width: 100px;
+  min-height: 40px;
+  border-radius: 6px;
+  padding: 4px;
+}
+div#changefleetname{width:640px}
+div#changefleetname .wrap{
+  background:#13181d;
+  margin:0 0 10px 0;
+  padding:5px;
+}
+.wrap .col{float:left}
+#sftcontainer #h3{
+  float:left;
+  padding-bottom:15px;
+}
+input.fix{
+  height:18px;
+  line-height:18px;
+  width:150px;
+}
+input.fix:focus{
+  background-color:#1a2632;
+  color:#848484;
+}
+.eventboxHover{cursor:pointer}
 .fleetStatus{background:transparent  url("../Imagenes/Bar.gif") no-repeat;
 color:#7c8e9a;
 font:normal 10px Verdana,Arial,Helvetica,sans-serif;
@@ -4265,36 +4335,79 @@ line-height:28px;
 margin:0 auto;
 overflow:hidden;
 position:relative;
-width:658px}.fleetStatus span a img{margin-right:7px;
-vertical-align:middle}.fleetStatus span a,.fleetStatus span a:link{text-decoration:none}.fleetStatus span a:hover span{color:#6f9fc8;
-text-decoration:underline}span.reload{margin-left:7px}.fleetStatus .icon_reload{margin:0 0 -4px}.fleetStatus span.current,.fleetStatus span.all{color:#fff}.fleetStatus .fleetSlots,.fleetStatus .expSlots{margin-left:108px}.fleetStatus .closeAll,.fleetStatus .newWindow{line-height:normal;
-right:-1px;
-position:absolute;
-top:3px}.fleetStatus .closeAll a{background: url("../Imagenes/Background.jpg") no-repeat 0 0;
-height:22px;
-width:22px;
-display:block}.fleetStatus .closeAll .all_closed{background-position:0 0}.fleetStatus .closeAll .all_open{background-position:0 -22px}.fleetStatus .newWindow{top:6px;
-right:35px}.fleetStatus .newWindow a img{margin:0}.fleetDetails{background:#0d1014;
-border:1px solid #000;
-color:#7c8e9a;
-font:normal 10px Verdana,Arial,Helvetica,sans-serif;
-line-height:24px;
-margin:5px auto 0;
-overflow:hidden;
-position:relative;
-width:656px}.fleetDetails.detailsClosed{height:22px}.detailsClosed .timer,.detailsClosed .fedAttack,.detailsClosed .originData,.detailsClosed .fleetVisualisation,.detailsClosed .quantity,.detailsClosed .reversal,.detailsClosed .destinationData,.detailsClosed .sendMail,.detailsClosed .mission,.detailsClosed .openDetails,.detailsClosed .fleetDetailButton,.detailsOpened .timer,.detailsOpened .fedAttack,.detailsOpened .originData,.detailsOpened .fleetVisualisation,.detailsOpened .quantity,.detailsOpened .reversal,.detailsOpened .destinationData,.detailsOpened .sendMail,.detailsOpened .mission,.detailsOpened .openDetails,.detailsOpened .absTime,.detailsOpened .allianceName,.detailsOpened .starStreak,.detailsOpened .nextTimer,.detailsOpened .nextabsTime,.detailsOpened .nextMission,.detailsOpened .originPlanet,.detailsOpened .quantity,.detailsOpened .destinationPlanet,.detailsClosed .destinationPlanet,.detailsClosed .destinationCoords,.detailsClosed .marker01,.detailsClosed .marker02,.detailsOpened .marker01,.detailsOpened .marker02,.detailsOpened .fleetDetailButton{line-height:15px;
-overflow:hidden;
-position:absolute;
-white-space:nowrap;
-padding-top:2px}.detailsClosed .showDir{left:365px;
-top:4px}.detailsOpened .fleetVisualisation,.detailsOpened .fleetDetailButton{visibility:hidden;
-display:none}.fleetDetails .marker01,.fleetDetails .marker02{width:1px;
+width:658px}
+.fleetStatus span a img{
+  margin-right:7px;
+  vertical-align:middle;
+}
+.fleetStatus span a,.fleetStatus span a:link{text-decoration:none}
+.fleetStatus span a:hover span{
+  color:#6f9fc8;
+  text-decoration:underline;
+}
+span.reload{margin-left:7px}
+.fleetStatus .icon_reload{margin:0 4px -4px 0}
+.fleetStatus span.current,.fleetStatus span.all{color:#fff}
+.fleetStatus .fleetSlots,.fleetStatus .expSlots{margin-left:108px}
+.fleetStatus .closeAll,.fleetStatus .newWindow{
+  line-height:normal;
+  right:-1px;
+  position:absolute;
+  top:3px;
+}
+.fleetStatus .closeAll a{
+  background: url("../Imagenes/Background.jpg") no-repeat 0 0;
+  height:22px;
+  width:22px;
+  display:block;
+}
+.fleetStatus .closeAll .all_closed{background-position:0 0}
+.fleetStatus .closeAll .all_open{background-position:0 -22px}
+.fleetStatus .newWindow{
+  top:6px;
+  right:35px;
+}
+.fleetStatus .newWindow a img{margin:0}
+.fleetDetails{
+  background:#0d1014;
+  border:1px solid #000;
+  color:#7c8e9a;
+  font:normal 10px Verdana,Arial,Helvetica,sans-serif;
+  line-height:24px;
+  margin:5px auto 0;
+  overflow-y:visible;
+  position:relative;
+  width:656px;
+}
+.fleetDetails.detailsClosed{height:22px}
+.detailsClosed .timer,.detailsClosed .fedAttack,.detailsClosed .originData,.detailsClosed .fleetVisualisation,.detailsClosed .quantity,.detailsClosed .reversal,.detailsClosed .destinationData,.detailsClosed .sendMail,.detailsClosed .mission,.detailsClosed .openDetails,.detailsClosed .fleetDetailButton,.detailsOpened .timer,.detailsOpened .fedAttack,.detailsOpened .originData,.detailsOpened .fleetVisualisation,.detailsOpened .quantity,.detailsOpened .reversal,.detailsOpened .destinationData,.detailsOpened .sendMail,.detailsOpened .mission,.detailsOpened .openDetails,.detailsOpened .absTime,.detailsOpened .allianceName,.detailsOpened .starStreak,.detailsOpened .nextTimer,.detailsOpened .nextabsTime,.detailsOpened .nextMission,.detailsOpened .originPlanet,.detailsOpened .quantity,.detailsOpened .destinationPlanet,.detailsClosed .destinationPlanet,.detailsClosed .destinationCoords,.detailsClosed .marker01,.detailsClosed .marker02,.detailsOpened .marker01,.detailsOpened .marker02,.detailsOpened .fleetDetailButton{
+  line-height:15px;
+  overflow-y: visible;
+  position:absolute;
+  white-space:nowrap;
+  padding-top:2px;
+}
+.detailsClosed .showDir{
+  left:365px;
+  top:4px;
+}
+.detailsOpened .fleetVisualisation,.detailsOpened .fleetDetailButton{visibility:hidden;
+display:none}
+.fleetDetails .marker01,.fleetDetails .marker02{width:1px;
 background:#20272f;
 top:3px;
 height:16px;
-left:386px}.detailsClosed .marker02{left:436px}.detailsOpened .marker01{top:4px;
-left:288px}.detailsOpened .marker02{top:4px;
-left:340px}.detailsOpened .absTime{left:7px;
+left:386px}
+.detailsClosed .marker02{left:436px}
+.detailsOpened .marker01{
+  top:4px;
+  left:310px;
+}
+.detailsOpened .marker02{
+  top:4px;
+  left:348px;
+}
+.detailsOpened .absTime{left:7px;
 top:17px}.detailsClosed .absTime{visibility:hidden}.detailsOpened .mission{left:7px;
 overflow:hidden;
 top:36px}.detailsOpened .allianceName{color:#f74a4a;
@@ -4321,12 +4434,16 @@ width:116px}
 .detailsClosed .destinationCoords{top:0;
 right:0}.detailsOpened .destinationData{left:345px;
 width:187px;
-text-align:right}.detailsOpened .starStreak{background: url("../Imagenes/Background.jpg") no-repeat;
-border:1px solid #000;
-height:42px;
-left:122px;
-top:22px;
-width:410px}.detailsClosed .timer,.detailsOpened .timer{height:24px;
+text-align:right}
+.detailsOpened .starStreak{
+  background: url("../Imagenes/movement_barra.gif") no-repeat;
+  border:1px solid #000;
+  height:42px;
+  left:122px;
+  top:22px;
+  width:410px;
+}
+.detailsClosed .timer,.detailsOpened .timer{height:24px;
 left:7px;
 top:0;
 width:100px}.detailsOpened .openDetails{height:18px;
@@ -4379,19 +4496,38 @@ top:2px;
 width:16px}.fleetDetails .friendly{color:#4af74d}.fleetDetails .neutral{color:#fcce00}.fleetDetails .hostile{color:#d43635}.fleetDetails.detailsOpened{height:66px}.fleetDetails.detailsClosed .originData{left:205px;
 width:179px}#searchFed{float:left;
 width:630px;
-height:76px}#changefleetname #searchFed .wrap{margin-bottom:0;
-padding:2px}.fleet_icon_forward_end,.fleet_icon_forward{background: url("../Imagenes/Background.jpg") no-repeat;
-display:block;
-height:16px;
-width:16px}.fleet_icon_forward_end{margin-left:274px}.fleet_icon_reverse{background: url("../Imagenes/Background.jpg") no-repeat;
-display:block;
-height:16px;
-width:16px}#changefleetname .wrapInner{float:left;
-width:202px}#changefleetname .buttonWrap{float:left;
-margin:25px 0 0;
-padding:5px 0;
-text-align:center;
-width:225px}#buddyselect,#participantselect{background:#1c242b;
+height:76px}
+#changefleetname #searchFed .wrap{
+  margin-bottom:0;
+  padding:2px;
+}
+.fleet_icon_forward_end,.fleet_icon_forward{
+  background: url("../Imagenes/MiniFleet.gif") no-repeat;
+  display:block;
+  height:16px;
+  width:16px;
+}
+.fleet_icon_forward_end{margin-left:274px}
+.fleet_icon_reverse{
+  background: url("../Imagenes/MiniFleet.gif") no-repeat;
+  transform: rotateZ(180deg);
+  display:block;
+  height:16px;
+  width:16px;
+}
+#changefleetname .wrapInner{
+  float:left;
+  width:202px;
+}
+#changefleetname .buttonWrap{
+  float:left;
+  margin:25px 0 0;
+  padding:5px 0;
+  text-align:center;
+  width:225px;
+}
+#buddyselect,#participantselect{
+  background:#1c242b;
 border-radius:3px;
 height:150px;
 overflow-y:scroll;

@@ -116,6 +116,10 @@ router.get('/set/cancelShipyardRequest', function(req, res, next) {
   uni.cancelShipyardRequest(uni.planeta, req.query.obj, res);
 });
 
+router.get('/set/returnFleet', function(req, res, next) {
+  uni.returnFleet(req.query.num, res);
+});
+
 router.post('/set/addFleetMovement', function(req, res, next) {
   console.log(req.body);
   uni.addFleetMovement(uni.player.name, uni.planeta, uni.moon, req.body, res);

@@ -20,10 +20,10 @@ router.get('/', (req, res, next) => {
   //uni.deleteCollection(process.env.UNIVERSE_NAME, ["jugadores", "universo"]);
   //uni.createUniverse(process.env.UNIVERSE_NAME, 5, {name: "", inicio: 0, maxGalaxies: 9, donutGalaxy: true, donutSystem: true, speed: 1, speedFleet: 1, fleetDebris: 30, defenceDebris: 0, maxMoon: 20});
   //uni.addNewPlayer("dturco", 1);
-  //uni.setPlanetData(uni.player.planets[2].coordinates, "dturco");
+  //uni.setPlanetData(uni.player.planets[0].coordinates, "dturco");
   //uni.setMoonData(uni.player.planets[2].coordinates, "dturco");
   //uni.sendMessage("dturco", {type: 1, title: "Nuevo titulo", text: "Mensaje oficial", data: {}});
-  uni.colonize({galaxy: 1, system: 12, pos: 5}, 'dturco');
+  //uni.colonize({gal: 1, sys: 12, pos: 6}, 'dturco');
   //uni.contPoint('dturco');
   //uni.contMoonFields(uni.planeta);
   uni.seeDataBase(res, process.env.UNIVERSE_NAME, "jugadores");
@@ -73,15 +73,15 @@ router.get('/OGame_Facilities.html', (req, res, next) => {
 });
 
 router.get('/OGame_Fleet.html', (req, res, next) => {
-  if(req.query.gal == undefined) req.query.gal = uni.player.planets[uni.planeta].coordinates.galaxy;
-  if(req.query.sys == undefined) req.query.sys = uni.player.planets[uni.planeta].coordinates.system;
+  if(req.query.gal == undefined) req.query.gal = uni.player.planets[uni.planeta].coordinates.gal;
+  if(req.query.sys == undefined) req.query.sys = uni.player.planets[uni.planeta].coordinates.sys;
   if(req.query.pos == undefined) req.query.pos = uni.player.planets[uni.planeta].coordinates.pos;
   res.render('OGame_Fleet', {bodyId: "fleet",
     url: req._parsedOriginalUrl.pathname,
     //(uni.moon) ? uni.player.planets[uni.planeta].moon.fleet : uni.player.planets[uni.planeta].fleet,
     info: uni.fleetInfo(uni.planeta, uni.moon),
     basic: uni.getActualBasicInfo(uni.planeta),
-    objCord: {galaxy: req.query.gal, system: req.query.sys, pos: req.query.pos},
+    objCord: {gal: req.query.gal, sys: req.query.sys, pos: req.query.pos},
     listScript: ['./Scripts/Fleet.js']
   });
 });
@@ -108,10 +108,12 @@ router.get('/OGame_Messages.html', (req, res, next) => {
 });
 
 router.get('/OGame_Movement.html', (req, res, next) => {
+  console.log(uni.player.movement);
   res.render('OGame_Movement', {bodyId: "movement",
     url: req._parsedOriginalUrl.pathname,
+    info: uni.fleetInfo(uni.planeta, uni.moon),
     basic: uni.getActualBasicInfo(uni.planeta),
-    listScript: []
+    listScript: ['./Scripts/Movement.js']
   });
 });
 
@@ -120,7 +122,7 @@ router.get('/OGame_Overview.html', (req, res, next) => {
     uni.setPlanetName(uni.player.planets[uni.planeta].coordinates, req.query.newName);//cambia el nombre al planeta
   }
   if(req.query.newName == "abandon" && req.query.abaNdon == "si" && uni.moon == false){
-    //se fija que no sea su unico planeta y elimina el planeta
+    /* Se fija que no sea su unico planeta y elimina el planeta */
     console.log("Despedite de tu planeta");
   }
   res.render('OGame_Overview', {bodyId: "overview",

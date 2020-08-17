@@ -8,11 +8,11 @@ block content
         .fleft
           span.tooltip.advice
             span Fleets :
-            |  #{info.slot}/#{info.maxSlot}
+            | #{info.slot} / #{info.maxSlot}
         .fleft
           span.tooltip.advice
             span Expeditions:
-            |  #{info.expeditions}/#{info.maxExpeditions}
+            | #{info.expeditions} / #{info.maxExpeditions}
         br.clearfloat
       #movements.fright
         a.tooltip.dark_highlight_tablet(href='Ogame_Movement.html')
@@ -167,7 +167,7 @@ block content
                   br.clearfloat
                 .coords
                   | Coordinates:
-                  span(style='color:#ffffff; font-weight:bold') #{basic.planets[basic.numPlanet].coordinates.galaxy}:#{basic.planets[basic.numPlanet].coordinates.system}:#{basic.planets[basic.numPlanet].coordinates.pos}
+                  span(style='color:#ffffff; font-weight:bold') #{basic.planets[basic.numPlanet].coordinates.gal}:#{basic.planets[basic.numPlanet].coordinates.sys}:#{basic.planets[basic.numPlanet].coordinates.pos}
               td#distance
                 #distanceValue 5
                 .coords Distance
@@ -181,8 +181,8 @@ block content
                 .coords
                   | Coordinates:
                   br
-                  input#galaxy.galaxy.hideNumberSpin(name='galaxy' type='number' value=objCord.galaxy onchange='calculaDistancia();')
-                  input#system.system.hideNumberSpin(name='system' type='number' value=objCord.system onchange='calculaDistancia();')
+                  input#galaxy.galaxy.hideNumberSpin(name='galaxy' type='number' value=objCord.gal onchange='calculaDistancia();')
+                  input#system.system.hideNumberSpin(name='system' type='number' value=objCord.sys onchange='calculaDistancia();')
                   input#position.planet.hideNumberSpin(name='position' type='number' value=objCord.pos onchange='calculaDistancia();')
               td#shortcuts
                 div
@@ -190,29 +190,29 @@ block content
                   .glow
                     span.dropdown.currentlySelected.planets(style='width: 144px;')
                       a#downButton1(value=basic.planets[basic.numPlanet].cord href='javascript:void(0);' onclick='clickSelect(1)') -
-                    ul#dropdown1.dropdown.dropdownList.initialized(style='top: 68px; min-width: 120px; display: none; position: absolute;')
+                    ul#dropdown1.dropdown.dropdownList.initialized(style='top: 64px; min-width: 144px; display: none; position: absolute;')
                       each item, index in basic.planets
                         li
-                          a(data-gal=item.coordinates.galaxy data-sys=item.coordinates.system data-pos=item.coordinates.pos value=index onclick='setDropdown(this, 1)') #{item.name+' ['+item.coordinates.galaxy+':'+item.coordinates.system+':'+item.coordinates.pos+']'}
+                          a(data-gal=item.coordinates.gal data-sys=item.coordinates.sys data-pos=item.coordinates.pos value=index onclick='setDropdown(this, 1)') #{item.name+' ['+item.coordinates.gal+':'+item.coordinates.sys+':'+item.coordinates.pos+']'}
                 div
                   span Combat forces:
                   .glow
                     span.dropdown.currentlySelected.combatunits(style='width: 144px;')
                       a#downButton2(value=0 href='javascript:void(0);' onclick='clickSelect(2)') -
-                    ul#dropdown2.dropdown.dropdownList.initialized(style='top: 112px; min-width: 120px; display: none; position: absolute;')
+                    ul#dropdown2.dropdown.dropdownList.initialized(style='top: 106px; min-width: 144px; display: none; position: absolute;')
                       //cambiar por la lista de movimientos de flotas del jugador
                       each item, index in basic.planets
                         li
-                          a(data-gal=item.coordinates.galaxy data-sys=item.coordinates.system data-pos=item.coordinates.pos value=index onclick='setDropdown(this, 2)') #{item.name+' ['+item.coordinates.galaxy+':'+item.coordinates.system+':'+item.coordinates.pos+']'}
+                          a(data-gal=item.coordinates.gal data-sys=item.coordinates.sys data-pos=item.coordinates.pos value=index onclick='setDropdown(this, 2)') #{item.name+' ['+item.coordinates.gal+':'+item.coordinates.sys+':'+item.coordinates.pos+']'}
                 div
                   span Vacas:
                   .glow
                     span.dropdown.currentlySelected.combatunits(style='width: 144px;')
                       a#downButton3(value=basic.planets[basic.numPlanet].cord href='javascript:void(0);' onclick='clickSelect(3)') -
-                    ul#dropdown3.dropdown.dropdownList.initialized(style='top: 156px; min-width: 120px; display: none; position: absolute;')
+                    ul#dropdown3.dropdown.dropdownList.initialized(style='top: 148px; min-width: 144px; display: none; position: absolute;')
                       each item, index in info.vacas
                         li
-                          a(data-gal=item.coordinates.galaxy data-sys=item.coordinates.system data-pos=item.coordinates.pos value=index onclick='setDropdown(this, 3)') #{item.planetName+' ['+item.coordinates.galaxy+':'+item.coordinates.system+':'+item.coordinates.pos+']'}
+                          a(data-gal=item.coordinates.gal data-sys=item.coordinates.sys data-pos=item.coordinates.pos value=index onclick='setDropdown(this, 3)') #{item.planetName+' ['+item.coordinates.gal+':'+item.coordinates.sys+':'+item.coordinates.pos+']'}
         .briefing.border5px
           h2 Briefing
           ul#fleetBriefingPart1.fleetBriefing

@@ -2,14 +2,8 @@
 // o los renombres para aclarar cosas
 var exp = {
   generateNewTypeOfPlanet: function(pos, mod) {
-    let temp = 10, rango = 40, tipo = 1;
-    if((mod == 0 && pos >= 14) || (mod == 1 && (pos == 6 || pos == 7))) tipo = 1; // Normal
-    if((mod == 0 && pos <= 3) || (mod == 1 && (pos == 4 || pos == 5))) tipo = 2; // Dry
-    if((mod == 0 && (pos == 6 || pos == 7)) || (mod == 1 && (pos == 8 || pos == 9))) tipo = 3; // Jungle
-    if((mod == 0 && (pos == 8 || pos == 9)) || (mod == 1 && (pos == 10 || pos == 11))) tipo = 4; // Water
-    if((mod == 0 && (pos == 12 || pos == 13)) || (mod == 1 && pos >= 14)) tipo = 5; // Gas
-    if((mod == 0 && (pos == 10 || pos == 11)) || (mod == 1 && (pos == 12 || pos == 13))) tipo = 6; // Ice
-    if(mod == 1 && (pos <= 3)) tipo = 7; // Desert
+    let temp = 10, rango = 40;
+    let tipo = this.getTypePlanet(pos, mod);
     rango = Math.floor(Math.random()*20+10);
     if(pos < 4){
       temp = Math.floor(this.normalRandom(310-pos*50, 230-pos*50)); // Cerca
@@ -24,6 +18,17 @@ var exp = {
       color: Math.floor(Math.random()*10)+1,
       temperature: {max: temp+rango, min: temp-rango},
       campos: Math.floor(this.normalRandom(-0.022*Math.pow(pos,3) - 0.73*Math.pow(pos,2) + 17*pos + 75, 0.056*Math.pow(pos,3) - 3.12*Math.pow(pos,2) + 36*pos + 121))};
+  },
+  getTypePlanet: function(pos, mod){
+    let tipo = 1;
+    if((mod == 0 && pos >= 14) || (mod == 1 && (pos == 6 || pos == 7))) tipo = 1; // Normal
+    if((mod == 0 && pos <= 3) || (mod == 1 && (pos == 4 || pos == 5))) tipo = 2; // Dry
+    if((mod == 0 && (pos == 6 || pos == 7)) || (mod == 1 && (pos == 8 || pos == 9))) tipo = 3; // Jungle
+    if((mod == 0 && (pos == 8 || pos == 9)) || (mod == 1 && (pos == 10 || pos == 11))) tipo = 4; // Water
+    if((mod == 0 && (pos == 12 || pos == 13)) || (mod == 1 && pos >= 14)) tipo = 5; // Gas
+    if((mod == 0 && (pos == 10 || pos == 11)) || (mod == 1 && (pos == 12 || pos == 13))) tipo = 6; // Ice
+    if(mod == 1 && (pos <= 3)) tipo = 7; // Desert
+    return tipo;
   },
   cantidadMisiles: function(planeta){
     // En el juego ambos tipos de misil ocupan un solo lugar
@@ -85,22 +90,93 @@ var exp = {
     }
     return result;
   },
+  segundosATiempo: function(seg) { // Dado un numero de segundos le da el formato tiempo (x dias n horas m minutos s segundos) xd nh mm ss
+    if(!isFinite(seg) || isNaN(seg) || seg < 0) return " unknown";
+    if(seg < 0) return " now";
+    let time = (seg%60) + "s";
+    seg = Math.floor(seg/60);
+    if(seg != 0){
+      time = (seg%60) + "m " + time;
+      seg = Math.floor(seg/60);
+      if(seg != 0){
+        time = (seg%24) + "h " + time;
+        seg = Math.floor(seg/24);
+        if(seg != 0) time = seg + "d " + time;
+      }
+    }
+    return " " + time;
+  },
   recursosSuficientes: function(resources, costo, mul = 1){
     return costo.metal*mul <= resources.metal && costo.crystal*mul <= resources.crystal && costo.deuterium*mul <= resources.deuterium;
+  },
+  coordenadaValida: function(coor){
+    return coor.gal >= 1 && coor.sys >= 1 && coor.pos >= 1 && coor.gal <= 9 && coor.sys <= 499 && coor.pos <= 16;
+  },
+  calculaDistancia: function(desde, hasta, galaxyDonut, systemDonut){
+    let dis = 0;
+    if(desde.gal == hasta.gal){
+      if(desde.sys == hasta.sys){
+        if(desde.pos == hasta.pos){
+          dis = 5; // Mismas cordenadas
+        }else{
+          dis = 1000 + 5*Math.abs(desde.pos - hasta.pos); // Mismo systema y galaxia
+        }
+      }else{
+        if(systemDonut == true){
+          dis = Math.min(2700 + 95*Math.abs(desde.sys - hasta.sys), 2700 + 95*Math.abs(desde.sys - hasta.sys - 499),  2700 + 95*Math.abs(desde.sys - hasta.sys + 499));
+        }else{
+          dis = 2700 + 95*Math.abs(desde.sys - hasta.sys);
+        }
+      }
+    }else{
+      if(galaxyDonut == true){
+        dis = Math.min(20000 * Math.abs(desde.gal - hasta.gal), 20000 * Math.abs(desde.gal - hasta.gal - 9),  20000 * Math.abs(desde.gal - hasta.gal + 9));
+      }else{
+        dis = 20000 * Math.abs(desde.gal - hasta.gal);
+      }
+    }
+    return dis;
+  },
+  horaActual: function(){
+    return new Date().getTime();
+  },
+  navesInfo: function(con, imp, hyp){
+    let speedList = this.getListSpeed(con, imp, hyp);
+    return {lightFighter:   {speed: speedList[0], carga: 50, consumo: 10},
+            heavyFighter:   {speed: speedList[1], carga: 100, consumo: 20},
+            cruiser:        {speed: speedList[2], carga: 800, consumo: 150},
+            battleship:     {speed: speedList[3], carga: 1500, consumo: 250},
+            battlecruiser:  {speed: speedList[4], carga: 750, consumo: 120},
+            bomber:         {speed: speedList[5], carga: 500, consumo: 500},
+            destroyer:      {speed: speedList[6], carga: 2000, consumo: 500},
+            deathstar:      {speed: speedList[7], carga: 1000000, consumo: 1},
+            smallCargo:     {speed: speedList[8], carga: 5000, consumo: 5},
+            largeCargo:     {speed: speedList[9], carga: 25000, consumo: 25},
+            colony:         {speed: speedList[10], carga: 7500, consumo: 500},
+            recycler:       {speed: speedList[11], carga: 20000, consumo: 150},
+            espionageProbe: {speed: speedList[12], carga: 0, consumo: 0},
+            misil:          {speed: speedList[13], carga: 0, consumo: 0}
+    };
+  },
+  getListSpeed: function(com, imp, hyp){
+    let bomb = (hyp >= 8) ? 1200*hyp : 800*imp;
+    let tran = (imp >= 5) ? 1000*imp : 500*com;
+    return [12500+1250*com, 10000+2000*imp, 15000+3000*imp, 10000+3000*hyp, 10000+3000*hyp, 4000+bomb, 5000+1500*hyp, 100+30*hyp, 5000+tran, 7500+1500*imp, 2500+500*imp, 2000+400*imp, 100000000+10000000*com, 1000000+100000*imp];
+  },
+  negativeObj: function(obj){ // Multiplica por -1 cada campo del obj pasado
+    for(let i in obj){
+      obj[i] = -obj[i];
+    }
+  },
+  missionNumToString: function(num){
+    let arrayText = ["Expedition", "Colonisation", "Recycle", "Transport", "Deployment", "Espionage", "ACS Defend", "Attack", "Moon Destruction"];
+    return arrayText[num];
+  },
+  objStringToNum: function(obj){
+    for(let i in obj){
+      obj[i] = parseInt(obj[i]);
+    }
   }
 };
 
 module.exports = exp;
-
-//Lista de cosas por hacer
-
-/* Terminar la funcion addFleetMovement
-/* Mejorar el calculo de recursos de tiempos medios
-/* El abandonar el planeta en Overview
-/* Falta la administracion de flotas que te enviaron para defender tu planeta
-/* La funcion de contar puntos tiene que contar los puntos de las flotas que estan en movimiento
-/* El contruir satelites solares la energia no se actualiza
-/* Tengo que agregar a la lista de fleetMovement
-/* Tengo que terminar al funcion addSuport
-/* Modularizar algunas funciones para que tengan nombres mas descriptivos
-*/
