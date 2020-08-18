@@ -44,6 +44,7 @@ setTimeout(() => {
   galaxyDonut = ('true' == document.getElementsByName('ogame-donut-galaxy')[0].content);
   systemDonut = ('true' == document.getElementsByName('ogame-donut-system')[0].content);
   for(let i = 0 ; i<cantFleets.length ; i++){
+    inputsFleets[i].value = '';
     if(cantFleets[i].innerText <= 0){
       inputsFleets[i].readOnly = true;
     }
@@ -227,15 +228,15 @@ function updateSpeedPanel(){
 
 function changeResourcesInputFunction(num){
   let suma = 0;
-  let listAux = [metal_res.innerText, crystal_res.innerText, deuterium_res.innerText];
+  let listAux = [parseInt(metal_res.innerText), parseInt(crystal_res.innerText), parseInt(deuterium_res.innerText)];
   if(cargeInputs[num].value < 0) cargeInputs[num].value = 0;
   if(cargeInputs[num].value > listAux[num]) cargeInputs[num].value = listAux[num];
   for(let i = 0 ; i<3 ; i++){
     suma += parseInt(cargeInputs[i].value);
   }
-  if(suma > cargeResourcesMax.innerText){
+  if(suma > parseInt(cargeResourcesMax.innerText)){
     suma -= cargeInputs[num].value;
-    cargeInputs[num].value = cargeResourcesMax.innerText - suma;
+    cargeInputs[num].value = parseInt(cargeResourcesMax.innerText) - suma;
     suma = cargeResourcesMax.innerText;
   }
   cargeResources.innerText = suma;
@@ -250,11 +251,11 @@ function cargeResourcesFunction(all, num){
   let suma = 0;
   if(all == true){
     let maxCarge = 0;//todos los recursos que pueda poner
-    let listAux = [metal_res.innerText, crystal_res.innerText, deuterium_res.innerText];
+    let listAux = [parseInt(metal_res.innerText), parseInt(crystal_res.innerText), parseInt(deuterium_res.innerText)];
     for(let i = 0 ; i<3 ; i++){
       if(i != num) suma += parseInt(cargeInputs[i].value);
     }
-    maxCarge = Math.min(cargeResourcesMax.innerText - suma, listAux[num]);
+    maxCarge = Math.min(parseInt(cargeResourcesMax.innerText) - suma, listAux[num]);
     cargeInputs[num].value = maxCarge;
   }else{
     cargeInputs[num].value = 0;
@@ -356,13 +357,12 @@ async function sendFleetMovement(){
     console.log(data);
     let res = await fetch('./api/set/addFleetMovement', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
     let objRes = await res.json();
-    console.log(objRes);
-    if(objRes.ok == false) sendPopUp(objRes.mes);
     ready = true;
     if(objRes.ok){
       location.reload();
     }else{
-      console.log("Algo fallo en el envio de flota."); /* Notificar mejor porque no se envia la flota */
+      sendPopUp(objRes.mes);
+      console.log("Algo fallo en el envio de flota.");
     }
   }
 }

@@ -1,22 +1,35 @@
 //Script que usa toda pagina del juego. Contiene funciones varis de uso general
 var metal_res, crystal_res, deuterium_res, clock;
 var metal = 0, crystal = 0, deuterium = 0;
+var nextFleetText, missionText, fleetTime;
 var popUp, popUpText;
 
 function initFunction(obj){ // Funcion que se ejecuta apenas carga un pagina
   clock = document.getElementById("Clock");
   popUp = document.getElementById("PopUpDiv");
   popUpText = document.getElementById("PopUpText");
+  nextFleetText = document.getElementById("fleetInfoFirstMovementDown");
   metal_res = document.getElementById("resources_metal");
   crystal_res = document.getElementById("resources_crystal");
   deuterium_res = document.getElementById("resources_deuterium");
   metal = Math.floor(parseInt(document.getElementsByName('ogame-add-metal')[0].content));
   crystal = Math.floor(parseInt(document.getElementsByName('ogame-add-crystal')[0].content));
   deuterium = Math.floor(parseInt(document.getElementsByName('ogame-add-deuterium')[0].content));
+  if(nextFleetText != null){
+    fleetTime = Math.ceil((parseInt(nextFleetText.dataset.time) - new Date().getTime()) / 1000);
+    missionText = nextFleetText.innerText.slice(7);
+  }
   actualizaFecha();
   setInterval(() => {
     actualizaFecha();
+    if(nextFleetText != null) actualizaFleet();
   }, 1000);
+}
+
+function actualizaFleet(){
+  fleetTime -= 1;
+  nextFleetText.innerText = "Next: " + segundosATiempo(fleetTime) + missionText;
+  // if(fleetTime < 0) location.reload();
 }
 
 function actualizaFecha(){ // Se ejecuta cada un segunda y updatea el reloj de la esquina derecha

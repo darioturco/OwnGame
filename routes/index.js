@@ -23,7 +23,7 @@ router.get('/', (req, res, next) => {
   //uni.setPlanetData(uni.player.planets[0].coordinates, "dturco");
   //uni.setMoonData(uni.player.planets[2].coordinates, "dturco");
   //uni.sendMessage("dturco", {type: 1, title: "Nuevo titulo", text: "Mensaje oficial", data: {}});
-  //uni.colonize({gal: 1, sys: 12, pos: 6}, 'dturco');
+  //uni.colonize({gal: 1, sys: 1, pos: 4}, 'dturco');
   //uni.contPoint('dturco');
   //uni.contMoonFields(uni.planeta);
   uni.seeDataBase(res, process.env.UNIVERSE_NAME, "jugadores");

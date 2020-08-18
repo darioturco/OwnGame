@@ -164,9 +164,11 @@ var exp = {
     return [12500+1250*com, 10000+2000*imp, 15000+3000*imp, 10000+3000*hyp, 10000+3000*hyp, 4000+bomb, 5000+1500*hyp, 100+30*hyp, 5000+tran, 7500+1500*imp, 2500+500*imp, 2000+400*imp, 100000000+10000000*com, 1000000+100000*imp];
   },
   negativeObj: function(obj){ // Multiplica por -1 cada campo del obj pasado
+    let res = {};
     for(let i in obj){
-      obj[i] = -obj[i];
+      res[i] = -obj[i];
     }
+    return res;
   },
   missionNumToString: function(num){
     let arrayText = ["Expedition", "Colonisation", "Recycle", "Transport", "Deployment", "Espionage", "ACS Defend", "Attack", "Moon Destruction"];
@@ -176,6 +178,15 @@ var exp = {
     for(let i in obj){
       obj[i] = parseInt(obj[i]);
     }
+  },
+  getIndexOfPlanet: function(planets, coors){ // Dada una lista de planetas y unas coordenadas, devuelve el indice del planeta con esas coordenadas
+    let res = -1;
+    for(let i = 0 ; i<planets.length && res == -1 ; i++){
+      if(planets[i].coordinates.gal == coors.gal && planets[i].coordinates.sys == coors.sys && planets[i].coordinates.pos == coors.pos){
+        res = i;
+      }
+    }
+    return res;
   }
 };
 

@@ -58,16 +58,17 @@ var exp = {
         f();
       }else{
         this.player = res;
-        this.updatePlayer(res.name, (respuesta) => {this.player = respuesta;f();}, true); //actualiza los datos desde la ultima conecccion
+        this.updatePlayer(res.name, (respuesta) => {this.player = respuesta; f();}, true); // Actualiza los datos desde la ultima conecccion
       }
     });
   },
   updatePlayer: function(player, f, help = false){
+    let horaActual = fun.horaActual();
     let objSet = {};
     let objInc = {};
+    let objPull = {movement: {llegada: {$lt: horaActual}}}; // Va a eliminar todos los movement que su llegada es menor que la hora actual
     let listShip = [];
     if(help == true){
-      let horaActual = fun.horaActual();
       let timeLastUpdate = horaActual - this.player.lastVisit;
       let updateResourcesAddOfAllPlanets = false;
       objSet['puntosAcum'] = this.player.puntosAcum;
@@ -142,7 +143,7 @@ var exp = {
         objInc['puntos'] = Math.floor(objSet['puntosAcum']/1000);
         objSet['puntosAcum'] = objSet['puntosAcum'] % 1000;
         if(updateDataThisPlanet || updateResourcesAddOfAllPlanets){
-          this.updateResourcesData(() => {}, i); //updatea la energia y resourcesAdd
+          this.updateResourcesData(() => {}, i); // Updatea la energia y resourcesAdd
           objSet['planets.' + i + '.resources.energy']       = this.player.planets[i].resources.energy;
           objSet['planets.' + i + '.resourcesAdd.metal']     = this.player.planets[i].resourcesAdd.metal;
           objSet['planets.' + i + '.resourcesAdd.crystal']   = this.player.planets[i].resourcesAdd.crystal;
@@ -155,10 +156,66 @@ var exp = {
         objInc['planets.' + i + '.resources.crystal']   = Math.max(0, Math.min(this.player.planets[i].resourcesAdd.crystal*timeLastUpdate/(1000*3600), almacen.crystal - this.player.planets[i].resources.crystal));
         objInc['planets.' + i + '.resources.deuterium'] = Math.max(0, Math.min(this.player.planets[i].resourcesAdd.deuterium*timeLastUpdate/(1000*3600), almacen.deuterium - this.player.planets[i].resources.deuterium));
       }
+      // Me fijo cuales flotar regresaron y actualizo esos datos
+      for(let i = 0 ; i<this.player.movement.length ; i++){
+        if(this.player.movement[i].llegada < horaActual){ // Si esta flota llego a destino
+          if(this.player.movement[i].ida){
+            switch (this.player.movement[i].mission) {
+              case 1: // Colonizacion
+
+                break;
+              case 2: // Reciclaje
+
+                break;
+              case 3: // Transporte
+
+                break;
+              case 4: // Despliege
+
+                break;
+              case 5: // Espionage
+
+                break;
+              case 6: // ASC Defend
+
+                break;
+              case 7: // Ataque
+
+                break;
+              case 8: // Moon Destruction
+
+                break;
+              default: // Expedition
+
+            }
+          }else{
+            // La flota regresa al planeta de salida
+            let pla = fun.getIndexOfPlanet(this.player.planets, this.player.movement[i].coorDesde);
+            if(this.player.movement[i].moon){ // Me fijo si la flota va a la luna o al planeta
+              /* Guardo la flota en la luna */
+            }else{ // Guardo la flota en el planeta
+              objInc['planets.' + pla + '.resources.metal']     += this.player.movement[i].resources.metal;
+              objInc['planets.' + pla + '.resources.crystal']   += this.player.movement[i].resources.crystal;
+              objInc['planets.' + pla + '.resources.deuterium'] += this.player.movement[i].resources.deuterium;
+              for(let item in this.player.movement[i].ships){ // Guardo todas las naves
+                if(objInc['planets.' + pla + '.fleet.' + item] == undefined){
+                  objInc['planets.' + pla + '.fleet.' + item] = this.player.movement[i].ships[item];
+                }else{
+                  objInc['planets.' + pla + '.fleet.' + item] += this.player.movement[i].ships[item];
+                }
+              }
+            }
+          }
+        }
+      }
       objSet.lastVisit = horaActual;    // Updatea la ultima vez que se actualizo este planeta
-      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOneAndUpdate({name: player}, {$set: objSet, $inc: objInc}, {returnOriginal: false}, (err, res) => {
-        if(err) throw err;
-        f(res.value);
+      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOneAndUpdate(
+        {name: player},
+        {$set: objSet, $inc: objInc, $pull: objPull},
+        {returnOriginal: false},
+        (err, res) => {
+          if(err) throw err;
+          f(res.value);
       });
     }else{
       mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOne({name: player}, (err, res) => {
@@ -268,6 +325,7 @@ var exp = {
   getActualBasicInfo: function(planet) {
     let resourcesObj = (this.moon) ? this.player.planets[planet].moon.resources : this.player.planets[planet].resources;
     let classObj = {};
+    let firstMovement = this.getFirstMovementInfo();
     let objStorage = this.getAlmacen(planet, this.moon);
     if(resourcesObj.metal >= objStorage.metal){
       classObj.metal = 'overmark'; // rojo
@@ -316,8 +374,25 @@ var exp = {
       moon: this.moon,
       format: fun.formatNumber,
       segundosATiempo: fun.segundosATiempo,
-      missionNumToString: fun.missionNumToString
+      missionNumToString: fun.missionNumToString,
+      cantMovments: this.player.movement.length,
+      nextFleetTime: firstMovement.time,
+      nextFleetMission: firstMovement.mission
     };
+  },
+  getFirstMovementInfo: function(){
+    let res = {time: 0, mission: ""};
+    if(this.player.movement.length > 0){
+      let min = 0;  // Busco el indice del proximo movement a terminar
+      for(let i = 1 ; i<this.player.movement.length ; i++){
+        if(this.player.movement[i].llegada < this.player.movement[min].llegada){
+          min = i;
+        }
+      }
+      res.time = this.player.movement[min].llegada;
+      res.mission = fun.missionNumToString(this.player.movement[min].mission) + (this.player.movement[min].ida ? "" : " (R)");
+    }
+    return res;
   },
   getAlmacen: function(planet, moon = false){
     let res = {};
@@ -939,6 +1014,7 @@ var exp = {
   },
   addFleetMovement: function(player, planet, moon, obj, res){
     /* El parametro player es el nombre del jugador al que se le va a hacer la modificacion */
+    /* Falta fijarse si se puede agregar una flota mas o una expedicion mas */
     // Verifica que no se este enviando una flota a la misma posicion de salida
     if((obj.coorDesde.gal == obj.coorHasta.gal && obj.coorDesde.sys == obj.coorHasta.sys && obj.coorDesde.pos == obj.coorHasta.pos) && ((moon && obj.destination == 2) || (!moon && obj.destination == 1))){
       res.json({ok: false, mes: "No se puede mandar una flota de un lugar a si mismo"});
@@ -964,7 +1040,7 @@ var exp = {
     let navesInfo       = fun.navesInfo(this.player.research.combustion, this.player.research.impulse, this.player.research.hyperspace_drive);
     for(let item in obj.ships){
       if(obj.ships[item] > this.player.planets[planet].fleet[item]) thereIsNoFleet = true;
-      if(obj.ships[item] < 0) obj.ships[item] = 0;  // Controla no sea un numero negativo
+      if(obj.ships[item] < 0) obj.ships[item] = 0;  // Controla que no sea un numero negativo
       if(obj.ships[item] > 0){                      // Si hay nave de ese tipo
         fleetVoid = false;
         if(navesInfo[item].speed < minSpeed) minSpeed = navesInfo[item].speed; // Obtengo la velocidad minima de toda la flota
@@ -1030,16 +1106,16 @@ var exp = {
                                        deuterium: obj.resources.deuterium};
           pushObj['movement'] = pushObjAux;
           obj.resources.deuterium += neededDeuterium;
-          fun.negativeObj(obj.resources); // Niego todos los campos de esos objetos
-          fun.negativeObj(obj.ships);
+          let objIncResources = fun.negativeObj(obj.resources); // Niego todos los campos de esos objetos
+          let objIncShips = fun.negativeObj(obj.ships);
           mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
             {planets :{$elemMatch: {coordinates: {gal: this.player.planets[planet].coordinates.gal, sys: this.player.planets[planet].coordinates.sys, pos: this.player.planets[planet].coordinates.pos}}}},
-            {$push: pushObj, $inc: {'planets.$.resources.metal': obj.resources.metal, 'planets.$.resources.crystal': obj.resources.crystal, 'planets.$.resources.deuterium': obj.resources.deuterium,
-                                    'planets.$.fleet.lightFighter': obj.ships.lightFighter, 'planets.$.fleet.heavyFighter': obj.ships.heavyFighter, 'planets.$.fleet.cruiser': obj.ships.cruiser,
-                                    'planets.$.fleet.battleship': obj.ships.battleship, 'planets.$.fleet.battlecruiser': obj.ships.battlecruiser, 'planets.$.fleet.bomber': obj.ships.bomber,
-                                    'planets.$.fleet.destroyer': obj.ships.destroyer, 'planets.$.fleet.deathstar': obj.ships.deathstar, 'planets.$.fleet.smallCargo': obj.ships.smallCargo,
-                                    'planets.$.fleet.largeCargo': obj.ships.largeCargo, 'planets.$.fleet.colony': obj.ships.colony, 'planets.$.fleet.recycler': obj.ships.recycler,
-                                    'planets.$.fleet.espionageProbe': obj.ships.espionageProbe, 'planets.$.fleet.misil': obj.ships.misil }});
+            {$push: pushObj, $inc: {'planets.$.resources.metal': objIncResources.metal, 'planets.$.resources.crystal': objIncResources.crystal, 'planets.$.resources.deuterium': objIncResources.deuterium,
+                                    'planets.$.fleet.lightFighter': objIncShips.lightFighter, 'planets.$.fleet.heavyFighter': objIncShips.heavyFighter, 'planets.$.fleet.cruiser': objIncShips.cruiser,
+                                    'planets.$.fleet.battleship': objIncShips.battleship, 'planets.$.fleet.battlecruiser': objIncShips.battlecruiser, 'planets.$.fleet.bomber': objIncShips.bomber,
+                                    'planets.$.fleet.destroyer': objIncShips.destroyer, 'planets.$.fleet.deathstar': objIncShips.deathstar, 'planets.$.fleet.smallCargo': objIncShips.smallCargo,
+                                    'planets.$.fleet.largeCargo': objIncShips.largeCargo, 'planets.$.fleet.colony': objIncShips.colony, 'planets.$.fleet.recycler': objIncShips.recycler,
+                                    'planets.$.fleet.espionageProbe': objIncShips.espionageProbe, 'planets.$.fleet.misil': objIncShips.misil }});
           res.json({ok: true}); // Usa json y no send por ser pedido via POST
         }else{
           res.json({ok: false, mes: "No se puede cargar tantos recursos."});

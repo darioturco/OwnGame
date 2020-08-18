@@ -78,20 +78,17 @@ body(id=bodyId onLoad='initFunction();')
           a.comm_menu.chat(href='./Vacas.html' class=(bodyId == 'vacas') ? 'selected': '')
           // Flotas
           #messages_collapsed
-            #eventboxFilled.eventToggle(style='display: none;')
-              a#js_eventDetailsClosed(href='javascript:void(0);' title='More details')
-              a#js_eventDetailsOpen.open(href='javascript:void(0);' title='Less detail')
-            #eventboxLoading.textCenter.textBeefy(style='display: none;')
-              img(height='16' width='16' src='./Imagenes/Loading.gif')
-              | load...
-            #eventboxBlank.textCenter(style='') No fleet movement
+            #eventboxBlank.textCenter
+              if basic.cantMovments == 0
+                a#fleetMesage(href='./Ogame_Fleet.html') No fleet movement
+              else
+                pre.fleetInfoFirstMovement Missions: #{basic.cantMovments}
+                pre(data-time=basic.nextFleetTime)#fleetInfoFirstMovementDown.fleetInfoFirstMovement Next: -                                      Type: #{basic.nextFleetMission}
           #attack_alert.eventToggle.noAttack
-            // <a href="https://s163-en.ogame.gameforge.com/game/index.php?page=eventList"></a>
             a(href='javascript:void(0);')
           br.clearfloat
         #helper
           a.highlight.Close(href='./OGame_Reward.html') ?
-        #selectedPlanetName.textCenter Planeta Principal
       #toolbarcomponent
         // LEFTMENU
         #links
