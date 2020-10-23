@@ -59,11 +59,13 @@ router.get('/highscore', function(req, res, next) {
 
 //Se usa set para las direcciones que cambian cosas en la base de datos
 
-router.get('/set/updateResources', function(req, res, next) {// updatea los valores de resourcesSettings
+// Updatea los valores de resourcesSettings
+router.get('/set/updateResources', function(req, res, next) {
   uni.updateResourcesData(() => {res.send({ok: true});}, uni.planeta, req.query);
 });
 
-router.get('/set/updateResourcesMoon', function(req, res, next) {// updatea los valores de resourcesSettings de la luna
+// Updatea los valores de resourcesSettings de la luna
+router.get('/set/updateResourcesMoon', function(req, res, next) {
   uni.updateResourcesDataMoon(() => {res.send({ok: true});}, uni.planeta, req.query);
 });
 

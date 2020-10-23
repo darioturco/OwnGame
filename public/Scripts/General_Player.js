@@ -17,7 +17,9 @@ function initFunction(obj){ // Funcion que se ejecuta apenas carga un pagina
   deuterium = Math.floor(parseInt(document.getElementsByName('ogame-add-deuterium')[0].content));
   if(nextFleetText != null){
     fleetTime = Math.ceil((parseInt(nextFleetText.dataset.time) - new Date().getTime()) / 1000);
-    missionText = nextFleetText.innerText.slice(7);
+    missionText = nextFleetText.innerHTML.slice(7);
+    nextFleetText.dataset.mission = missionText;
+    console.log(missionText)
   }
   actualizaFecha();
   setInterval(() => {
@@ -29,7 +31,12 @@ function initFunction(obj){ // Funcion que se ejecuta apenas carga un pagina
 function actualizaFleet(){
   fleetTime -= 1;
   nextFleetText.innerText = "Next: " + segundosATiempo(fleetTime) + missionText;
+  if(nextFleetText.innerText[nextFleetText.innerText.length-1] == ']'){ // Soluciona el error de '[object HTMLSpanElement]'
+    nextFleetText.innerText = "Next: " + segundosATiempo(fleetTime) + nextFleetText.dataset.mission;
+    missionText = nextFleetText.dataset.mission;
+  }
   // if(fleetTime < 0) location.reload();
+
 }
 
 function actualizaFecha(){ // Se ejecuta cada un segunda y updatea el reloj de la esquina derecha
@@ -60,7 +67,7 @@ function removeVaca(own, gal, sys, pos){ // funcion utilizada para eliminar una 
   });
 }
 
-function setOptions(){ // funcion que utilisa la pagina Opcions.html para comunicarse con la api
+function setOptions(){ // funcion que utiliza la pagina Opcions.html para comunicarse con la api
   let esp = document.getElementById('inputEspionage').value;
   let small = document.getElementById('inputSmall').value;
   let large = document.getElementById('inputLarge').value;

@@ -35,7 +35,7 @@ var exp = {
     return planeta.defense.antiballisticMissile + planeta.defense.interplanetaryMissile;
   },
   capacidadSilo: function(planeta){
-    // por cada nivel del silo se puede agregar 10 misiles de cualquier tipo
+    // Por cada nivel del silo se puede agregar 10 misiles de cualquier tipo
     return planeta.buildings.silo*10;
   },
   timeBuild: function(recursos, mult, elev, uniSpeed){
@@ -46,6 +46,7 @@ var exp = {
     return planeta.buildings.alliance + 1;
   },
   normalRandom: function(min, max, podaMin = -Infinity, podaMax = Infinity) {// la esperanza es (max+min)/2
+    /* Pasar algoritmo */
     let u = 0, v = 0, num = 1;
     while(u == 0) u = Math.random(); //Converting [0,1) to (0,1)
     v = Math.random();
@@ -71,7 +72,7 @@ var exp = {
       res = '';
       num = Math.abs(num);
       while(num > 999){
-        res = '.' + this.completaDigitos(num%1000) + res;
+        res = '.' + exp.completaDigitos(num%1000) + res; // Se usa 'exp' porque si no genera problemas de contexto
         num = Math.floor(num / 1000);
       }
       res = num + res;
@@ -184,6 +185,67 @@ var exp = {
     for(let i = 0 ; i<planets.length && res == -1 ; i++){
       if(planets[i].coordinates.gal == coors.gal && planets[i].coordinates.sys == coors.sys && planets[i].coordinates.pos == coors.pos){
         res = i;
+      }
+    }
+    return res;
+  },
+  isZeroObj: function(obj){
+    let res = true;
+    for(let i in obj){
+      if (obj[i] != 0){
+        res = false;
+        break;
+      }
+    }
+    return res;
+  },
+  zeroResources: function(){
+    return {metal: 0, crystal: 0, deuterium: 0};
+  },
+  zeroShips: function(){
+    return {lightFighter:  0,
+           heavyFighter:   0,
+           cruiser:        0,
+           battleship:     0,
+           battlecruiser:  0,
+           bomber:         0,
+           destroyer:      0,
+           deathstar:      0,
+           smallCargo:     0,
+           largeCargo:     0,
+           colony:         0,
+           recycler:       0,
+           espionageProbe: 0,
+           solarSatellite: 0};
+  },
+  zeroDefense: function(){
+    return {rocketLauncher: 0, lightLaser: 0, heavyLaser: 0,
+            gauss: 0, ion: 0, plasma: 0, smallShield: 0,
+            largeShield: 0, antiballisticMissile: 0,
+            interplanetaryMissile: 0};
+  },
+  zeroBuilding: function(){
+    return {metalMine: 0, crystalMine: 0, deuteriumMine: 0,
+            solarPlant: 0, fusionReactor: 0, metalStorage: 0,
+            crystalStorage: 0, deuteriumStorage: 0, robotFactory: 0,
+            shipyard: 0, researchLab: 0, alliance: 0, silo: 0,
+            naniteFactory: 0, terraformer: 0};
+  },
+  estaColonizado: function(lista, coor){
+    return lista[coor.gal + '_' + coor.sys + '_' + coor.sys] == undefined;
+  },
+  cargaEscombros: function(debris, recicladores){
+    let capacidad = 20000*recicladores;// Calcula cuanto puede cargar como maximo
+    let res = {metal: 0, crystal: 0};
+    if(debris.metal > capacidad){      // Recolecta el metal
+        res.metal = capacidad;
+    }else{
+      res.metal = debris.metal;
+      capacidad -= debris.metal;
+      if(debris.crystal > capacidad){  // Recolecta el cristal
+        res.crystal = capacidad;
+      }else{
+        res.crystal = debris.crystal;
       }
     }
     return res;

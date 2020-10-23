@@ -52,10 +52,10 @@ block content
                 imgHasta = "../Imagenes/Planets/Miniatures/Unknown.gif";
               }else{
                 if(val.destination == 2){
-                  imgHasta = "../Imagenes/Planets/Miniatures/MiniDebris.gif";
+                  imgHasta = "../Imagenes/Planets/Miniatures/MiniMoon.gif";
                 }else{
                   if(val.destination == 3){
-                    imgHasta = "../Imagenes/Planets/Miniatures/MiniMoon.gif";
+                    imgHasta = "../Imagenes/Planets/Miniatures/MiniDebris.gif";
                   }else{
                     imgHasta = "../Imagenes/Planets/Miniatures/Planet_" + val.hastaType + "_" + val.hastaColor + "_Mini.gif";
                   }
@@ -97,6 +97,6 @@ block content
                 | #{destino}
             span.destinationCoords.tooltip
               a(href=coorHastaLink) #{coorHasta}
-          span.nextTimer #{basic.segundosATiempo(val.duracion)}
+          span.nextTimer #{basic.segundosATiempo(Math.ceil(val.duracion))}
           span.nextabsTime #{new Date((val.ida ? val.llegada : val.time) - 10800000).toGMTString().slice(17, 25)} Clock
           span.nextMission.friendly.textBeefy #{val.ida ? "Going" : "Returning"}
