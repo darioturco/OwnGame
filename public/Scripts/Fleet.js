@@ -1,8 +1,8 @@
 const cargaList = [50,100,800,1500,750,500,2000,1000000,5000,25000,7500,20000,0,0];
 const deuteriumList = [10, 20, 150, 250, 120, 500, 500, 1, 5, 25, 500, 150, 0, 0];
 /*cazador ligero | casadorpesado | cruzero | nave de batalla | acorazado | bombardero | destructor | estrella de la muerte | nave pequenia de carga | nave grande de carga | colonizador | resiclador | sonde de espionage | misil*/
-const missionNameList = [' Expedition', ' Colonisation', ' Recycle', ' Transport', ' Deployment', ' Espionage', ' ACS Defend', ' Attack', ' Moon Destruction'];
-const missionDescriptionList = ['Send your ships into the final frontier of space to encounter thrilling quests.', 'Colonizes a new planet.', 'Send your recyclers to a debris field to collect the resources floating around there.', 'Transports your resources to other planets.', 'Sends your fleet permanently to another planet.', 'Spy the worlds of foreign emperors.', 'Defend a planet.', 'Attacks the fleet and defence of your opponent.', 'Destroys the moon of your enemy.'];
+const missionNameList = [' Expedition', ' Colonisation', ' Recycle', ' Transport', ' Deployment', ' Espionage', ' Misil', ' Attack', ' Moon Destruction'];
+const missionDescriptionList = ['Send your ships into the final frontier of space to encounter thrilling quests.', 'Colonizes a new planet.', 'Send your recyclers to a debris field to collect the resources floating around there.', 'Transports your resources to other planets.', 'Sends your fleet permanently to another planet.', 'Spy the worlds of foreign emperors.', 'Destroy the defenses of other planets with misils.', 'Attacks the fleet and defence of your opponent.', 'Destroys the moon of your enemy.'];
 var inputsFleets, cantFleets, speeds, cargeInputs, buttonsMision;
 var targetPlanetName, destinationImgPlanet, destinationImgMoon, destinationImgDebris, cargeBar;
 var distanceText, cargaText, durationText, arrivalText, returnText, speedText, consumText, cargeResources, cargeResourcesMax, missionText, missionDescriptionText;
@@ -275,6 +275,18 @@ function cargeResourcesFunction(all, num){
 function cargeAllResourcesFunction(){
   for(let i = 0 ; i<3 ; i++){
     cargeResourcesFunction(true, i);
+  }
+}
+
+function focusInputFunction(num){
+  if(parseInt(cargeInputs[num].value) == 0){
+    cargeInputs[num].value = '';
+  }
+}
+
+function focusOutFunction(num){
+  if(cargeInputs[num].value == '' || parseInt(cargeInputs[num].value) < 0){
+    cargeInputs[num].value = '0';
   }
 }
 

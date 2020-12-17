@@ -279,7 +279,7 @@ block content
               span.textlabel Espionage
           li#button5.ButtonMision.off.on
             a#missionButton5(href='javascript:void(0);' onclick='pressButtonMision(6);')
-              span.textlabel ACS Defend
+              span.textlabel Misil
           li#button1.ButtonMision.off.on
             a#missionButton1(href='javascript:void(0);' onclick='pressButtonMision(7);')
               span.textlabel Attack
@@ -302,7 +302,7 @@ block content
               .res_wrap.border3px
                 .resourceIcon.metal.tooltip
                 .res
-                  input#metal.inputCarge(type='number' name='metal' value='0' onchange='changeResourcesInputFunction(0)')
+                  input#metal.inputCarge(type='number' name='metal' value='0' onchange='changeResourcesInputFunction(0)' onfocus='focusInputFunction(0)' onfocusout='focusOutFunction(0)')
                   a.min(href='javascript:void(0);' onclick="cargeResourcesFunction(false, 0); return false;")
                     img(src='../Imagenes/LeftMiniArrow.gif')
                   a.max(href='javascript:void(0);' onclick='cargeResourcesFunction(true, 0); return false;')
@@ -310,7 +310,7 @@ block content
               .res_wrap.border3px
                 .resourceIcon.crystal.tooltip
                 .res
-                  input#crystal.inputCarge(type='number' name='crystal' value='0' onchange='changeResourcesInputFunction(1)')
+                  input#crystal.inputCarge(type='number' name='crystal' value='0' onchange='changeResourcesInputFunction(1)' onfocus='focusInputFunction(1)' onfocusout='focusOutFunction(1)')
                   a.min(href='javascript:void(0);' onclick="cargeResourcesFunction(false, 1); return false;")
                     img(src='../Imagenes/LeftMiniArrow.gif')
                   a.max(href='javascript:void(0);' onclick='cargeResourcesFunction(true, 1); return false;')
@@ -318,7 +318,7 @@ block content
               .res_wrap.border3px
                 .resourceIcon.deuterium.tooltip
                 .res
-                  input#deuterium.inputCarge(type='number' name='deuterium' value='0' onchange='changeResourcesInputFunction(2)')
+                  input#deuterium.inputCarge(type='number' name='deuterium' value='0' onchange='changeResourcesInputFunction(2)' onfocus='focusInputFunction(2)' onfocusout='focusOutFunction(2)')
                   a.min(href='javascript:void(0);' onclick="cargeResourcesFunction(false, 2);return false;")
                     img(src='../Imagenes/LeftMiniArrow.gif')
                   a.max(href='javascript:void(0);' onclick='cargeResourcesFunction(true, 2);return false;')
@@ -337,7 +337,7 @@ block content
                   span#maxresources 0
             #roundup.border5px
               a#start.on(href='javascript:void(0);' onclick='sendFleetMovement();')
-                //enviar el formulario por post a la api porque son muchos datos
+                // Enviar el formulario por post a la api porque son muchos datos
                 span(style='padding-top:9px;') Send fleet
               br.clearfloat
           br.clearfloat

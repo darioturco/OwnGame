@@ -1,5 +1,16 @@
 // Aca estan las funciones auxiliares simples
 // o los renombres para aclarar cosas
+// Listas de dialogos de las expediciones:
+// Todos los dialogos se pueden encontrar en: https://ogame.fandom.com/wiki/Expedition
+/* Falta completar todos los dialogos */
+const retrasoExp = ["Your expedition went into a sector full of particle storms. This set the energy stores to overload and most of the ships main systems crashed. Your mechanics where able to avoid the worst, but the expedition is going to return with a big delay."];
+const perdidaExp = ["The only thing left from the expedition was the following radio transmission: Zzzrrt Oh no! Krrrzzzzt That zrrrtrzt looks krgzzzz like .. AHH! Krzzzzzzzztzzzz... Transmision terminated"];
+const separacionExp = ["Some ships had crashed becouse of bad calculation of the rute."];
+const navesExp = ["We found a deserted pirate station. There are some old ships lying in the hangar. Our technicians are figuring out whether some of them are still useful or not."];
+const recursosExp = ["Your expedition ran into some spaceship wrecks from an old battle. Some of the components could be saved."];
+const batallaPiratasExp = ["We needed to fight some pirates which were, fortunately, only a few."];
+const batallaAliensExp  = ["We needed to fight some pirates which were, fortunately, only a few."];
+const nadaExp = ["Your expedition took gorgeous pictures of a supernova. Nothing new could be obtained from the expedition, but at least there is good chance to win that 'Best Picture Of The Universe' competition in next months issue of OGame magazine."];
 var exp = {
   generateNewTypeOfPlanet: function(pos, mod) {
     let temp = 10, rango = 40;
@@ -42,7 +53,7 @@ var exp = {
     let divisor = 2500 * (1+mult) * Math.pow(2,elev) * uniSpeed;
     return Math.floor(60*recursos/divisor);
   },
-  maximoDefensores: function(planeta){
+  maximoDefensores: function(planeta){ /*Borrar*/
     return planeta.buildings.alliance + 1;
   },
   normalRandom: function(min, max, podaMin = -Infinity, podaMax = Infinity) {// la esperanza es (max+min)/2
@@ -57,6 +68,9 @@ var exp = {
     num += min; // offset to min
     if (num > podaMax || num < podaMin) num = Math.random()*(podaMax-podaMin)+(podaMin);
     return num;
+  },
+  randomBool: function(){
+    return (Math.random() < 0.5);
   },
   validInt: function(num) {
     num = parseInt(num);
@@ -172,7 +186,7 @@ var exp = {
     return res;
   },
   missionNumToString: function(num){
-    let arrayText = ["Expedition", "Colonisation", "Recycle", "Transport", "Deployment", "Espionage", "ACS Defend", "Attack", "Moon Destruction"];
+    let arrayText = ["Expedition", "Colonisation", "Recycle", "Transport", "Deployment", "Espionage", "Misil", "Attack", "Moon Destruction"];
     return arrayText[num];
   },
   objStringToNum: function(obj){
@@ -232,12 +246,18 @@ var exp = {
             naniteFactory: 0, terraformer: 0};
   },
   estaColonizado: function(lista, coor){
-    return lista[coor.gal + '_' + coor.sys + '_' + coor.sys] == undefined;
+    return lista[coor.gal + '_' + coor.sys + '_' + coor.pos] != undefined;
   },
-  cargaEscombros: function(debris, recicladores){
-    let capacidad = 20000*recicladores;// Calcula cuanto puede cargar como maximo
+  playerName: function(lista, coor){
+    if(this.estaColonizado(lista, coor)){
+        return lista[coor.gal + '_' + coor.sys + '_' + coor.pos].playerName;
+    }
+    return "";
+  },
+  cargaEscombros: function(debris, capacidad){
     let res = {metal: 0, crystal: 0};
-    if(debris.metal > capacidad){      // Recolecta el metal
+    /* Rehacer esta funcion usando Min(), inspirarce en loadResources */
+    if(debris.metal > capacidad){       // Recolecta el metal
         res.metal = capacidad;
     }else{
       res.metal = debris.metal;
@@ -249,6 +269,238 @@ var exp = {
       }
     }
     return res;
+  },
+  espacioLibre: function(movement){
+    let espacioDeCarga = 0;
+    let infoNaves = this.navesInfo();
+    for(item in movement.ships){
+      espacioDeCarga += infoNaves[item].carga * movement.ships[item];
+    }
+    return espacioDeCarga - movement.resources.metal - movement.resources.crystal - movement.resources.deuterium;
+  },
+  loadResources: function(movement, resources){
+    let res = {};
+    let espacioLibre = this.espacioLibre(movement); // Averiguo cuanto espacio libre le queda a la flota
+    // Cargo el metal
+    let cargaAux = Math.min(espacioLibre, resources.metal);
+    res.metal = movement.resources.metal + cargaAux;
+    espacioLibre -= cargaAux;
+    // Cargo el cristal
+    cargaAux = Math.min(espacioLibre, resources.crystal);
+    res.crystal = movement.resources.crystal + cargaAux;
+    espacioLibre -= cargaAux;
+    // Cargo el deuterio
+    cargaAux = Math.min(espacioLibre, resources.deuterium);
+    res.deuterium = movement.resources.deuterium + cargaAux;
+    return res;
+  },
+  costShipsAndDefenses: function(){
+    return {
+      lightFighter:          {metal: 3000, crystal: 1000, deuterium: 0, puntos: 4000},
+      heavyFighter:          {metal: 6000, crystal: 4000, deuterium: 0, puntos: 10000},
+      cruiser:               {metal: 20000, crystal: 7000, deuterium: 2000, puntos: 29000},
+      battleship:            {metal: 45000, crystal: 15000, deuterium: 0, puntos: 60000},
+      battlecruiser:         {metal: 30000, crystal: 40000, deuterium: 15000, puntos: 85000},
+      bomber:                {metal: 50000, crystal: 25000, deuterium: 15000, puntos: 90000},
+      destroyer:             {metal: 60000, crystal: 50000, deuterium: 15000, puntos: 125000},
+      deathstar:             {metal: 5000000, crystal: 4000000, deuterium: 1000000, puntos: 10000000},
+      smallCargo:            {metal: 2000, crystal: 2000, deuterium: 0, puntos: 4000},
+      largeCargo:            {metal: 6000, crystal: 6000, deuterium: 0, puntos: 12000},
+      colony:                {metal: 10000, crystal: 20000, deuterium: 10000, puntos: 40000},
+      recycler:              {metal: 10000, crystal: 6000, deuterium: 2000, puntos: 18000},
+      espionageProbe:        {metal: 0, crystal: 1000, deuterium: 0, puntos: 1000},
+      solarSatellite:        {metal: 0, crystal: 2000, deuterium: 500, puntos: 2000},
+      rocketLauncher:        {metal: 2000, crystal: 0, deuterium: 0, puntos: 2000},
+      lightLaser:            {metal: 1500, crystal: 500, deuterium: 0, puntos: 2000},
+      heavyLaser:            {metal: 6000, crystal: 2000, deuterium: 0, puntos: 8000},
+      gauss:                 {metal: 20000, crystal: 15000, deuterium: 0, puntos: 35000},
+      ion:                   {metal: 2000, crystal: 6000, deuterium: 0, puntos: 8000},
+      plasma:                {metal: 50000, crystal: 50000, deuterium: 30000, puntos: 130000},
+      smallShield:           {metal: 10000, crystal: 10000, deuterium: 0, puntos: 20000},
+      largeShield:           {metal: 50000, crystal: 50000, deuterium: 0, puntos: 100000},
+      antiballisticMissile:  {metal: 8000, crystal: 0, deuterium: 2000, puntos: 10000},
+      interplanetaryMissile: {metal: 12500, crystal: 2500, deuterium: 10000, puntos: 25000}
+    };
+  },
+  contarPuntosShips:function(ships){
+    let cost = this.costShipsAndDefenses();
+    let res = 0;
+    console.log(cost);
+    for(let item in ships){
+      console.log(item);
+      if(item != 'misil') res += ships[item] * cost[item].puntos;
+    }
+    return res;
+  },
+  newPointsRandomFleet: function(puntos){
+    let res = this.zeroShips();
+    let cost = this.costShipsAndDefenses();
+    while(puntos > 4500){
+      for(let item in res){
+        if(cost[item].puntos < puntos && this.randomBool()){
+          res[item] += 1;
+          puntos -= cost[item].puntos;
+        }
+      }
+    }
+    return res;
+  },
+  newCorrelativeRandomFleet: function(ships){
+    let res = this.zeroShips();
+    for(let item in res){
+      res[item] = Math.floor(ships[item] * (Math.random()+0.5));
+    }
+    res.lightFighter += 12;
+    return res;
+  },
+  randomBattleTechs: function(research){
+    let res = {};
+    // Cada tecnologia le pongo en +/-3 de la tecnologia original
+    res.weapons = research.weapons + Math.floor(Math.random() * 6 - 3);
+    res.shielding = research.shielding + Math.floor(Math.random() * 6 - 3);
+    res.armour = research.armour + Math.floor(Math.random() * 6 - 3);
+    // Me fijo que ninguna tecnologia sea negativa y si lo es la dejo en 0
+    for(let item in res){
+      if(res[item] < 0) res[item] = 0
+    }
+    return res;
+  },
+  expedition: function(ships, research){
+    console.log(ships);
+    console.log(research);
+    let res = {ships: ships,                   // Las naves que sobrevivieron a la expedicion
+              resources: this.zeroResources(), // Los recursos nuevos que encontro la flota
+              time: 0,                         // La cantidad de segundos que se retrasa la flota
+              mueren: false,                   // Es true si se pierden todas las naves
+              evento: 0,                       // Numero que indica que evento sucedio en la expedicion (0 = Nada, 1 = Retrazo, 2 = Perdida total, 3 = Perdida parcial, 4 = Naves, 5 = Recursos, 6 = Batalla)
+              mensajes: []};                   // Lista con los mesajes a enviar para informar lo ocurrido en la expedicion
+    // Tiro un numero aleatorio y me fijo que toco en la expedicion
+    let rand = Math.floor(Math.random()*1000);
+    if(rand < 100){        // Se retrasa la flota
+
+      res.time = Math.floor(Math.random()*7200) + 5000;
+      res.mensajes.push({type: 3, title: "Expedition", text: retrasoExp[0], data: {}});
+      res.evento = 1;
+
+    }else if(rand == 100){ // Se pierde la flota
+
+      res.mueren = true;
+      res.mensajes.push({type: 3, title: "Expedition", text: perdidaExp[0], data: {}});
+      res.evento = 2;
+
+    }else if(rand < 120){  // Se pierde parte de la flota
+
+      if(this.randomBool()){ // Se pierde un solo tipo de nave
+        let eliminado = false;
+        if(!this.isZeroObj(ships)){
+          while(eliminado == false){
+            for(let item in ships){
+              if(this.randomBool() && ships[item] != 0){
+                eliminado = true;
+                ships[item] = 0;
+                break;
+              }
+            }
+          }
+        }
+      }else{ // Se pierden un poco de cada nave
+        for(let item in ships){
+          ships[item] -= Math.floor(Math.random() * ships[item])
+        }
+      }
+      res.mueren = this.isZeroObj(ships);
+      res.mensajes.push({type: 3, title: "Expedition", text: separacionExp[0], data: {}});
+      res.evento = 3;
+
+    }else if(rand < 350){  // Se encuentras naves
+
+      let newShips = {};
+      let puntos = 0;
+      // Decido como obtengo las nuevas naves
+      if(this.randomBool()){ // Algoritmo de puntos
+        puntos = Math.floor(this.contarPuntosShips(ships) * (0.4 + research.astrophysics*0.02)) + 5000 + research.astrophysics*1000;
+        newShips = this.newPointsRandomFleet(puntos);
+      }else{ // Algoritmo de copia de flota
+        newShips = this.newCorrelativeRandomFleet(ships);
+      }
+      // Complico un poco el consegir estrellas de la muerte
+      if(this.randomBool()) newShips['deathstar'] = 0;
+      // Agrego las nuevas naves a las actuales
+      for(let item in ships){
+        res.ships[item] += newShips[item];
+      }
+      res.mensajes.push({type: 3, title: "Expedition", text: navesExp[0], data: {}});
+      res.evento = 4;
+
+    }else if(rand < 600){  // Se encuentran recursos
+
+      let puntos = Math.floor(this.contarPuntosShips(ships) * 0.02) * research.astrophysics;
+      let resource = Math.floor(Math.random() * 3);
+      switch (resource) {
+      case 0:
+        res.resources.metal = Math.floor(puntos * Math.random()) + 1;
+        break;
+      case 1:
+        res.resources.crystal = Math.floor(puntos * Math.random() * 0.5) + 1;
+        break;
+      default:
+        res.resources.deuterium = Math.floor(puntos * Math.random() * 0.2) + 1;
+      }
+      res.mensajes.push({type: 3, title: "Expedition", text: recursosExp[0], data: {}});
+      res.evento = 5;
+
+    }else if(rand < 650){  // Se encuentran muchos recursos
+
+      let puntos = Math.floor(this.contarPuntosShips(ships) * 0.035) * (research.astrophysics+1) + 100;
+      res.resources.metal = Math.floor(puntos * Math.random()) + 1000;
+      res.resources.crystal = Math.floor(puntos * Math.random() * 0.8) + 1000;
+      res.resources.deuterium = Math.floor(puntos * Math.random() * 0.5) + 500;
+      res.mensajes.push({type: 3, title: "Expedition", text: recursosExp[0], data: {}});
+      res.evento = 5;
+
+    }else if(rand < 800){  // Enfrentamiento
+
+      let enemyTech = this.randomBattleTechs(research);
+      let enemyShips = {};
+      let puntos = 0;
+
+      if(this.randomBool()){ // Batalla contra piratas
+
+        puntos = Math.floor(this.contarPuntosShips(ships) * 0.85) + 5000;
+        enemyShips = this.newPointsRandomFleet(puntos);
+        res.mensajes.push({type: 3, title: "Expedition", text: batallaPiratasExp[0], data: {}});
+
+      }else{ // Batalla contra alines
+
+        for(let item in enemyTech){ // Aumento en 2 las tecnologias de los aliens
+          enemyTech[item] += 2;
+        }
+        if(this.randomBool()){ // Algoritmo de puntos
+          puntos = Math.floor(this.contarPuntosShips(ships) * 1.1) + 100000;
+          enemyShips = this.newPointsRandomFleet(puntos);
+        }else{ // Algoritmo de copia de flota
+          enemyShips = this.newCorrelativeRandomFleet(ships);
+        }
+        res.mensajes.push({type: 3, title: "Expedition", text: batallaAliensExp[0], data: {}});
+
+      }
+
+      /* Simulo la batalla */
+      let battleData = this.battle(ships, enemyShips, research, enemyTech);
+      /* Mando el mensage de la batalla */
+      /*res.mensajes.push(battleData.message);*/
+      res.mueren = this.isZeroObj(ships);
+      /* Falta devolver las naves que sobrevivieron en ships */
+      res.evento = 6;
+
+    }else{  // Nada
+      res.mensajes.push({type: 3, title: "Expedition", text: nadaExp[0], data: {}});
+    }
+    res.ships.misil = 0; // No se pueden encontrar misiles en la expedicion
+    return res;
+  },
+  battle: function(defenderShips, attackerShips, defenderTech, attackerTech){
+
   }
 };
 

@@ -46,6 +46,7 @@ router.get('/galaxy', function(req, res, next) {
 
 router.get('/readMessages', function(req, res, next) {
   let listMes = uni.player.messages;
+  console.log(listMes);
   res.send({ok: true, list: listMes});
 });
 

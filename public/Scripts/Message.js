@@ -28,7 +28,8 @@ setTimeout(() => {
   });
 }, 0);
 
-function changeTypeMessage(num, act = false){//carga todos los mensages de ese tipo
+// Carga todos los mensages de ese tipo
+function changeTypeMessage(num, act = false){
   if((num != type) || (act == true)){
     let auxList = [fleetList, espList, universeList, otherList][num-1];
     buttonsType[type-1].classList.remove('ui-tabs-active');
@@ -39,26 +40,41 @@ function changeTypeMessage(num, act = false){//carga todos los mensages de ese t
     for(let i = 0 ; i<hasta ; i++){
       if(i < conteinerList.length){
         if(i < auxList.length){
-          cargaData(conteinerList[i], auxList[i]);
+          cargaData(conteinerList[i], auxList[i], num);
         }else{
-          conteinerList[i].style.display = 'none'; //apaga el conteiner
+          conteinerList[i].style.display = 'none'; // Apaga el conteiner
         }
       }else{
-        let auxNode = original.cloneNode(true);// crea un nuevo conteiner
+        let auxNode = original.cloneNode(true); // Crea un nuevo conteiner
         auxNode.id = "";
         auxNode.children[0].dataset.num = i;
         listNode.appendChild(auxNode);
         conteinerList.push(auxNode);
-        cargaData(auxNode, auxList[i]);
+        cargaData(auxNode, auxList[i], num);
       }
     }
   }
 }
 
 function cargaData(conteiner, obj){
-  conteiner.children[1].innerHTML = obj.title;//pone la info de ese mensaje en ese conteiner
+  console.log(type);
+  // Pone la info de ese mensaje en ese conteiner
+  console.log(obj);
+  console.log(obj.data);
+  conteiner.children[1].innerHTML = obj.title;
   conteiner.children[2].innerHTML = obj.date;
-  conteiner.children[3].innerHTML = obj.text;
+  switch (type) {
+    case 1: // fleet
+      conteiner.children[3].innerHTML = JSON.stringify(obj.data);
+      /* Muestro el informe de batalla bien */
+      break;
+    case 2: // espionaje
+      conteiner.children[3].innerHTML = JSON.stringify(obj.data);
+      /* Muestro el informe de espionaje bien */
+      break;
+    default:
+      conteiner.children[3].innerHTML = obj.text;
+  }
   conteiner.style.display = 'block';
 }
 

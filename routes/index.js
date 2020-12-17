@@ -26,6 +26,16 @@ router.get('/', (req, res, next) => {
   //uni.colonize({gal: 1, sys: 2, pos: 7}, 'dturco');
   //uni.contPoint('dturco');
   //uni.contMoonFields(uni.planeta);
+  /*let navesAux = uni.fun.zeroShips();
+  navesAux.deathstar = 5;
+  uni.player.research.astrophysics = 10;
+  for(let i = 0 ; i<100 ; i++){
+      console.log(uni.fun.expedition(navesAux, uni.player.research));
+      for(let item in navesAux){
+        navesAux[item] = 1;
+      }
+  }*/
+
   uni.seeDataBase(res, process.env.UNIVERSE_NAME, "jugadores");
 });
 
