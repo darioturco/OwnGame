@@ -23,7 +23,7 @@ var exp = {
   cantPlayers: 0,
   allCord: {},                  // Por cada planeta colonizado guardo un objeto 'infoPlanet' con la informacion basica exterior del planeta
   comienzoBusquedaNewConrd: 1,  // Apartir de que galaxia se ubican los nuevos planetas
-  fun: fun, /*Borrar*/
+  fun: fun,
   createUniverse: function(name, cant, data){
     this.setUniverseData(name, data);
     for(let i = 0 ; i<cant ; i++){
@@ -70,6 +70,8 @@ var exp = {
     });
   },
   updatePlayer: function(player, f, help = false){
+    //this.setPlanetDataDev(this.player.planets[1].coordinates, "dturco");
+
     let horaActual = fun.horaActual();
     let objSet = {};
     let objInc = {};
@@ -243,7 +245,7 @@ var exp = {
                 let nameEspia = fun.playerName(this.allCord, this.player.movement[i].coorDesde);
                 let difEspionageLevel = this.allCord[this.player.movement[i].coorHasta.gal+'_'+this.player.movement[i].coorHasta.sys+'_'+this.player.movement[i].coorHasta.pos].espionage - this.allCord[this.player.movement[i].coorDesde.gal+'_'+this.player.movement[i].coorDesde.sys+'_'+this.player.movement[i].coorDesde.pos].espionage;
                 let probabilityDetected = Math.floor(Math.pow(2, difEspionageLevel - 2) * this.player.movement[i].ships.espionageProbe);
-                if(true/*probabilityDetected < Math.floor(Math.random()*100)*/){ // Si no descubren a las sondas de espionage
+                if(probabilityDetected < Math.floor(Math.random()*100)){ // Si no descubren a las sondas de espionage
                   // Uso el indice de espionage para mandar en reporte de espionage
                   let indiceDeEspionage = Math.sign(difEspionageLevel, 2) * Math.pow(difEspionageLevel, 2) + this.player.movement[i].ships.espionageProbe;
                   this.sendSpyReport(nameEspia, this.player.movement[i].coorHasta, indiceDeEspionage);
@@ -276,7 +278,39 @@ var exp = {
               break;
 
             case 6: // Misil
+              // Me fijo que el planeta este colonizado y que el misil se haya enviado a un planeta (las lunas y escombros no se pueden misilear)
+              if(fun.estaColonizado(this.allCord, this.player.movement[i].coorHasta) && this.player.movement[i].destination == 1){
+                mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOne(   // Busco el planeta al que estoy misileando
+                  {planets :{$elemMatch: {coordinates: {
+                    gal: this.player.movement[i].coorHasta.gal,
+                    sys: this.player.movement[i].coorHasta.sys,
+                    pos: this.player.movement[i].coorHasta.pos}}}},
+                  (err, res) => {
+                    if(err) throw err;
+                    let indexPlanet = fun.getIndexOfPlanet(res.planets, this.player.movement[i].coorHasta);
+                    let newDefences = fun.misilAttack(res.planets[indexPlanet].defense, this.player.movement[i].ships.misil, res.research.armour, this.player.research.weapons);
 
+                    // Guardo las nuevas defensas del planeta atacado
+                    this.setPlanetData(this.player.movement[i].coorHasta, undefined, undefined, undefined, newDefences.survivorDefenses);
+
+                    // Informo al atacado y a el si le digo lo que defensas se rompieron, NO informo al atacante ya que no hay nada que informar
+                    let infoMesDestruido = {type: 4, title: "Misil attack", text: "", data: {}};
+                    if(newDefences.attackedDef){
+                      let aux = newDefences.survivorDefenses.interplanetaryMissile;
+                      newDefences.survivorDefenses.interplanetaryMissile = 0;
+                      /* Completar bien los mensajes sobre los misiles, indicar que planeta atacaron */
+                      if(fun.isZeroObj(newDefences.survivorDefenses)){
+                        infoMesDestruido.text = "The player fulanito had attacked you with missils, every defense is destroyed.";
+                      }else{
+                        infoMesDestruido.text = "The player fulanito had attacked you with missils, los danos fueron: ";
+                        newDefences.survivorDefenses.interplanetaryMissile = aux;
+                      }
+                    }else{
+                      infoMesDestruido.text = "The player fulanito had attacked you with missils, but the Anti-Balistic missils worked fine.";
+                    }
+                    this.sendMessage(res.name, infoMesDestruido);
+                });
+              }
               break;
 
             case 7: // Ataque
@@ -1272,7 +1306,7 @@ var exp = {
         validMission =  obj.ships.espionageProbe > 0 && !misil;
         break;
       case 6: // Misil
-        validMission = misil && !fleetWithNoMisil;
+        validMission = misil;
         break;
       case 7: // Attack
         validMission = !misil;
@@ -1292,8 +1326,7 @@ var exp = {
           // Calculo cuanto tarda la flota en llegar
           let time = Math.ceil((10+(35000/obj.porce)*Math.sqrt(10*distancia/minSpeed)) / this.universo.speedFleet);
           // Si es una expedicion le agrego una hora mas un tiempo random
-          /*Descomentar esta linea despues de testear las expediciones */
-          /*if(obj.mission == 0) time += 3600 + Math.ceil(Math.random()*128);*/
+          if(obj.mission == 0) time += 3600 + Math.ceil(Math.random()*3600);
 
           // Creo los objetos para guardar todo en la base de datos
           let pushObjAux = {};
@@ -1324,9 +1357,11 @@ var exp = {
           objInc['planets.$' + moonString + 'resources.metal'] = -obj.resources.metal;
           objInc['planets.$' + moonString + 'resources.crystal'] = -obj.resources.crystal;
           objInc['planets.$' + moonString + 'resources.deuterium'] = -obj.resources.deuterium;
-          for(let clave in obj.ships){
-            objInc['planets.$' + moonString + 'fleet.' + clave] = -obj.ships[clave];
+          for(let clave in obj.ships){ // Resto todas las naves menos el misil
+            if(clave != 'misil') objInc['planets.$' + moonString + 'fleet.' + clave] = -obj.ships[clave];
           }
+          // Resto los misiles que se enviaron
+          objInc['planets.$' + moonString + 'defense.interplanetaryMissile'] = -obj.ships['misil'];
           mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
             {planets :{$elemMatch: {coordinates: {gal: this.player.planets[planet].coordinates.gal, sys: this.player.planets[planet].coordinates.sys, pos: this.player.planets[planet].coordinates.pos}}}},
             {$push: pushObj, $inc: objInc});
@@ -1357,18 +1392,17 @@ var exp = {
 
     res.send({ok: true});
   },
-  setPlanetData: function(cord, player){ /* III Funcion de base de datos III */
-    /* cambiar las constantes  y no necesita player*/
-    let resources = {metal: 1000000, crystal: 1000000, deuterium: 1000000, energy: 0};
-    let building = {metalMine: 0, crystalMine: 1, deuteriumMine: 0, solarPlant: 30, fusionReactor: 0, metalStorage: 10, crystalStorage: 9, deuteriumStorage: 8, robotFactory: 0, shipyard: 0, researchLab: 0, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0};
-    let fleet = {lightFighter: 10, heavyFighter: 0, cruiser: 100, battleship: 10, battlecruiser: 0, bomber: 3, destroyer: 100, deathstar: 50, smallCargo: 500, largeCargo: 200, colony: 1000, recycler: 200, espionageProbe: 30, solarSatellite: 15};
-    let defenses = {rocketLauncher: 0, lightLaser: 0, heavyLaser: 0, gauss: 10, ion: 0, plasma: 0, smallShield: 0, largeShield: 0, antiballisticMissile: 0, interplanetaryMissile: 0};
-    let moon = this.createNewMoon(8888); //{active: false, size: 0};
-    let debris = {active: true, metal:1000, crystal: 2000};
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({planets :{$elemMatch: {coordinates: {gal: cord.gal, sys: cord.sys, pos: cord.pos}}}}, {$set: {'planets.$.resources': resources,'planets.$.buildings': building, 'planets.$.fleet': fleet, 'planets.$.defense': defenses,'planets.$.moon': moon, 'planets.$.debris': debris}});
+  setPlanetData: function(cord, resources = undefined, buildings = undefined, fleet = undefined, defenses = undefined){ /* III Funcion de base de datos III */
+    let setObj = {};
+    if(resources != undefined) setObj['planets.$.resources'] = resources;
+    if(buildings != undefined) setObj['planets.$.buildings'] = buildings;
+    if(fleet != undefined) setObj['planets.$.fleet'] = fleet;
+    if(defenses != undefined) setObj['planets.$.defense'] = defenses;
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({planets :{$elemMatch: {coordinates: {gal: cord.gal, sys: cord.sys, pos: cord.pos}}}}, {$set: setObj});
   },
   setMoonData: function(cord, player){ // Asume el planeta tiene luna, de lo contrario no hace nada /* III Funcion de base de datos III */
     /* cambiar las constantes  y no necesita player*/
+    /* Deberia ser muy parecida a la funcion de arriba */
     let resources = {metal: 500000, crystal: 4000000, deuterium: 1000000, energy: 0};
     let building = {lunarBase: 6, phalanx: 2, spaceDock: 0, marketplace: 1, lunarSunshade: 5, lunarBeam: 6, jumpGate: 1, moonShield: 0};
     let fleet = {lightFighter: 1000, heavyFighter: 0, cruiser: 1, battleship: 30, battlecruiser: 0, bomber: 0, destroyer: 0, deathstar: 100, smallCargo: 0, largeCargo: 0, colony: 0, recycler: 0, espionageProbe: 0, solarSatellite: 0};
@@ -1517,6 +1551,23 @@ var exp = {
       mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: this.player.name}, {$set: objSet});
     }
   },
+  setPlanetDataDev: function(cord, player){ /* III Funcion de base de datos III */
+    /* cambiar las constantes  y no necesita player*/
+    let resources = {metal: 1000000, crystal: 1000000, deuterium: 1000000, energy: 0};
+    let building = {metalMine: 0, crystalMine: 1, deuteriumMine: 0, solarPlant: 30, fusionReactor: 0, metalStorage: 10, crystalStorage: 9, deuteriumStorage: 8, robotFactory: 0, shipyard: 0, researchLab: 0, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0};
+    let fleet = {lightFighter: 10, heavyFighter: 0, cruiser: 100, battleship: 10, battlecruiser: 0, bomber: 3, destroyer: 100, deathstar: 50, smallCargo: 500, largeCargo: 200, colony: 1000, recycler: 200, espionageProbe: 30, solarSatellite: 15};
+    let defenses = {rocketLauncher: 100, lightLaser: 10, heavyLaser: 0, gauss: 5, ion: 0, plasma: 0, smallShield: 0, largeShield: 0, antiballisticMissile: 3, interplanetaryMissile: 1000};
+    let moon = {active: false, size: 0}; // this.createNewMoon(8888);
+    let debris = {active: true, metal:1000, crystal: 2000};
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({planets :{$elemMatch: {coordinates: {gal: cord.gal, sys: cord.sys, pos: cord.pos}}}}, {$set: {'planets.$.resources': resources,'planets.$.buildings': building, 'planets.$.fleet': fleet, 'planets.$.defense': defenses,'planets.$.moon': moon, 'planets.$.debris': debris}});
+  },
+  setMoonDataDev: function(cord, player){ // Asume el planeta tiene luna, de lo contrario no hace nada /* III Funcion de base de datos III */
+    /* cambiar las constantes  y no necesita player*/
+    let resources = {metal: 500000, crystal: 4000000, deuterium: 1000000, energy: 0};
+    let building = {lunarBase: 6, phalanx: 2, spaceDock: 0, marketplace: 1, lunarSunshade: 5, lunarBeam: 6, jumpGate: 1, moonShield: 0};
+    let fleet = {lightFighter: 1000, heavyFighter: 0, cruiser: 1, battleship: 30, battlecruiser: 0, bomber: 0, destroyer: 0, deathstar: 100, smallCargo: 0, largeCargo: 0, colony: 0, recycler: 0, espionageProbe: 0, solarSatellite: 0};
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({planets :{$elemMatch: {coordinates: {gal: cord.gal, sys: cord.sys, pos: cord.pos}}}}, {$set: {'planets.$.moon.resources': resources,'planets.$.moon.buildings': building, 'planets.$.moon.fleet': fleet}});
+  },
   seeDataBase: (res, uni, name) => {
     let respuesta = "";
     let cursor = mongo.db(uni).collection(name).find();
@@ -1567,4 +1618,6 @@ module.exports = exp;
 /* Hacer que las recompesas de las misiones del tutorial funciones
 /* Completar los mesajes de espionage
 /* Mostrar bien los reportes de espionage y de batallas
+/* Controlar el rango en el que se pueden lanzar los misiles
+/* Hacer que en las expediciones no pueda regresar por el usuario la flota para evitar disminuir el tiempo random
 */

@@ -46,7 +46,6 @@ router.get('/galaxy', function(req, res, next) {
 
 router.get('/readMessages', function(req, res, next) {
   let listMes = uni.player.messages;
-  console.log(listMes);
   res.send({ok: true, list: listMes});
 });
 
@@ -124,12 +123,10 @@ router.get('/set/returnFleet', function(req, res, next) {
 });
 
 router.post('/set/addFleetMovement', function(req, res, next) {
-  console.log(req.body);
   uni.addFleetMovement(uni.player.name, uni.planeta, uni.moon, req.body, res);
 });
 
 router.post('/set/moveCuanticFleet', function(req, res, next) {
-  console.log(req.body);
   uni.moveCuanticFleet(uni.player.name, uni.planeta, req.body, res);
 });
 

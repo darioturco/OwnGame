@@ -11,6 +11,9 @@ const recursosExp = ["Your expedition ran into some spaceship wrecks from an old
 const batallaPiratasExp = ["We needed to fight some pirates which were, fortunately, only a few."];
 const batallaAliensExp  = ["We needed to fight some pirates which were, fortunately, only a few."];
 const nadaExp = ["Your expedition took gorgeous pictures of a supernova. Nothing new could be obtained from the expedition, but at least there is good chance to win that 'Best Picture Of The Universe' competition in next months issue of OGame magazine."];
+const integridadDefensas = [200, 200, 800, 3500, 800, 10000, 2000, 10000];
+const keysDefensas = ["rocketLauncher", "lightLaser", "heavyLaser", "gauss", "ion", "plasma", "smallShield", "largeShield"];
+const integridadNaves = [];
 var exp = {
   generateNewTypeOfPlanet: function(pos, mod) {
     let temp = 10, rango = 40;
@@ -325,9 +328,7 @@ var exp = {
   contarPuntosShips:function(ships){
     let cost = this.costShipsAndDefenses();
     let res = 0;
-    console.log(cost);
     for(let item in ships){
-      console.log(item);
       if(item != 'misil') res += ships[item] * cost[item].puntos;
     }
     return res;
@@ -366,8 +367,6 @@ var exp = {
     return res;
   },
   expedition: function(ships, research){
-    console.log(ships);
-    console.log(research);
     let res = {ships: ships,                   // Las naves que sobrevivieron a la expedicion
               resources: this.zeroResources(), // Los recursos nuevos que encontro la flota
               time: 0,                         // La cantidad de segundos que se retrasa la flota
@@ -498,6 +497,38 @@ var exp = {
     }
     res.ships.misil = 0; // No se pueden encontrar misiles en la expedicion
     return res;
+  },
+  misilAttack: function(defenses, misils, armour, weapon){
+    // El algoritmo de misiles esta basado en el codigo del simulador http://www.toolsforogame.com/misiles/misiles.aspx
+    // Resto los misiles de intersepcion que tenga el defensor
+    let atacoDefensas = false;
+    let newMisils = misils - defenses.antiballisticMissile;
+    defenses.antiballisticMissile -= misils;
+
+    if(defenses.antiballisticMissile < 0){ // Los misiles restantes destruyen las defensas
+      let objAux;
+      defenses.antiballisticMissile = 0;
+      atacoDefensas = true;
+
+      // Calculo el 'ataque' de los misiles con la variable newMisils
+      let ataque = newMisils*12000*(1+(weapon/10));
+      let vidaDef = new Array(8);
+      for(let i = 0 ; i<integridadDefensas.length && ataque > 0 ; i++){
+        vidaDef[i] = integridadDefensas[i]*(1+(armour/10)); // Calculo la 'vida' de cada tipo de defensa
+        // Destruyo todas las defensas en orden, hasta quedar sin ataque o sin nada que destruir
+        objAux = this.misilAttackAux(ataque, defenses[keysDefensas[i]], vidaDef[i]);
+        ataque = objAux.ataqueRestante;
+        defenses[keysDefensas[i]] -= objAux.destroyedDef;
+      }
+    }
+    return {survivorDefenses: defenses, attackedDef: atacoDefensas};
+  },
+  misilAttackAux: function(ataque, cantDef, vidaDef){
+    let destruidos = Math.floor(ataque / vidaDef); // Calculos la cantidad de defensas destruidas
+    // Me fijo si destrui mas de las defensas que habia
+    if(destruidos > cantDef) destruidos = cantDef;
+    ataque -= destruidos*vidaDef; // Por cada destruido decremento el ataque para la proxima ronda
+    return {ataqueRestante: ataque, destroyedDef: destruidos};
   },
   battle: function(defenderShips, attackerShips, defenderTech, attackerTech){
 

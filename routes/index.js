@@ -20,8 +20,8 @@ router.get('/', (req, res, next) => {
   //uni.deleteCollection(process.env.UNIVERSE_NAME, ["jugadores", "universo"]);
   //uni.createUniverse(process.env.UNIVERSE_NAME, 5, {name: "", inicio: 0, maxGalaxies: 9, donutGalaxy: true, donutSystem: true, speed: 1, speedFleet: 100, fleetDebris: 30, defenceDebris: 0, maxMoon: 20});
   //uni.addNewPlayer("dturco", 1);
-  //uni.setPlanetData(uni.player.planets[0].coordinates, "dturco");
-  //uni.setMoonData(uni.player.planets[0].coordinates, "dturco");
+  //uni.setPlanetDataDev(uni.player.planets[1].coordinates, "dturco");
+  //uni.setMoonDataDev(uni.player.planets[0].coordinates, "dturco");
   //uni.sendMessage("dturco", {type: 1, title: "Nuevo titulo", text: "Mensaje oficial", data: {}});
   //uni.colonize({gal: 1, sys: 2, pos: 7}, 'dturco');
   //uni.contPoint('dturco');
@@ -118,7 +118,6 @@ router.get('/OGame_Messages.html', (req, res, next) => {
 });
 
 router.get('/OGame_Movement.html', (req, res, next) => {
-  console.log(uni.player.movement);
   res.render('OGame_Movement', {bodyId: "movement",
     url: req._parsedOriginalUrl.pathname,
     info: uni.fleetInfo(uni.planeta, uni.moon),
