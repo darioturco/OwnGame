@@ -12,8 +12,14 @@ const batallaPiratasExp = ["We needed to fight some pirates which were, fortunat
 const batallaAliensExp  = ["We needed to fight some pirates which were, fortunately, only a few."];
 const nadaExp = ["Your expedition took gorgeous pictures of a supernova. Nothing new could be obtained from the expedition, but at least there is good chance to win that 'Best Picture Of The Universe' competition in next months issue of OGame magazine."];
 const integridadDefensas = [200, 200, 800, 3500, 800, 10000, 2000, 10000];
+const shieldDefensas = [20, 25, 100, 200, 500, 300, 2000, 10000];
+const attackDefensas = [80, 100, 250, 1100, 150, 3000, 1, 1];
 const keysDefensas = ["rocketLauncher", "lightLaser", "heavyLaser", "gauss", "ion", "plasma", "smallShield", "largeShield"];
-const integridadNaves = [];
+const integridadNaves = [400, 1000, 2700, 6000, 7000, 7500, 11000, 900000, 400, 1200, 3000, 1600, 100, 200];
+const shieldNaves = [10, 25, 50, 200, 400, 500, 500, 50000, 10, 25, 100, 10, 1, 1];
+const attackNaves = [50, 150, 400, 1000, 700, 1000, 2000, 200000, 5, 5, 50, 1, 1, 1];
+const keysNaves = ["lightFighter", "heavyFighter", "cruiser", "battleship", "battlecruiser", "bomber", "destroyer", "deathstar", "smallCargo", "largeCargo", "colony", "recycler", "espionageProbe", "solarSatellite"];
+
 var exp = {
   generateNewTypeOfPlanet: function(pos, mod) {
     let temp = 10, rango = 40;
@@ -248,6 +254,11 @@ var exp = {
             shipyard: 0, researchLab: 0, alliance: 0, silo: 0,
             naniteFactory: 0, terraformer: 0};
   },
+  zeroResearch: function(){
+    return {energy: 0, laser: 0, ion: 0, hyperspace: 0, plasma: 0, espionage: 0,
+            computer: 0, astrophysics: 0, intergalactic: 0, graviton: 0, combustion: 0,
+            impulse: 0, hyperspace_drive: 0, weapons: 0, shielding: 0, armour: 0};
+  },
   estaColonizado: function(lista, coor){
     return lista[coor.gal + '_' + coor.sys + '_' + coor.pos] != undefined;
   },
@@ -277,13 +288,13 @@ var exp = {
     let espacioDeCarga = 0;
     let infoNaves = this.navesInfo();
     for(item in movement.ships){
-      espacioDeCarga += infoNaves[item].carga * movement.ships[item];
+      if(item != 'solarSatellite') espacioDeCarga += infoNaves[item].carga * movement.ships[item];
     }
     return espacioDeCarga - movement.resources.metal - movement.resources.crystal - movement.resources.deuterium;
   },
-  loadResources: function(movement, resources){
+  loadResources: function(movement, resources, espacioLibre = undefined){
     let res = {};
-    let espacioLibre = this.espacioLibre(movement); // Averiguo cuanto espacio libre le queda a la flota
+    if(espacioLibre == undefined) espacioLibre = this.espacioLibre(movement); // Averiguo cuanto espacio libre le queda a la flota si es que no lo se
     // Cargo el metal
     let cargaAux = Math.min(espacioLibre, resources.metal);
     res.metal = movement.resources.metal + cargaAux;
@@ -296,6 +307,27 @@ var exp = {
     cargaAux = Math.min(espacioLibre, resources.deuterium);
     res.deuterium = movement.resources.deuterium + cargaAux;
     return res;
+  },
+  loadResourcesAttack: function(ships, resources, original){
+    let saqueado = this.zeroResources();
+    let movementAux = {ships: ships, resources: this.zeroResources()};
+    let espacioLibre = this.espacioLibre(movementAux);
+
+    // Cargo los recursos que ya estaban de antes devuelta, ya que podrian haberse destruido algunas naves
+    movementAux.resources = this.loadResources(movementAux, original, espacioLibre);
+    for(let item in original){  // recalculo en espacio libre que queda
+      espacioLibre -= original[item];
+    }
+    if(espacioLibre > 0){
+      for(let item in resources){  // Solo la mitad de los recursos pueden ser saquados
+        resources[item] = Math.floor(resources[item] / 2);
+      }
+      saqueado = this.loadResources(movementAux, resources, espacioLibre);
+    }
+    for(let item in movementAux.resources){
+      movementAux.resources[item] += saqueado[item];
+    }
+    return {newCarga: movementAux.resources, saqueado: saqueado};
   },
   costShipsAndDefenses: function(){
     return {
@@ -332,6 +364,31 @@ var exp = {
       if(item != 'misil') res += ships[item] * cost[item].puntos;
     }
     return res;
+  },
+  shipStringToNum: function(ship){
+    let objAux = {lightFighter:  0,
+           heavyFighter:   1,
+           cruiser:        2,
+           battleship:     3,
+           battlecruiser:  4,
+           bomber:         5,
+           destroyer:      6,
+           deathstar:      7,
+           smallCargo:     8,
+           largeCargo:     9,
+           colony:         10,
+           recycler:       11,
+           espionageProbe: 12,
+           solarSatellite: 13,
+           rocketLauncher: 14,
+           lightLaser:     15,
+           heavyLaser:     16,
+           gauss:          17,
+           ion:            18,
+           plasma:         19,
+           smallShield:    20,
+           largeShield:    21};
+    return objAux[ship];
   },
   newPointsRandomFleet: function(puntos){
     let res = this.zeroShips();
@@ -485,14 +542,14 @@ var exp = {
       }
 
       /* Simulo la batalla */
-      let battleData = this.battle(ships, enemyShips, research, enemyTech);
+      let battleData/* = this.battle(ships, enemyShips, research, enemyTech)*/;
       /* Mando el mensage de la batalla */
       /*res.mensajes.push(battleData.message);*/
       res.mueren = this.isZeroObj(ships);
       /* Falta devolver las naves que sobrevivieron en ships */
       res.evento = 6;
 
-    }else{  // Nada
+    }else{  // No pasa nada en la expedicion
       res.mensajes.push({type: 3, title: "Expedition", text: nadaExp[0], data: {}});
     }
     res.ships.misil = 0; // No se pueden encontrar misiles en la expedicion
@@ -530,8 +587,174 @@ var exp = {
     ataque -= destruidos*vidaDef; // Por cada destruido decremento el ataque para la proxima ronda
     return {ataqueRestante: ataque, destroyedDef: destruidos};
   },
-  battle: function(defenderShips, attackerShips, defenderTech, attackerTech){
+  battle: function(attackerShips, defenderShips, defenses, attackerTech, defenderTech, fr){
+    // Implento la version mas naive del algoritmo de batallas, unas ideas para mejorarlo son:
+    //  - Implentar el algoritmo en ASMx86 con operaciones SIMD ( O almenos alguna parte del algoritmo )
+    //  - Usar un modelo estadistico que me de una funcion por cada tipo de nave que apartir de los datos de entrada devuelva un estimado de las naves que sobreviven de ese tipo
+    // Podria implentarlas en funciones distintas e ir probando cada una con casos de test
 
+    // Calculo cuanto es el maximo escudo de cada nave para cada bando
+    let maxShieldsAttacker = Array.from(shieldNaves);
+    let maxShieldsDefender = Array.from(shieldNaves).concat(Array.from(shieldDefensas));
+    this.calculaAtributosNaves(maxShieldsAttacker, attackerTech.shielding);
+    this.calculaAtributosNaves(maxShieldsDefender, defenderTech.shielding);
+
+    // Calculo cuanto es el ataque de cada nave para cada bando
+    let attackAttacker = Array.from(attackNaves);
+    let attackDefender = Array.from(attackNaves).concat(Array.from(attackDefensas));
+    this.calculaAtributosNaves(attackAttacker, attackerTech.weapons);
+    this.calculaAtributosNaves(attackDefender, defenderTech.weapons);
+
+    // Calculo cuanto es la 'vida' de cada nave para cada bando
+    let armourAttacker = Array.from(integridadNaves);
+    let armourDefender = Array.from(integridadNaves).concat(Array.from(integridadDefensas));
+    this.calculaAtributosNaves(armourAttacker, attackerTech.armour);
+    this.calculaAtributosNaves(armourDefender, defenderTech.armour);
+
+    // Por cada nave o defensa de cada bando creo un array que contiene la informacion de la el tipo de esa nave, su vida, su escudo y si sigue vivo
+    let fleetAtk = [];
+    let fleetDef = [];
+    // Coloco las naves del atacante
+    this.addShips(fleetAtk, attackerShips, maxShieldsAttacker, armourAttacker);
+
+    // Coloco las naves del defensor
+    this.addShips(fleetDef, defenderShips, maxShieldsDefender, armourDefender);
+    // Coloco las defensas del defensor
+    this.addShips(fleetDef, defenses, maxShieldsDefender, armourDefender);
+
+    let termino = fleetAtk.length == 0 || fleetDef.length == 0;
+
+    // Cada combate consta de maximo 6 rondas
+    for(let ronda = 0 ; ronda<6 && termino == false ; ronda++){
+      // El atacante ataca al defensor
+      this.startAttack(fleetAtk, fleetDef, attackAttacker, armourDefender, fr);
+      // El defensor ataca al atacante
+      this.startAttack(fleetDef, fleetAtk, attackDefender, armourAttacker, fr);
+
+      // Actualizo las flotas para la siguiente ronda
+      this.updateFleet(fleetAtk, maxShieldsAttacker);
+      this.updateFleet(fleetDef, maxShieldsDefender);
+
+      // Si alguna de las dos flotas esta completamente destruida, termina el combate
+      termino = fleetAtk.length == 0 || fleetDef.length == 0;
+    }
+
+    let res = {};     // Devuelvo el resultado de la batalla en res
+    res.atkShips = this.zeroShips();
+    res.defShips = this.zeroShips();
+    res.defDefenses = this.zeroDefense();
+
+    let tipoAux;
+    // Paso los arreglos de las flotas que sobrevivieron a objetos
+    for(let i = 0 ; i<fleetAtk.length ; i++){
+      res.atkShips[keysNaves[fleetAtk[i][0]]]++;
+    }
+    for(let i = 0 ; i<fleetDef.length ; i++){
+      if(fleetDef[i][0] < 14){ // Es una nave
+        res.defShips[keysNaves[fleetDef[i][0]]]++;
+      }else{  // Es una defensa
+        res.defDefenses[keysDefensas[fleetDef[i][0] - 14]]++;
+      }
+    } // La cantidad de misiles del defensor permanece intacta
+    res.defDefenses.antiballisticMissile = defenses.antiballisticMissile;
+    res.defDefenses.interplanetaryMissile = defenses.interplanetaryMissile;
+
+    // Decido el resultado de la batalla (gana el atacante = 1, gana el defensor = 2, empate = 3)
+    res.result = 3;     // Empate
+    if(fleetAtk.length == 0 && fleetDef.length != 0){
+      res.result = 2;   // Gano el defensor
+    }else if(fleetAtk.length != 0 && fleetDef.length == 0){
+      res.result = 1;   // Gano el atacante
+    }
+    return res;
+  },
+  calculaAtributosNaves: function(lista, tech){
+    for(let i = 0 ; i<lista.length ; i++){
+      lista[i] += lista[i]*tech/10;
+    }
+    return lista;
+  },
+  addShips: function(list, ships, maxShields, armour){
+    let tipoNum;
+    for(let item in ships){
+      tipoNum = this.shipStringToNum(item);
+      if(tipoNum != undefined){
+        // Por cada nave pusheo un array que tiene la info: ['tipo', 'vida', 'escudo']
+        for(let i = 0 ; i<ships[item] ; i++){
+          list.push([tipoNum, armour[tipoNum], maxShields[tipoNum]]);
+        }
+      }
+    }
+  },
+  startAttack: function(shoter, receptor, listAttack, listOriginalArmour, fr){
+    // Por cada nave elijo un objetivo de la flota enemiga(receptor) y la ataco
+    let objetivo, dano;
+    for(let i = 0 ; i<shoter.length ; i++){
+      /* Falta el fuego rapido */
+      objetivo = Math.floor(Math.random()*receptor.length);
+      dano = listAttack[shoter[i][0]];
+
+      if(receptor[objetivo][1] > 0 && !this.reflectedShot(dano, receptor[objetivo][2])){ // Si la nave esta viva y no se refleja
+        // Si el dano es mayor al escudo, este de desactiva y le sacan vida a la nave
+        if(dano > receptor[objetivo][2]){
+          dano -= receptor[objetivo][2];  // El escudo absorve parte del dano
+          receptor[objetivo][2] = 0;      // Desactivo el escudo
+          receptor[objetivo][1] -= dano;  // Le saco vida a esa nave
+
+          // Si tiene menos del 70% de la vida total tiene posibilidad de explotar, esa nave
+          if(listOriginalArmour[receptor[objetivo][0]] * 0.7 > receptor[objetivo][1] && Math.random() > receptor[objetivo][1] / listOriginalArmour[receptor[objetivo][0]]){
+            receptor[objetivo][1] = 0;   // La nave explota, por lo tanto su vida es 0
+          }
+        }else{
+          receptor[objetivo][2] -= dano;  // El ecudo absorbe todo el dano
+        }
+      }
+    }
+  },
+  updateFleet: function(ships, shields){
+    // Saco las naves destruidas (vida <= 0) y restauro los escudos de las que sigen peleando
+    for(let i = 0 ; i<ships.length ; i++){
+      if(ships[i][1] <= 0){
+        ships.splice(i, 1);
+        i--;
+      }else{
+        ships[i][2] = shields[ships[i][0]];
+      }
+    }
+  },
+  reflectedShot: function(dano, escudo){
+    return dano < escudo*0.01;
+  },
+  calcularEscombros: function(objAttack, objOriginal, fleetD, defenseD){
+    let debris = {metal: 0, crystal: 0};
+    let costs = this.costShipsAndDefenses();
+    let shipsAux;
+    if(fleetD > 0){ // Sumo los escombros de las naves
+      for(let item in objAttack.atkShips){
+        if(item != 'solarSatellite'){       // objOriginal.atkShips no tiene atributo 'solarSatellite' encambio tiene 'misil'
+          shipsAux = (objOriginal.atkShips[item] - objAttack.atkShips[item]) + (objOriginal.defShips[item] - objAttack.defShips[item]);
+          debris.metal += shipsAux*costs[item].metal * fleetD / 100;
+          debris.crystal += shipsAux*costs[item].crystal * fleetD / 100;
+        }
+      }
+    }
+    // Calculo aparte el cristal los satelites solares
+    shipsAux = objOriginal.defShips['solarSatellite'] - objAttack.defShips['solarSatellite'];
+    debris.crystal += shipsAux*costs['solarSatellite'].crystal * fleetD / 100;
+    if(defenseD > 0){ // Sumo los escombros de las defensas
+      for(let item in objAttack.defDefenses){
+        shipsAux = objOriginal.defDefenses[item] - objAttack.defDefenses[item];
+        debris.metal += shipsAux*costs[item].metal * defenseD / 100;
+        debris.crystal += shipsAux*costs[item].crystal * defenseD / 100;
+      }
+    }
+    return debris;
+  },
+  lunaChance: function(debris, maxChance){
+    let totalDebris = debris.metal + debris.crystal;
+    // Cada 100000 de recursos un los escombros aumenta en 1% la posibilidad de luna
+    let chance = Math.floor(totalDebris / 100000);
+    return chance > maxChance ? maxChance : chance;
   }
 };
 

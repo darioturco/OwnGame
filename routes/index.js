@@ -16,11 +16,12 @@ router.all('/*', (req, res, next) => {
 
 });
 
+/* Ruta de debugeo */
 router.get('/', (req, res, next) => {
   //uni.deleteCollection(process.env.UNIVERSE_NAME, ["jugadores", "universo"]);
-  //uni.createUniverse(process.env.UNIVERSE_NAME, 5, {name: "", inicio: 0, maxGalaxies: 9, donutGalaxy: true, donutSystem: true, speed: 1, speedFleet: 100, fleetDebris: 30, defenceDebris: 0, maxMoon: 20});
+  //uni.createUniverse(process.env.UNIVERSE_NAME, 5, {name: "", inicio: 0, maxGalaxies: 9, donutGalaxy: true, donutSystem: true, speed: 1, speedFleet: 5000, fleetDebris: 30, defenceDebris: 0, maxMoon: 20, rapidFire: true, repearDefenses: true});
   //uni.addNewPlayer("dturco", 1);
-  //uni.setPlanetDataDev(uni.player.planets[1].coordinates, "dturco");
+  uni.setPlanetDataDev(uni.player.planets[5].coordinates, "dturco");
   //uni.setMoonDataDev(uni.player.planets[0].coordinates, "dturco");
   //uni.sendMessage("dturco", {type: 1, title: "Nuevo titulo", text: "Mensaje oficial", data: {}});
   //uni.colonize({gal: 1, sys: 2, pos: 7}, 'dturco');
@@ -35,6 +36,19 @@ router.get('/', (req, res, next) => {
         navesAux[item] = 1;
       }
   }*/
+  let attackerShips = uni.fun.zeroShips();
+  let defenderShips = uni.fun.zeroShips();
+  let defenses = uni.fun.zeroDefense();
+  let attackerTech = uni.fun.zeroResearch();
+  let defenderTech = uni.fun.zeroResearch();
+  for(let item in attackerShips){
+    attackerShips[item] = 100;
+    defenderShips[item] = 100;
+  }
+  for(let item in defenses) defenses[item] = 50;
+  let objAttack = uni.fun.battle(attackerShips, defenderShips, defenses, attackerTech, defenderTech);
+  console.log(objAttack);
+
 
   uni.seeDataBase(res, process.env.UNIVERSE_NAME, "jugadores");
 });
