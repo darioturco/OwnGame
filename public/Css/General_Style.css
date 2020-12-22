@@ -6934,6 +6934,9 @@ tr.alt td {
   font-weight: normal;
   overflow-x: visible;
 }
+.buy_resources .btn:hover{
+  background-position-x: -104px;
+}
 #galaxy #galaxyContent tbody .colonyImg{
   cursor: auto;
 }
@@ -7029,3 +7032,25 @@ tr.alt td {
   }
 }
 #highscoreSpan {margin-right: 3px;}
+p.level1{
+  position: relative;
+  box-sizing: border-box;
+  top: 62px;
+  right: 250px;
+  width: 10px;
+  margin: 0 20px 0 0;
+  background-position-y: -240px;
+  font-weight: normal;
+  overflow-x: visible;
+}
+p.level2{
+  position: relative;
+  box-sizing: border-box;
+  top: 62px;
+  right: 250px;
+  width: 10px;
+  margin: 0 40px 0 32px;
+  background-position-y: -240px;
+  font-weight: normal;
+  overflow-x: visible;
+}

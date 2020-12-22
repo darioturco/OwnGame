@@ -755,6 +755,13 @@ var exp = {
     // Cada 100000 de recursos un los escombros aumenta en 1% la posibilidad de luna
     let chance = Math.floor(totalDebris / 100000);
     return chance > maxChance ? maxChance : chance;
+  },
+  getCantFleets: function(player){
+    let res = {expeditions: 0, fleets: player.movement.length};
+    for(let i = 0 ; i<player.movement.length ; i++){            // Cuento la cantidad de expediciones en el aire
+      if(player.movement[i].mission == 0) res.expeditions += 1;
+    }
+    return res;
   }
 };
 

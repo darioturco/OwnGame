@@ -374,7 +374,6 @@ async function sendFleetMovement(){
       location.reload();
     }else{
       sendPopUp(objRes.mes);
-      console.log("Algo fallo en el envio de flota.");
     }
   }
 }

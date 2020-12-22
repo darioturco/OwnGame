@@ -29,7 +29,7 @@ block content
             tr
               td.label Phalanx (Level #{info.buildings.phalanx})
               td.normalmark
-                span.tooltipCustom Alcance: #{info.buildings.phalanx*info.buildings.phalanx-1}
+                span.tooltipCustom Alcance: #{Math.max(info.buildings.phalanx*info.buildings.phalanx-1, 0)}
               td
             tr.alt
               td.label Space Dock (Level #{info.buildings.spaceDock})
@@ -236,7 +236,7 @@ block content
     #buttonz
       .header
         h2 Marketplace
-      .content.buy_resources
+      #marketDiv.content.buy_resources(data-level = info.buildings.marketplace)
         if info.buildings.marketplace > 0
           .fill_resource
             .resource_box
@@ -245,10 +245,12 @@ block content
             .clearfix.fill_resource_ctn
               .resource_capacity
                 p.marketLavel Vender:
-                input.marketInput(name='MetalCant' tabindex='14' type='number' value='')
+                input#marketMetalInput.marketInput(name='MetalCant' tabindex='14' type='number' value='' onInput='changeMercado(0)')
                 p.marketLavel por:
-                input.btn(type='button' value='0 Crystal')
-                input.btn(type='button' value='0 Deuterium')
+                p.level1 Crystal:
+                input#metalToCrystal.btn(type='button' value='0' onClick='vender(0)')
+                p.level2 Deuterium:
+                input#metalToDeuterium.btn(type='button' value='0' onClick='vender(1)')
           .fill_resource
             .resource_box
               .resource_img.crystal
@@ -256,10 +258,12 @@ block content
             .clearfix.fill_resource_ctn
               .resource_capacity
                 p.marketLavel Vender:
-                input.marketInput(name='CrystalCant' tabindex='15' type='number' value='')
+                input#marketCrystalInput.marketInput(name='CrystalCant' tabindex='15' type='number' value='' onInput='changeMercado(1)')
                 p.marketLavel por:
-                input.btn(type='button' value='0 Metal')
-                input.btn(type='button' value='0 Deuterium')
+                p.level1 Metal:
+                input#crystalToMetal.btn(type='button' value='0' onClick='vender(2)')
+                p.level2 Deuterium:
+                input#crystalToDeuterium.btn(type='button' value='0' onClick='vender(3)')
           .fill_resource
             .resource_box
               .resource_img.deuterium
@@ -267,10 +271,12 @@ block content
             .clearfix.fill_resource_ctn
               .resource_capacity
                 p.marketLavel Vender:
-                input.marketInput(name='DeuteriumCant' tabindex='16' type='number' value='')
+                input#marketDeuteriumInput.marketInput(name='DeuteriumCant' tabindex='16' type='number' value='' onInput='changeMercado(2)')
                 p.marketLavel por:
-                input.btn(type='button' value='0 Metal')
-                input.btn(type='button' value='0 Crystal')
+                p.level1 Metal:
+                input#deuteriumToMetal.btn(type='button' value='0' onClick='vender(4)')
+                p.level2 Crystal:
+                input#deuteriumToCrystal.btn(type='button' value='0' onClick='vender(5)')
         else
           h2 You have no marketplace
         .footer

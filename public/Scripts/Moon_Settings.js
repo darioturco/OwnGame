@@ -2,12 +2,15 @@ var selects = [];
 var controls = [];
 var open = [];
 var values = [];
+var marketInputs = [];
+var marketButtons = [];
 var inputsFleets, cantFleets;
 var cuanticTimeText = null;
 var cuanticTime = 0, valueMoon = -1;
 var dropDownMoonOpen = false, ready = true;
 var selectMoon, controlMoon;
 var galaxyHasta, systemHasta, positionHasta;
+var marketLevel;
 
 setTimeout(() => {
   inputsFleets = document.getElementsByClassName('fleetValues');
@@ -18,7 +21,13 @@ setTimeout(() => {
   positionHasta = parseInt(document.getElementsByName('ogame-planet-position')[0].content);
   if(cuanticTimeText != null){
     cuanticTime = parseInt(cuanticTimeText.dataset.val);
-    cuanticTimeText.innerText = segundosATiempo(cuanticTime);
+    cuanticTime -= new Date().getTime();
+    cuanticTime = Math.floor(cuanticTime / 1000);
+    if(cuanticTime >= 0){
+      cuanticTimeText.innerText = segundosATiempo(cuanticTime);
+    }else{
+      cuanticTimeText.innerText = 'Ready';
+    }
   }
   for(let i = 1 ; i<=2 ; i++){
     selects.push(document.getElementById("dropdown" + i));
@@ -34,10 +43,29 @@ setTimeout(() => {
       inputsFleets[i].readOnly = true;
     }
   }
-  if(cuanticTimeText != null){
+  marketLevel = document.getElementById("marketDiv").dataset.level;
+  if(marketLevel > 0){
+    marketInputs.push(document.getElementById("marketMetalInput"));
+    marketInputs.push(document.getElementById("marketCrystalInput"));
+    marketInputs.push(document.getElementById("marketDeuteriumInput"));
+    marketButtons.push(document.getElementById("metalToCrystal"));
+    marketButtons.push(document.getElementById("metalToDeuterium"));
+    marketButtons.push(document.getElementById("crystalToMetal"));
+    marketButtons.push(document.getElementById("crystalToDeuterium"));
+    marketButtons.push(document.getElementById("deuteriumToMetal"));
+    marketButtons.push(document.getElementById("deuteriumToCrystal"));
+    for(let i = 0 ; i<marketInputs.length ; i++){
+      marketInputs[i].value = '';
+    }
+  }
+  if(cuanticTimeText != null && cuanticTime >= 0){
     setInterval(() => {
       cuanticTime--;
-      cuanticTimeText.innerText = segundosATiempo(cuanticTime);
+      if(cuanticTime >= 0){
+        cuanticTimeText.innerText = segundosATiempo(cuanticTime);
+      }else{
+        cuanticTimeText.innerText = 'Ready';
+      }
     }, 1000);
   }
 }, 0);
@@ -119,9 +147,7 @@ function changeFleet(){
 }
 
 function recalculateButton(){
-  console.log("Recalcula la pagina");
   loadJSON('./api/set/updateResourcesMoon?sunshade=' + values[0] + '&beam=' + values[1], (obj) => {
-    console.log(obj);
     if(obj.ok == true) location.reload();
   });
 }
@@ -129,12 +155,54 @@ function recalculateButton(){
 async function sendCuanticFleet(){
   if(ready){
     ready = false;
-    let data = {};
+    let data = {ships: {}};
     for(let i = 0 ; i<inputsFleets.length ; i++){
-      data['ships.' + inputsFleets[i].name] = parseInt((inputsFleets[i].value == "") ? 0 : inputsFleets[i].value);
+      data.ships[inputsFleets[i].name] = parseInt((inputsFleets[i].value == "") ? 0 : inputsFleets[i].value);
     }
     data.coorHasta = {gal: galaxyHasta, sys: systemHasta, pos: positionHasta};
     let res = await fetch('./api/set/moveCuanticFleet', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
-    if(res.ok == true) setTimeout(() => {location.reload()}, 50);
+    let objRes = await res.json();
+    ready = true;
+    if(objRes.ok){
+      location.reload();
+    }else{
+      sendPopUp(objRes.mes);
+    }
+  }
+}
+
+function vender(num){
+  if(marketLevel > 0){
+    let cantidad = marketInputs[Math.floor(num/2)].value;
+    if(cantidad == "") cantidad = 0;
+    loadJSON('./api/set/marketMoon?cantidad=' + cantidad + '&button=' + num, (obj) => {
+      if(obj.ok == true){
+        location.reload();
+      }else{
+        sendPopUp(obj.mes);
+      }
+    });
+  }
+}
+
+function changeMercado(num){
+  if(marketLevel > 0){
+    if(marketInputs[num].value == "") marketInputs[num].value = ""; // value es igual a '' si hay algun caracter no numerico
+    switch(num) {
+    case 0: // Vendo metal
+      if(marketInputs[num].value != "" && parseInt(marketInputs[num].value) > metal_res.innerHTML) marketInputs[num].value = metal_res.innerHTML;
+      marketButtons[0].value = marketInputs[num].value == '' ? 0 : formatNumber(Math.floor(parseInt(marketInputs[num].value)*(2/3)*(9/10)));
+      marketButtons[1].value = marketInputs[num].value == '' ? 0 : formatNumber(Math.floor(parseInt(marketInputs[num].value)/3*(9/10)));
+      break;
+    case 1: // Vendo Cristal
+      if(marketInputs[num].value != "" && parseInt(marketInputs[num].value) > crystal_res.innerHTML) marketInputs[num].value = crystal_res.innerHTML;
+      marketButtons[2].value = marketInputs[num].value == '' ? 0 : formatNumber(Math.floor(parseInt(marketInputs[num].value)*(3/2)*(9/10)));
+      marketButtons[3].value = marketInputs[num].value == '' ? 0 : formatNumber(Math.floor(parseInt(marketInputs[num].value)/2*(9/10)));
+      break;
+    case 2: // Vendo deuterio
+      if(marketInputs[num].value != "" && parseInt(marketInputs[num].value) > deuterium_res.innerHTML) marketInputs[num].value = deuterium_res.innerHTML;
+      marketButtons[4].value = marketInputs[num].value == '' ? 0 : formatNumber(Math.floor(parseInt(marketInputs[num].value)*3*(9/10)));
+      marketButtons[5].value = marketInputs[num].value == '' ? 0 : formatNumber(Math.floor(parseInt(marketInputs[num].value)*2*(9/10)));
+    }
   }
 }

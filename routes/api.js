@@ -119,7 +119,11 @@ router.get('/set/cancelShipyardRequest', function(req, res, next) {
 });
 
 router.get('/set/returnFleet', function(req, res, next) {
-  uni.returnFleet(req.query.num, res);
+  uni.returnFleetInDataBase(req.query.num, res);
+});
+
+router.get('/set/marketMoon', function(req, res, next) {
+  uni.marketResources(uni.player.name, uni.planeta, req.query, res);
 });
 
 router.post('/set/addFleetMovement', function(req, res, next) {
