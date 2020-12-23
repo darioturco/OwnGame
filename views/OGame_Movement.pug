@@ -78,7 +78,7 @@ block content
           span.fleetDetailButton
             a.tooltipRel.tooltipClose.fleet_icon_forward
           span.reversal.reversal_time
-            a(style='display: ' + (val.ida ? 'inline' : 'none') href='javascript:void(0);' onclick='returnFleet(' + index + ');')
+            a(style='display: ' + (!val.ida || val.mission == 0 ? 'none' : 'inline') href='javascript:void(0);' onclick='returnFleet(' + index + ');')
               img(src='../Imagenes/movementBack.gif' width='16' height='16')
           span.starStreak
             div(style='position: relative;')

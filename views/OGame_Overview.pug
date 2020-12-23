@@ -4,9 +4,10 @@ block content
     - var urlImg = (basic.moon ? './Imagenes/Planets/Overview_Moon_' + basic.planets[basic.numPlanet].moon.type + '.jpg' : './Imagenes/Planets/Overview_Planet_' + info.type + '.jpg')
     #planet(style='background-image:url(' + urlImg + ');')
       #detailWrapper
-        #moon(style='display: ' + ((basic.planets[basic.numPlanet].moon.active == true && basic.moon == false) ? 'block' : 'none'))
-          a.tooltipBottom.tpd-hideOnClickOutside(href='/Ogame_Overview.html?moon=true')
-            img(alt=' ' src='./Imagenes/Planets/Moon_Big_' + basic.planets[basic.numPlanet].moon.type + '.gif')
+        if basic.planets[basic.numPlanet].moon.active
+          #moon(style='display: ' + ((basic.planets[basic.numPlanet].moon.active == true && basic.moon == false) ? 'block' : 'none'))
+            a.tooltipBottom.tpd-hideOnClickOutside(href='/Ogame_Overview.html?moon=true')
+              img(alt=' ' src='./Imagenes/Planets/Moon_Big_' + basic.planets[basic.numPlanet].moon.type + '.gif')
         #header_text
           h2
             span.openPlanetRenameGiveupBox
@@ -53,10 +54,10 @@ block content
                       input#renameInput(type="text")
           #planetOptions
             .planetMoveStart.fleft(style='display: inline;')
-              a.tooltipLeft.dark_highlight_tablet.fleft(href='#' onclick='let im=document.getElementById("renameInput"); if(im.value == "abandon"){window.location.href="./Ogame_Overview.html?newName=abandon&abaNdon=si";}else{im.value="abandon"}')
+              a.tooltipLeft.dark_highlight_tablet.fleft(href='#' onclick='abandonPlanetFunction()')
                 span.planetMoveIcons.settings.planetMoveDefault.icon.fleft
                 span.planetMoveOverviewMoveLink Abandon
-            a.dark_highlight_tablet.float_right.openPlanetRenameGiveupBox(href='#' onclick='window.location.href="./Ogame_Overview.html?newName="+document.getElementById("renameInput").value;')
+            a.dark_highlight_tablet.float_right.openPlanetRenameGiveupBox(href='#' onclick='renamePlanet()')
               span.planetMoveOverviewGivUpLink Rename
               span.planetMoveIcons.settings.planetMoveGiveUp.icon
     .c-left

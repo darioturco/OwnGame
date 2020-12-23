@@ -2,12 +2,14 @@
 var metal_res, crystal_res, deuterium_res, clock;
 var metal = 0, crystal = 0, deuterium = 0;
 var nextFleetText, missionText, fleetTime;
-var popUp, popUpText;
+var popUp, popUpText, yesNoPopUp, yesNoPopUpText;
 
 function initFunction(obj){ // Funcion que se ejecuta apenas carga un pagina
   clock = document.getElementById("Clock");
   popUp = document.getElementById("PopUpDiv");
   popUpText = document.getElementById("PopUpText");
+  yesNoPopUp = document.getElementById("YesNoPopUpDiv");
+  yesNoPopUpText = document.getElementById("YesNoPopUpText");
   nextFleetText = document.getElementById("fleetInfoFirstMovementDown");
   metal_res = document.getElementById("resources_metal");
   crystal_res = document.getElementById("resources_crystal");
@@ -19,7 +21,6 @@ function initFunction(obj){ // Funcion que se ejecuta apenas carga un pagina
     fleetTime = Math.ceil((parseInt(nextFleetText.dataset.time) - new Date().getTime()) / 1000);
     missionText = nextFleetText.innerHTML.slice(7);
     nextFleetText.dataset.mission = missionText;
-    console.log(missionText)
   }
   actualizaFecha();
   setInterval(() => {
@@ -113,10 +114,48 @@ function sendPopUp(message, time = 3000){ // Aparece un mensage pop up por 3s qu
   popUp.classList.add("popUpActive");
   popUpText.innerText = message;
   setTimeout(() => {
-    console.log("Se apreto el boton");
     popUp.style.display = "none";
     popUp.classList.remove("popUpActive");
   }, time);
+}
+
+function sendYesNoPopUp(message, yesFunction, noFunction){
+  yesNoPopUp.style.display = "block";
+  yesNoPopUp.classList.remove("popUpClose");
+  yesNoPopUp.classList.add("popUpActive");
+  yesNoPopUpText.innerText = message;
+  document.getElementById("PopUpYesA").onclick = () => {
+    closeYesNoPopUp();
+    yesFunction();
+  };
+  document.getElementById("PopUpNoA").onclick = () => {
+    closeYesNoPopUp();
+    noFunction();
+  };
+}
+
+function closeYesNoPopUp(){
+  yesNoPopUp.classList.remove("popUpActive");
+  yesNoPopUp.classList.add("popUpClose");
+
+}
+
+function abandonPlanetFunction(){
+  let im = document.getElementById("renameInput");
+  sendYesNoPopUp("Seguro que queres abandonar el planeta?",
+    () => {   // Yes function
+      loadJSON('./api/set/abandonPlanet?confirm=Yes', (obj) => {
+        if(obj.ok == true){
+          location.reload(); //actualiza la pagina si todo salio bien
+        }else{
+          sendPopUp(obj.mes);
+        }
+      });
+    }, () => {});// No function
+}
+
+function renamePlanet(){
+  window.location.href = "./Ogame_Overview.html?newName=" + document.getElementById("renameInput").value;
 }
 
 /*<div id="attack_alert" class="tooltip eventToggle soon" title="">

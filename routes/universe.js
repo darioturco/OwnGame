@@ -1328,11 +1328,12 @@ var exp = {
     }
   },
   returnFleetInDataBase: function(num, res = undefined, time = undefined, resources = undefined, ships = undefined){
-    if(this.player.movement[num].ida){
+    let actual = fun.horaActual();
+    if(this.player.movement[num].ida && !(this.player.movement[num].mission == 0 && actual >= this.player.movement[num].llegada)){
       let updateObj = {};
       let updateObjAux = this.player.movement[num]; // Voy a pushear el mismo elemento pero a cambiarle algunas cosas claves
       if(time == undefined){
-        time = Math.ceil((fun.horaActual() - updateObjAux['time'])/1000); // Tiempo que esa flota estuvo volando
+        time = Math.ceil((actual - updateObjAux['time'])/1000); // Tiempo que esa flota estuvo volando
       }
       let oldTime    = updateObjAux.time;
       let oldLlegada = updateObjAux.llegada;
@@ -1340,8 +1341,8 @@ var exp = {
       if(resources != undefined) updateObjAux['resources'] = resources;
       updateObjAux['ida']       = false;
       updateObjAux['duracion']  = time;
-      updateObjAux['time']      = fun.horaActual();
-      updateObjAux['llegada']   = fun.horaActual() + time*1000;
+      updateObjAux['time']      = actual;
+      updateObjAux['llegada']   = actual + time*1000;
       updateObj["movement"]     = updateObjAux;
       this.player.movement[num] = updateObjAux; // Actualizo la flota de la lista de flotas volando
       mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
@@ -1479,10 +1480,12 @@ var exp = {
           pushObjAux['desdeName']   = this.player.planets[planet].name; // Nombre del planeta de salida
           pushObjAux['desdeType']   = this.player.planets[planet].type; // Tipo del planeta de salida
           pushObjAux['desdeColor']  = this.player.planets[planet].color;// Color del planeta de salida
-          /* Cambiar y sacar esa info de la lista allcord */
           pushObjAux['hastaType']   = fun.getTypePlanet(obj.coorHasta.pos, obj.coorHasta.pos % 2); // Tipo del planeta de llegada
-          pushObjAux['hastaColor']  = this.allCord[obj.coorHasta.gal+'_'+obj.coorHasta.sys+'_'+obj.coorHasta.pos].color; /*Cambiar*/   // Color del planeta de llegada
-          console.log(pushObjAux['hastaColor']);
+          if(fun.estaColonizado(this.allCord, obj.coorHasta)){
+            pushObjAux['hastaColor'] = this.allCord[obj.coorHasta.gal+'_'+obj.coorHasta.sys+'_'+obj.coorHasta.pos].color;   // Color del planeta de llegada
+          }else{
+            pushObjAux['hastaColor'] = 0;
+          }
           pushObjAux['resources']   = {metal: obj.resources.metal,      // Objeto con el formato {metal, crystal, deuterium} que indica cuato lleva la flota de cada recurso
                                        crystal: obj.resources.crystal,
                                        deuterium: obj.resources.deuterium};
@@ -1793,6 +1796,143 @@ var exp = {
       mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: this.player.name}, {$set: objSet});
     }
   },
+  abandonPlanet: function(player, planet, res){
+    if(this.player.planets.length > 1){ // Solo abandono el planeta si hay almenos otro mas
+      let objPull = {};
+      objPull.planets  = {coordinates: this.player.planets[planet].coordinates}; // Elimino el planeta nuemro planet de la lista
+      objPull.movement = {coorDesde: this.player.planets[planet].coordinates};   // Elimino todos los movment que salieron del planeta eliminado
+      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+        {name: player},
+        {$pull: objPull}, (err) => {
+          if(err) throw err;
+          res.send({ok: true});
+        });
+    }else{
+      res.send({ok: false, mes: "No se puede abandonar el unico planeta que tenes."});
+    }
+  },
+  updateRewards: function(player, mission, res){
+    if(fun.validInt(mission) && 0 < mission && mission <= 10){
+      mission = parseInt(mission);
+      if(!this.player.tutorial[mission-1]){
+        let missionCumplida = false;
+        let objReward = {};
+        switch (mission) {  // Para cada mision me fijo si se cumplieron los requisitos y que no le halla dado la recompensa ya
+          // Los requisitos los tiene que cumplir almenos un planeta individualmente, no se cuentan las flotas en la luna ni en vuelo
+          case 1:
+            for(let i = 0 ; i<this.player.planets.length && !missionCumplida ; i++){
+              if(this.player.planets[i].buildings.metalMine >= 4 && this.player.planets[i].buildings.crystalMine >= 2 && this.player.planets[i].buildings.solarPlant >= 4){
+                missionCumplida = true;
+                objReward['planets.0.resources.metal'] = 150;
+                objReward['planets.0.resources.crystal'] = 75;
+              }
+            }
+            break;
+          case 2:
+            for(let i = 0 ; i<this.player.planets.length && !missionCumplida ; i++){
+              if(this.player.planets[i].buildings.deuteriumMine >= 2 && this.player.planets[i].buildings.shipyard >= 1 && this.player.planets[i].defense.rocketLauncher >= 1){
+                missionCumplida = true;
+                objReward['planets.0.defense.rocketLauncher'] = 1;
+              }
+            }
+            break;
+          case 3:
+            for(let i = 0 ; i<this.player.planets.length && !missionCumplida ; i++){
+              if(this.player.planets[i].buildings.metalMine >= 10 && this.player.planets[i].buildings.crystalMine >= 7 && this.player.planets[i].buildings.solarPlant >= 5){
+                missionCumplida = true;
+                objReward['planets.0.resources.metal'] = 2000;
+                objReward['planets.0.resources.crystal'] = 500;
+              }
+            }
+            break;
+          case 4:
+            if(this.player.research.combustion >= 2){
+              for(let i = 0 ; i<this.player.planets.length && !missionCumplida ; i++){
+                if(this.player.planets[i].buildings.researchLab >= 1 && this.player.planets[i].fleet.smallCargo >= 1){
+                  missionCumplida = true;
+                  objReward['planets.0.resources.deuterium'] = 1500;
+                }
+              }
+            }
+            break;
+          case 5:
+            if(this.player.research.combustion >= 3 && this.player.research.espionage >= 2){
+              for(let i = 0 ; i<this.player.planets.length && !missionCumplida ; i++){
+                if(this.player.planets[i].fleet.espionageProbe >= 1){
+                  missionCumplida = true;
+                  objReward['planets.0.fleet.espionageProbe'] = 2;
+                }
+              }
+            }
+            break;
+          case 6:
+            if(this.player.research.impulse >= 1 && this.player.research.armour >= 1 && this.player.research.astrophysics >= 1){
+              missionCumplida = true;
+              objReward['planets.0.fleet.heavyFighter'] = 2;
+              objReward['planets.0.fleet.smallCargo'] = 5;
+            }
+            break;
+          case 7:
+            if(this.player.research.laser >= 1 && this.player.research.impulse >= 3 && this.player.planets.length >= 2){
+              missionCumplida = true;
+              objReward['planets.0.resources.metal'] = 10000;
+              objReward['planets.0.resources.crystal'] = 10000;
+              objReward['planets.0.resources.deuterium'] = 10000;
+              objReward['planets.0.fleet.largeCargo'] = 1;
+              objReward['planets.0.fleet.smallCargo'] = 5;
+            }
+            break;
+          case 8:
+            for(let i = 0 ; i<this.player.planets.length && !missionCumplida ; i++){
+              if(this.player.planets[i].buildings.metalMine >= 17 && this.player.planets[i].buildings.crystalMine >= 15 && this.player.planets[i].buildings.deuteriumMine >= 12){
+                missionCumplida = true;
+                objReward['planets.0.resources.metal'] = 20000;
+                objReward['planets.0.resources.crystal'] = 15000;
+                objReward['planets.0.resources.deuterium'] = 10000;
+              }
+            }
+            break;
+          case 9:
+            if(this.player.research.combustion >= 6 && this.player.research.shielding >= 2){
+              for(let i = 0 ; i<this.player.planets.length && !missionCumplida ; i++){
+                if(this.player.planets[i].fleet.recycler >= 1){
+                  missionCumplida = true;
+                  objReward['planets.0.fleet.recycler'] = 2;
+                }
+              }
+            }
+            break;
+          default:
+            if(this.player.research.ion >= 2 && this.player.research.impulse >= 4){
+              for(let i = 0 ; i<this.player.planets.length && !missionCumplida ; i++){
+                if(this.player.planets[i].fleet.cruiser >= 2){
+                  missionCumplida = true;
+                  objReward['planets.0.fleet.lightFighter'] = 10;
+                  objReward['planets.0.fleet.heavyFighter'] = 3;
+                  objReward['planets.0.fleet.battleship'] = 1;
+                }
+              }
+            }
+        }
+        if(missionCumplida){
+          let setObj = {};
+          setObj['tutorial.' + (mission-1)] = true;
+          mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+            {name: player},
+            {$set: setObj, $inc: objReward}, (err) => {
+              if(err) throw err;
+              res.send({ok: true});
+            });
+        }else{
+          res.send({ok: false, mes: "Requisitos no cumplidos."});
+        }
+      }else{
+        res.send({ok: false, mes: "Mision ya completada."});
+      }
+    }else{
+      res.send({ok: false, mes: "Numero de mission equivocado."});
+    }
+  },
   setPlanetDataDev: function(cord, player){ /* III Funcion de base de datos III */
     let resources = {metal: 1000, crystal: 1000, deuterium: 0, energy: 0};
     let building = {metalMine: 0, crystalMine: 1, deuteriumMine: 0, solarPlant: 30, fusionReactor: 0, metalStorage: 10, crystalStorage: 9, deuteriumStorage: 8, robotFactory: 0, shipyard: 0, researchLab: 0, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0};
@@ -1846,18 +1986,16 @@ module.exports = exp;
 /* Hay que cambiar como se actualizan los datos, hay que crear una cola con eventos a pasar, cuando uno pasa se actualiza la info de ese jugador sin que este conectado necesariamente
 /* Mejorar el calculo de recursos de tiempos medios
 /* Cambiar el string player por el objeto del jugador en todas las funciones
-/* Comentar el codigo
+/* Comentar el codigo ^^^^^
 /* Falta modularizar las funciones que acceden a la base de datos
-/* El abandonar el planeta en Overview
 /* Mejorar la verificacion de los datos de las funcione de la api
 /* La funcion de contar puntos tiene que contar los puntos de las flotas que estan en movimiento
 /* El contruir satelites solares la energia no se actualiza
-/* Hacer que las recompesas de las misiones del tutorial funciones
 /* Completar los mesajes de espionage (y todos en general)
 /* Mostrar bien los reportes de espionage y de batallas
 /* Controlar el rango en el que se pueden lanzar los misiles
-/* Hacer que en las expediciones no pueda regresar por el usuario la flota para evitar disminuir el tiempo random
 /* Avisar al atacado que lo estan atacando
-/* Si una flota regresa a la luna y no hay luna (fue destruida, vuelve al planeta)
+/* Si una flota regresa a la luna y no hay luna, (fue destruida) vuelve al planeta
 /* Pasar las funciones de espera a async, sincronizando todos los llamas a base de datos y no devolviendo nada hasta que te halla updateado toda la base de datos
+/* Que se pueda misilear, espiar y atacar desde la vision de galaxia
 */

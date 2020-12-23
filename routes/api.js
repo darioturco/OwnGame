@@ -126,6 +126,18 @@ router.get('/set/marketMoon', function(req, res, next) {
   uni.marketResources(uni.player.name, uni.planeta, req.query, res);
 });
 
+router.get('/set/updateRewards', function(req, res, next) {
+  uni.updateRewards(uni.player.name, req.query.mission, res);
+});
+
+router.get('/set/abandonPlanet', function(req, res, next) {
+  if(req.query.confirm == "Yes"){
+    uni.abandonPlanet(uni.player.name, uni.planeta, res);
+  }else{
+    res.send({ok: false, mes: "Parametros de seguridad incorrectos."});
+  }
+});
+
 router.post('/set/addFleetMovement', function(req, res, next) {
   uni.addFleetMovement(uni.player.name, uni.planeta, uni.moon, req.body, res);
 });

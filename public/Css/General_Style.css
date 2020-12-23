@@ -6986,7 +6986,7 @@ tr.alt td {
   position: absolute;
   right: 30px;
 }
-#PopUpDiv{
+#PopUpDiv, #YesNoPopUpDiv{
   display: none;
   opacity: 0;
   background: #242e3a;
@@ -7006,9 +7006,9 @@ tr.alt td {
   overflow-y: visible;
 }
 #PopUpDiv.popUpActive{
-    animation: 3s popupAnim 1;
+    animation: 3s popUpAnim 1;
 }
-@keyframes popupAnim {
+@keyframes popUpAnim {
   from{
     display: block;
   }
@@ -7030,6 +7030,79 @@ tr.alt td {
     opacity: 0;
     top: 30%;
   }
+}
+#YesNoPopUpDiv.popUpActive {
+  animation: 0.3s popUpYesNoAnimOpen 1 forwards;
+}
+@keyframes popUpYesNoAnimOpen {
+  from{
+    display: block;
+  }
+  to{
+    width: 220px;
+    height: 136px;
+    opacity: 1;
+    top: 50%;
+  }
+}
+
+#YesNoPopUpDiv.popUpClose{
+  animation: 0.3s popUpYesNoAnimClose 1 forwards;
+}
+
+@keyframes popUpYesNoAnimClose {
+  from{
+    width: 220px;
+    height: 136px;
+    opacity: 1;
+    top: 50%;
+  }
+  to{
+    display: block;
+  }
+}
+
+#PopUpYes{
+  display: inline-block;
+  position: relative;
+  top: 42%;
+  right: 16px;
+  cursor: pointer;
+  background-image: url('../Imagenes/Buttons.png');
+  background-position-y: -196px;
+  width: 84px;
+  height: 30px;
+  background-size: 450px;
+  color: #EEE;
+}
+#PopUpYes:hover{
+  background-position-x: -84px;
+}
+#PopUpYes a {
+  display: block;
+  width: 84px;
+  height: 30px;
+}
+#PopUpNo{
+  display: inline-block;
+  position: relative;
+  top: 42%;
+  left: 16px;
+  cursor: pointer;
+  background-image: url('../Imagenes/Buttons.png');
+  background-position-y: -227px;
+  width: 84px;
+  height: 30px;
+  background-size: 450px;
+  color: #EEE;
+}
+#PopUpNo:hover{
+  background-position-x: -84px;
+}
+#PopUpNo a {
+  display: block;
+  width: 84px;
+  height: 30px;
 }
 #highscoreSpan {margin-right: 3px;}
 p.level1{
