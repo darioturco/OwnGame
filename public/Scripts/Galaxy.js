@@ -38,7 +38,6 @@ function loadSystem(gal, sys){
   galaxy = gal;
   system = sys;
   loadJSON('./api/galaxy?gal=' + gal + '&sys=' + sys, (obj) => {
-    console.log(obj);
     let cont = 0;
     debrisList = [];
     moonList = [];
@@ -46,7 +45,7 @@ function loadSystem(gal, sys){
     pressMoon(-1);//apaga el cartel de la luna
     pressDebris(-1);//apaga el cartel de los escombros
     for(let i = 1 ; i<=15 ; i++){
-      if(obj['pos'+i].active == true){    // Sie el plantea de la posicion i esta colonizado
+      if(obj['pos'+i].active == true){    // Si es el plantea de la posicion i esta colonizado
         cont++;
         planets[i-1].src = './Imagenes/Planets/Miniatures/Planet_' + obj['pos'+i].type + '_' + obj['pos'+i].color + '_Mini.gif';
         playerName[i-1].innerHTML = obj['pos'+i].player + getEstado(obj['pos'+i].estado);
@@ -105,9 +104,9 @@ function pressDebris(num){
   }else{
     debrisActive = num;
     if(num >= 0){
-      debrisMetal.innerHTML = 'Metal: ' + debrisList[num-1].metal;
-      debrisCrystal.innerHTML = 'Crystal: ' + debrisList[num-1].crystal;
-      debrisNeed.innerHTML = 'Recyclers needed: ' + Math.ceil((debrisList[num-1].metal + debrisList[num-1].crystal)/20000);
+      debrisMetal.innerHTML = 'Metal: ' + formatNumber(debrisList[num-1].metal);
+      debrisCrystal.innerHTML = 'Crystal: ' + formatNumber(debrisList[num-1].crystal);
+      debrisNeed.innerHTML = 'Recyclers needed: ' + formatNumber(Math.ceil((debrisList[num-1].metal + debrisList[num-1].crystal)/20000));
       debrisCord.innerHTML = '['+galaxy+':'+system+':'+num+']';
       debrisConteiner.style.top = ((num-1)*33+76) + 'px';
       debrisConteiner.style.display = 'block';
@@ -134,7 +133,7 @@ function pressGo(){
   loadSystem(parseInt(galaxyText.value), parseInt(systemText.value));
 }
 function doExpedition(){
-  console.log("Go to expedition!!!");
+  window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=16&mis=0';
 }
 function colonize(pos){
   console.log(pos);

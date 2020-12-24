@@ -21,8 +21,8 @@ router.get('/', (req, res, next) => {
   //uni.deleteCollection(process.env.UNIVERSE_NAME, ["jugadores", "universo"]);
   //uni.createUniverse(process.env.UNIVERSE_NAME, 5, {name: "", inicio: 0, maxGalaxies: 9, donutGalaxy: true, donutSystem: true, speed: 1, speedFleet: 5000, fleetDebris: 30, defenceDebris: 0, maxMoon: 20, rapidFire: true, repearDefenses: true});
   //uni.addNewPlayer("dturco", 1);
-  //uni.setPlanetDataDev(uni.player.planets[1].coordinates, "dturco");
-  //uni.setMoonDataDev(uni.player.planets[1].coordinates, "dturco");
+  //uni.setPlanetDataDev(uni.player.planets[2].coordinates, "dturco");
+  //uni.setMoonDataDev(uni.player.planets[0].coordinates, "dturco");
   //uni.sendMessage("dturco", {type: 1, title: "Nuevo titulo", text: "Mensaje oficial", data: {}});
   //uni.colonize({gal: 1, sys: 2, pos: 7}, 'dturco');
   //uni.contPoint('dturco');
@@ -47,8 +47,6 @@ router.get('/', (req, res, next) => {
   }
   for(let item in defenses) defenses[item] = 50;
   let objAttack = uni.fun.battle(attackerShips, defenderShips, defenses, attackerTech, defenderTech);*/
-
-
   uni.seeDataBase(res, process.env.UNIVERSE_NAME, "jugadores");
 });
 
@@ -99,12 +97,15 @@ router.get('/OGame_Fleet.html', (req, res, next) => {
   if(req.query.gal == undefined) req.query.gal = uni.player.planets[uni.planeta].coordinates.gal;
   if(req.query.sys == undefined) req.query.sys = uni.player.planets[uni.planeta].coordinates.sys;
   if(req.query.pos == undefined) req.query.pos = uni.player.planets[uni.planeta].coordinates.pos;
+  if(req.query.mis == undefined) req.query.mis = -1;
+  if(req.query.des == undefined) req.query.des = 1;
   res.render('OGame_Fleet', {bodyId: "fleet",
     url: req._parsedOriginalUrl.pathname,
-    //(uni.moon) ? uni.player.planets[uni.planeta].moon.fleet : uni.player.planets[uni.planeta].fleet,
     info: uni.fleetInfo(uni.planeta, uni.moon),
     basic: uni.getActualBasicInfo(uni.planeta),
     objCord: {gal: req.query.gal, sys: req.query.sys, pos: req.query.pos},
+    mission: req.query.mis,
+    destination: req.query.des,
     listScript: ['./Scripts/Fleet.js']
   });
 });

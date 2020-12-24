@@ -43,6 +43,9 @@ setTimeout(() => {
   fleetUniverseSpeed = parseInt(document.getElementsByName('ogame-universe-speed-fleet')[0].content);
   galaxyDonut = ('true' == document.getElementsByName('ogame-donut-galaxy')[0].content);
   systemDonut = ('true' == document.getElementsByName('ogame-donut-system')[0].content);
+  let missionAux = parseInt(missionText.dataset.mis);
+  if(missionAux != -1 && missionAux < 9) pressButtonMision(missionAux);
+  pressPlanetMoonDebris(parseInt(destinationImgPlanet.dataset.des));
   for(let i = 0 ; i<cantFleets.length ; i++){
     inputsFleets[i].value = '';
     if(cantFleets[i].innerText <= 0){
@@ -53,7 +56,6 @@ setTimeout(() => {
     selects.push(document.getElementById("dropdown" + i));
     controls.push(document.getElementById("downButton" + i));
     open.push(false);
-    //setDropdown(undefined, i, true);
   }
 }, 0);
 
@@ -317,7 +319,7 @@ function changeButtonMision(){
       prendeButtonMision(destination != 3 && cargaText.innerText > 0, 3); //transporte
       prendeButtonMision(destination != 3, 4); //despliege
       prendeButtonMision(destination != 3 && inputsFleets[12].value > 0, 5); //espionaje
-      prendeButtonMision(destination != 3, 6); //defend
+      prendeButtonMision(destination != 3 && inputsFleets[13].value > 0, 6); //misil
       prendeButtonMision(destination != 3, 7); //ataque
       prendeButtonMision(destination == 2 && inputsFleets[7].value > 0, 8); //destruir luna
     }else{
@@ -342,7 +344,6 @@ function pressButtonMision(num){
     missionSelected = -1;
     missionText.innerText = '';
     missionDescriptionText.innerText = '-';
-
   }else{
     if(missionSelected != -1) buttonsMision[missionSelected].children[0].classList.remove('selected')
     buttonsMision[num].children[0].classList.add('selected');
@@ -366,7 +367,6 @@ async function sendFleetMovement(){
     data.porce = speedActive;
     data.mission = missionSelected;
     data.resources = {metal: cargeInputs[0].value, crystal: cargeInputs[1].value, deuterium: cargeInputs[2].value};
-    console.log(data);
     let res = await fetch('./api/set/addFleetMovement', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
     let objRes = await res.json();
     ready = true;

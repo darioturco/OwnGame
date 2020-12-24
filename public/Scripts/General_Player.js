@@ -3,6 +3,7 @@ var metal_res, crystal_res, deuterium_res, clock;
 var metal = 0, crystal = 0, deuterium = 0;
 var nextFleetText, missionText, fleetTime;
 var popUp, popUpText, yesNoPopUp, yesNoPopUpText;
+var tickDiv;
 
 function initFunction(obj){ // Funcion que se ejecuta apenas carga un pagina
   clock = document.getElementById("Clock");
@@ -11,6 +12,7 @@ function initFunction(obj){ // Funcion que se ejecuta apenas carga un pagina
   yesNoPopUp = document.getElementById("YesNoPopUpDiv");
   yesNoPopUpText = document.getElementById("YesNoPopUpText");
   nextFleetText = document.getElementById("fleetInfoFirstMovementDown");
+  tickDiv = document.getElementById("TickDiv");
   metal_res = document.getElementById("resources_metal");
   crystal_res = document.getElementById("resources_crystal");
   deuterium_res = document.getElementById("resources_deuterium");
@@ -137,7 +139,18 @@ function sendYesNoPopUp(message, yesFunction, noFunction){
 function closeYesNoPopUp(){
   yesNoPopUp.classList.remove("popUpActive");
   yesNoPopUp.classList.add("popUpClose");
+}
 
+function sendTick(){
+  let elem = document.createElement("Div");
+  tickDiv.appendChild(elem);
+  elem.classList.add("tickDiv");
+  let elemChild = document.createElement("Div")
+  elemChild.innerText = 'L';
+  elem.appendChild(elemChild);
+  setTimeout(() => {
+    tickDiv.removeChild(elem);
+  }, 1000);
 }
 
 function abandonPlanetFunction(){

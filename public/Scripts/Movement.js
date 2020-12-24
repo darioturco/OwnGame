@@ -54,7 +54,6 @@ function showFleet(num){
     listaFleets[num].infoDiv.style.display = "block";
   }
   listaFleets[num].mostrando = !listaFleets[num].mostrando;
-  console.log("Muestra la flota: " + num);
 }
 
 function reloadPage(){

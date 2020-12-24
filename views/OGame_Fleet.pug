@@ -174,7 +174,7 @@ block content
               td#target.border5px
                 #targetPlanetName.planetname Planet
                 .target
-                  a#pbutton.planet_selected(href='javascript:void(0);' onclick='pressPlanetMoonDebris(1);return false;')
+                  a#pbutton.planet_selected(href='javascript:void(0);' onclick='pressPlanetMoonDebris(1);return false;' data-des=destination)
                   a#mbutton.moon(href='javascript:void(0);' onclick='pressPlanetMoonDebris(2);return false;')
                   a#dbutton.debris(href='javascript:void(0);' onclick='pressPlanetMoonDebris(3);return false;')
                   br.clearfloat
@@ -201,9 +201,9 @@ block content
                       a#downButton2(value=0 href='javascript:void(0);' onclick='clickSelect(2)') -
                     ul#dropdown2.dropdown.dropdownList.initialized(style='top: 106px; min-width: 144px; display: none; position: absolute;')
                       //cambiar por la lista de movimientos de flotas del jugador
-                      each item, index in basic.planets
+                      each item, index in info.movement
                         li
-                          a(data-gal=item.coordinates.gal data-sys=item.coordinates.sys data-pos=item.coordinates.pos value=index onclick='setDropdown(this, 2)') #{item.name+' ['+item.coordinates.gal+':'+item.coordinates.sys+':'+item.coordinates.pos+']'}
+                          a(data-gal=item.coorHasta.gal data-sys=item.coorHasta.sys data-pos=item.coorHasta.pos value=index onclick='setDropdown(this, 2)') #{'Fleet ' + (index+1) + ' ['+item.coorHasta.gal+':'+item.coorHasta.sys+':'+item.coorHasta.pos+']'}
                 div
                   span Vacas:
                   .glow
@@ -288,7 +288,7 @@ block content
               span.textlabel Moon Destruction
         #missionNameWrapper
           | Mission:
-          span#missionName.missionName
+          span#missionName.missionName(data-mis=mission)
           p#missionDescription.mission_description -
     #sendfleet
       .header

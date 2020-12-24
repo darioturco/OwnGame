@@ -77,7 +77,6 @@ var exp = {
     let listShip = [];
     /* Arreglar el uso de 'help' */
     if(help == true){
-      //console.log(this.player.planets[0].moon);
       let timeLastUpdate = horaActual - this.player.lastVisit;
       let updateResourcesAddOfAllPlanets = false;
       objSet['puntosAcum'] = this.player.puntosAcum;
@@ -458,19 +457,10 @@ var exp = {
             let plaString = 'planets.' +  fun.getIndexOfPlanet(this.player.planets, this.player.movement[i].coorDesde) + lunaString;
 
             for(let item in this.player.movement[i].resources){ // Guardo los recursos
-              if(objInc[plaString + 'resources.' + item] == undefined){ // Si no esta definida ese tipo de nave(son las naves de la luna), remplazo
-                objInc[plaString + 'resources.' + item] = this.player.movement[i].resources[item];
-              }else{ // Si no, sumo a lo que habia antes
-                objInc[plaString + 'resources.' + item] += this.player.movement[i].resources[item];
-              }
+              if(item != 'misil') objInc[plaString + 'resources.' + item] = this.player.movement[i].resources[item];
             }
-
             for(let item in this.player.movement[i].ships){ // Guardo todas las naves
-              if(objInc[plaString + 'fleet.' + item] == undefined){ // Si no esta definida ese tipo de nave(son las naves de la luna), remplazo
-                objInc[plaString + 'fleet.' + item] = this.player.movement[i].ships[item];
-              }else{  // Si no, sumo a lo que habia antes
-                objInc[plaString + 'fleet.' + item] += this.player.movement[i].ships[item];
-              }
+              objInc[plaString + 'fleet.' + item] = this.player.movement[i].ships[item];
             }
           }
         }
@@ -510,9 +500,6 @@ var exp = {
               if(indiceDeEspionage >= 7){
                 // Agrego buildings
                 dataEsp.buildings = moon ? res.planets[index].moon.buildings : res.planets[index].buildings;
-                if(indiceDeEspionage >= 9){
-                  /* Agrego las naves que estan manteniendo la posicion en el planeta */
-                }
               }
             }
           }
@@ -1329,7 +1316,7 @@ var exp = {
   },
   returnFleetInDataBase: function(num, res = undefined, time = undefined, resources = undefined, ships = undefined){
     let actual = fun.horaActual();
-    if(this.player.movement[num].ida && !(this.player.movement[num].mission == 0 && actual >= this.player.movement[num].llegada)){
+    if(this.player.movement[num].ida && this.player.movement[num].mission != 6 && !(this.player.movement[num].mission == 0 && actual >= this.player.movement[num].llegada)){
       let updateObj = {};
       let updateObjAux = this.player.movement[num]; // Voy a pushear el mismo elemento pero a cambiarle algunas cosas claves
       if(time == undefined){
@@ -1337,14 +1324,18 @@ var exp = {
       }
       let oldTime    = updateObjAux.time;
       let oldLlegada = updateObjAux.llegada;
-      if(ships     != undefined) updateObjAux['ships'] = ships;
+      if(ships != undefined){
+        ships.misil = 0;
+        updateObjAux['ships'] = ships;
+      }
       if(resources != undefined) updateObjAux['resources'] = resources;
-      updateObjAux['ida']       = false;
-      updateObjAux['duracion']  = time;
-      updateObjAux['time']      = actual;
-      updateObjAux['llegada']   = actual + time*1000;
-      updateObj["movement"]     = updateObjAux;
-      this.player.movement[num] = updateObjAux; // Actualizo la flota de la lista de flotas volando
+      updateObjAux.ships['misil'] = 0;
+      updateObjAux['ida']         = false;
+      updateObjAux['duracion']    = time;
+      updateObjAux['time']        = actual;
+      updateObjAux['llegada']     = actual + time*1000;
+      updateObj["movement"]       = updateObjAux;
+      this.player.movement[num]   = updateObjAux; // Actualizo la flota de la lista de flotas volando
       mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
       {name: this.player.name, "movement.time": oldTime, "movement.llegada": oldLlegada},
       {$set: {"movement.$": updateObjAux}}, (err, resBD) => {
@@ -1362,18 +1353,20 @@ var exp = {
     if(newTime < 0) newTime = 0;
     let pushObj = {};
     pushObj.movement = movement;
-    if(newShips != undefined) pushObj.movement.ships = newShips;
+    if(newShips     != undefined) pushObj.movement.ships = newShips;
     if(newResources != undefined) pushObj.movement.resources = newResources;
-    pushObj.movement.ida      = false;
-    pushObj.movement.duracion = newTime;
-    pushObj.movement.time     = actual
-    pushObj.movement.llegada  = actual + newTime*1000;
+    pushObj.movement.ships.misil = 0;
+    pushObj.movement.ida         = false;
+    pushObj.movement.duracion    = newTime;
+    pushObj.movement.time        = actual
+    pushObj.movement.llegada     = actual + newTime*1000;
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
       {planets :{$elemMatch: {coordinates: movement.coorDesde}}},
       {$push: pushObj});
   },
   addFleetMovement: function(player, planet, moon, obj, res){
     /* El parametro player es el nombre del jugador al que se le va a hacer la modificacion, en esta y en casi todas la funciones */
+    /* Verificar que obj.ships sean todos numeros */
     // Verifica que no se este enviando una flota a la misma posicion de salida
     if((obj.coorDesde.gal == obj.coorHasta.gal && obj.coorDesde.sys == obj.coorHasta.sys && obj.coorDesde.pos == obj.coorHasta.pos) && ((moon && obj.destination == 2) || (!moon && obj.destination == 1))){
       res.json({ok: false, mes: "No se puede mandar una flota de un lugar a si mismo"});
@@ -1399,8 +1392,8 @@ var exp = {
     }
     let validMission    = false;
     let fleetVoid       = true;
-    let fleetWithNoMisil= true;
     let thereIsNoFleet  = false;
+    let flotaValida     = false;
     let misil           = obj.ships.misil > 0;
     let minSpeed        = Infinity;
     let neededDeuterium = 0;
@@ -1408,21 +1401,34 @@ var exp = {
     let distancia       = fun.calculaDistancia(obj.coorDesde, obj.coorHasta, this.universo.donutGalaxy, this.universo.donutSystem);
     let navesInfo       = fun.navesInfo(this.player.research.combustion, this.player.research.impulse, this.player.research.hyperspace_drive);
     for(let item in obj.ships){
-      if(moon){
-        if(obj.ships[item] > this.player.planets[planet].moon.fleet[item]) thereIsNoFleet = true;
-      }else{
-        if(obj.ships[item] > this.player.planets[planet].fleet[item]) thereIsNoFleet = true;
+      if(item != 'misil'){
+        if(moon){
+          if(obj.ships[item] > this.player.planets[planet].moon.fleet[item]) thereIsNoFleet = true;
+        }else{
+          if(obj.ships[item] > this.player.planets[planet].fleet[item]) thereIsNoFleet = true;
+        }
+        if(obj.ships[item] < 0) obj.ships[item] = 0;  // Controla que no sea un numero negativo
+        if(obj.ships[item] > 0){                      // Si hay nave de ese tipo
+          fleetVoid = false;
+          if(navesInfo[item].speed < minSpeed) minSpeed = navesInfo[item].speed; // Obtengo la velocidad minima de toda la flota
+          neededDeuterium += Math.floor(obj.ships[item] * navesInfo[item].consumo * distancia * Math.pow(0.68+obj.porce/100, 2) / 40000);
+        }
+        maxCarga += obj.ships[item] * navesInfo[item].carga;
       }
-      if(obj.ships[item] < 0) obj.ships[item] = 0;  // Controla que no sea un numero negativo
-      if(obj.ships[item] > 0){                      // Si hay nave de ese tipo
-        fleetVoid = false;
-        if(item != 'misil') fleetWithNoMisil = false;
-        if(navesInfo[item].speed < minSpeed) minSpeed = navesInfo[item].speed; // Obtengo la velocidad minima de toda la flota
-        neededDeuterium += Math.floor(obj.ships[item] * navesInfo[item].consumo * distancia * Math.pow(0.68+obj.porce/100, 2) / 40000);
-      }
-      maxCarga += obj.ships[item] * navesInfo[item].carga;
     }
-    if(obj.ships['misil'] > (moon) ? 0 : this.player.planets[planet].fleet["interplanetaryMissile"]) thereIsNoFleet = true;
+    // Me fijo por separado el caso de los misiles
+    if(obj.ships['misil'] < 0) obj.ships['misil'] = 0;
+    if(misil && obj.mission != 6){
+      res.json({ok: false, mes: "Los misiles solo pueden ser eviados a misilear."});
+      return res;
+    }
+    if(!fleetVoid && obj.mission == 6){
+      res.json({ok: false, mes: "No se puede misilear con naves que no sean misiles."});
+      return res;
+    }
+    if(obj.ships['misil'] > ((moon) ? 0 : this.player.planets[planet].defense["interplanetaryMissile"])){
+      thereIsNoFleet = true;
+    }
     switch (obj.mission) {
       case 0: // Expedition
         validMission = obj.coorHasta.pos == 16 && !misil;
@@ -1453,7 +1459,17 @@ var exp = {
     // La unica mision que se puede mandar a la posicion 16 es una expedicion
     if(obj.mission != 0 && obj.coorHasta.pos == 16) validMission = false;
     let deuterioDisponible = (moon) ? this.player.planets[planet].moon.resources.deuterium : this.player.planets[planet].resources.deuterium;
-    if(validMission && !fleetVoid && !thereIsNoFleet && isFinite(minSpeed) && neededDeuterium <= deuterioDisponible - obj.resources.deuterium){
+    if(!fleetVoid || misil){
+      flotaValida = true;
+      if(misil){
+        minSpeed = navesInfo['misil'].speed;
+        if(obj.coorDesde.gal != obj.coorHasta.gal || Math.abs(obj.coorDesde.sys - obj.coorHasta.sys) > (this.player.research.impulse * 5)){
+          res.json({ok: false, mes: "No se puede misilear una posicion tan lejana."});
+          return res;
+        }
+      }
+    }
+    if(validMission && !thereIsNoFleet && isFinite(minSpeed) && neededDeuterium <= deuterioDisponible - obj.resources.deuterium){
       if(fun.recursosSuficientes((moon) ? this.player.planets[planet].moon.resources : this.player.planets[planet].resources, obj.resources)){
         fun.objStringToNum(obj.resources);  // Paso los recursos de strings a integer
         if(maxCarga >= obj.resources.metal + obj.resources.crystal + obj.resources.deuterium){
@@ -1641,19 +1657,12 @@ var exp = {
   },
   addPlanetData: function(cord, resources, fleet, moon, f = undefined){ /* III Funcion de base de datos III */
     let incObj = {};
+    let moonStr = moon ? '.moon.' : '.';
     for(let i in resources){
-      if(moon){
-        incObj['planets.$.moon.resources.' + i] = resources[i];
-      }else{
-        incObj['planets.$.resources.' + i] = resources[i];
-      }
+      incObj['planets.$' + moonStr + 'resources.' + i] = resources[i];
     }
     for(let i in fleet){
-      if(moon){
-        incObj['planets.$.moon.fleet.' + i] = fleet[i];
-      }else{
-        incObj['planets.$.fleet.' + i] = fleet[i];
-      }
+      if(i != 'misil') incObj['planets.$' + moonStr + 'fleet.' + i] = fleet[i];
     }
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
       {planets :{$elemMatch: {coordinates: {gal: cord.gal, sys: cord.sys, pos: cord.pos}}}},
@@ -1934,10 +1943,10 @@ var exp = {
     }
   },
   setPlanetDataDev: function(cord, player){ /* III Funcion de base de datos III */
-    let resources = {metal: 1000, crystal: 1000, deuterium: 0, energy: 0};
+    let resources = {metal: 1000, crystal: 1000, deuterium: 15000, energy: 0};
     let building = {metalMine: 0, crystalMine: 1, deuteriumMine: 0, solarPlant: 30, fusionReactor: 0, metalStorage: 10, crystalStorage: 9, deuteriumStorage: 8, robotFactory: 0, shipyard: 0, researchLab: 0, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0};
     let fleet = /*fun.zeroShips();*/{lightFighter: 10, heavyFighter: 0, cruiser: 100, battleship: 10, battlecruiser: 0, bomber: 3, destroyer: 100, deathstar: 50, smallCargo: 500, largeCargo: 200, colony: 1000, recycler: 200, espionageProbe: 30, solarSatellite: 15};
-    let defenses = fun.zeroDefense();//{rocketLauncher: 100, lightLaser: 10, heavyLaser: 0, gauss: 5, ion: 0, plasma: 0, smallShield: 0, largeShield: 0, antiballisticMissile: 3, interplanetaryMissile: 1000};
+    let defenses = /*fun.zeroDefense();*/{rocketLauncher: 100, lightLaser: 10, heavyLaser: 0, gauss: 5, ion: 0, plasma: 0, smallShield: 0, largeShield: 0, antiballisticMissile: 3, interplanetaryMissile: 1000};
     let moon = /*{active: false, size: 0};*/this.createNewMoon(8888);
     let debris = {active: true, metal:1000, crystal: 2000};
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({planets :{$elemMatch: {coordinates: {gal: cord.gal, sys: cord.sys, pos: cord.pos}}}}, {$set: {'planets.$.resources': resources,'planets.$.buildings': building, 'planets.$.fleet': fleet, 'planets.$.defense': defenses,'planets.$.moon': moon, 'planets.$.debris': debris}});
@@ -1993,7 +2002,6 @@ module.exports = exp;
 /* El contruir satelites solares la energia no se actualiza
 /* Completar los mesajes de espionage (y todos en general)
 /* Mostrar bien los reportes de espionage y de batallas
-/* Controlar el rango en el que se pueden lanzar los misiles
 /* Avisar al atacado que lo estan atacando
 /* Si una flota regresa a la luna y no hay luna, (fue destruida) vuelve al planeta
 /* Pasar las funciones de espera a async, sincronizando todos los llamas a base de datos y no devolviendo nada hasta que te halla updateado toda la base de datos
