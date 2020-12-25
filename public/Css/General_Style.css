@@ -710,6 +710,7 @@ width:16px;
 .icon.icon_info:hover{background-position:0 -560px}
 .icon.icon_lock{background-position:0 -272px}
 .icon.icon_lock:hover{background-position:0 -288px}
+.icon_mail_active{filter: hue-rotate(300deg) brightness(110%)}
 .icon.icon_mail{background-position:0 -176px}
 .icon.icon_mail:hover{background-position:0 -192px}
 .icon.icon_missile{background-position:0 -144px}

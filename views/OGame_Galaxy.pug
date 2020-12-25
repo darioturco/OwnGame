@@ -22,17 +22,20 @@ block content
             tr.info.info_header.ct_head_row
               th(colspan='11')
                 span#probes
-                  | Esp.Probe:
-                  span#probeValue #{info.espionage}
+                  | Esp. Probe:
+                  span#probeValue(data-value=info.espionage) #{info.espionage}
                 span#recycler
                   | Recy.:
-                  span#recyclerValue #{info.recycler}
-                span#rockets
-                  | IPM.:
-                  span#missileValue #{info.misil}
+                  span#recyclerValue(data-value=info.recycler) #{info.recycler}
+                span#small
+                  | S. Cargos:
+                  span#smallValue(data-value=info.small) #{info.small}
+                span#large
+                  | L. Cargos:
+                  span#largeValue(data-value=info.large) #{info.large}
                 span#slots
                   | Used slots:
-                  span#slotValue #{info.slot}/#{info.maxSlot}
+                  span#slotValue(data-used=info.slot data-max=info.maxSlot) #{info.slot}/#{info.maxSlot}
             tr#galaxyheadbg2.ct_head_row
               th.first(style='width: 70px; overflow: hidden;') Planet
               th(style='width: 129px; padding-right: 5px;') Name
@@ -54,21 +57,21 @@ block content
                   img(id='Planet1' src='' width='30' height='30' alt=' ')
               td.planetname1(align='center')
                 span.planetName
-                img.colonyImg(onclick=(canColonyze) ? 'colonize(1)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
+                img.colonyImg(onclick=(canColonyze) ? 'colonize(1);' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon1
-                a(href='#' onclick='pressMoon(1); return false;')
+                a(href='#' onclick='pressMoon(1);')
                   #1_Moon.ListMoon
               td.debris.js_debris1
-                a(href='#' onclick='pressDebris(1); return false;')
+                a(href='#' onclick='pressDebris(1);')
                   #1_Debris.ListDebris
               td.playername
                 span.status
               td.action
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip.spyEye(href='#' onclick='spyFunction(1, false)')
                   span.icon.icon_eye
                   span.tooltipText(style="bottom: 26px; left: 484px;") Spy
                   //espiar (se pone verdecito si ya lo estas espiando)
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='getReport(1);')
                   span.icon.icon_adressbook
                   span.tooltipText(style="bottom: 26px; left: 510px;") Report
                   // leer reporte de espionaje (esta negro si no tenes reporte de ese jugador)
@@ -76,11 +79,11 @@ block content
                   span.icon.icon_missile
                   span.tooltipText(style="bottom: 26px; left: 532px;") Attack
                   // ataque personalisado
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='sackFunction(1);')
                   span.icon.icon_against
                   span.tooltipText(style="bottom: 26px; left: 556px;") Sack
                   // ataca como si fuera una vaca
-                a.tooltip(href='#' onclick='addVaca(1); return false;')
+                a.tooltip(href='#' onclick='addVaca(1);')
                   span.icon.icon_mail
                   span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
                   // agrega a la lista de vacas
@@ -96,27 +99,27 @@ block content
                 span.planetName
                 img.colonyImg(onclick=(canColonyze) ? 'colonize(2)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon2
-                a(href='#' onclick='pressMoon(2); return false;')
+                a(href='#' onclick='pressMoon(2);')
                   #2_Moon.ListMoon
               td.debris.js_debris2
-                a(href='#' onclick='pressDebris(2); return false;')
+                a(href='#' onclick='pressDebris(2);')
                   #2_Debris.ListDebris
               td.playername
                 span.status
               td.action
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip.spyEye(href='#' onclick='spyFunction(2, false)')
                   span.icon.icon_eye
                   span.tooltipText(style="bottom: 26px; left: 484px;") Spy
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='getReport(2);')
                   span.icon.icon_adressbook
                   span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=2&mis=7';")
                   span.icon.icon_missile
                   span.tooltipText(style="bottom: 26px; left: 532px;") Attack
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='sackFunction(2);')
                   span.icon.icon_against
                   span.tooltipText(style="bottom: 26px; left: 556px;") Sack
-                a.tooltip(href='#' onclick='addVaca(2); return false;')
+                a.tooltip(href='#' onclick='addVaca(2);')
                   span.icon.icon_mail
                   span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
@@ -131,27 +134,27 @@ block content
                 span.planetName
                 img.colonyImg(onclick=(canColonyze) ? 'colonize(3)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon3
-                a(href='#' onclick='pressMoon(3); return false;')
+                a(href='#' onclick='pressMoon(3);')
                   #3_Moon.ListMoon
               td.debris.js_debris3
-                a(href='#' onclick='pressDebris(3); return false;')
+                a(href='#' onclick='pressDebris(3);')
                   #3_Debris.ListDebris
               td.playername
                 span.status
               td.action
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip.spyEye(href='#' onclick='spyFunction(3, false)')
                   span.icon.icon_eye
                   span.tooltipText(style="bottom: 26px; left: 484px;") Spy
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='getReport(3);')
                   span.icon.icon_adressbook
                   span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=3&mis=7';")
                   span.icon.icon_missile
                   span.tooltipText(style="bottom: 26px; left: 532px;") Attack
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='sackFunction(3);')
                   span.icon.icon_against
                   span.tooltipText(style="bottom: 26px; left: 556px;") Sack
-                a.tooltip(href='#' onclick='addVaca(3); return false;')
+                a.tooltip(href='#' onclick='addVaca(3);')
                   span.icon.icon_mail
                   span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
@@ -166,27 +169,27 @@ block content
                 span.planetName
                 img.colonyImg(onclick=(canColonyze) ? 'colonize(4)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon4
-                a(href='#' onclick='pressMoon(4); return false;')
+                a(href='#' onclick='pressMoon(4);')
                   #4_Moon.ListMoon
               td.debris.js_debris4
-                a(href='#' onclick='pressDebris(4); return false;')
+                a(href='#' onclick='pressDebris(4);')
                   #4_Debris.ListDebris
               td.playername
                 span.status
               td.action
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip.spyEye(href='#' onclick='spyFunction(4, false)')
                   span.icon.icon_eye
                   span.tooltipText(style="bottom: 26px; left: 484px;") Spy
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='getReport(4);')
                   span.icon.icon_adressbook
                   span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=4&mis=7';")
                   span.icon.icon_missile
                   span.tooltipText(style="bottom: 26px; left: 532px;") Attack
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='sackFunction(4);')
                   span.icon.icon_against
                   span.tooltipText(style="bottom: 26px; left: 556px;") Sack
-                a.tooltip(href='#' onclick='addVaca(4); return false;')
+                a.tooltip(href='#' onclick='addVaca(4);')
                   span.icon.icon_mail
                   span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
@@ -201,27 +204,27 @@ block content
                 span.planetName
                 img.colonyImg(onclick=(canColonyze) ? 'colonize(5)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon5
-                a(href='#' onclick='pressMoon(5); return false;')
+                a(href='#' onclick='pressMoon(5);')
                   #5_Moon.ListMoon
               td.debris.js_debris5
-                a(href='#' onclick='pressDebris(5); return false;')
+                a(href='#' onclick='pressDebris(5);')
                   #5_Debris.ListDebris
               td.playername
                 span.status
               td.action
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip.spyEye(href='#' onclick='spyFunction(5, false)')
                   span.icon.icon_eye
                   span.tooltipText(style="bottom: 26px; left: 484px;") Spy
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='getReport(5);')
                   span.icon.icon_adressbook
                   span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=5&mis=7';")
                   span.icon.icon_missile
                   span.tooltipText(style="bottom: 26px; left: 532px;") Attack
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='sackFunction(5);')
                   span.icon.icon_against
                   span.tooltipText(style="bottom: 26px; left: 556px;") Sack
-                a.tooltip(href='#' onclick='addVaca(5); return false;')
+                a.tooltip(href='#' onclick='addVaca(5);')
                   span.icon.icon_mail
                   span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
@@ -236,27 +239,27 @@ block content
                 span.planetName
                 img.colonyImg(onclick=(canColonyze) ? 'colonize(6)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon6
-                a(href='#' onclick='pressMoon(6); return false;')
+                a(href='#' onclick='pressMoon(6);')
                   #6_Moon.ListMoon
               td.debris.js_debris6
-                a(href='#' onclick='pressDebris(6); return false;')
+                a(href='#' onclick='pressDebris(6);')
                   #6_Debris.ListDebris
               td.playername
                 span.status
               td.action
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip.spyEye(href='#' onclick='spyFunction(6, false)')
                   span.icon.icon_eye
                   span.tooltipText(style="bottom: 26px; left: 484px;") Spy
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='getReport(6);')
                   span.icon.icon_adressbook
                   span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=6&mis=7';")
                   span.icon.icon_missile
                   span.tooltipText(style="bottom: 26px; left: 532px;") Attack
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='sackFunction(6);')
                   span.icon.icon_against
                   span.tooltipText(style="bottom: 26px; left: 556px;") Sack
-                a.tooltip(href='#' onclick='addVaca(6); return false;')
+                a.tooltip(href='#' onclick='addVaca(6);')
                   span.icon.icon_mail
                   span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
@@ -271,27 +274,27 @@ block content
                 span.planetName
                 img.colonyImg(onclick=(canColonyze) ? 'colonize(7)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon7
-                a(href='#' onclick='pressMoon(7); return false;')
+                a(href='#' onclick='pressMoon(7);')
                   #7_Moon.ListMoon
               td.debris.js_debris7
-                a(href='#' onclick='pressDebris(7); return false;')
+                a(href='#' onclick='pressDebris(7);')
                   #7_Debris.ListDebris
               td.playername
                 span.status
               td.action
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip.spyEye(href='#' onclick='spyFunction(7, false)')
                   span.icon.icon_eye
                   span.tooltipText(style="bottom: 26px; left: 484px;") Spy
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='getReport(7);')
                   span.icon.icon_adressbook
                   span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=7&mis=7';")
                   span.icon.icon_missile
                   span.tooltipText(style="bottom: 26px; left: 532px;") Attack
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='sackFunction(7);')
                   span.icon.icon_against
                   span.tooltipText(style="bottom: 26px; left: 556px;") Sack
-                a.tooltip(href='#' onclick='addVaca(7); return false;')
+                a.tooltip(href='#' onclick='addVaca(7);')
                   span.icon.icon_mail
                   span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
@@ -306,27 +309,27 @@ block content
                 span.planetName
                 img.colonyImg(onclick=(canColonyze) ? 'colonize(8)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon8
-                a(href='#' onclick='pressMoon(8); return false;')
+                a(href='#' onclick='pressMoon(8);')
                   #8_Moon.ListMoon
               td.debris.js_debris8
-                a(href='#' onclick='pressDebris(8); return false;')
+                a(href='#' onclick='pressDebris(8);')
                   #8_Debris.ListDebris
               td.playername
                 span.status
               td.action
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip.spyEye(href='#' onclick='spyFunction(8, false)')
                   span.icon.icon_eye
                   span.tooltipText(style="bottom: 26px; left: 484px;") Spy
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='getReport(8);')
                   span.icon.icon_adressbook
                   span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=8&mis=7';")
                   span.icon.icon_missile
                   span.tooltipText(style="bottom: 26px; left: 532px;") Attack
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='sackFunction(8);')
                   span.icon.icon_against
                   span.tooltipText(style="bottom: 26px; left: 556px;") Sack
-                a.tooltip(href='#' onclick='addVaca(8); return false;')
+                a.tooltip(href='#' onclick='addVaca(8);')
                   span.icon.icon_mail
                   span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
@@ -341,27 +344,27 @@ block content
                 span.planetName
                 img.colonyImg(onclick=(canColonyze) ? 'colonize(9)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon9
-                a(href='#' onclick='pressMoon(9); return false;')
+                a(href='#' onclick='pressMoon(9);')
                   #9_Moon.ListMoon
               td.debris.js_debris9
-                a(href='#' onclick='pressDebris(9); return false;')
+                a(href='#' onclick='pressDebris(9);')
                   #9_Debris.ListDebris
               td.playername
                 span.status
               td.action
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip.spyEye(href='#' onclick='spyFunction(9, false)')
                   span.icon.icon_eye
                   span.tooltipText(style="bottom: 26px; left: 484px;") Spy
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='getReport(9);')
                   span.icon.icon_adressbook
                   span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=9&mis=7';")
                   span.icon.icon_missile
                   span.tooltipText(style="bottom: 26px; left: 532px;") Attack
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='sackFunction(9);')
                   span.icon.icon_against
                   span.tooltipText(style="bottom: 26px; left: 556px;") Sack
-                a.tooltip(href='#' onclick='addVaca(9); return false;')
+                a.tooltip(href='#' onclick='addVaca(9);')
                   span.icon.icon_mail
                   span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
@@ -376,27 +379,27 @@ block content
                 span.planetName
                 img.colonyImg(onclick=(canColonyze) ? 'colonize(10)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon10
-                a(href='#' onclick='pressMoon(10); return false;')
+                a(href='#' onclick='pressMoon(10);')
                   #10_Moon.ListMoon
               td.debris.js_debris10
-                a(href='#' onclick='pressDebris(10); return false;')
+                a(href='#' onclick='pressDebris(10);')
                   #10_Debris.ListDebris
               td.playername
                 span.status
               td.action
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip.spyEye(href='#' onclick='spyFunction(10, false)')
                   span.icon.icon_eye
                   span.tooltipText(style="bottom: 26px; left: 484px;") Spy
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='getReport(10);')
                   span.icon.icon_adressbook
                   span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=10&mis=7';")
                   span.icon.icon_missile
                   span.tooltipText(style="bottom: 26px; left: 532px;") Attack
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='sackFunction(10);')
                   span.icon.icon_against
                   span.tooltipText(style="bottom: 26px; left: 556px;") Sack
-                a.tooltip(href='#' onclick='addVaca(10); return false;')
+                a.tooltip(href='#' onclick='addVaca(10);')
                   span.icon.icon_mail
                   span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
@@ -411,27 +414,27 @@ block content
                 span.planetName
                 img.colonyImg(onclick=(canColonyze) ? 'colonize(11)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon11
-                a(href='#' onclick='pressMoon(11); return false;')
+                a(href='#' onclick='pressMoon(11);')
                   #11_Moon.ListMoon
               td.debris.js_debris11
-                a(href='#' onclick='pressDebris(11); return false;')
+                a(href='#' onclick='pressDebris(11);')
                   #11_Debris.ListDebris
               td.playername
                 span.status
               td.action
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip.spyEye(href='#' onclick='spyFunction(11, false)')
                   span.icon.icon_eye
                   span.tooltipText(style="bottom: 26px; left: 484px;") Spy
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='getReport(11);')
                   span.icon.icon_adressbook
                   span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=11&mis=7';")
                   span.icon.icon_missile
                   span.tooltipText(style="bottom: 26px; left: 532px;") Attack
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='sackFunction(11);')
                   span.icon.icon_against
                   span.tooltipText(style="bottom: 26px; left: 556px;") Sack
-                a.tooltip(href='#' onclick='addVaca(11); return false;')
+                a.tooltip(href='#' onclick='addVaca(11);')
                   span.icon.icon_mail
 
 
@@ -445,27 +448,27 @@ block content
                 span.planetName
                 img.colonyImg(onclick=(canColonyze) ? 'colonize(12)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon12
-                a(href='#' onclick='pressMoon(12); return false;')
+                a(href='#' onclick='pressMoon(12);')
                   #12_Moon.ListMoon
               td.debris.js_debris12
-                a(href='#' onclick='pressDebris(12); return false;')
+                a(href='#' onclick='pressDebris(12);')
                   #12_Debris.ListDebris
               td.playername
                 span.status
               td.action
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip.spyEye(href='#' onclick='spyFunction(12, false)')
                   span.icon.icon_eye
                   span.tooltipText(style="bottom: 26px; left: 484px;") Spy
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='getReport(12);')
                   span.icon.icon_adressbook
                   span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=12&mis=7';")
                   span.icon.icon_missile
                   span.tooltipText(style="bottom: 26px; left: 532px;") Attack
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='sackFunction(12);')
                   span.icon.icon_against
                   span.tooltipText(style="bottom: 26px; left: 556px;") Sack
-                a.tooltip(href='#' onclick='addVaca(12); return false;')
+                a.tooltip(href='#' onclick='addVaca(12);')
                   span.icon.icon_mail
                   span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
@@ -480,27 +483,27 @@ block content
                 span.planetName
                 img.colonyImg(onclick=(canColonyze) ? 'colonize(13)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon13
-                a(href='#' onclick='pressMoon(13); return false;')
+                a(href='#' onclick='pressMoon(13);')
                   #13_Moon.ListMoon
               td.debris.js_debris13
-                a(href='#' onclick='pressDebris(13); return false;')
+                a(href='#' onclick='pressDebris(13);')
                   #13_Debris.ListDebris
               td.playername
                 span.status
               td.action
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip.spyEye(href='#' onclick='spyFunction(13, false)')
                   span.icon.icon_eye
                   span.tooltipText(style="bottom: 26px; left: 484px;") Spy
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='getReport(13);')
                   span.icon.icon_adressbook
                   span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=13&mis=7';")
                   span.icon.icon_missile
                   span.tooltipText(style="bottom: 26px; left: 532px;") Attack
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='sackFunction(13);')
                   span.icon.icon_against
                   span.tooltipText(style="bottom: 26px; left: 556px;") Sack
-                a.tooltip(href='#' onclick='addVaca(13); return false;')
+                a.tooltip(href='#' onclick='addVaca(13);')
                   span.icon.icon_mail
                   span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
@@ -515,27 +518,27 @@ block content
                 span.planetName
                 img.colonyImg(onclick=(canColonyze) ? 'colonize(14)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon14
-                a(href='#' onclick='pressMoon(14); return false;')
+                a(href='#' onclick='pressMoon(14);')
                   #14_Moon.ListMoon
               td.debris.js_debris14
-                a(href='#' onclick='pressDebris(14); return false;')
+                a(href='#' onclick='pressDebris(14);')
                   #14_Debris.ListDebris
               td.playername
                 span.status
               td.action
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip.spyEye(href='#' onclick='spyFunction(14, false)')
                   span.icon.icon_eye
                   span.tooltipText(style="bottom: 26px; left: 484px;") Spy
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='getReport(14);')
                   span.icon.icon_adressbook
                   span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=14&mis=7';")
                   span.icon.icon_missile
                   span.tooltipText(style="bottom: 26px; left: 532px;") Attack
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='sackFunction(14);')
                   span.icon.icon_against
                   span.tooltipText(style="bottom: 26px; left: 556px;") Sack
-                a.tooltip(href='#' onclick='addVaca(14); return false;')
+                a.tooltip(href='#' onclick='addVaca(14);')
                   span.icon.icon_mail
                   span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
@@ -550,33 +553,33 @@ block content
                 span.planetName
                 img.colonyImg(onclick=(canColonyze) ? 'colonize(15)' : '' style='cursor: ' +  ((canColonyze) ? 'pointer' : 'auto') src='./Imagenes/Colony' + ((canColonyze) ? 'Ok' : 'No') + '.gif')
               td.moon.js_moon15
-                a(href='#' onclick='pressMoon(15); return false;')
+                a(href='#' onclick='pressMoon(15);')
                   #15_Moon.ListMoon
               td.debris.js_debris15
-                a(href='#' onclick='pressDebris(15); return false;')
+                a(href='#' onclick='pressDebris(15);')
                   #15_Debris.ListDebris
               td.playername
                 span.status
               td.action
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip.spyEye(href='#' onclick='spyFunction(15, false)')
                   span.icon.icon_eye
                   span.tooltipText(style="bottom: 26px; left: 484px;") Spy
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='getReport(15);')
                   span.icon.icon_adressbook
                   span.tooltipText(style="bottom: 26px; left: 510px;") Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=15&mis=7';")
                   span.icon.icon_missile
                   span.tooltipText(style="bottom: 26px; left: 532px;") Attack
-                a.tooltip(href='#' onclick='return false;')
+                a.tooltip(href='#' onclick='sackFunction(15);')
                   span.icon.icon_against
                   span.tooltipText(style="bottom: 26px; left: 556px;") Sack
-                a.tooltip(href='#' onclick='addVaca(15); return false;')
+                a.tooltip(href='#' onclick='addVaca(15);')
                   span.icon.icon_mail
                   span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
 
     #canvasMoon.canvasMoon(style='left: 264px')
       div(style='width: auto; height: auto;')
-        a.close-tooltip(href="#" onclick='pressMoon(-1); return false;')
+        a.close-tooltip(href="#" onclick='pressMoon(-1);')
         div.htmlTooltip.galaxyTooltip
           h1.MoonName Muna
           .splitLine
@@ -588,12 +591,12 @@ block content
           ul.ListLinks
             li#MoonSize 8000km
             li
-              a.DebrisMineButton Espionage
+              a.DebrisMineButton(onclick="spyFunction(moonActive, true);") Espionage
             li
-              a.DebrisMineButton Atack
+              a.DebrisMineButton(onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=' + moonActive + '&mis=7&des=2';") Attack
     #canvasDebris.canvasDebris
       div(style='width: auto; height: auto;')
-        a.close-tooltip(href="#" onclick='pressDebris(-1); return false;')
+        a.close-tooltip(href="#" onclick='pressDebris(-1);')
         div.htmlTooltip.galaxyTooltip
           h1 Debris Field
           .splitLine
@@ -607,4 +610,4 @@ block content
             li#DebrisCrystal Crystal: 0
             li#DebrisNeed Recyclers needed: 0
             li
-              a.DebrisMineButton Mine
+              a.DebrisMineButton(onclick='sendToMine();') Mine

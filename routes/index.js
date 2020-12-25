@@ -21,7 +21,7 @@ router.get('/', (req, res, next) => {
   //uni.deleteCollection(process.env.UNIVERSE_NAME, ["jugadores", "universo"]);
   //uni.createUniverse(process.env.UNIVERSE_NAME, 5, {name: "", inicio: 0, maxGalaxies: 9, donutGalaxy: true, donutSystem: true, speed: 1, speedFleet: 5000, fleetDebris: 30, defenceDebris: 0, maxMoon: 20, rapidFire: true, repearDefenses: true});
   //uni.addNewPlayer("dturco", 1);
-  //uni.setPlanetDataDev(uni.player.planets[2].coordinates, "dturco");
+  uni.setPlanetDataDev(uni.player.planets[0].coordinates, "dturco");
   //uni.setMoonDataDev(uni.player.planets[0].coordinates, "dturco");
   //uni.sendMessage("dturco", {type: 1, title: "Nuevo titulo", text: "Mensaje oficial", data: {}});
   //uni.colonize({gal: 1, sys: 2, pos: 7}, 'dturco');
@@ -239,7 +239,7 @@ router.get('/Vacas.html', (req, res, next) => {
     url: req._parsedOriginalUrl.pathname,
     vacas: uni.player.vacas,
     basic: uni.getActualBasicInfo(uni.planeta),
-    listScript: []
+    listScript: ['./Scripts/Vacas.js']
   });
 });
 

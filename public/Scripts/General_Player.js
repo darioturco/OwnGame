@@ -4,6 +4,7 @@ var metal = 0, crystal = 0, deuterium = 0;
 var nextFleetText, missionText, fleetTime;
 var popUp, popUpText, yesNoPopUp, yesNoPopUpText;
 var tickDiv;
+var playerActualName;
 
 function initFunction(obj){ // Funcion que se ejecuta apenas carga un pagina
   clock = document.getElementById("Clock");
@@ -19,6 +20,7 @@ function initFunction(obj){ // Funcion que se ejecuta apenas carga un pagina
   metal = Math.floor(parseInt(document.getElementsByName('ogame-add-metal')[0].content));
   crystal = Math.floor(parseInt(document.getElementsByName('ogame-add-crystal')[0].content));
   deuterium = Math.floor(parseInt(document.getElementsByName('ogame-add-deuterium')[0].content));
+  playerActualName = document.getElementsByName('ogame-player-name')[0].content;
   if(nextFleetText != null){
     fleetTime = Math.ceil((parseInt(nextFleetText.dataset.time) - new Date().getTime()) / 1000);
     missionText = nextFleetText.innerHTML.slice(7);
@@ -39,7 +41,6 @@ function actualizaFleet(){
     missionText = nextFleetText.dataset.mission;
   }
   // if(fleetTime < 0) location.reload();
-
 }
 
 function actualizaFecha(){ // Se ejecuta cada un segunda y updatea el reloj de la esquina derecha
@@ -61,13 +62,6 @@ function segundosATiempo(seg){ // Dado un numero de segundos le da el formato ti
     }
   }
   return " " + time;
-}
-
-function removeVaca(own, gal, sys, pos){ // funcion utilizada para eliminar una vaca de la lista de vacas del jugador logeado
-  own.parentElement.parentElement.style.display = 'none';
-  loadJSON('./api/set/addVaca?coor={"gal":' + gal + ',"sys":' + sys + ',"pos":' + pos + '}', (obj) => {
-    console.log(obj);
-  });
 }
 
 function setOptions(){ // funcion que utiliza la pagina Opcions.html para comunicarse con la api
@@ -169,6 +163,23 @@ function abandonPlanetFunction(){
 
 function renamePlanet(){
   window.location.href = "./Ogame_Overview.html?newName=" + document.getElementById("renameInput").value;
+}
+
+function zeroFleet(){
+  return {lightFighter:  0,
+         heavyFighter:   0,
+         cruiser:        0,
+         battleship:     0,
+         battlecruiser:  0,
+         bomber:         0,
+         destroyer:      0,
+         deathstar:      0,
+         smallCargo:     0,
+         largeCargo:     0,
+         colony:         0,
+         recycler:       0,
+         espionageProbe: 0,
+         misil:          0};
 }
 
 /*<div id="attack_alert" class="tooltip eventToggle soon" title="">

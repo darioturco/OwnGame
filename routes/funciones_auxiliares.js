@@ -264,7 +264,7 @@ var exp = {
   },
   playerName: function(lista, coor){
     if(this.estaColonizado(lista, coor)){
-        return lista[coor.gal + '_' + coor.sys + '_' + coor.pos].playerName;
+      return lista[coor.gal + '_' + coor.sys + '_' + coor.pos].playerName;
     }
     return "";
   },
@@ -357,11 +357,20 @@ var exp = {
       interplanetaryMissile: {metal: 12500, crystal: 2500, deuterium: 10000, puntos: 25000}
     };
   },
-  contarPuntosShips:function(ships){
+  contarPuntosShips: function(ships){
     let cost = this.costShipsAndDefenses();
     let res = 0;
     for(let item in ships){
       if(item != 'misil') res += ships[item] * cost[item].puntos;
+    }
+    return res;
+  },
+  posiblesVacas: function(vacas, gal, sys){
+    let res = [];
+    for(let i = 0 ; i<vacas.length ; i++){
+      if(vacas[i].coordinates.gal == gal && vacas[i].coordinates.sys == sys){
+        res.push(vacas[i].coordinates.pos);
+      }
     }
     return res;
   },

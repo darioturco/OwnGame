@@ -366,7 +366,7 @@ async function sendFleetMovement(){
     data.destination = destination; // 1 = planeta, 2 = moon, 3 = debris
     data.porce = speedActive;
     data.mission = missionSelected;
-    data.resources = {metal: cargeInputs[0].value, crystal: cargeInputs[1].value, deuterium: cargeInputs[2].value};
+    data.resources = {metal: parseInt(cargeInputs[0].value), crystal: parseInt(cargeInputs[1].value), deuterium: parseInt(cargeInputs[2].value)};
     let res = await fetch('./api/set/addFleetMovement', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
     let objRes = await res.json();
     ready = true;

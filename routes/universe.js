@@ -530,19 +530,21 @@ var exp = {
     return undefined;
   },
   saveDebris: function(coor, newDebris, add = false){
-    let objBase = {};
-    if(add){
-      objBase = {$inc: {'planets.$.debris.metal': newDebris.metal, 'planets.$.debris.crystal': newDebris.crystal}, $set: {'planets.$.debris.active': true}};
-    }else{
-      objBase = {$set: {'planets.$.debris': newDebris}};
+    if(!(add && newDebris.metal == 0 && newDebris.crystal == 0)){
+      let objBase = {};
+      if(add){
+        objBase = {$inc: {'planets.$.debris.metal': newDebris.metal, 'planets.$.debris.crystal': newDebris.crystal}, $set: {'planets.$.debris.active': true}};
+      }else{
+        objBase = {$set: {'planets.$.debris': newDebris}};
+      }
+      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+        {planets :{$elemMatch: {coordinates: {
+          gal: coor.gal,
+          sys: coor.sys,
+          pos: coor.pos}}}},
+        objBase,
+        (err, res) => {});
     }
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
-      {planets :{$elemMatch: {coordinates: {
-        gal: coor.gal,
-        sys: coor.sys,
-        pos: coor.pos}}}},
-      objBase,
-      (err, res) => {});
   },
   savePlayerData: function(player, objSet, objInc, objPull, f){ /* III Funcion de base de datos III */
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOneAndUpdate(
@@ -701,6 +703,9 @@ var exp = {
       numPlanet: planet,
       planets: this.player.planets,
       moon: this.moon,
+      sendEspionage: this.player.sendEspionage,
+      sendSmall: this.player.sendSmall,
+      sendLarge: this.player.sendLarge,
       format: fun.formatNumber,
       segundosATiempo: fun.segundosATiempo,
       missionNumToString: fun.missionNumToString,
@@ -925,7 +930,8 @@ var exp = {
     let cantFleetAux = fun.getCantFleets(this.player);
     return {espionage: this.player.planets[planet].fleet.espionageProbe,
             recycler: this.player.planets[planet].fleet.recycler,
-            misil: this.player.planets[planet].defense.interplanetaryMissile,
+            small: this.player.planets[planet].fleet.smallCargo,
+            large: this.player.planets[planet].fleet.largeCargo,
             slot: cantFleetAux.fleets,
             maxSlot: this.player.research.computer + 1
     };
@@ -935,6 +941,7 @@ var exp = {
     for(let i = 1 ; i<=15 ; i++){
       respuesta['pos' + i] = {active: false};
     }
+    let listaPosiblesVacas = fun.posiblesVacas(this.player.vacas, gal, sys);
     let cursor = mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").find({planets :{$elemMatch: {coordinatesCod: gal+'_'+sys}}});
     cursor.forEach((doc, err) => {
       for(let i = 0 ; i<doc.planets.length ; i++){
@@ -951,7 +958,8 @@ var exp = {
                                     debris:        doc.planets[i].debris.active,
                                     metalDebris:   doc.planets[i].debris.metal,
                                     crystalDebris: doc.planets[i].debris.crystal,
-                                    estado:        "activo"};
+                                    esVaca:        listaPosiblesVacas.includes(pos),
+                                    estado:        "activo"}; /* Cambiar el estado activo siempre */
         }
       }
     }, () => {
@@ -997,23 +1005,29 @@ var exp = {
     });
   },
   toggleVaca: function(res, query){
-    let elimino = false;
-    for(let i = 0 ; i<this.player.vacas.length ; i++){
-      if(this.player.vacas[i].coordinates.gal == query.coor.gal && this.player.vacas[i].coordinates.sys == query.coor.sys && this.player.vacas[i].coordinates.pos == query.coor.pos){
-        elimino = true;
-        this.player.vacas.splice(i,1);
-        i--;
+    if(fun.coordenadaValida(query.coor)){
+      let elimino = false;
+      for(let i = 0 ; i<this.player.vacas.length ; i++){ // Busco si el jugador agregado ya esta en la lista de vacas
+        if(this.player.vacas[i].coordinates.gal == query.coor.gal && this.player.vacas[i].coordinates.sys == query.coor.sys && this.player.vacas[i].coordinates.pos == query.coor.pos){
+          elimino = true;
+          this.player.vacas.splice(i,1);
+          i--;
+        }
       }
+      // Lo agrego a la lista con la informacion que vino del usuario, voy a confiar en que este la manda bien, en caso de no hacerlo el unico perjudicado es el mismo usuario
+      if(!elimino && this.player.name != query.playerName){
+        this.player.vacas.push({coordinates: {gal: query.coor.gal, sys: query.coor.sys, pos: query.coor.pos},
+                                playerName:  query.playerName,
+                                planetName:  query.planetName,
+                                estado:      query.estado});
+      }
+      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: this.player.name}, {$set: {vacas: this.player.vacas}}, (err) => {
+        if(err) throw err;
+        res.send({ok: true, deleted: elimino});
+      });
+    }else{
+      res.send({ok: false, mes: "Coordenadas invalidas"});
     }
-    if(elimino == false && this.player.name != query.playerName){
-      this.player.vacas.push({coordinates: {gal: query.coor.gal, sys: query.coor.sys, pos: query.coor.pos},
-                              playerName:  query.playerName,
-                              planetName:  query.planetName,
-                              estado:      query.estado});
-    }
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne({name: this.player.name}, {$set: {vacas: this.player.vacas}}, (err) => {
-      res.send({ok: (err == null) ? true : err, deleted: elimino});
-    });
   },
   setPlanetName: function(cord, newName){
     let objSet = {};
@@ -1365,6 +1379,7 @@ var exp = {
       {$push: pushObj});
   },
   addFleetMovement: function(player, planet, moon, obj, res){
+    console.log(obj);
     /* El parametro player es el nombre del jugador al que se le va a hacer la modificacion, en esta y en casi todas la funciones */
     /* Verificar que obj.ships sean todos numeros */
     // Verifica que no se este enviando una flota a la misma posicion de salida
@@ -1513,10 +1528,21 @@ var exp = {
           objInc['planets.$' + moonString + 'resources.crystal'] = -obj.resources.crystal;
           objInc['planets.$' + moonString + 'resources.deuterium'] = -obj.resources.deuterium;
           for(let clave in obj.ships){ // Resto todas las naves menos el misil
-            if(clave != 'misil') objInc['planets.$' + moonString + 'fleet.' + clave] = -obj.ships[clave];
+            if(clave != 'misil'){
+              if(moon){
+                this.player.planets[planet].moon.fleet[clave] -= obj.ships[clave];
+              }else{
+                this.player.planets[planet].fleet[clave] -= obj.ships[clave];
+              }
+              objInc['planets.$' + moonString + 'fleet.' + clave] = -obj.ships[clave];
+            }
           }
           // Resto los misiles que se enviaron
           objInc['planets.$' + moonString + 'defense.interplanetaryMissile'] = -obj.ships['misil'];
+          this.player.movement.push(pushObj);
+          this.player.planets[planet].resources.metal -= obj.resources.metal;
+          this.player.planets[planet].resources.crystal -= obj.resources.crystal;
+          this.player.planets[planet].resources.deuterium -= obj.resources.deuterium;
           mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
             {planets :{$elemMatch: {coordinates: {gal: this.player.planets[planet].coordinates.gal, sys: this.player.planets[planet].coordinates.sys, pos: this.player.planets[planet].coordinates.pos}}}},
             {$push: pushObj, $inc: objInc});
@@ -1539,7 +1565,7 @@ var exp = {
       }
     }
   },
-  moveCuanticFleet: async function(player, planet, obj, res){
+  moveCuanticFleet: function(player, planet, obj, res){
     if(this.player.planets[planet].moon.active == true && this.player.planets[planet].moon.buildings.jumpGate > 0 && fun.estaColonizado(this.allCord, obj.coorHasta)){
       let index = fun.getIndexOfPlanet(this.player.planets, obj.coorHasta);
       // Se fija que se salte a otra luna, que exista la luna a la que se quiere saltar y que tenga salto cuantico
@@ -2006,4 +2032,5 @@ module.exports = exp;
 /* Si una flota regresa a la luna y no hay luna, (fue destruida) vuelve al planeta
 /* Pasar las funciones de espera a async, sincronizando todos los llamas a base de datos y no devolviendo nada hasta que te halla updateado toda la base de datos
 /* Que se pueda misilear, espiar y atacar desde la vision de galaxia
+/* Hacer que se pueda atacar desde la pagina de vacas, search y los reportes de espionage
 */

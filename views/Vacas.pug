@@ -35,13 +35,13 @@ block content
                     a.coordinatesLink(href='./Ogame_Galaxy.html?gal=' + item.coordinates.gal + '&sys=' + item.coordinates.sys target='_self')
                       p [#{item.coordinates.gal}:#{item.coordinates.sys}:#{item.coordinates.pos}]
                 th.action
-                  a.tooltip(href='#' onclick='return false;' title='espiar')
+                  a.tooltip(href='#' onclick='sendEspionage(' + item.coordinates.gal + ', ' + item.coordinates.sys + ', ' + item.coordinates.pos + ');' title='espiar')
                     span.icon.icon_eye
-                  a.tooltip(href='#' onclick='return false;' title='reporte de espionage')
+                  a.tooltip(href='#' onclick='spyReport(' + item.coordinates.gal + ', ' + item.coordinates.sys + ', ' + item.coordinates.pos + ');' title='reporte de espionage')
                     span.icon.icon_adressbook
-                  a.tooltip(href='#' onclick='return false;' title='ataque personalisado')
+                  a.tooltip(href='#' onclick='personalAttack(' + item.coordinates.gal + ', ' + item.coordinates.sys + ', ' + item.coordinates.pos + ');' title='ataque personalisado')
                     span.icon.icon_missile
-                  a.tooltip(href='#' onclick='return false;' title='ataque vaca')
+                  a.tooltip(href='#' onclick='vacaAttack(' + item.coordinates.gal + ', ' + item.coordinates.sys + ', ' + item.coordinates.pos + ');' title='ataque vaca')
                     span.icon.icon_against
                   a.tooltip(href='#' onclick='removeVaca(this, ' + item.coordinates.gal + ', ' + item.coordinates.sys + ', ' + item.coordinates.pos + ');' title='eliminar')
                     span.icon.icon_mail

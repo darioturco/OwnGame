@@ -75,6 +75,7 @@ router.get('/set/deleteMessages', function(req, res, next) {
 });
 
 router.get('/set/addVaca', function(req, res, next) {
+  console.log(req.query);
   req.query.coor = JSON.parse(req.query.coor);
   uni.toggleVaca(res, req.query);
 });
