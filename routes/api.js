@@ -22,22 +22,22 @@ router.get('/collection', function(req, res, next) {
 /* Api */
 router.get('/buildings', function(req, res, next) {
   if(uni.moon){
-    res.send(uni.costMoon(uni.planeta));
+    res.send(uni.costMoon(uni.player, uni.planeta));
   }else{
-    res.send(uni.costBuildings(uni.planeta));
+    res.send(uni.costBuildings(uni.player, uni.planeta));
   }
 });
 
 router.get('/research', function(req, res, next) {
-  res.send(uni.costResearch(uni.planeta));
+  res.send(uni.costResearch(uni.player, uni.player.planets[uni.planeta].buildings.researchLab));
 });
 
 router.get('/shipyard', function(req, res, next) {
-  res.send(uni.costShipyard(uni.planeta));
+  res.send(uni.costShipyard(uni.player, uni.planeta));
 });
 
 router.get('/defense', function(req, res, next) {
-  res.send(uni.costDefense(uni.planeta));
+  res.send(uni.costDefense(uni.player, uni.planeta));
 });
 
 router.get('/galaxy', function(req, res, next) {
@@ -61,12 +61,12 @@ router.get('/highscore', function(req, res, next) {
 
 // Updatea los valores de resourcesSettings
 router.get('/set/updateResources', function(req, res, next) {
-  uni.updateResourcesData(() => {res.send({ok: true});}, uni.planeta, req.query);
+  uni.updateResourcesData(() => {res.send({ok: true});}, uni.player, uni.planeta, req.query);
 });
 
 // Updatea los valores de resourcesSettings de la luna
 router.get('/set/updateResourcesMoon', function(req, res, next) {
-  uni.updateResourcesDataMoon(() => {res.send({ok: true});}, uni.planeta, req.query);
+  uni.updateResourcesDataMoon(() => {res.send({ok: true});}, uni.player, uni.planeta, req.query);
 });
 
 router.get('/set/deleteMessages', function(req, res, next) {
@@ -75,76 +75,75 @@ router.get('/set/deleteMessages', function(req, res, next) {
 });
 
 router.get('/set/addVaca', function(req, res, next) {
-  console.log(req.query);
   req.query.coor = JSON.parse(req.query.coor);
-  uni.toggleVaca(res, req.query);
+  uni.toggleVaca(uni.player, res, req.query);
 });
 
 router.get('/set/setOptions', function(req, res, next) {
   let esp = parseInt(req.query.esp);
   let small = parseInt(req.query.sml);
   let large = parseInt(req.query.lar);
-  uni.setOptions(res, esp, small, large);
+  uni.setOptions(uni.player.name, res, esp, small, large);
 });
 
 router.get('/set/sendBuildRequest', function(req, res, next) {
   if(uni.moon){
-    uni.proccesMoonRequest(uni.planeta, req.query.obj, res);
+    uni.proccesMoonRequest(uni.player, uni.planeta, req.query.obj, res);
   }else{
-    uni.proccesBuildRequest(uni.planeta, req.query.obj, res);
+    uni.proccesBuildRequest(uni.player, uni.planeta, req.query.obj, res);
   }
 });
 
 router.get('/set/sendResearchRequest', function(req, res, next) {
-  uni.proccesResearchRequest(uni.planeta, req.query.obj, res);
+  uni.proccesResearchRequest(uni.player, uni.planeta, req.query.obj, res);
 });
 
 router.get('/set/sendShipyardRequest', function(req, res, next) {
-  uni.proccesShipyardRequest(uni.planeta, req.query.obj, req.query.cant, res);
+  uni.proccesShipyardRequest(uni.player, uni.planeta, req.query.obj, req.query.cant, res);
 });
 
 router.get('/set/cancelBuildRequest', function(req, res, next) {
   if(uni.moon){
-    uni.cancelMoonRequest(uni.planeta, res);
+    uni.cancelMoonRequest(uni.player, uni.planeta, res);
   }else{
-    uni.cancelBuildRequest(uni.planeta, res);
+    uni.cancelBuildRequest(uni.player, uni.planeta, res);
   }
 });
 
 router.get('/set/cancelResearchRequest', function(req, res, next) {
-  uni.cancelResearchRequest(res);
+  uni.cancelResearchRequest(uni.player, res);
 });
 
 router.get('/set/cancelShipyardRequest', function(req, res, next) {
-  uni.cancelShipyardRequest(uni.planeta, req.query.obj, res);
+  uni.cancelShipyardRequest(uni.player, uni.planeta, req.query.obj, res);
 });
 
 router.get('/set/returnFleet', function(req, res, next) {
-  uni.returnFleetInDataBase(req.query.num, res);
+  uni.returnFleetInDataBase(uni.player, req.query.num, res);
 });
 
 router.get('/set/marketMoon', function(req, res, next) {
-  uni.marketResources(uni.player.name, uni.planeta, req.query, res);
+  uni.marketResources(uni.player, uni.planeta, req.query, res);
 });
 
 router.get('/set/updateRewards', function(req, res, next) {
-  uni.updateRewards(uni.player.name, req.query.mission, res);
+  uni.updateRewards(uni.player, req.query.mission, res);
 });
 
 router.get('/set/abandonPlanet', function(req, res, next) {
   if(req.query.confirm == "Yes"){
-    uni.abandonPlanet(uni.player.name, uni.planeta, res);
+    uni.abandonPlanet(uni.player, uni.planeta, res);
   }else{
     res.send({ok: false, mes: "Parametros de seguridad incorrectos."});
   }
 });
 
 router.post('/set/addFleetMovement', function(req, res, next) {
-  uni.addFleetMovement(uni.player.name, uni.planeta, uni.moon, req.body, res);
+  uni.addFleetMovement(uni.player, uni.planeta, uni.moon, req.body, res);
 });
 
 router.post('/set/moveCuanticFleet', function(req, res, next) {
-  uni.moveCuanticFleet(uni.player.name, uni.planeta, req.body, res);
+  uni.moveCuanticFleet(uni.player, uni.planeta, req.body, res);
 });
 
 module.exports = router;
