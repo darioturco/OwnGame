@@ -1,13 +1,36 @@
-// Aca estan las funciones auxiliares simples
-// o los renombres para aclarar cosas
-// Listas de dialogos de las expediciones:
-// Todos los dialogos se pueden encontrar en: https://ogame.fandom.com/wiki/Expedition
+// Aca estan las funciones auxiliares simples o los renombres para aclarar cosas
+// Listas de dialogos de las expediciones
+// Los dialogos se pueden encontrar en: https://ogame.fandom.com/wiki/Expedition
 /* Falta completar todos los dialogos */
-const retrasoExp = ["Your expedition went into a sector full of particle storms. This set the energy stores to overload and most of the ships main systems crashed. Your mechanics where able to avoid the worst, but the expedition is going to return with a big delay."];
-const perdidaExp = ["The only thing left from the expedition was the following radio transmission: Zzzrrt Oh no! Krrrzzzzt That zrrrtrzt looks krgzzzz like .. AHH! Krzzzzzzzztzzzz... Transmision terminated"];
-const separacionExp = ["Some ships had crashed becouse of bad calculation of the rute."];
-const navesExp = ["We found a deserted pirate station. There are some old ships lying in the hangar. Our technicians are figuring out whether some of them are still useful or not."];
-const recursosExp = ["Your expedition ran into some spaceship wrecks from an old battle. Some of the components could be saved."];
+const retrasoExp = ["Your expedition went into a sector full of particle storms. This set the energy stores to overload and most of the ships main systems crashed. Your mechanics where able to avoid the worst, but the expedition is going to return with a big delay.",
+                    "The expeditions flagship collided with a foreign ship when it jumped into the fleet without any warning. The foreign ship exploded and the damage to the flagship was substantial. As soon as the needed repair are carried out the fleet will begin to make their way back as the expedition can not continue in those conditions.",
+                    "For unknown reasons the expeditions jump went totally wrong. It nearly landed in the heart of a sun. Fortunately it landed in a known system, but the jump back is going to take longer then thought.",
+                    "The solar wind of a red giant ruined the expeditions jump and it will take quite some time to calculate the return jump. There was nothing besides the emptiness of space between the stars in that sector. The fleet will return later than expected.",
+                    "Your navigator made a grave error in his computations that caused the expeditions jump to be miscalculated. Not only did the fleet miss the target completely, but the return trip will take a lot more time than originally planned.",
+                    "The new navigation module is still buggy. The expedition's jump not only led them in the wrong direction, but it used all the Deuterium fuel. Fortunately the fleets jump got them close to the departure planet's moon. A bit disappointed the expedition now returns without impulse power. The return trip will take longer than expected."];
+const perdidaExp = ["The only thing left from the expedition was the following radio transmission: Zzzrrt Oh no! Krrrzzzzt That zrrrtrzt looks krgzzzz like .. AHH! Krzzzzzzzztzzzz... Transmision terminated",
+                    "Your crew betrayed you, they decided to go rogue and start their own settlement. The last transmission received made it seem likely they will not return.",
+                    "Contact with the expedition fleet was suddenly lost. Our scientists are still trying to establish contact, but it seems the fleet is lost forever.",
+                    "The last transmission we received from the expedition fleet was this magnificent picture of the opening of a black hole.",
+                    "A core meltdown of the lead ship leads to a chain reaction, which destroys the entire expedition fleet in a spectacular explosion."];
+const separacionExp = ["Some ships crashed becouse of bad calculation of the rute."];
+const navesExp = ["We found a spaceship graveyard. Some of the technicians from the expedition fleet were able to get some of the ships to work again.",
+                  "We found a deserted pirate station. There are some old ships lying in the hangar. Our technicians are figuring out whether some of them are still useful or not.",
+                  "Your expedition ran into the shipyards of a colony that was deserted eons ago. In the shipyards hanger they discover some ships that could be salvaged. The technicians are trying to get some of them to fly again.",
+                  "Our expedition found a planet which was almost destroyed during a certain chain of wars. There are different ships floating around in the orbit. The technicians are trying to repair some of them. Maybe we will also get information about what happened here.",
+                  "We came across the remains of a previous expedition! Our technicians will try to get some of the ships to work again.",
+                  "Our expedition ran into an old automatic shipyard. Some of the ships are still in the production phase and our technicians are currently trying to reactivate the yards energy generators.",
+                  "We found the remains of an armada. The technicians directly went to the almost intact ships to try to get them to work again.",
+                  "We found the planet of an extinct civilization. We are able to see a giant intact space station, orbiting. Some of your technicians and pilots went to the surface looking for some ships which could still be used."];
+const recursosExp = [ "Mineral belts around an unknown planet contained resources. The expedition ships are coming back with the resources founded.",
+                      "Your expedition ran into some spaceship wrecks from an old battle. Some of the components could be saved.",
+                      "The expedition found a radioactive planetoid with an extremely toxic atmosphere. After multiple scans, it shows that it has loads of resources. With the help of automated drones, we tried to harvest as many resources as possible.",
+                      "On a tiny moon with its own atmosphere your expediton found some huge raw resources storage. The crew on the ground is trying to lift and load that natural treasure.",
+                      "Your expedition discovered a small asteroid from which some resources could be harvested.",
+                      "On an isolated planetoid we found some easily accessible resources fields and harvested some successfully.",
+                      "We met a small convoy of civil ships which needed food and medicine desperately. In exchange to that we got loads of useful resources.",
+                      "Your expedition found an ancient, fully loaded but deserted freighter convoy. Some of the resources could be rescued.",
+                      "Your expedition fleet reports the discovery of a giant alien ship wreck. They were not able to learn from their technologies but they were able to divide the ship into its main components and made some useful resources out of it."];
 const batallaPiratasExp = ["We needed to fight some pirates which were, fortunately, only a few."];
 const batallaAliensExp  = ["We needed to fight some pirates which were, fortunately, only a few."];
 const nadaExp = ["Your expedition took gorgeous pictures of a supernova. Nothing new could be obtained from the expedition, but at least there is good chance to win that 'Best Picture Of The Universe' competition in next months issue of OGame magazine."];
@@ -19,6 +42,8 @@ const integridadNaves = [400, 1000, 2700, 6000, 7000, 7500, 11000, 900000, 400, 
 const shieldNaves = [10, 25, 50, 200, 400, 500, 500, 50000, 10, 25, 100, 10, 1, 1];
 const attackNaves = [50, 150, 400, 1000, 700, 1000, 2000, 200000, 5, 5, 50, 1, 1, 1];
 const keysNaves = ["lightFighter", "heavyFighter", "cruiser", "battleship", "battlecruiser", "bomber", "destroyer", "deathstar", "smallCargo", "largeCargo", "colony", "recycler", "espionageProbe", "solarSatellite"];
+const missionsNames = ["Expedition", "Colonisation", "Recycle", "Transport", "Deployment", "Espionage", "Misil", "Attack", "Moon Destruction"];
+const shipsDefensesNumber = {lightFighter:  0, heavyFighter: 1, cruiser: 2, battleship: 3, battlecruiser: 4, bomber: 5, destroyer: 6, deathstar: 7, smallCargo: 8, largeCargo: 9, colony: 10, recycler: 11, espionageProbe: 12, solarSatellite: 13, rocketLauncher: 14, lightLaser: 15, heavyLaser: 16, gauss: 17, ion: 18, plasma: 19, smallShield: 20, largeShield: 21};
 
 var exp = {
   generateNewTypeOfPlanet: function(pos, mod) {
@@ -56,21 +81,18 @@ var exp = {
   },
   capacidadSilo: function(planeta){
     // Por cada nivel del silo se puede agregar 10 misiles de cualquier tipo
-    return planeta.buildings.silo*10;
+    return planeta.buildings.silo * 10;
   },
   timeBuild: function(recursos, mult, elev, uniSpeed){
     let divisor = 2500 * (1+mult) * Math.pow(2,elev) * uniSpeed;
     return Math.floor(60*recursos/divisor);
   },
-  maximoDefensores: function(planeta){ /*Borrar*/
-    return planeta.buildings.alliance + 1;
-  },
   normalRandom: function(min, max, podaMin = -Infinity, podaMax = Infinity) {// la esperanza es (max+min)/2
     /* Pasar algoritmo */
-    let u = 0, v = 0, num = 1;
-    while(u == 0) u = Math.random(); //Converting [0,1) to (0,1)
-    v = Math.random();
-    num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v); // Box–Muller transform
+    let u = Math.random();
+    let v = Math.random();
+    if(u == 0) u = 0.5; //Converting [0,1) to (0,1)
+    let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v); // Box–Muller transform
     num = num / 10.0 + 0.5; // Translate to 0 -> 1
     if (num > 1 || num < 0) num = Math.random(); // resample between 0 and 1 if out of range
     num *= max - min; // Stretch to fill range
@@ -86,7 +108,7 @@ var exp = {
     return !isNaN(num);
   },
   validShipyardName: function(name) {
-    return (name == "lightFighter" || name == "heavyFighter" || name == "cruiser" || name == "battleship" || name == "battlecruiser" || name == "bomber" || name == "destroyer" || name == "deathstar" || name == "smallCargo" || name == "largeCargo" || name == "colony" || name == "recycler" || name == "espionageProbe" || name == "solarSatellite" || name == "rocketLauncher" || name == "lightLaser" || name == "heavyLaser" || name == "gauss" || name == "ion" || name == "plasma" || name == "smallShield" || name == "largeShield" || name == "antiballisticMissile" || name == "interplanetaryMissile");
+    return (shipsDefensesNumber[name] != undefined || name == "antiballisticMissile" || name == "interplanetaryMissile");
   },
   formatNumber: function(num) {
     let res = num;
@@ -146,14 +168,14 @@ var exp = {
           dis = 1000 + 5*Math.abs(desde.pos - hasta.pos); // Mismo systema y galaxia
         }
       }else{
-        if(systemDonut == true){
+        if(systemDonut){
           dis = Math.min(2700 + 95*Math.abs(desde.sys - hasta.sys), 2700 + 95*Math.abs(desde.sys - hasta.sys - 499),  2700 + 95*Math.abs(desde.sys - hasta.sys + 499));
         }else{
           dis = 2700 + 95*Math.abs(desde.sys - hasta.sys);
         }
       }
     }else{
-      if(galaxyDonut == true){
+      if(galaxyDonut){
         dis = Math.min(20000 * Math.abs(desde.gal - hasta.gal), 20000 * Math.abs(desde.gal - hasta.gal - 9),  20000 * Math.abs(desde.gal - hasta.gal + 9));
       }else{
         dis = 20000 * Math.abs(desde.gal - hasta.gal);
@@ -195,8 +217,7 @@ var exp = {
     return res;
   },
   missionNumToString: function(num){
-    let arrayText = ["Expedition", "Colonisation", "Recycle", "Transport", "Deployment", "Espionage", "Misil", "Attack", "Moon Destruction"];
-    return arrayText[num];
+    return missionsNames[num];
   },
   objStringToNum: function(obj){
     for(let i in obj){
@@ -375,29 +396,7 @@ var exp = {
     return res;
   },
   shipStringToNum: function(ship){
-    let objAux = {lightFighter:  0,
-           heavyFighter:   1,
-           cruiser:        2,
-           battleship:     3,
-           battlecruiser:  4,
-           bomber:         5,
-           destroyer:      6,
-           deathstar:      7,
-           smallCargo:     8,
-           largeCargo:     9,
-           colony:         10,
-           recycler:       11,
-           espionageProbe: 12,
-           solarSatellite: 13,
-           rocketLauncher: 14,
-           lightLaser:     15,
-           heavyLaser:     16,
-           gauss:          17,
-           ion:            18,
-           plasma:         19,
-           smallShield:    20,
-           largeShield:    21};
-    return objAux[ship];
+    return shipsDefensesNumber[ship];
   },
   newPointsRandomFleet: function(puntos){
     let res = this.zeroShips();
@@ -742,19 +741,19 @@ var exp = {
       for(let item in objAttack.atkShips){
         if(item != 'solarSatellite'){       // objOriginal.atkShips no tiene atributo 'solarSatellite' encambio tiene 'misil'
           shipsAux = (objOriginal.atkShips[item] - objAttack.atkShips[item]) + (objOriginal.defShips[item] - objAttack.defShips[item]);
-          debris.metal += shipsAux*costs[item].metal * fleetD / 100;
-          debris.crystal += shipsAux*costs[item].crystal * fleetD / 100;
+          debris.metal += shipsAux * costs[item].metal * fleetD / 100;
+          debris.crystal += shipsAux * costs[item].crystal * fleetD / 100;
         }
       }
     }
     // Calculo aparte el cristal los satelites solares
     shipsAux = objOriginal.defShips['solarSatellite'] - objAttack.defShips['solarSatellite'];
-    debris.crystal += shipsAux*costs['solarSatellite'].crystal * fleetD / 100;
+    debris.crystal += shipsAux * costs['solarSatellite'].crystal * fleetD / 100;
     if(defenseD > 0){ // Sumo los escombros de las defensas
       for(let item in objAttack.defDefenses){
         shipsAux = objOriginal.defDefenses[item] - objAttack.defDefenses[item];
-        debris.metal += shipsAux*costs[item].metal * defenseD / 100;
-        debris.crystal += shipsAux*costs[item].crystal * defenseD / 100;
+        debris.metal += shipsAux * costs[item].metal * defenseD / 100;
+        debris.crystal += shipsAux * costs[item].crystal * defenseD / 100;
       }
     }
     return debris;

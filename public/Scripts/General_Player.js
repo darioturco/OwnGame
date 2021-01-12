@@ -162,7 +162,12 @@ function abandonPlanetFunction(){
 }
 
 function renamePlanet(){
-  window.location.href = "./Ogame_Overview.html?newName=" + document.getElementById("renameInput").value;
+  if(document.getElementById("renameInput").value.length <= 23){
+    window.location.href = "./Ogame_Overview.html?newName=" + document.getElementById("renameInput").value;
+  }else{
+    console.log(document.getElementById("renameInput").value.length);
+    sendPopUp("El nuevo nombre debe tener menos de 23 caracteres.");
+  }
 }
 
 function zeroFleet(){

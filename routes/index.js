@@ -18,7 +18,7 @@ router.all('/*', (req, res, next) => {
 
 /* Ruta de debugeo */
 router.get('/', (req, res, next) => {
-  //uni.deleteCollection(process.env.UNIVERSE_NAME, ["jugadores", "universo"]);
+  //uni.deleteCollection(["jugadores", "universo"]);
   //uni.createUniverse(process.env.UNIVERSE_NAME, 5, {name: "", inicio: 0, maxGalaxies: 9, donutGalaxy: true, donutSystem: true, speed: 1, speedFleet: 5000, fleetDebris: 30, defenceDebris: 0, maxMoon: 20, rapidFire: true, repearDefenses: true});
   //uni.addNewPlayer("dturco", 1);
   //uni.setPlanetDataDev(uni.player.planets[0].coordinates, "dturco");
@@ -47,7 +47,7 @@ router.get('/', (req, res, next) => {
   }
   for(let item in defenses) defenses[item] = 50;
   let objAttack = uni.fun.battle(attackerShips, defenderShips, defenses, attackerTech, defenderTech);*/
-  uni.seeDataBase(res, process.env.UNIVERSE_NAME, "jugadores");
+  uni.seeDataBase(res, "jugadores");
 });
 
 router.get('/Highscore.html', (req, res, next) => {
@@ -142,11 +142,7 @@ router.get('/OGame_Movement.html', (req, res, next) => {
 
 router.get('/OGame_Overview.html', (req, res, next) => {
   if(req.query.newName != undefined && req.query.newName != "" && req.query.newName.length <= 23){
-    uni.setPlanetName(uni.player, uni.player.planets[uni.planeta].coordinates, req.query.newName);//cambia el nombre al planeta
-  }
-  if(req.query.newName == "abandon" && req.query.abaNdon == "si" && uni.moon == false){
-    /* Se fija que no sea su unico planeta y elimina el planeta */
-    console.log("Despedite de tu planeta");
+    uni.setPlanetName(uni.player, uni.player.planets[uni.planeta].coordinates, req.query.newName); // Cambia el nombre al planeta
   }
   res.render('OGame_Overview', {bodyId: "overview",
     url: req._parsedOriginalUrl.pathname,

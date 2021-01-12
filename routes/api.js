@@ -12,11 +12,11 @@ router.get('/universo', function(req, res, next) {
 });
 
 router.get('/allPlanets', function(req, res, next) {
-  uni.seeJsonDataBase(res, process.env.UNIVERSE_NAME, "galaxy", "Planet");
+  uni.seeJsonDataBase(res, "galaxy", "Planet");
 });
 
 router.get('/collection', function(req, res, next) {
-  uni.seeJsonDataBase(res, process.env.UNIVERSE_NAME, req.query.collection, "Item", req.query.filtro);
+  uni.seeJsonDataBase(res, req.query.collection, "Item", req.query.filtro);
 });
 
 /* Api */
