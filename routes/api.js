@@ -33,7 +33,7 @@ router.get('/research', function(req, res, next) {
 });
 
 router.get('/shipyard', function(req, res, next) {
-  res.send(uni.costShipyard(uni.player, uni.planeta));
+  res.send(uni.costShipyard(uni.player, uni.planeta, uni.moon));
 });
 
 router.get('/defense', function(req, res, next) {
@@ -41,7 +41,7 @@ router.get('/defense', function(req, res, next) {
 });
 
 router.get('/galaxy', function(req, res, next) {
-  uni.systemInfo(res, req.query.gal, req.query.sys);
+  uni.base.systemInfo(res, req.query.gal, req.query.sys);
 });
 
 router.get('/readMessages', function(req, res, next) {
@@ -50,11 +50,11 @@ router.get('/readMessages', function(req, res, next) {
 });
 
 router.get('/searchPlayer', function(req, res, next) {
-  uni.searchPlayer(res, req.query.name);
+  uni.base.searchPlayer(res, req.query.name);
 });
 
 router.get('/highscore', function(req, res, next) {
-  uni.highscoreData(res);
+  uni.base.highscoreData(res);
 });
 
 //Se usa set para las direcciones que cambian cosas en la base de datos
@@ -70,20 +70,20 @@ router.get('/set/updateResourcesMoon', function(req, res, next) {
 });
 
 router.get('/set/deleteMessages', function(req, res, next) {
-  uni.deleteMessage(uni.player.name, req.query.all == 'true', req.query.id);
+  uni.base.deleteMessage(uni.player.name, req.query.all == 'true', req.query.id);
   res.send({ok: true});
 });
 
 router.get('/set/addVaca', function(req, res, next) {
   req.query.coor = JSON.parse(req.query.coor);
-  uni.toggleVaca(uni.player, res, req.query);
+  uni.base.toggleVaca(uni.player, res, req.query);
 });
 
 router.get('/set/setOptions', function(req, res, next) {
   let esp = parseInt(req.query.esp);
   let small = parseInt(req.query.sml);
   let large = parseInt(req.query.lar);
-  uni.setOptions(uni.player.name, res, esp, small, large);
+  uni.base.setOptions(uni.player.name, res, esp, small, large);
 });
 
 router.get('/set/sendBuildRequest', function(req, res, next) {
@@ -132,7 +132,7 @@ router.get('/set/updateRewards', function(req, res, next) {
 
 router.get('/set/abandonPlanet', function(req, res, next) {
   if(req.query.confirm == "Yes"){
-    uni.abandonPlanet(uni.player, uni.planeta, res);
+    uni.base.abandonPlanet(uni.player, uni.planeta, res);
   }else{
     res.send({ok: false, mes: "Parametros de seguridad incorrectos."});
   }

@@ -9,7 +9,7 @@ router.all('/*', (req, res, next) => {
     if(isFinite(req.query.planet)) uni.planeta = parseInt(req.query.planet);
     if(req.query.moon != undefined) uni.moon = (req.query.moon == 'true');
     if(uni.moon == true && uni.player.planets[uni.planeta].moon.active == false) uni.moon = false;
-    uni.getPlayer(process.env.PLAYER, next);
+    uni.base.getPlayer(process.env.PLAYER, next);
   }else{
     next();
   }
@@ -18,12 +18,12 @@ router.all('/*', (req, res, next) => {
 
 /* Ruta de debugeo */
 router.get('/', (req, res, next) => {
-  //uni.deleteCollection(["jugadores", "universo"]);
+  //uni.base.deleteCollection(["jugadores", "universo"]);
   //uni.createUniverse(process.env.UNIVERSE_NAME, 5, {name: "", inicio: 0, maxGalaxies: 9, donutGalaxy: true, donutSystem: true, speed: 1, speedFleet: 5000, fleetDebris: 30, defenceDebris: 0, maxMoon: 20, rapidFire: true, repearDefenses: true});
   //uni.addNewPlayer("dturco", 1);
-  //uni.setPlanetDataDev(uni.player.planets[0].coordinates, "dturco");
-  //uni.setMoonDataDev(uni.player.planets[0].coordinates, "dturco");
-  //uni.sendMessage("dturco", {type: 1, title: "Nuevo titulo", text: "Mensaje oficial", data: {}});
+  //uni.base.setPlanetDataDev(uni.player.planets[0].coordinates, "dturco");
+  //uni.base.setMoonDataDev(uni.player.planets[0].coordinates, "dturco");
+  //uni.base.sendMessage("dturco", {type: 1, title: "Nuevo titulo", text: "Mensaje oficial", data: {}});
   //uni.colonize({gal: 1, sys: 2, pos: 7}, 'dturco');
   //uni.contPoint('dturco');
   //uni.contMoonFields(uni.player, uni.planeta);
@@ -47,7 +47,7 @@ router.get('/', (req, res, next) => {
   }
   for(let item in defenses) defenses[item] = 50;
   let objAttack = uni.fun.battle(attackerShips, defenderShips, defenses, attackerTech, defenderTech);*/
-  uni.seeDataBase(res, "jugadores");
+  uni.base.seeDataBase(res, "jugadores");
 });
 
 router.get('/Highscore.html', (req, res, next) => {
@@ -123,7 +123,7 @@ router.get('/OGame_Galaxy.html', (req, res, next) => {
 });
 
 router.get('/OGame_Messages.html', (req, res, next) => {
-  uni.setNoReadMessages();
+  base.setNoReadMessages();
   res.render('OGame_Messages', {bodyId: "messages",
     url: req._parsedOriginalUrl.pathname,
     basic: uni.getActualBasicInfo(uni.planeta),
@@ -142,7 +142,7 @@ router.get('/OGame_Movement.html', (req, res, next) => {
 
 router.get('/OGame_Overview.html', (req, res, next) => {
   if(req.query.newName != undefined && req.query.newName != "" && req.query.newName.length <= 23){
-    uni.setPlanetName(uni.player, uni.player.planets[uni.planeta].coordinates, req.query.newName); // Cambia el nombre al planeta
+    uni.base.setPlanetName(uni.player, uni.player.planets[uni.planeta].coordinates, req.query.newName, uni.moon); // Cambia el nombre al planeta
   }
   res.render('OGame_Overview', {bodyId: "overview",
     url: req._parsedOriginalUrl.pathname,
