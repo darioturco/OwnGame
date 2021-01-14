@@ -35,3 +35,7 @@ function vacaAttack(gal, sys, pos){
   console.log(sys);
   console.log(pos);
 }
+
+function goToPlayerOverview(name){
+  window.location = './Change.html?name=' + name;
+}

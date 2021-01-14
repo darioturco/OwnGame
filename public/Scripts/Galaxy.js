@@ -72,7 +72,7 @@ function loadSystem(gal, sys){
     pressMoon(-1);//apaga el cartel de la luna
     pressDebris(-1);//apaga el cartel de los escombros
     for(let i = 1 ; i<=15 ; i++){
-      if(obj['pos'+i].active == true){    // Si es el plantea de la posicion i esta colonizado
+      if(obj['pos'+i].active){    // Si es el plantea de la posicion i esta colonizado
         cont++;
         planets[i-1].src = './Imagenes/Planets/Miniatures/Planet_' + obj['pos'+i].type + '_' + obj['pos'+i].color + '_Mini.gif';
         playerName[i-1].innerHTML = obj['pos'+i].player + getEstado(obj['pos'+i].estado);
@@ -222,6 +222,12 @@ function addVaca(pos){
 
 function getReport(num){
   console.log(num);
+}
+
+function goToPlayerOverview(num){
+  if(playerName[num-1] != ''){
+    window.location = './Change.html?name=' + playerName[num-1].innerHTML;
+  }
 }
 
 async function sendToMine(){

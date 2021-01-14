@@ -3320,13 +3320,14 @@ overflow:hidden}
 text-decoration:none}#galaxy #galaxytable td.planetname a:hover,#galaxy #galaxytable td.planetname1 a:hover{color:#9c0}#galaxyContent table th{font-weight:700}#galaxy #galaxytable tr.row{position:relative;
 height:30px}
 #galaxy #galaxytable tr.row td.playername a{text-decoration:none}
-#galaxy #galaxytable tr.row td span.status{font-size:12px}
-#galaxy #galaxytable tr.row td span.activo{color: #FFF}
-#galaxy #galaxytable tr.row td span.inactivo{color: #6e6e6e}
-#galaxy #galaxytable tr.row td span.InactivoFuerte{color: #4f4f4f}
-#galaxy #galaxytable tr.row td span.fuerte{color: red}
-#galaxy #galaxytable tr.row td span.debil{color: green}
-#galaxy #galaxytable tr.row td span.planetName{
+#galaxy #galaxytable tr.row td a{cursor: pointer}
+#galaxy #galaxytable tr.row td a.status{font-size:12px}
+#galaxy #galaxytable tr.row td a.activo{color: #FFF}
+#galaxy #galaxytable tr.row td a.inactivo{color: #6e6e6e}
+#galaxy #galaxytable tr.row td a.InactivoFuerte{color: #4f4f4f}
+#galaxy #galaxytable tr.row td a.fuerte{color: red}
+#galaxy #galaxytable tr.row td a.debil{color: green}
+#galaxy #galaxytable tr.row td a.planetName{
   font-size:12px;
   color: #FFF;
 }
@@ -6099,16 +6100,12 @@ height:46px}
   margin: auto;
   table-layout:fixed;
 }
-#highscoreContent #ranks .score{
+#highscoreContent #ranks .scoreTittle, #highscoreContent #ranks .positionTittle, #highscoreContent #ranks .changeTittle, #highscoreContent #ranks .nameTittle, #highscoreContent #ranks .coorTittle{
   font-size:13px;
   font-weight:bold;
-  text-align:right;
+  text-align:center;
 }
 #highscoreContent #ranks .scoreField{text-align:right}
-#highscoreContent #ranks td.score .small{
-  font-size:11px;
-  font-weight:100;
-}
 #highscoreContent a:link,#highscoreContent a:visited{color:#848484;
 text-decoration:none}#highscoreContent a:hover{color:#9b9b9b;
 text-decoration:underline}#highscoreContent a:active{color:#848484;
@@ -7184,4 +7181,9 @@ div.tickDiv > div {
   margin: auto;
   font-family: arial;
   transform: scaleX(-1) rotate(-35deg);
+}
+
+th a.playerNameVacas, th a.playerSearchText {
+  color: #f1f1f1;
+  text-decoration: none;
 }

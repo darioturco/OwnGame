@@ -158,6 +158,32 @@ var exp = {
   coordenadaValida: function(coor){
     return coor.gal >= 1 && coor.sys >= 1 && coor.pos >= 1 && coor.gal <= 9 && coor.sys <= 499 && coor.pos <= 16;
   },
+  validResourcesSettingsObj: function(obj, moon){
+    let valid = true;
+    for(let i in obj){ // Me fijo que todos los valores de 'obj' sean numeros validos
+      valid &= this.validInt(obj[i]);
+    }
+
+    if(moon){
+      // Si es la luna, fijo que las dos propiedades que me interesan esten definidas y que sean numeros entre 0 y 10 inclusibe
+      valid &= 10 >= parseInt(obj.sunshade) && 0 <= parseInt(obj.sunshade);
+      valid &= 10 >= parseInt(obj.beam) && 0 <= parseInt(obj.beam);
+    }else{
+      // Si es el planeta, fijo que las cuantro propiedades que me interesan esten definidas y que sean numeros entre 0 y 10 inclusibe
+      valid &= 10 >= parseInt(obj.metal) && 0 <= parseInt(obj.metal);
+      valid &= 10 >= parseInt(obj.crystal) && 0 <= parseInt(obj.crystal);
+      valid &= 10 >= parseInt(obj.deuterium) && 0 <= parseInt(obj.deuterium);
+      valid &= 10 >= parseInt(obj.energy) && 0 <= parseInt(obj.energy);
+    }
+    return valid;
+  },
+  validShips: function(ships){
+    let res = ships['misil'] != undefined && this.validInt(ships['misil']);
+    for(let i = 0 ; i<keysNaves.length-1 && res ; i++){
+      res &= ships[keysNaves[i]] != undefined && this.validInt(ships[keysNaves[i]]);
+    }
+    return res;
+  },
   calculaDistancia: function(desde, hasta, galaxyDonut, systemDonut){
     let dis = 0;
     if(desde.gal == hasta.gal){

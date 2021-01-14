@@ -20,12 +20,14 @@ block content
           table#ranks.userHighscore
             thead
               tr
-                td.position
+                td.positionTittle
                   | Position
-                td.movement
-                td.name
+                td.changeTittle
+                td.nameTittle
                   | Players Name
-                td.score
+                td.coorTittle
+                  | Coordinates
+                td.scoreTittle
                   | Points
             tbody
               - var i = 1
@@ -36,8 +38,12 @@ block content
                   td.movement
                     span.stats_counter
                   td.name
-                    a.dark_highlight_tablet(href='javascript:void(0);' onclick='goToGalaxyByHishcore(' + i + ')')
+                    a.dark_highlight_tablet(href='javascript:void(0);' onclick='goToPlayerOverview(' + i + ')')
                       span.playername
+                        | -
+                  td.coor
+                    a(href='javascript:void(0);' onclick='goToGalaxyByHishcore(' + i + ')')
+                      span.coorPlayer
                         | -
                   td.scoreField
                     | -

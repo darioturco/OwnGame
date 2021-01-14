@@ -28,7 +28,8 @@ block content
             each item, index in vacas
               tr
                 th #{index + 1}
-                th #{item.playerName}
+                th
+                  a.playerNameVacas(href='javascript:void(0);' onclick='goToPlayerOverview("' + item.playerName + '")') #{item.playerName}
                 th #{item.planetName}
                 th
                   div.coordinatesDiv

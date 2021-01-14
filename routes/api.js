@@ -2,24 +2,26 @@ var express = require('express');
 var router = express.Router();
 var uni = require('./universe');
 
-/* Info */
-router.get('/universoInfo', function(req, res, next) {
+// Rutas de informacion usadas solo para obtener informacion sobre el universo
+router.get('/info/universoInfo', function(req, res, next) {
   res.send(uni.universo);
 });
 
-router.get('/universo', function(req, res, next) {
-  uni.getPlayer(process.env.PLAYER, () => {res.send(uni);});
+router.get('/info/universo', function(req, res, next) {
+  uni.base.getPlayer(process.env.PLAYER, () => {
+    res.send(uni);
+  });
 });
 
-router.get('/allPlanets', function(req, res, next) {
-  uni.seeJsonDataBase(res, "galaxy", "Planet");
+router.get('/info/allPlayers', function(req, res, next) {
+  uni.base.seeDataBase(res, "jugadores", true, "Planet");
 });
 
-router.get('/collection', function(req, res, next) {
-  uni.seeJsonDataBase(res, req.query.collection, "Item", req.query.filtro);
+router.get('/info/collection', function(req, res, next) {
+  uni.base.seeDataBase(res, req.query.collection, true, "Item", req.query.filtro);
 });
 
-/* Api */
+// Api usada por el cliente para interactuar con el servidor
 router.get('/buildings', function(req, res, next) {
   if(uni.moon){
     res.send(uni.costMoon(uni.player, uni.planeta));
@@ -61,12 +63,16 @@ router.get('/highscore', function(req, res, next) {
 
 // Updatea los valores de resourcesSettings
 router.get('/set/updateResources', function(req, res, next) {
-  uni.updateResourcesData(() => {res.send({ok: true});}, uni.player, uni.planeta, req.query);
+  uni.updateResourcesData(() => {
+    res.send({ok: true});
+  }, uni.player, uni.planeta, req.query);
 });
 
 // Updatea los valores de resourcesSettings de la luna
 router.get('/set/updateResourcesMoon', function(req, res, next) {
-  uni.updateResourcesDataMoon(() => {res.send({ok: true});}, uni.player, uni.planeta, req.query);
+  uni.updateResourcesDataMoon(() => {
+    res.send({ok: true});
+  }, uni.player, uni.planeta, req.query);
 });
 
 router.get('/set/deleteMessages', function(req, res, next) {
@@ -76,7 +82,7 @@ router.get('/set/deleteMessages', function(req, res, next) {
 
 router.get('/set/addVaca', function(req, res, next) {
   req.query.coor = JSON.parse(req.query.coor);
-  uni.base.toggleVaca(uni.player, res, req.query);
+  uni.toggleVaca(uni.player, res, req.query);
 });
 
 router.get('/set/setOptions', function(req, res, next) {
@@ -119,7 +125,7 @@ router.get('/set/cancelShipyardRequest', function(req, res, next) {
 });
 
 router.get('/set/returnFleet', function(req, res, next) {
-  uni.returnFleetInDataBase(uni.player, req.query.num, res);
+  uni.base.returnFleetInDataBase(uni.player, req.query.num, res);
 });
 
 router.get('/set/marketMoon', function(req, res, next) {

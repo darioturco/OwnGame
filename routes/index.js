@@ -13,7 +13,6 @@ router.all('/*', (req, res, next) => {
   }else{
     next();
   }
-
 });
 
 /* Ruta de debugeo */
@@ -25,7 +24,7 @@ router.get('/', (req, res, next) => {
   //uni.base.setMoonDataDev(uni.player.planets[0].coordinates, "dturco");
   //uni.base.sendMessage("dturco", {type: 1, title: "Nuevo titulo", text: "Mensaje oficial", data: {}});
   //uni.colonize({gal: 1, sys: 2, pos: 7}, 'dturco');
-  //uni.contPoint('dturco');
+  //uni.base.contPoint('dturco');
   //uni.contMoonFields(uni.player, uni.planeta);
   /*let navesAux = uni.fun.zeroShips();
   navesAux.deathstar = 5;
@@ -47,7 +46,7 @@ router.get('/', (req, res, next) => {
   }
   for(let item in defenses) defenses[item] = 50;
   let objAttack = uni.fun.battle(attackerShips, defenderShips, defenses, attackerTech, defenderTech);*/
-  uni.base.seeDataBase(res, "jugadores");
+  uni.base.seeDataBase(res, "jugadores", false);
 });
 
 router.get('/Highscore.html', (req, res, next) => {
@@ -123,7 +122,7 @@ router.get('/OGame_Galaxy.html', (req, res, next) => {
 });
 
 router.get('/OGame_Messages.html', (req, res, next) => {
-  base.setNoReadMessages();
+  uni.base.setNoReadMessages();
   res.render('OGame_Messages', {bodyId: "messages",
     url: req._parsedOriginalUrl.pathname,
     basic: uni.getActualBasicInfo(uni.planeta),
@@ -237,6 +236,12 @@ router.get('/Vacas.html', (req, res, next) => {
     basic: uni.getActualBasicInfo(uni.planeta),
     listScript: ['./Scripts/Vacas.js']
   });
+});
+
+router.get('/Change.html', (req, res, next) => {
+  let newName = req.query.name;
+  console.log(newName);
+  res.redirect('./OGame_Overview.html');
 });
 
 module.exports = router;
