@@ -1,52 +1,64 @@
 require('dotenv').config();
+const UPDATE_TIME = 500;
 var express = require('express');
 var uni = require('./universe');
 var router = express.Router();
+var updater = setInterval(() => {uni.updateUniverse();}, UPDATE_TIME);
+
+/* Borrar */
+/*setTimeout(() => {
+  uni.events.addElement({time: 1000, player: 'bot_0'});
+}, 1000);*/
 
 console.log('\x1b[35m%s\x1b[0m', new Date());
 router.all('/*', (req, res, next) => {
   if(req.url.slice(1,4) != 'api' && req.url.slice(1,9) != 'Imagenes'){
     if(isFinite(req.query.planet)) uni.planeta = parseInt(req.query.planet);
     if(req.query.moon != undefined) uni.moon = (req.query.moon == 'true');
-    if(uni.moon == true && uni.player.planets[uni.planeta].moon.active == false) uni.moon = false;
-    uni.base.getPlayer(process.env.PLAYER, next);
+    if(uni.moon && uni.player.planets[uni.planeta].moon.active == false) uni.moon = false;
+    uni.base.getPlayer(uni.player.name, next, false);
   }else{
     next();
   }
 });
 
-/* Ruta de debugeo */
+// Ruta de debugeo
 router.get('/', (req, res, next) => {
-  //uni.base.deleteCollection(["jugadores", "universo"]);
-  //uni.createUniverse(process.env.UNIVERSE_NAME, 5, {name: "", inicio: 0, maxGalaxies: 9, donutGalaxy: true, donutSystem: true, speed: 1, speedFleet: 5000, fleetDebris: 30, defenceDebris: 0, maxMoon: 20, rapidFire: true, repearDefenses: true});
-  //uni.addNewPlayer("dturco", 1);
-  //uni.base.setPlanetDataDev(uni.player.planets[0].coordinates, "dturco");
-  //uni.base.setMoonDataDev(uni.player.planets[0].coordinates, "dturco");
-  //uni.base.sendMessage("dturco", {type: 1, title: "Nuevo titulo", text: "Mensaje oficial", data: {}});
-  //uni.colonize({gal: 1, sys: 2, pos: 7}, 'dturco');
-  //uni.base.contPoint('dturco');
-  //uni.contMoonFields(uni.player, uni.planeta);
-  /*let navesAux = uni.fun.zeroShips();
-  navesAux.deathstar = 5;
-  uni.player.research.astrophysics = 10;
-  for(let i = 0 ; i<100 ; i++){
-      console.log(uni.fun.expedition(navesAux, uni.player.research));
-      for(let item in navesAux){
-        navesAux[item] = 1;
-      }
-  }*/
-  /*let attackerShips = uni.fun.zeroShips();
-  let defenderShips = uni.fun.zeroShips();
-  let defenses = uni.fun.zeroDefense();
-  let attackerTech = uni.fun.zeroResearch();
-  let defenderTech = uni.fun.zeroResearch();
-  for(let item in attackerShips){
-    attackerShips[item] = 100;
-    defenderShips[item] = 100;
+  if(process.debugMode){
+
+    //uni.base.deleteCollection(["jugadores", "universo"]);
+    //uni.createUniverse(process.env.UNIVERSE_NAME, 5, {name: "", inicio: 0, maxGalaxies: 9, donutGalaxy: true, donutSystem: true, speed: 1, speedFleet: 5000, fleetDebris: 30, defenceDebris: 0, maxMoon: 20, rapidFire: true, repearDefenses: true});
+    //uni.addNewPlayer("dturco", 1);
+    uni.base.setPlanetDataDev(uni.player.planets[0].coordinates, "dturco");
+    //uni.base.setMoonDataDev(uni.player.planets[0].coordinates, "dturco");
+    //uni.base.sendMessage("dturco", {type: 1, title: "Nuevo titulo", text: "Mensaje oficial", data: {}});
+    //uni.colonize({gal: 1, sys: 2, pos: 7}, 'dturco');
+    //uni.base.contPoint('dturco');
+    //uni.contMoonFields(uni.player, uni.planeta);
+    /*let navesAux = uni.fun.zeroShips();
+    navesAux.deathstar = 5;
+    uni.player.research.astrophysics = 10;
+    for(let i = 0 ; i<100 ; i++){
+        console.log(uni.fun.expedition(navesAux, uni.player.research));
+        for(let item in navesAux){
+          navesAux[item] = 1;
+        }
+    }*/
+    /*let attackerShips = uni.fun.zeroShips();
+    let defenderShips = uni.fun.zeroShips();
+    let defenses = uni.fun.zeroDefense();
+    let attackerTech = uni.fun.zeroResearch();
+    let defenderTech = uni.fun.zeroResearch();
+    for(let item in attackerShips){
+      attackerShips[item] = 100;
+      defenderShips[item] = 100;
+    }
+    for(let item in defenses) defenses[item] = 50;
+    let objAttack = uni.fun.battle(attackerShips, defenderShips, defenses, attackerTech, defenderTech);*/
+    uni.base.seeDataBase(res, "jugadores", false);
+  }else{
+    res.render('index', {title: 'Ogame', message: ""});
   }
-  for(let item in defenses) defenses[item] = 50;
-  let objAttack = uni.fun.battle(attackerShips, defenderShips, defenses, attackerTech, defenderTech);*/
-  uni.base.seeDataBase(res, "jugadores", false);
 });
 
 router.get('/Highscore.html', (req, res, next) => {
@@ -239,9 +251,11 @@ router.get('/Vacas.html', (req, res, next) => {
 });
 
 router.get('/Change.html', (req, res, next) => {
-  let newName = req.query.name;
-  console.log(newName);
-  res.redirect('./OGame_Overview.html');
+  uni.moon = false;
+  uni.planeta = 0;
+  uni.base.getPlayer(req.query.name, () => {
+    res.redirect('./OGame_Overview.html');
+  });
 });
 
 module.exports = router;

@@ -1,15 +1,17 @@
 var fun  = require('./funciones_auxiliares');
 var base = require('./data_base');
-var date = new Date();
+var queue = require('./Queue')
+var events = new queue.Queue();
+var actualizando = false;
 
 var exp  = {
-  universo: null,               // Objeto con la informcaion basica del universo
-  player: null,                 // Objeto con toda la informacion del jugador que estoy viendo
-  planeta: 0,                   // En que numero de planeta estoy parado
-  moon: false,                  // Si estoy parado en una luna
-  cantPlayers: 0,               // Cantidad de jugadores en todo el universo
-  allCord: {},                  // Por cada planeta colonizado guardo un objeto 'infoPlanet' con la informacion basica exterior del planeta
-  comienzoBusquedaNewConrd: 1,  // Apartir de que galaxia se ubican los nuevos planetas
+  universo: null,             // Objeto con la informcaion basica del universo
+  player: null,               // Objeto con toda la informacion del jugador que estoy viendo
+  planeta: 0,                 // En que numero de planeta estoy parado
+  moon: false,                // Si estoy parado en una luna
+  cantPlayers: 0,             // Cantidad de jugadores en todo el universo
+  allCord: {},                // Por cada planeta colonizado guardo un objeto 'infoPlanet' con la informacion basica exterior del planeta
+  comienzoBusquedaNewCoor: 1, // Apartir de que galaxia se ubican los nuevos planetas
   fun: fun,
   base: base,
 
@@ -37,7 +39,7 @@ var exp  = {
     let updateResourcesAddOfAllPlanets = false;
     objSet['puntosAcum'] = player.puntosAcum;
 
-    if((player.researchConstrucction != false) && (player.researchConstrucction.time - Math.floor((horaActual - player.researchConstrucction.init)/1000) <= 0)){
+    if((player.researchConstrucction != false) && (player.researchConstrucction.time*1000 + player.researchConstrucction.init <= horaActual)){
       objSet['researchConstrucction'] = false;
       objSet['puntosAcum'] += player.researchConstrucction.metal + player.researchConstrucction.crystal + player.researchConstrucction.deuterium;
       objInc['research.' + player.researchConstrucction.item] = 1;
@@ -54,7 +56,7 @@ var exp  = {
     for(let i = 0 ; i<player.planets.length ; i++){
       let updateDataThisPlanet = false; // se fija que en ese planeta se halla terminado una contruccion, si es asi actualiza los campos y los valores
 
-      if((player.planets[i].buildingConstrucction != false) && (player.planets[i].buildingConstrucction.time - Math.floor((horaActual - player.planets[i].buildingConstrucction.init)/1000) <= 0)){
+      if((player.planets[i].buildingConstrucction != false) && (1000*player.planets[i].buildingConstrucction.time + player.planets[i].buildingConstrucction.init <= horaActual)){
         objSet['planets.' + i + '.buildingConstrucction'] = false;
         objSet['puntosAcum'] += player.planets[i].buildingConstrucction.metal + player.planets[i].buildingConstrucction.crystal + player.planets[i].buildingConstrucction.deuterium;
         objInc['planets.' + i + '.campos'] = 1;
@@ -64,7 +66,7 @@ var exp  = {
         if(player.planets[i].buildingConstrucction.item == "terraformer") objInc['planets.' + i + '.camposMax'] = 5;
       }
 
-      if(player.planets[i].moon.active == true && player.planets[i].moon.buildingConstrucction != false && (player.planets[i].moon.buildingConstrucction.time - Math.floor((horaActual - player.planets[i].moon.buildingConstrucction.init)/1000) <= 0)){
+      if(player.planets[i].moon.active == true && player.planets[i].moon.buildingConstrucction != false && (1000*player.planets[i].moon.buildingConstrucction.time + player.planets[i].moon.buildingConstrucction.init <= horaActual)){
         objSet['planets.' + i + '.moon.buildingConstrucction'] = false;
         objSet['puntosAcum'] += player.planets[i].moon.buildingConstrucction.metal + player.planets[i].moon.buildingConstrucction.crystal + player.planets[i].moon.buildingConstrucction.deuterium;
         objInc['planets.' + i + '.moon.campos'] = 1;
@@ -116,8 +118,6 @@ var exp  = {
       }
 
       objSet['planets.' + i + '.shipConstrucction'] = (listShip.length > player.planets[i].shipConstrucction.length) ? player.planets[i].shipConstrucction : listShip;
-      objInc['puntos'] = Math.floor(objSet['puntosAcum']/1000);
-      objSet['puntosAcum'] = objSet['puntosAcum'] % 1000;
       if(updateDataThisPlanet || updateResourcesAddOfAllPlanets){
         this.updateResourcesData(() => {}, player, i); // Updatea la energia y resourcesAdd
         objSet['planets.' + i + '.resources.energy']       = player.planets[i].resources.energy;
@@ -411,6 +411,8 @@ var exp  = {
         }
       }
     }
+    objInc['puntos'] = Math.floor(objSet['puntosAcum']/1000);
+    objSet['puntosAcum'] = objSet['puntosAcum'] % 1000;
     objSet.lastVisit = horaActual;    // Updatea la ultima vez que se actualizo este planeta
     base.savePlayerData(player.name, objSet, objInc, undefined, objPull, f);
   },
@@ -475,14 +477,15 @@ var exp  = {
   },
 
   // Devuelve una coorneda que este libre en el universo
-  //  -rand = Si es true la coordenada es alatoria, si no se busca la glaxia numero 'comienzoBusquedaNewConrd'
+  //  -rand = Si es true la coordenada es alatoria, si no se busca la glaxia numero 'comienzoBusquedaNewCoor'
   newCord: function(rand = true) {
     // Busca un cordenada libre y la devuelve
-    for(let gal = this.comienzoBusquedaNewConrd ; gal<=9; gal++){ // Comienza en la galaxia numero comienzoBusquedaNewConrd
-      for(let sys = 1 ; sys<=499; sys++){
-        for(let p = 5 ; p<=10; p++){
-          if(this.allCord[gal+'_'+sys+'_'+p] == undefined && (!rand || Math.random() > 0.85)){
-            return {gal: gal, sys: sys, pos: p};
+    let newCoor = {};
+    for(newCoor.gal = this.comienzoBusquedaNewCoor ; newCoor.gal<=9; newCoor.gal++){ // Comienza en la galaxia numero comienzoBusquedaNewCoor
+      for(newCoor.sys = 1 ; newCoor.sys<=499; newCoor.sys++){
+        for(newCoor.pos = 5 ; newCoor.pos<=10; newCoor.pos++){
+          if(!fun.estaColonizado(this.allCord, newCoor) && (!rand || Math.random() > 0.9)){
+            return newCoor;
           }
         }
       }
@@ -862,6 +865,7 @@ var exp  = {
         objInc['planets.' + planet + '.resources.metal']     = -objPrice[buildingName].metal;
         objInc['planets.' + planet + '.resources.crystal']   = -objPrice[buildingName].crystal;
         objInc['planets.' + planet + '.resources.deuterium'] = -objPrice[buildingName].deuterium;
+        events.addElement({time: buildingConstrucctionAux.init + buildingConstrucctionAux.time*1000, player: player.name});
         base.savePlayerData(player.name, buildingConstrucction, objInc, undefined, undefined, () => {
           res.send({ok: true});
         });
@@ -910,6 +914,7 @@ var exp  = {
         objInc['planets.' + planet + '.moon.resources.metal']     = -objPrice[buildingName].metal;
         objInc['planets.' + planet + '.moon.resources.crystal']   = -objPrice[buildingName].crystal;
         objInc['planets.' + planet + '.moon.resources.deuterium'] = -objPrice[buildingName].deuterium;
+        events.addElement({time: buildingConstrucctionAux.init + buildingConstrucctionAux.time*1000, player: player.name});
         base.savePlayerData(player.name, buildingConstrucction, objInc, undefined, undefined, () => {
           res.send({ok: true});
         });
@@ -956,6 +961,7 @@ var exp  = {
         objInc['planets.' + planet + '.resources.metal']     = -objPrice[researchName].metal;
         objInc['planets.' + planet + '.resources.crystal']   = -objPrice[researchName].crystal;
         objInc['planets.' + planet + '.resources.deuterium'] = -objPrice[researchName].deuterium;
+        events.addElement({time: researchConstrucctionAux.init + researchConstrucctionAux.time*1000, player: player.name});
         base.savePlayerData(player.name, researchConstrucction, objInc, undefined, undefined, () => {
           res.send({ok: true});
         });
@@ -1012,6 +1018,7 @@ var exp  = {
         objInc['planets.' + planet + '.resources.metal']     = -objPrice[shipyardName].metal*shipyardCant;
         objInc['planets.' + planet + '.resources.crystal']   = -objPrice[shipyardName].crystal*shipyardCant;
         objInc['planets.' + planet + '.resources.deuterium'] = -objPrice[shipyardName].deuterium*shipyardCant;
+        events.addElement({time: shipyardConstrucctionAux.init + shipyardConstrucctionAux.time*1000, player: player.name});
         base.savePlayerData(player.name, undefined, objInc, shipyardConstrucction, undefined, () => {
           res.send({ok: true});
         });
@@ -1679,6 +1686,30 @@ var exp  = {
     }else{
       res.send({ok: false, mes: "Numero de mission equivocado."});
     }
+  },
+
+  // Funcion que se ejecuta periodicamente para actualizar el estado de cada jugador en el universo
+  updateUniverse: function(){
+    if(!actualizando){
+      actualizando = true;
+      let horaActual = fun.horaActual();
+      let salir = false;
+
+      // Recorro la cola de jugadores a actualizar y si el tiempo llego, los actualizo
+      while(!events.isEmpty && events.next().time <= horaActual){
+        let updateObj = events.useNext();
+
+        // Si tengo que updatear al jugador que estoy usando, lo guardo en la base de datos y en el objeto uni.player
+        if(updateObj.player == this.player.name){
+          base.getPlayer(updateObj.player, () => {}, false);
+        }else{ // Si no lo guardo solo en la base de datos
+          base.findAndExecuteByName(updateObj.player, (player) => {
+            this.updatePlayer(player, () => {});
+          });
+        }
+      }
+      actualizando = false;
+    }
   }
 };
 
@@ -1690,7 +1721,6 @@ module.exports = exp;
 /* Hay que cambiar como se actualizan los datos, hay que crear una cola con eventos a pasar, cuando uno pasa se actualiza la info de ese jugador sin que este conectado necesariamente
 /* Mejorar el calculo de recursos de tiempos medios
 /* Comentar el codigo ^^^^^
-/* Cuando termino un edificio, flota o investigacion tiene que sumar los puntos del jugador
 /* La funcion de contar puntos tiene que contar los puntos de las flotas que estan en movimiento
 /* El contruir satelites solares la energia no se actualiza
 /* Completar los mesajes de espionage (y todos en general)
@@ -1700,6 +1730,5 @@ module.exports = exp;
 /* Que se pueda misilear, espiar y atacar desde la vision de galaxia
 /* Hacer que se pueda atacar desde la pagina de vacas, search y los reportes de espionage
 /* Crear la API con la que interactuan los bots (Los bots no los va a controlar el servidor)
-/* Terminar el modo dios, para poder cambiar la vista entre jugadores
 /* Pasar todo el juego a ingles (Todo lo que lee el usuario)
 */

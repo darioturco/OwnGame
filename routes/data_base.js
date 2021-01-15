@@ -7,7 +7,9 @@ require('mongodb').MongoClient.connect(process.env.MONGO_URL, {useUnifiedTopolog
   mongo = db;
   exp.getUniverseData(process.env.UNIVERSE_NAME); // Carga los datos del universo
   mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").countDocuments({}, function(err, cant) {uni.cantPlayers = cant});
-  exp.getPlayer(process.env.PLAYER, () => {console.log('\x1b[32m%s\x1b[0m', "Base de datos lista.");});
+  exp.getPlayer(process.env.PLAYER, () => {
+    console.log('\x1b[36m%s\x1b[0m', "Base de datos lista.");
+  }, true);
 });
 
 var exp = {
@@ -26,13 +28,40 @@ var exp = {
     mongo.db(process.env.UNIVERSE_NAME).collection("universo").insertOne(data); // Guarda la info del universo
   },
 
-  // getUniverseData: Obtiene la informacion del universo con el nombre 'name'
+  // Obtiene la informacion del universo con el nombre 'name'
   //  -name = Nombre del universo a buscar
   getUniverseData: function(name){
     let cursor = mongo.db(process.env.UNIVERSE_NAME).collection("universo").find();
     cursor.forEach((doc, err) => {
       if(err) throw err;
       if(name == doc.name) uni.universo = doc;
+    });
+  },
+
+  // Obtiene el jugador con el nombre 'playerName' y despues ejecuta al funcion 'f'
+  //  -playerName = Nombre del jugador a buscar
+  //  -f = Funcion que se ejecuta despues de obtener el jugador
+  //  -updateList = Booleano que indica si hay que updatear la lista de coordenadas o no
+  getPlayer: function(playerName, f, updateList) {
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOne(
+      {name: playerName}, (err, res) => {
+      if(err) throw err;
+      if(res == null){
+        f();
+      }else{
+        uni.player = res;  // Actualizo el player principal
+        let fun = () => {  // Cargo la lista de planetas colonizados
+          uni.updatePlayer(uni.player, (respuesta) => {
+            uni.player = respuesta;
+            f();
+          }); // Actualiza los datos desde la ultima conecccion
+        };
+        if(updateList){
+          this.getListCord(fun);
+        }else{
+          fun();
+        }
+      }
     });
   },
 
@@ -51,31 +80,6 @@ var exp = {
       uni.allCord = obj;
       f();
     });
-  },
-
-  // Escribe datos en el planeta (Usada para debugear)
-  //  -codr = Coordenadas del planeta a modificar
-  setPlanetDataDev: function(cord){
-    let resources = {metal: 10000, crystal: 100000, deuterium: 150000, energy: 0};
-    let building = {metalMine: 0, crystalMine: 1, deuteriumMine: 0, solarPlant: 30, fusionReactor: 0, metalStorage: 10, crystalStorage: 9, deuteriumStorage: 8, robotFactory: 0, shipyard: 0, researchLab: 8, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0};
-    let fleet = /*uni.fun.zeroShips();*/{lightFighter: 10, heavyFighter: 0, cruiser: 100, battleship: 10, battlecruiser: 0, bomber: 3, destroyer: 100, deathstar: 50, smallCargo: 500, largeCargo: 200, colony: 1000, recycler: 200, espionageProbe: 30, solarSatellite: 15};
-    let defenses = /*uni.fun.zeroDefense();*/{rocketLauncher: 100, lightLaser: 10, heavyLaser: 0, gauss: 5, ion: 0, plasma: 0, smallShield: 0, largeShield: 0, antiballisticMissile: 3, interplanetaryMissile: 1000};
-    let moon = /*{active: false, size: 0};*/uni.createNewMoon(8888);
-    let debris = {active: true, metal:1000, crystal: 2000};
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
-      {planets :{$elemMatch: {coordinates: cord}}},
-      {$set: {'planets.$.resources': resources,'planets.$.buildings': building, 'planets.$.fleet': fleet, 'planets.$.defense': defenses,'planets.$.moon': moon, 'planets.$.debris': debris}});
-  },
-
-  // Escribe datos en la luna (Usada para debugear)
-  //  -codr = Coordenadas de la luna a modificar
-  setMoonDataDev: function(cord){ // Asume el planeta tiene luna, de lo contrario no hace nada
-    let resources = {metal: 500000, crystal: 4000000, deuterium: 1000000, energy: 0};
-    let building = {lunarBase: 6, phalanx: 2, spaceDock: 0, marketplace: 1, lunarSunshade: 5, lunarBeam: 6, jumpGate: 2, moonShield: 0};
-    let fleet = {lightFighter: 1000, heavyFighter: 0, cruiser: 1, battleship: 30, battlecruiser: 0, bomber: 0, destroyer: 0, deathstar: 100, smallCargo: 10, largeCargo: 200, colony: 0, recycler: 20, espionageProbe: 0, solarSatellite: 0};
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
-      {planets :{$elemMatch: {coordinates: cord}}},
-      {$set: {'planets.$.moon.resources': resources,'planets.$.moon.buildings': building, 'planets.$.moon.fleet': fleet}});
   },
 
   // Renderiza todo un collection de la base de datos
@@ -114,6 +118,67 @@ var exp = {
           if(delOK) console.log('\x1b[35m%s\x1b[0m', "Collection" + nameList[i] + "deleted")
         });
     }
+  },
+
+  // Agrega un jugador al universo y lo guarda en la base de datos
+  //  -name = Nombre del nuevo jugador
+  //  -styleGame = Typo de jugador que va a ser (es un bot, una persona y que tipo de bot, algo hibrido, etc)
+  addNewPlayer: function(name, styleGame) {
+    let newCoor = uni.newCord();
+    if(newCord != undefined){
+      let newPlanet = uni.createNewPlanet(newCoor, "Planeta Principal", name, 'activo', uni.fun.zeroResources(), uni.fun.zeroShips());
+
+      // Guardo el nivel de espionage del nuevo jugador en esa coordenada, o sea 0
+      uni.allCord[coor.gal+'_'+coor.sys+'_'+coor.pos] = {espionage: 0, playerName: name};
+      let newPlayer = {'name': name,
+        'styleGame': styleGame,
+        planets: [newPlanet],
+        maxPlanets: 1,
+        highscore: uni.cantPlayers + 1, // Empieza en la ultima posicion
+        lastHighscore: uni.cantPlayers + 1, // La posicion en la que estaba hace un dia, se la cuenta como la actual
+        puntos: 0,
+        puntosAcum: 0,
+        vacas: [],
+        sendEspionage: 1,
+        sendSmall: 1,
+        sendLarge: 1,
+        dark: 8000,
+        messagesCant: 0,
+        messages: [],
+        movement: [],
+        researchConstrucction: false,
+        tutorial: [false, false, false, false, false, false, false, false, false, false],
+        research: uni.fun.zeroResearch(),
+        lastVisit: uni.fun.horaActual(),  // Pone el tiempo actual
+        type: "activo" // (activo inactivo InactivoFuerte fuerte debil)
+      };
+
+      // Aumenta en uno la cantidad de jugadores del universo
+      uni.cantPlayers++;
+      // Agrega al jugador a la base de datos
+      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").insertOne(newPlayer);
+    }
+  },
+
+  // Guarda la informacion del jugador 'playerName'
+  //  -playerName = Nombre del jugador al que se le actualiza la informacion
+  //  -objSet = Objeto con las cosas que se remplazan
+  //  -objInc = Objeto con las cosas que se incrementan
+  //  -objPull = Objeto con las cosas que se eliminan de una lista
+  //  -f = funcion que se ejecuta despues de terminar al funcion
+  savePlayerData: function(playerName, objSet, objInc, objPush, objPull, f){
+    let changeObj = {};
+    if(objSet  != undefined) changeObj['$set'] = objSet;
+    if(objInc  != undefined) changeObj['$inc'] = objInc;
+    if(objPush != undefined) changeObj['$push'] = objPush;
+    if(objPull != undefined) changeObj['$pull'] = objPull;
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOneAndUpdate(
+      {name: playerName}, changeObj,
+      {returnOriginal: false},    // Hace que devuelva el objeto modificado, no el original
+      (err, res) => {
+        if(err) throw err;
+        f(res.value);
+    });
   },
 
   // Escribe informacion en un planeta, si un objeto es 'undefined' la informacion de ese objeto la deja intacta
@@ -173,53 +238,23 @@ var exp = {
       });
   },
 
-  // Guarda la informacion del jugador 'playerName'
-  //  -playerName = Nombre del jugador al que se le actualiza la informacion
-  //  -objSet = Objeto con las cosas que se remplazan
-  //  -objInc = Objeto con las cosas que se incrementan
-  //  -objPull = Objeto con las cosas que se eliminan de una lista
-  //  -f = funcion que se ejecuta despues de terminar al funcion
-  savePlayerData: function(playerName, objSet, objInc, objPush, objPull, f){
-    let changeObj = {};
-    if(objSet  != undefined) changeObj['$set'] = objSet;
-    if(objInc  != undefined) changeObj['$inc'] = objInc;
-    if(objPush != undefined) changeObj['$push'] = objPush;
-    if(objPull != undefined) changeObj['$pull'] = objPull;
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOneAndUpdate(
-      {name: playerName}, changeObj,
-      {returnOriginal: false},    // Hace que devuelva el objeto modificado, no el original
-      (err, res) => {
-        if(err) throw err;
-        f(res.value);
-    });
-  },
-
-  // Manda un mensaje al jugador con el nombre 'playerName'
-  //  -playerName = Nombre del jugador al que se le manda el mensage
-  //  -info = Objeto con la informacion del mensaje, debe tener los campos 'type', 'title', 'text', 'info'
-  sendMessage: function(playerName, info) {
-    let newMessage = {date: new Date().toString().slice(0,24), type: info.type, title: info.title, text: info.text, data: info.data};
-    // Si el mensage es para el jugador actual le incremento la cantidad de mensages no leidos
-    if(playerName == uni.player.name) uni.player.messagesCant++;
-    this.savePlayerData(playerName, undefined, {messagesCant: 1}, {messages: newMessage}, undefined, () => {});
-  },
-
-  // Elimina todos los mensages de un tipo o un mensage con una fecha especifica
-  //  -playerName = Nombre del jugador a borrar los mensages
-  //  -all = Si elimina todos los mensages de un tipo o no
-  //  -borra = Numero del tipo de mensage a eliminar o la fecha del mensage a eliminar
-  deleteMessage: function(playerName, all, borra) {
-    let obj = (all == true) ? {type: parseInt(borra)} : {date: borra};
+  // Cambia de nombre a un planeta del jugador
+  //  -player = Objeto con la informacion del jugador
+  //  -coor = Coordenadas del planeta al que hay que cambiarle el nombre
+  //  -newName = Nuevo nombre del planeta
+  setPlanetName: function(player, coor, newName, moon){
+    let index = uni.fun.getIndexOfPlanet(player.planets, coor);
+    let objSet = {};
+    if(moon){
+      objSet['planets.$.moon.name'] = newName;
+      player.planets[index].moon.name = newName;
+    }else{
+      objSet['planets.$.name'] = newName;
+      player.planets[index].name = newName;
+    }
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
-      {name: playerName},
-      {$pull: {messages: obj}},
-      {multi: true});
-  },
-
-  // Guarda el contador de mensages no leidos en 0 del jugador actual
-  setNoReadMessages: function(){
-    uni.player.messagesCant = 0;
-    this.savePlayerData(uni.player.name, {messagesCant: 0}, undefined, undefined, undefined, () => {});
+      {planets :{$elemMatch: {coordinates: cord}}},
+      {$set: objSet});
   },
 
   // Elimina un planeta de un jugador
@@ -257,24 +292,32 @@ var exp = {
       });
   },
 
-  // Obtiene el jugador con el nombre 'playerName' y despues ejecuta al funcion 'f'
-  //  -playerName = Nombre del jugador a buscar
-  //  -f = Funcion que se ejecuta despues de obtener el jugador
-  getPlayer: function(playerName, f) {
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOne({name: playerName}, (err, res) => {
-      if(err) throw err;
-      if(res == null){
-        f();
-      }else{
-        uni.player = res;         // Actualizo el player principal
-        this.getListCord(() => {  // Cargo la lista de planetas colonizados
-          uni.updatePlayer(uni.player, (respuesta) => {
-            uni.player = respuesta;
-            f();
-          }); // Actualiza los datos desde la ultima conecccion
-        });
-      }
-    });
+  // Manda un mensaje al jugador con el nombre 'playerName'
+  //  -playerName = Nombre del jugador al que se le manda el mensage
+  //  -info = Objeto con la informacion del mensaje, debe tener los campos 'type', 'title', 'text', 'info'
+  sendMessage: function(playerName, info) {
+    let newMessage = {date: new Date().toString().slice(0,24), type: info.type, title: info.title, text: info.text, data: info.data};
+    // Si el mensage es para el jugador actual le incremento la cantidad de mensages no leidos
+    if(playerName == uni.player.name) uni.player.messagesCant++;
+    this.savePlayerData(playerName, undefined, {messagesCant: 1}, {messages: newMessage}, undefined, () => {});
+  },
+
+  // Elimina todos los mensages de un tipo o un mensage con una fecha especifica
+  //  -playerName = Nombre del jugador a borrar los mensages
+  //  -all = Si elimina todos los mensages de un tipo o no
+  //  -borra = Numero del tipo de mensage a eliminar o la fecha del mensage a eliminar
+  deleteMessage: function(playerName, all, borra) {
+    let obj = (all == true) ? {type: parseInt(borra)} : {date: borra};
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+      {name: playerName},
+      {$pull: {messages: obj}},
+      {multi: true});
+  },
+
+  // Guarda el contador de mensages no leidos en 0 del jugador actual
+  setNoReadMessages: function(){
+    uni.player.messagesCant = 0;
+    this.savePlayerData(uni.player.name, {messagesCant: 0}, undefined, undefined, undefined, () => {});
   },
 
   // Envia el reporte de espionage del planeta en 'coor' al jugador 'playerName'
@@ -356,46 +399,6 @@ var exp = {
     });
   },
 
-  // Agrega un jugador al universo y lo guarda en la base de datos
-  //  -name = Nombre del nuevo jugador
-  //  -styleGame = Typo de jugador que va a ser (es un bot, una persona y que tipo de bot, algo hibrido, etc)
-  addNewPlayer: function(name, styleGame) {
-    let newCoor = uni.newCord();
-    if(newCord != undefined){
-      let newPlanet = uni.createNewPlanet(newCoor, "Planeta Principal", name, 'activo', uni.fun.zeroResources(), uni.fun.zeroShips());
-
-      // Guardo el nivel de espionage del nuevo jugador en esa coordenada, o sea 0
-      uni.allCord[coor.gal+'_'+coor.sys+'_'+coor.pos] = {espionage: 0, playerName: name};
-      let newPlayer = {'name': name,
-        'styleGame': styleGame,
-        planets: [newPlanet],
-        maxPlanets: 1,
-        highscore: uni.cantPlayers + 1, // Empieza en la ultima posicion
-        lastHighscore: uni.cantPlayers + 1, // La posicion en la que estaba hace un dia, se la cuenta como la actual
-        puntos: 0,
-        puntosAcum: 0,
-        vacas: [],
-        sendEspionage: 1,
-        sendSmall: 1,
-        sendLarge: 1,
-        dark: 8000,
-        messagesCant: 0,
-        messages: [],
-        movement: [],
-        researchConstrucction: false,
-        tutorial: [false, false, false, false, false, false, false, false, false, false],
-        research: uni.fun.zeroResearch(),
-        lastVisit: uni.fun.horaActual(),  // Pone el tiempo actual
-        type: "activo" // (activo inactivo InactivoFuerte fuerte debil)
-      };
-
-      // Aumenta en uno la cantidad de jugadores del universo
-      uni.cantPlayers++;
-      // Agrega al jugador a la base de datos
-      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").insertOne(newPlayer);
-    }
-  },
-
   // Escribe en la base de datos la cantidad de naves con las que se hacen los ataques automaticos
   //  -playerName = Nombre del jugador a cambiar valores
   //  -res = Respuesta a enviar al cliente
@@ -445,25 +448,6 @@ var exp = {
     }, () => {
       res.send({ok: true, info: listInfo});
     });
-  },
-
-  // Cambia de nombre a un planeta del jugador
-  //  -player = Objeto con la informacion del jugador
-  //  -coor = Coordenadas del planeta al que hay que cambiarle el nombre
-  //  -newName = Nuevo nombre del planeta
-  setPlanetName: function(player, coor, newName, moon){
-    let index = uni.fun.getIndexOfPlanet(player.planets, coor);
-    let objSet = {};
-    if(moon){
-      objSet['planets.$.moon.name'] = newName;
-      player.planets[index].moon.name = newName;
-    }else{
-      objSet['planets.$.name'] = newName;
-      player.planets[index].name = newName;
-    }
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
-      {planets :{$elemMatch: {coordinates: cord}}},
-      {$set: objSet});
   },
 
   // Guarda los recursos reciclados de una flota en un campo de escombros y devuelve como quedaron los escombros
@@ -523,6 +507,16 @@ var exp = {
       {$set: objSet}, () => {
         f();
     });
+  },
+
+  // Agrega un movement a la lista de movements de un jugador
+  //  -cord = El movement se agrega al jugador que tenga el planeta en estas coordenadas
+  //  -objInc = Objeto con los recursos y naves que salieron del planeta
+  //  -objPush = Objeto don la informacion del nuevo movement a pushear
+  pushMovementToDataBase: function(cord, objInc, objPush){
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+      {planets: {$elemMatch: {coordinates: cord}}},
+      {$push: objPush, $inc: objInc});
   },
 
   // Cambia la hora de llegada e informacion de un movement en la base de datos para que esta flota vuelva al planeta del que salio
@@ -675,16 +669,6 @@ var exp = {
     });
   },
 
-  // Agrega un movement a la lista de movements de un jugador
-  //  -cord = El movement se agrega al jugador que tenga el planeta en estas coordenadas
-  //  -objInc = Objeto con los recursos y naves que salieron del planeta
-  //  -objPush = Objeto don la informacion del nuevo movement a pushear
-  pushMovementToDataBase: function(cord, objInc, objPush){
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
-      {planets: {$elemMatch: {coordinates: cord}}},
-      {$push: objPush, $inc: objInc});
-  },
-
   // Busca al jugador con que tiene el planeta en las coordenadas 'cord' y ejecuta una funcion con ese jugador
   //  -cord = Coordenas del planeta a buscar
   //  -f = Funcion a ejecutar despues de encontrar al jugador
@@ -695,8 +679,44 @@ var exp = {
         if(err) throw err;
         f(res);
     });
-  }
+  },
 
+  // Busca al jugador con que tiene el planeta en las coordenadas 'cord' y ejecuta una funcion con ese jugador
+  //  -playerName = Nombre del jugador a buscar
+  //  -f = Funcion a ejecutar despues de encontrar al jugador
+  findAndExecuteByName: function(playerName, f){
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOne(
+      {name: playerName},
+      (err, res) => {
+        if(err) throw err;
+        f(res);
+    });
+  },
+
+  // Escribe datos en el planeta (Usada para debugear)
+  //  -codr = Coordenadas del planeta a modificar
+  setPlanetDataDev: function(cord){
+    let resources = {metal: 1000000, crystal: 100000, deuterium: 150000, energy: 0};
+    let building = {metalMine: 0, crystalMine: 1, deuteriumMine: 0, solarPlant: 30, fusionReactor: 0, metalStorage: 10, crystalStorage: 9, deuteriumStorage: 8, robotFactory: 0, shipyard: 0, researchLab: 8, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0};
+    let fleet = /*uni.fun.zeroShips();*/{lightFighter: 10, heavyFighter: 0, cruiser: 100, battleship: 10, battlecruiser: 0, bomber: 3, destroyer: 100, deathstar: 50, smallCargo: 500, largeCargo: 200, colony: 1000, recycler: 200, espionageProbe: 30, solarSatellite: 15};
+    let defenses = /*uni.fun.zeroDefense();*/{rocketLauncher: 100, lightLaser: 10, heavyLaser: 0, gauss: 5, ion: 0, plasma: 0, smallShield: 0, largeShield: 0, antiballisticMissile: 3, interplanetaryMissile: 1000};
+    let moon = /*{active: false, size: 0};*/uni.createNewMoon(8888);
+    let debris = {active: true, metal:1000, crystal: 2000};
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+      {planets :{$elemMatch: {coordinates: cord}}},
+      {$set: {'planets.$.resources': resources,'planets.$.buildings': building, 'planets.$.fleet': fleet, 'planets.$.defense': defenses,'planets.$.moon': moon, 'planets.$.debris': debris}});
+  },
+
+  // Escribe datos en la luna (Usada para debugear)
+  //  -codr = Coordenadas de la luna a modificar
+  setMoonDataDev: function(cord){ // Asume el planeta tiene luna, de lo contrario no hace nada
+    let resources = {metal: 500000, crystal: 4000000, deuterium: 1000000, energy: 0};
+    let building = {lunarBase: 6, phalanx: 2, spaceDock: 0, marketplace: 1, lunarSunshade: 5, lunarBeam: 6, jumpGate: 2, moonShield: 0};
+    let fleet = {lightFighter: 1000, heavyFighter: 0, cruiser: 1, battleship: 30, battlecruiser: 0, bomber: 0, destroyer: 0, deathstar: 100, smallCargo: 10, largeCargo: 200, colony: 0, recycler: 20, espionageProbe: 0, solarSatellite: 0};
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+      {planets :{$elemMatch: {coordinates: cord}}},
+      {$set: {'planets.$.moon.resources': resources,'planets.$.moon.buildings': building, 'planets.$.moon.fleet': fleet}});
+  }
 };
 
 module.exports = exp;
