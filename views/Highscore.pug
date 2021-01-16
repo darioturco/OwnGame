@@ -7,7 +7,7 @@ block content
       .content
         div#highscoreContent
           span.dropdown.currentlySelected.changeSite.fright(style='width: 150px; margin-right: 32px;')
-            a#dropDown(data-pag=(Math.floor(init/100)+1) href='javascript:void(0);' onclick='clickDropDown();')  1 - 100
+            a#dropDown(href='javascript:void(0);' onclick='clickDropDown();')  1 - 100
           ul#dropDownList.dropdown.dropdownList.initialized(style='left: 488px; top: 34px; min-width: 150px; display:none;')
             - var n = 1;
             - var tope = Math.floor(max/100) + 1
@@ -23,6 +23,7 @@ block content
                 td.positionTittle
                   | Position
                 td.changeTittle
+                  | Change
                 td.nameTittle
                   | Players Name
                 td.coorTittle

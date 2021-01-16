@@ -196,11 +196,22 @@ function setInfo(){
     posibleText.innerHTML = " now";
     colorButton.classList.remove("build-it_disabled");
   }
+  if(!doing && shipyard){
+    cancelButton.style.display = estaEnLaLista(info.doing, toggle) ? 'block' : 'none';
+  }
   if(inMoon){
     posibleText.innerHTML = " unknown";
     if(body == 'defense') levelText.innerHTML = 'Number: 0';
   }
   if(maxlink != null) maxlink.innerText = '[max. ' + max + ']'; //setea el maximo de objetos a contruir
+}
+
+function estaEnLaLista(lista, item){
+  let res = false;
+  for(let i = 0 ; i<lista.length && !res ; i++){
+    if(lista[i].item == item) res = true;
+  }
+  return res;
 }
 
 function getDireccionApi(body){

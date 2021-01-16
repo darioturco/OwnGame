@@ -12,6 +12,7 @@ var exp  = {
   cantPlayers: 0,             // Cantidad de jugadores en todo el universo
   allCord: {},                // Por cada planeta colonizado guardo un objeto 'infoPlanet' con la informacion basica exterior del planeta
   comienzoBusquedaNewCoor: 1, // Apartir de que galaxia se ubican los nuevos planetas
+  events: events,             // Lista de tiempos en los que hay que actualizar a un jugador
   fun: fun,
   base: base,
 
@@ -127,7 +128,6 @@ var exp  = {
       }
 
       let almacen = this.getAlmacen(player.planets[i]);
-      /* deberia fijarce hace cuanto tiempo se aumento el edificio y que repercuciones tiene en la produccion de recursos */
       // Se queda con la cantidad maxima de recursos que se juntaron, siempre y cuando esa sea menor a la que entar en el almacen y sea poitiva
       objInc['planets.' + i + '.resources.metal']     = Math.max(0, Math.min(player.planets[i].resourcesAdd.metal*timeLastUpdate/(1000*3600), almacen.metal - player.planets[i].resources.metal));
       objInc['planets.' + i + '.resources.crystal']   = Math.max(0, Math.min(player.planets[i].resourcesAdd.crystal*timeLastUpdate/(1000*3600), almacen.crystal - player.planets[i].resources.crystal));
@@ -846,43 +846,46 @@ var exp  = {
   //  -res = Respuesta a enviar al cliente
   proccesBuildRequest: function(player, planet, buildingName, res){
     if(!player.planets[planet].buildingConstrucction){
-      let objPrice     = this.costBuildings(player, planet);
-      let enough       = fun.recursosSuficientes(player.planets[planet].resources, objPrice[buildingName]);
-      let enoughEnergy = buildingName != 'terraformer' || objPrice[buildingName].energy <= player.planets[planet].resourcesAdd.energy;
-      let enoughFields = buildingName == 'terraformer' || (player.planets[planet].campos + 1) < player.planets[planet].camposMax;
-      if(enough && objPrice[buildingName]!= undefined && objPrice[buildingName].tech && enoughEnergy && enoughFields){
-        let buildingConstrucctionAux = {};
-        let buildingConstrucction    = {};
-        let objInc                   = {};
-        buildingConstrucctionAux.metal     = objPrice[buildingName].metal;
-        buildingConstrucctionAux.crystal   = objPrice[buildingName].crystal;
-        buildingConstrucctionAux.deuterium = objPrice[buildingName].deuterium;
-        buildingConstrucctionAux.item      = buildingName;
-        buildingConstrucctionAux.init      = fun.horaActual();
-        buildingConstrucctionAux.time      = fun.timeBuild(objPrice[buildingName].metal + objPrice[buildingName].crystal, objPrice.time.mult, objPrice.time.elev, this.universo.speed);
-        buildingConstrucction['planets.' + planet + '.buildingConstrucction'] = buildingConstrucctionAux;
-        player.planets[planet].buildingConstrucction    = buildingConstrucctionAux;
-        objInc['planets.' + planet + '.resources.metal']     = -objPrice[buildingName].metal;
-        objInc['planets.' + planet + '.resources.crystal']   = -objPrice[buildingName].crystal;
-        objInc['planets.' + planet + '.resources.deuterium'] = -objPrice[buildingName].deuterium;
-        events.addElement({time: buildingConstrucctionAux.init + buildingConstrucctionAux.time*1000, player: player.name});
-        base.savePlayerData(player.name, buildingConstrucction, objInc, undefined, undefined, () => {
-          res.send({ok: true});
-        });
-      }else{ // Manejo de los errores
-        let mesAux = '';
-        if(objPrice[buildingName] == undefined){
-          mesAux = "Edificio invalido";
-        }else if(!enough){
-          mesAux = "Recursos no suficientes";
-        }else if(!objPrice[buildingName].tech){
-          mesAux = "Tecnologia no alcanzada";
-        }else if(!enoughEnergy){
-          mesAux = "No hay energia suficiente para construir el terraformer";
-        }else{
-          mesAux = "Campos insuficientes";
+      let objPrice = this.costBuildings(player, planet);
+      if(objPrice[buildingName] != undefined){
+        let enough = fun.recursosSuficientes(player.planets[planet].resources, objPrice[buildingName]);
+        let {metal, crystal, deuterium, energy, tech} = objPrice[buildingName];
+        let enoughEnergy = buildingName != 'terraformer' || energy <= player.planets[planet].resourcesAdd.energy;
+        let enoughFields = buildingName == 'terraformer' || (player.planets[planet].campos + 1) < player.planets[planet].camposMax;
+        if(enough && tech && enoughEnergy && enoughFields){
+          let buildingConstrucctionAux = {};
+          let buildingConstrucction    = {};
+          let objInc                   = {};
+          buildingConstrucctionAux.metal     = metal;
+          buildingConstrucctionAux.crystal   = crystal;
+          buildingConstrucctionAux.deuterium = deuterium;
+          buildingConstrucctionAux.item      = buildingName;
+          buildingConstrucctionAux.init      = fun.horaActual();
+          buildingConstrucctionAux.time      = fun.timeBuild(metal + crystal, objPrice.time.mult, objPrice.time.elev, this.universo.speed);
+          buildingConstrucction['planets.' + planet + '.buildingConstrucction'] = buildingConstrucctionAux;
+          player.planets[planet].buildingConstrucction    = buildingConstrucctionAux;
+          objInc['planets.' + planet + '.resources.metal']     = -metal;
+          objInc['planets.' + planet + '.resources.crystal']   = -crystal;
+          objInc['planets.' + planet + '.resources.deuterium'] = -deuterium;
+          events.addElement({time: buildingConstrucctionAux.init + buildingConstrucctionAux.time*1000, player: player.name});
+          base.savePlayerData(player.name, buildingConstrucction, objInc, undefined, undefined, () => {
+            res.send({ok: true});
+          });
+        }else{ // Manejo de los errores
+          let mesAux = '';
+          if(!enough){
+            mesAux = "Recursos no suficientes";
+          }else if(!tech){
+            mesAux = "Tecnologia no alcanzada";
+          }else if(!enoughEnergy){
+            mesAux = "No hay energia suficiente para construir el terraformer";
+          }else{
+            mesAux = "Campos insuficientes";
+          }
+          res.send({ok: false, mes: mesAux});
         }
-        res.send({ok: false, mes: mesAux});
+      }else{
+        res.send({ok: false, mes: "Edificio invalido"});
       }
     }else{
       res.send({ok: false, mes: "Ya se esta construyendo un edificio en ese planeta"});
@@ -896,40 +899,43 @@ var exp  = {
   //  -res = Respuesta a enviar al cliente
   proccesMoonRequest: function(player, planet, buildingName, res){
     if(player.planets[planet].moon.buildingConstrucction == false){
-      let objPrice     = this.costMoon(player, planet);
-      let enough       = fun.recursosSuficientes(player.planets[planet].moon.resources, objPrice[buildingName]);
-      let enoughFields = buildingName == 'lunarBase'|| player.planets[planet].moon.campos < player.planets[planet].moon.camposMax;
-      if(enough && objPrice[buildingName] != undefined && objPrice[buildingName].tech && enoughFields){
-        let buildingConstrucctionAux = {};
-        let buildingConstrucction    = {};
-        let objInc                   = {};
-        buildingConstrucctionAux.metal     = objPrice[buildingName].metal;
-        buildingConstrucctionAux.crystal   = objPrice[buildingName].crystal;
-        buildingConstrucctionAux.deuterium = objPrice[buildingName].deuterium;
-        buildingConstrucctionAux.item      = buildingName;
-        buildingConstrucctionAux.init      = fun.horaActual();
-        buildingConstrucctionAux.time      = fun.timeBuild(objPrice[buildingName].metal + objPrice[buildingName].crystal, objPrice.time.mult, objPrice.time.elev, this.universo.speed);
-        buildingConstrucction['planets.' + planet + '.moon.buildingConstrucction'] = buildingConstrucctionAux;
-        player.planets[planet].buildingConstrucction = buildingConstrucctionAux;
-        objInc['planets.' + planet + '.moon.resources.metal']     = -objPrice[buildingName].metal;
-        objInc['planets.' + planet + '.moon.resources.crystal']   = -objPrice[buildingName].crystal;
-        objInc['planets.' + planet + '.moon.resources.deuterium'] = -objPrice[buildingName].deuterium;
-        events.addElement({time: buildingConstrucctionAux.init + buildingConstrucctionAux.time*1000, player: player.name});
-        base.savePlayerData(player.name, buildingConstrucction, objInc, undefined, undefined, () => {
-          res.send({ok: true});
-        });
-      }else{ // Manejo de errores
-        let mesAux = '';
-        if(objPrice[buildingName] == undefined){
-          mesAux = "Edificio invalido";
-        }else if(!enough){
-          mesAux = "Recursos insuficientes";
-        }else if(!objPrice[buildingName].tech){
-          mesAux = "Tecnologia no alcanzada";
-        }else{
-          mesAux = "Campos insuficientes";
+      let objPrice = this.costMoon(player, planet);
+      if(objPrice[buildingName] != undefined){
+        let enough = fun.recursosSuficientes(player.planets[planet].moon.resources, objPrice[buildingName]);
+        let {metal, crystal, deuterium, tech} = objPrice[buildingName];
+        let enoughFields = buildingName == 'lunarBase'|| player.planets[planet].moon.campos < player.planets[planet].moon.camposMax;
+        if(enough && tech && enoughFields){
+          let buildingConstrucctionAux = {};
+          let buildingConstrucction    = {};
+          let objInc                   = {};
+          buildingConstrucctionAux.metal     = metal;
+          buildingConstrucctionAux.crystal   = crystal;
+          buildingConstrucctionAux.deuterium = deuterium;
+          buildingConstrucctionAux.item      = buildingName;
+          buildingConstrucctionAux.init      = fun.horaActual();
+          buildingConstrucctionAux.time      = fun.timeBuild(metal + crystal, objPrice.time.mult, objPrice.time.elev, this.universo.speed);
+          buildingConstrucction['planets.' + planet + '.moon.buildingConstrucction'] = buildingConstrucctionAux;
+          player.planets[planet].buildingConstrucction = buildingConstrucctionAux;
+          objInc['planets.' + planet + '.moon.resources.metal']     = -metal;
+          objInc['planets.' + planet + '.moon.resources.crystal']   = -crystal;
+          objInc['planets.' + planet + '.moon.resources.deuterium'] = -deuterium;
+          events.addElement({time: buildingConstrucctionAux.init + buildingConstrucctionAux.time*1000, player: player.name});
+          base.savePlayerData(player.name, buildingConstrucction, objInc, undefined, undefined, () => {
+            res.send({ok: true});
+          });
+        }else{ // Manejo de errores
+          let mesAux = '';
+          if(!enough){
+            mesAux = "Recursos insuficientes";
+          }else if(!tech){
+            mesAux = "Tecnologia no alcanzada";
+          }else{
+            mesAux = "Campos insuficientes";
+          }
+          res.send({ok: false, mes: mesAux});
         }
-        res.send({ok: false, mes: mesAux});
+      }else{
+        res.send({ok: false, mes: "Edificio invalido"});
       }
     }else{
       res.send({ok: false, mes: "Ya se esta contruyendo un edificio en esa luna"});
@@ -944,33 +950,34 @@ var exp  = {
   proccesResearchRequest: function(player, planet, researchName, res){
     if(player.researchConstrucction == false){
       let objPrice = this.costResearch(player, player.planets[planet].buildings.researchLab);
-      let enough   = fun.recursosSuficientes(player.planets[planet].resources, objPrice[researchName]);
-      if(enough && objPrice[researchName] != undefined && objPrice[researchName].energy <= player.planets[planet].resourcesAdd.energy && objPrice[researchName].tech){
-        let researchConstrucctionAux = {};
-        let researchConstrucction    = {};
-        let objInc                   = {};
-        researchConstrucctionAux.metal     = objPrice[researchName].metal;
-        researchConstrucctionAux.crystal   = objPrice[researchName].crystal;
-        researchConstrucctionAux.deuterium = objPrice[researchName].deuterium;
-        researchConstrucctionAux.item      = researchName;
-        researchConstrucctionAux.planet    = planet;
-        researchConstrucctionAux.init      = fun.horaActual();
-        researchConstrucctionAux.time      = fun.timeBuild(objPrice[researchName].metal + objPrice[researchName].crystal, objPrice.time.mult, objPrice.time.elev, this.universo.speed);
-        researchConstrucction['researchConstrucction'] = researchConstrucctionAux;
-        player.researchConstrucction = researchConstrucctionAux;
-        objInc['planets.' + planet + '.resources.metal']     = -objPrice[researchName].metal;
-        objInc['planets.' + planet + '.resources.crystal']   = -objPrice[researchName].crystal;
-        objInc['planets.' + planet + '.resources.deuterium'] = -objPrice[researchName].deuterium;
-        events.addElement({time: researchConstrucctionAux.init + researchConstrucctionAux.time*1000, player: player.name});
-        base.savePlayerData(player.name, researchConstrucction, objInc, undefined, undefined, () => {
-          res.send({ok: true});
-        });
-      }else{
-        if(objPrice[researchName] == undefined){
-          res.send({ok: false, mes: "Investigacion invalida"});
+      if(objPrice[researchName] != undefined){
+        let enough   = fun.recursosSuficientes(player.planets[planet].resources, objPrice[researchName]);
+        let {metal, crystal, deuterium, energy, tech} = objPrice[researchName];
+        if(enough && tech && energy <= player.planets[planet].resourcesAdd.energy){
+          let researchConstrucctionAux = {};
+          let researchConstrucction    = {};
+          let objInc                   = {};
+          researchConstrucctionAux.metal     = metal;
+          researchConstrucctionAux.crystal   = crystal;
+          researchConstrucctionAux.deuterium = deuterium;
+          researchConstrucctionAux.item      = researchName;
+          researchConstrucctionAux.planet    = planet;
+          researchConstrucctionAux.init      = fun.horaActual();
+          researchConstrucctionAux.time      = fun.timeBuild(metal + crystal, objPrice.time.mult, objPrice.time.elev, this.universo.speed);
+          researchConstrucction['researchConstrucction'] = researchConstrucctionAux;
+          player.researchConstrucction = researchConstrucctionAux;
+          objInc['planets.' + planet + '.resources.metal']     = -metal;
+          objInc['planets.' + planet + '.resources.crystal']   = -crystal;
+          objInc['planets.' + planet + '.resources.deuterium'] = -deuterium;
+          events.addElement({time: researchConstrucctionAux.init + researchConstrucctionAux.time*1000, player: player.name});
+          base.savePlayerData(player.name, researchConstrucction, objInc, undefined, undefined, () => {
+            res.send({ok: true});
+          });
         }else{
-          res.send({ok: false, mes: ((objPrice[researchName].tech) ? "Recursos insuficientes" : "Tecnologia no alcanzada")});
+          res.send({ok: false, mes: ((tech) ? "Recursos insuficientes" : "Tecnologia no alcanzada")});
         }
+      }else{
+        res.send({ok: false, mes: "Investigacion invalida"});
       }
     }else{
       res.send({ok: false, mes: "Ya se esta investigando algo"});
@@ -988,42 +995,44 @@ var exp  = {
     if(fun.validInt(shipyardCant) && fun.validShipyardName(shipyardName) && shipyardCant > 0){
       let objPrice = {...this.costShipyard(player, planet, false), ...this.costDefense(player, planet)};
       let enough = fun.recursosSuficientes(player.planets[planet].resources, objPrice[shipyardName], shipyardCant);
-      if(enough && objPrice[shipyardName].tech){
+      let {metal, crystal, deuterium, name, tech} = objPrice[shipyardName];
+      if(enough && tech){
         // Si voy a construir misiles en el silo, me fijo que haya capacidad para los misiles
-        if((shipyardName == "antiballisticMissile" || shipyardName == "interplanetaryMissile") && (shipyardCant + fun.cantidadMisiles(planeta) < fun.capacidadSilo(planeta))) return res.send({ok: false, mes: "No hay mas espacio en el silo"});
+        if((shipyardName == "antiballisticMissile" || shipyardName == "interplanetaryMissile") && (shipyardCant + fun.cantidadMisiles(planeta) < fun.capacidadSilo(planeta))){
+          return res.send({ok: false, mes: "No hay mas espacio en el silo"});
+        }
         let shipyardConstrucctionAux = {};
         let shipyardConstrucction    = {};
         let objInc                   = {};
         let defensa                  = false;
         shipyardConstrucctionAux.cant         = shipyardCant;
-        shipyardConstrucctionAux.metal        = objPrice[shipyardName].metal*shipyardCant;
-        shipyardConstrucctionAux.crystal      = objPrice[shipyardName].crystal*shipyardCant;
-        shipyardConstrucctionAux.deuterium    = objPrice[shipyardName].deuterium*shipyardCant;
-        shipyardConstrucctionAux.metalOne     = objPrice[shipyardName].metal;
-        shipyardConstrucctionAux.crystalOne   = objPrice[shipyardName].crystal;
-        shipyardConstrucctionAux.deuteriumOne = objPrice[shipyardName].deuterium;
-        shipyardConstrucctionAux.name         = objPrice[shipyardName].name;
+        shipyardConstrucctionAux.metal        = metal*shipyardCant;
+        shipyardConstrucctionAux.crystal      = crystal*shipyardCant;
+        shipyardConstrucctionAux.deuterium    = deuterium*shipyardCant;
+        shipyardConstrucctionAux.metalOne     = metal;
+        shipyardConstrucctionAux.crystalOne   = crystal;
+        shipyardConstrucctionAux.deuteriumOne = deuterium;
+        shipyardConstrucctionAux.name         = name;
         shipyardConstrucctionAux.item         = shipyardName;
         shipyardConstrucctionAux.new          = true;
         shipyardConstrucctionAux.init         = fun.horaActual();
-        shipyardConstrucctionAux.time         = fun.timeBuild(objPrice[shipyardName].metal + objPrice[shipyardName].crystal, objPrice.time.mult, objPrice.time.elev, this.universo.speed);
+        shipyardConstrucctionAux.time         = fun.timeBuild(metal + crystal, objPrice.time.mult, objPrice.time.elev, this.universo.speed);
         shipyardConstrucctionAux.timeNow      = shipyardConstrucctionAux.time;
-
         for(let i = 0 ; i<objPrice.listInfo.length && !defensa ; i++){
           if(objPrice.listInfo[i] == shipyardName) defensa = true;
         }
         shipyardConstrucctionAux.def = defensa;
         shipyardConstrucction['planets.' + planet + '.shipConstrucction'] = shipyardConstrucctionAux;
         player.planets[planet].shipConstrucction.push(shipyardConstrucctionAux);
-        objInc['planets.' + planet + '.resources.metal']     = -objPrice[shipyardName].metal*shipyardCant;
-        objInc['planets.' + planet + '.resources.crystal']   = -objPrice[shipyardName].crystal*shipyardCant;
-        objInc['planets.' + planet + '.resources.deuterium'] = -objPrice[shipyardName].deuterium*shipyardCant;
+        objInc['planets.' + planet + '.resources.metal']     = -metal*shipyardCant;
+        objInc['planets.' + planet + '.resources.crystal']   = -crystal*shipyardCant;
+        objInc['planets.' + planet + '.resources.deuterium'] = -deuterium*shipyardCant;
         events.addElement({time: shipyardConstrucctionAux.init + shipyardConstrucctionAux.time*1000, player: player.name});
         base.savePlayerData(player.name, undefined, objInc, shipyardConstrucction, undefined, () => {
           res.send({ok: true});
         });
       }else{
-        res.send({ok: false, mes: ((objPrice[shipyardName].tech) ? "Recursos insuficientes" : "Tecnologia no alcanzada")});
+        res.send({ok: false, mes: ((tech) ? "Recursos insuficientes" : "Tecnologia no alcanzada")});
       }
     }else{
       res.send({ok: false, mes: "Cantidad o nave no valida"});
@@ -1038,10 +1047,12 @@ var exp  = {
     if(player.planets[planet].buildingConstrucction != false){
       let objSet = {};
       let objInc = {};
+      let {metal, crystal, deuterium, init, time} = player.planets[planet].buildingConstrucction;
       objSet['planets.' + planet + '.buildingConstrucction'] = false;
-      objInc['planets.' + planet + '.resources.metal']       = player.planets[planet].buildingConstrucction.metal;
-      objInc['planets.' + planet + '.resources.crystal']     = player.planets[planet].buildingConstrucction.crystal;
-      objInc['planets.' + planet + '.resources.deuterium']   = player.planets[planet].buildingConstrucction.deuterium;
+      objInc['planets.' + planet + '.resources.metal']       = metal;
+      objInc['planets.' + planet + '.resources.crystal']     = crystal;
+      objInc['planets.' + planet + '.resources.deuterium']   = deuterium;
+      events.remove({time: init + time*1000, player: player.name});
       base.savePlayerData(player.name, objSet, objInc, undefined, undefined, () => {
         res.send({ok: true});
       });
@@ -1058,10 +1069,12 @@ var exp  = {
     if(player.planets[planet].moon.active && player.planets[planet].moon.buildingConstrucction != false){
       let objSet = {};
       let objInc = {};
+      let {metal, crystal, deuterium, init, time} = player.planets[planet].moon.buildingConstrucction;
       objSet['planets.' + planet + '.moon.buildingConstrucction'] = false;
-      objInc['planets.' + planet + '.moon.resources.metal']       = player.planets[planet].moon.buildingConstrucction.metal;
-      objInc['planets.' + planet + '.moon.resources.crystal']     = player.planets[planet].moon.buildingConstrucction.crystal;
-      objInc['planets.' + planet + '.moon.resources.deuterium']   = player.planets[planet].moon.buildingConstrucction.deuterium;
+      objInc['planets.' + planet + '.moon.resources.metal']       = metal;
+      objInc['planets.' + planet + '.moon.resources.crystal']     = crystal;
+      objInc['planets.' + planet + '.moon.resources.deuterium']   = deuterium;
+      events.remove({time: init + time*1000, player: player.name});
       base.savePlayerData(player.name, objSet, objInc, undefined, undefined, () => {
         res.send({ok: true});
       });
@@ -1075,13 +1088,14 @@ var exp  = {
   //  -res = Respuesta a enviar al cliente
   cancelResearchRequest: function(player, res){
     if(player.researchConstrucction != false){
-      let planet = player.researchConstrucction.planet;
       let objSet = {};
       let objInc = {};
+      let {metal, crystal, deuterium, init, time, planet} = player.researchConstrucction;
       objSet['researchConstrucction'] = false;
-      objInc['planets.' + planet + '.resources.metal']     = player.researchConstrucction.metal;
-      objInc['planets.' + planet + '.resources.crystal']   = player.researchConstrucction.crystal;
-      objInc['planets.' + planet + '.resources.deuterium'] = player.researchConstrucction.deuterium;
+      objInc['planets.' + planet + '.resources.metal']     = metal;
+      objInc['planets.' + planet + '.resources.crystal']   = crystal;
+      objInc['planets.' + planet + '.resources.deuterium'] = deuterium;
+      events.remove({time: init + time*1000, player: player.name});
       base.savePlayerData(player.name, objSet, objInc, undefined, undefined, () => {
         res.send({ok: true});
       });
@@ -1102,10 +1116,12 @@ var exp  = {
     objInc['planets.' + planet + '.resources.crystal']   = 0;
     objInc['planets.' + planet + '.resources.deuterium'] = 0;
     for(let i = 0 ; i<player.planets[planet].shipConstrucction.length ; i++){
+      console.log(player.planets[planet].shipConstrucction[i]);
       if(player.planets[planet].shipConstrucction[i].item == shipyardName){
         objInc['planets.' + planet + '.resources.metal']     += player.planets[planet].shipConstrucction[i].metal;
         objInc['planets.' + planet + '.resources.crystal']   += player.planets[planet].shipConstrucction[i].crystal;
         objInc['planets.' + planet + '.resources.deuterium'] += player.planets[planet].shipConstrucction[i].deuterium;
+        events.remove({time: player.planets[planet].shipConstrucction[i].init + player.planets[planet].shipConstrucction[i].time*1000, player: player.name});
       }
     }
     objPull['planets.' + planet + '.shipConstrucction'] = {item: shipyardName};
@@ -1317,12 +1333,12 @@ var exp  = {
           pushObjAux['speed']       = obj.porce;       // Numero del 1 al 10 que indica a que velocidad va la flota
           pushObjAux['mission']     = obj.mission;     // Numero del 0 al 8 que indica que numero de mission ejecuta esta flota
           pushObjAux['ida']         = true;            // Bool si dice si es un viaje de ida o de vuelta
-          pushObjAux['duracion']    = time;            // Cuanto tarda el viaje
+          pushObjAux['duracion']    = time;            // Cuanto tarda el viaje en segundos
           pushObjAux['time']        = fun.horaActual();// Tiempo en que empezo el viaje
-          pushObjAux['llegada']     = fun.horaActual() + time*1000;     // Tiempo en que la flota llega
-          pushObjAux['desdeName']   = player.planets[planet].name; // Nombre del planeta de salida
-          pushObjAux['desdeType']   = player.planets[planet].type; // Tipo del planeta de salida
-          pushObjAux['desdeColor']  = player.planets[planet].color;// Color del planeta de salida
+          pushObjAux['llegada']     = fun.horaActual() + time*1000; // Tiempo en que la flota llega
+          pushObjAux['desdeName']   = player.planets[planet].name;  // Nombre del planeta de salida
+          pushObjAux['desdeType']   = player.planets[planet].type;  // Tipo del planeta de salida
+          pushObjAux['desdeColor']  = player.planets[planet].color; // Color del planeta de salida
           pushObjAux['hastaType']   = fun.getTypePlanet(obj.coorHasta.pos, obj.coorHasta.pos % 2); // Tipo del planeta de llegada
           if(fun.estaColonizado(this.allCord, obj.coorHasta)){
             pushObjAux['hastaColor'] = this.allCord[obj.coorHasta.gal+'_'+obj.coorHasta.sys+'_'+obj.coorHasta.pos].color;   // Color del planeta de llegada
@@ -1355,6 +1371,13 @@ var exp  = {
           player.planets[planet].resources.metal -= obj.resources.metal;
           player.planets[planet].resources.crystal -= obj.resources.crystal;
           player.planets[planet].resources.deuterium -= obj.resources.deuterium;
+          events.addElement({time: pushObjAux['llegada'], player: player.name});
+          if(obj.mission >= 5 && fun.estaColonizado(this.allCord, obj.coorHasta)){ // Updateo al jugador atacado o espiado, un segundo antes de que llague la flota
+            let destinoNamePlayer = fun.playerName(this.allCord, obj.coorHasta);
+            if(destinoNamePlayer != player.name){
+              events.addElement({time: (pushObjAux['llegada'] - 1000), player: destinoNamePlayer});
+            }
+          }
           base.pushMovementToDataBase(player.planets[planet].coordinates, objInc, pushObj);
           res.json({ok: true}); // Usa json y no send por ser pedido via POST
         }else{
@@ -1509,7 +1532,7 @@ var exp  = {
       // Seteo los recursos y naves con los que se va a crear el nuevo planeta
       if(resources == undefined) resources = fun.zeroResources();
       if(ships == undefined) ships = fun.zeroResources();
-      let newPlanet = this.createNewPlanet(cord, 'Colony', player, 'activo', resources, ships); /*no deberia estar siempre activo*/
+      let newPlanet = this.createNewPlanet(cord, 'Colony', player, player.type, resources, ships);
 
       // Guardo el nuevo planeta en la base de datos
       base.savePlayerData(playerName, undefined, undefined, {planets: newPlanet}, undefined, () => {});
@@ -1695,6 +1718,7 @@ var exp  = {
       let horaActual = fun.horaActual();
       let salir = false;
 
+      //console.log(events);
       // Recorro la cola de jugadores a actualizar y si el tiempo llego, los actualizo
       while(!events.isEmpty && events.next().time <= horaActual){
         let updateObj = events.useNext();
@@ -1710,6 +1734,14 @@ var exp  = {
       }
       actualizando = false;
     }
+  },
+
+  // Funcion que se ejecuta una vez por dia, cuando el dia empieza
+  dailyUpdate: function(){
+    console.log('\x1b[36m%s\x1b[0m', "Daily update.");
+    base.updateAllHighscore();
+    // Dentro de un dia se va a ejecutar de nuevo
+    setTimeout(() => {this.dailyUpdate();}, 86400000);
   }
 };
 
@@ -1718,9 +1750,7 @@ module.exports = exp;
 
 // Lista de cosas por hacer:
 
-/* Hay que cambiar como se actualizan los datos, hay que crear una cola con eventos a pasar, cuando uno pasa se actualiza la info de ese jugador sin que este conectado necesariamente
-/* Mejorar el calculo de recursos de tiempos medios
-/* Comentar el codigo ^^^^^
+/* Comentar el codigo
 /* La funcion de contar puntos tiene que contar los puntos de las flotas que estan en movimiento
 /* El contruir satelites solares la energia no se actualiza
 /* Completar los mesajes de espionage (y todos en general)

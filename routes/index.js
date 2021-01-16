@@ -4,11 +4,7 @@ var express = require('express');
 var uni = require('./universe');
 var router = express.Router();
 var updater = setInterval(() => {uni.updateUniverse();}, UPDATE_TIME);
-
-/* Borrar */
-/*setTimeout(() => {
-  uni.events.addElement({time: 1000, player: 'bot_0'});
-}, 1000);*/
+setTimeout(() => {uni.dailyUpdate();}, 86400000 - (uni.fun.horaActual() % 86400000));
 
 console.log('\x1b[35m%s\x1b[0m', new Date());
 router.all('/*', (req, res, next) => {
@@ -25,11 +21,10 @@ router.all('/*', (req, res, next) => {
 // Ruta de debugeo
 router.get('/', (req, res, next) => {
   if(process.debugMode){
-
     //uni.base.deleteCollection(["jugadores", "universo"]);
     //uni.createUniverse(process.env.UNIVERSE_NAME, 5, {name: "", inicio: 0, maxGalaxies: 9, donutGalaxy: true, donutSystem: true, speed: 1, speedFleet: 5000, fleetDebris: 30, defenceDebris: 0, maxMoon: 20, rapidFire: true, repearDefenses: true});
     //uni.addNewPlayer("dturco", 1);
-    uni.base.setPlanetDataDev(uni.player.planets[0].coordinates, "dturco");
+    //uni.base.setPlanetDataDev(uni.player.planets[0].coordinates, "dturco");
     //uni.base.setMoonDataDev(uni.player.planets[0].coordinates, "dturco");
     //uni.base.sendMessage("dturco", {type: 1, title: "Nuevo titulo", text: "Mensaje oficial", data: {}});
     //uni.colonize({gal: 1, sys: 2, pos: 7}, 'dturco');
@@ -66,7 +61,7 @@ router.get('/Highscore.html', (req, res, next) => {
   if(initVal == undefined || initVal <= 0 || initVal > uni.cantPlayers) initVal = uni.player.highscore;
   res.render('Highscore', {bodyId: "highscore",
     url: req._parsedOriginalUrl.pathname,
-    init: initVal, // posicion en la que esta player
+    init: initVal, // Posicion en la que esta player
     max: uni.cantPlayers,
     basic: uni.getActualBasicInfo(uni.planeta),
     listScript: ['./Scripts/Highscore.js']

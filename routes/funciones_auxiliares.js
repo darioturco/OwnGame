@@ -796,6 +796,19 @@ var exp = {
       if(player.movement[i].mission == 0) res.expeditions += 1;
     }
     return res;
+  },
+  getTypeActive: function(lastVisit){
+    // Calculo los dias que pasaron desde la ultima coneccion del usuario
+    let days = (this.horaActual() - lastVisit)/86400000;
+    if(days >= 90){
+      return 'Abandonado';
+    }else if(days >= 30){
+      return 'Inactivo';
+    }else if(days >= 7){
+      return 'inactivo';
+    }else{
+      return 'active';
+    }
   }
 };
 

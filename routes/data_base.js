@@ -442,11 +442,22 @@ var exp = {
   //  -res = Respuesta a enviar al cliente
   highscoreData: function(res){
     let listInfo = [];
-    cursor = mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").find({}).sort({"puntos": -1});
+    let newPosition;
+    let i = 1;
+    let cursor = mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").find({}).sort({"puntos": -1});
     cursor.forEach((doc, err) => {
-      listInfo.push({name: doc.name, coor: doc.planets[0].coordinates, points: doc.puntos, rank: doc.highscore, lastRank: doc.lastHighscore});
+      if(doc.name === uni.player.name) newPosition = i;
+      listInfo.push({name: doc.name,
+                     coor: doc.planets[0].coordinates,
+                     points: doc.puntos,
+                     rank: doc.highscore,
+                     lastRank: doc.lastHighscore});
+      i++;
     }, () => {
-      res.send({ok: true, info: listInfo});
+      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+        {name: uni.player.name},
+        {$set: {highscore: newPosition}});
+      res.send({ok: true, info: listInfo, newPos: newPosition});
     });
   },
 
@@ -547,6 +558,13 @@ var exp = {
         updateObjAux['time']        = actual;
         updateObjAux['llegada']     = actual + time*1000;
         updateObj["movement"]       = updateObjAux;
+        if(res != undefined){
+          uni.events.remove({time: oldLlegada, player: player.name});
+          if(player.movement[num].mission >= 5){
+            uni.events.remove({time: oldLlegada - 1000, player: uni.fun.playerName(uni.allCord, player.movement[num].coorHasta)});
+          }
+        }
+        uni.events.addElement({time: updateObjAux['llegada'], player: player.name});
         player.movement[num] = updateObjAux; // Actualizo la flota de la lista de flotas volando
         mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
           {name: player.name, "movement.time": oldTime, "movement.llegada": oldLlegada},
@@ -580,6 +598,7 @@ var exp = {
     pushObj.movement.duracion    = newTime;
     pushObj.movement.time        = actual
     pushObj.movement.llegada     = actual + newTime*1000;
+    uni.events.addElement({time: pushObj.movement.llegada, player: uni.fun.playerName(uni.allCord, movement.coorDesde)});
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
       {planets :{$elemMatch: {coordinates: movement.coorDesde}}},
       {$push: pushObj});
@@ -693,9 +712,21 @@ var exp = {
     });
   },
 
+  // Actualiza la posicion en el ranking de cada jugador y su estado de actividad
+  updateAllHighscore: function(){
+    let i = 1;
+    let cursor = mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").find({}).sort({"puntos": -1});
+    cursor.forEach((doc, err) => {
+      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+        {name: doc.name},
+        {$set: {highscore: i, lastHighscore: doc.highscore, type: uni.fun.getTypeActive(doc.lastVisit)}});
+      i++;
+    }, () => {});
+  },
+
   // Escribe datos en el planeta (Usada para debugear)
   //  -codr = Coordenadas del planeta a modificar
-  setPlanetDataDev: function(cord){
+  setPlanetDataDev: function(coor){
     let resources = {metal: 1000000, crystal: 100000, deuterium: 150000, energy: 0};
     let building = {metalMine: 0, crystalMine: 1, deuteriumMine: 0, solarPlant: 30, fusionReactor: 0, metalStorage: 10, crystalStorage: 9, deuteriumStorage: 8, robotFactory: 0, shipyard: 0, researchLab: 8, alliance: 0, silo: 0, naniteFactory: 0, terraformer: 0};
     let fleet = /*uni.fun.zeroShips();*/{lightFighter: 10, heavyFighter: 0, cruiser: 100, battleship: 10, battlecruiser: 0, bomber: 3, destroyer: 100, deathstar: 50, smallCargo: 500, largeCargo: 200, colony: 1000, recycler: 200, espionageProbe: 30, solarSatellite: 15};
@@ -703,18 +734,18 @@ var exp = {
     let moon = /*{active: false, size: 0};*/uni.createNewMoon(8888);
     let debris = {active: true, metal:1000, crystal: 2000};
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
-      {planets :{$elemMatch: {coordinates: cord}}},
+      {planets :{$elemMatch: {coordinates: coor}}},
       {$set: {'planets.$.resources': resources,'planets.$.buildings': building, 'planets.$.fleet': fleet, 'planets.$.defense': defenses,'planets.$.moon': moon, 'planets.$.debris': debris}});
   },
 
   // Escribe datos en la luna (Usada para debugear)
   //  -codr = Coordenadas de la luna a modificar
-  setMoonDataDev: function(cord){ // Asume el planeta tiene luna, de lo contrario no hace nada
+  setMoonDataDev: function(coor){ // Asume el planeta tiene luna, de lo contrario no hace nada
     let resources = {metal: 500000, crystal: 4000000, deuterium: 1000000, energy: 0};
     let building = {lunarBase: 6, phalanx: 2, spaceDock: 0, marketplace: 1, lunarSunshade: 5, lunarBeam: 6, jumpGate: 2, moonShield: 0};
     let fleet = {lightFighter: 1000, heavyFighter: 0, cruiser: 1, battleship: 30, battlecruiser: 0, bomber: 0, destroyer: 0, deathstar: 100, smallCargo: 10, largeCargo: 200, colony: 0, recycler: 20, espionageProbe: 0, solarSatellite: 0};
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
-      {planets :{$elemMatch: {coordinates: cord}}},
+      {planets :{$elemMatch: {coordinates: coor}}},
       {$set: {'planets.$.moon.resources': resources,'planets.$.moon.buildings': building, 'planets.$.moon.fleet': fleet}});
   }
 };
