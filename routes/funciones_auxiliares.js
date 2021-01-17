@@ -66,13 +66,13 @@ var exp = {
   },
   getTypePlanet: function(pos, mod){
     let tipo = 1;
-    if((mod == 0 && pos >= 14) || (mod == 1 && (pos == 6 || pos == 7))) tipo = 1; // Normal
-    if((mod == 0 && pos <= 3) || (mod == 1 && (pos == 4 || pos == 5))) tipo = 2; // Dry
-    if((mod == 0 && (pos == 6 || pos == 7)) || (mod == 1 && (pos == 8 || pos == 9))) tipo = 3; // Jungle
-    if((mod == 0 && (pos == 8 || pos == 9)) || (mod == 1 && (pos == 10 || pos == 11))) tipo = 4; // Water
-    if((mod == 0 && (pos == 12 || pos == 13)) || (mod == 1 && pos >= 14)) tipo = 5; // Gas
-    if((mod == 0 && (pos == 10 || pos == 11)) || (mod == 1 && (pos == 12 || pos == 13))) tipo = 6; // Ice
-    if(mod == 1 && (pos <= 3)) tipo = 7; // Desert
+    if((mod === 0 && pos >= 14) || (mod === 1 && (pos === 6 || pos === 7))) tipo = 1;                   // Normal
+    if((mod === 0 && pos <= 3) || (mod === 1 && (pos === 4 || pos === 5))) tipo = 2;                    // Dry
+    if((mod === 0 && (pos === 6 || pos === 7)) || (mod === 1 && (pos === 8 || pos === 9))) tipo = 3;    // Jungle
+    if((mod === 0 && (pos === 8 || pos === 9)) || (mod === 1 && (pos === 10 || pos === 11))) tipo = 4;  // Water
+    if((mod === 0 && (pos === 12 || pos === 13)) || (mod === 1 && pos >= 14)) tipo = 5;                 // Gas
+    if((mod === 0 && (pos === 10 || pos === 11)) || (mod === 1 && (pos === 12 || pos === 13))) tipo = 6;// Ice
+    if(mod === 1 && (pos <= 3)) tipo = 7;                                                               // Desert
     return tipo;
   },
   cantidadMisiles: function(planeta){
@@ -91,7 +91,7 @@ var exp = {
     /* Pasar algoritmo */
     let u = Math.random();
     let v = Math.random();
-    if(u == 0) u = 0.5; //Converting [0,1) to (0,1)
+    if(u === 0) u = 0.5; //Converting [0,1) to (0,1)
     let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v); // Box–Muller transform
     num = num / 10.0 + 0.5; // Translate to 0 -> 1
     if (num > 1 || num < 0) num = Math.random(); // resample between 0 and 1 if out of range
@@ -108,7 +108,7 @@ var exp = {
     return !isNaN(num);
   },
   validShipyardName: function(name) {
-    return (shipsDefensesNumber[name] != undefined || name == "antiballisticMissile" || name == "interplanetaryMissile");
+    return (shipsDefensesNumber[name] != undefined || name === "antiballisticMissile" || name === "interplanetaryMissile");
   },
   formatNumber: function(num) {
     let res = num;
@@ -121,7 +121,7 @@ var exp = {
         num = Math.floor(num / 1000);
       }
       res = num + res;
-      if(sign == -1) res = '-' + res;
+      if(sign === -1) res = '-' + res;
     }
     return res;
   },
@@ -141,16 +141,23 @@ var exp = {
     if(seg < 0) return " now";
     let time = (seg%60) + "s";
     seg = Math.floor(seg/60);
-    if(seg != 0){
+    if(seg !== 0){
       time = (seg%60) + "m " + time;
       seg = Math.floor(seg/60);
-      if(seg != 0){
+      if(seg !== 0){
         time = (seg%24) + "h " + time;
         seg = Math.floor(seg/24);
-        if(seg != 0) time = seg + "d " + time;
+        if(seg !== 0) time = seg + "d " + time;
       }
     }
     return " " + time;
+  },
+  calculaTiempoFaltante: function(lista){
+    let time = 0;
+    for(let i = 0 ; i<lista.length ; i++){
+      time += (lista[i].cant-1) * lista[i].time + lista[i].timeNow;
+    }
+    return time*1000;
   },
   recursosSuficientes: function(resources, costo, mul = 1){
     return costo.metal*mul <= resources.metal && costo.crystal*mul <= resources.crystal && costo.deuterium*mul <= resources.deuterium;
@@ -186,9 +193,9 @@ var exp = {
   },
   calculaDistancia: function(desde, hasta, galaxyDonut, systemDonut){
     let dis = 0;
-    if(desde.gal == hasta.gal){
-      if(desde.sys == hasta.sys){
-        if(desde.pos == hasta.pos){
+    if(desde.gal === hasta.gal){
+      if(desde.sys === hasta.sys){
+        if(desde.pos === hasta.pos){
           dis = 5; // Mismas cordenadas
         }else{
           dis = 1000 + 5*Math.abs(desde.pos - hasta.pos); // Mismo systema y galaxia
@@ -250,10 +257,13 @@ var exp = {
       obj[i] = parseInt(obj[i]);
     }
   },
+  equalCoor: function(coor1, coor2){
+    return coor1.gal === coor2.gal && coor1.sys === coor2.sys && coor1.pos === coor2.pos;
+  },
   getIndexOfPlanet: function(planets, coors){ // Dada una lista de planetas y unas coordenadas, devuelve el indice del planeta con esas coordenadas
     let res = -1;
-    for(let i = 0 ; i<planets.length && res == -1 ; i++){
-      if(planets[i].coordinates.gal == coors.gal && planets[i].coordinates.sys == coors.sys && planets[i].coordinates.pos == coors.pos){
+    for(let i = 0 ; i<planets.length && res === -1 ; i++){
+      if(this.equalCoor(planets[i].coordinates, coors)){
         res = i;
       }
     }
@@ -262,7 +272,7 @@ var exp = {
   isZeroObj: function(obj){
     let res = true;
     for(let i in obj){
-      if (obj[i] != 0){
+      if(obj[i] !== 0){
         res = false;
         break;
       }
@@ -317,8 +327,7 @@ var exp = {
   },
   cargaEscombros: function(debris, capacidad){
     let res = {metal: 0, crystal: 0};
-    /* Rehacer esta funcion usando Min(), inspirarce en loadResources */
-    if(debris.metal > capacidad){       // Recolecta el metal
+     if(debris.metal > capacidad){      // Recolecta el metal
         res.metal = capacidad;
     }else{
       res.metal = debris.metal;
@@ -335,7 +344,7 @@ var exp = {
     let espacioDeCarga = 0;
     let infoNaves = this.navesInfo();
     for(item in movement.ships){
-      if(item != 'solarSatellite') espacioDeCarga += infoNaves[item].carga * movement.ships[item];
+      if(item !== 'solarSatellite') espacioDeCarga += infoNaves[item].carga * movement.ships[item];
     }
     return espacioDeCarga - movement.resources.metal - movement.resources.crystal - movement.resources.deuterium;
   },
@@ -408,14 +417,14 @@ var exp = {
     let cost = this.costShipsAndDefenses();
     let res = 0;
     for(let item in ships){
-      if(item != 'misil') res += ships[item] * cost[item].puntos;
+      if(item !== 'misil') res += ships[item] * cost[item].puntos;
     }
     return res;
   },
   posiblesVacas: function(vacas, gal, sys){
     let res = [];
     for(let i = 0 ; i<vacas.length ; i++){
-      if(vacas[i].coordinates.gal == gal && vacas[i].coordinates.sys == sys){
+      if(vacas[i].coordinates.gal === gal && vacas[i].coordinates.sys === sys){
         res.push(vacas[i].coordinates.pos);
       }
     }
@@ -472,7 +481,7 @@ var exp = {
       res.mensajes.push({type: 3, title: "Expedition", text: retrasoExp[0], data: {}});
       res.evento = 1;
 
-    }else if(rand == 100){ // Se pierde la flota
+    }else if(rand === 100){ // Se pierde la flota
 
       res.mueren = true;
       res.mensajes.push({type: 3, title: "Expedition", text: perdidaExp[0], data: {}});
@@ -483,9 +492,9 @@ var exp = {
       if(this.randomBool()){ // Se pierde un solo tipo de nave
         let eliminado = false;
         if(!this.isZeroObj(ships)){
-          while(eliminado == false){
+          while(!eliminado){
             for(let item in ships){
-              if(this.randomBool() && ships[item] != 0){
+              if(this.randomBool() && ships[item] !== 0){
                 eliminado = true;
                 ships[item] = 0;
                 break;
@@ -656,10 +665,10 @@ var exp = {
     // Coloco las defensas del defensor
     this.addShips(fleetDef, defenses, maxShieldsDefender, armourDefender);
 
-    let termino = fleetAtk.length == 0 || fleetDef.length == 0;
+    let termino = fleetAtk.length === 0 || fleetDef.length === 0;
 
     // Cada combate consta de maximo 6 rondas
-    for(let ronda = 0 ; ronda<6 && termino == false ; ronda++){
+    for(let ronda = 0 ; ronda<6 && !termino ; ronda++){
       // El atacante ataca al defensor
       this.startAttack(fleetAtk, fleetDef, attackAttacker, armourDefender, fr);
       // El defensor ataca al atacante
@@ -670,7 +679,7 @@ var exp = {
       this.updateFleet(fleetDef, maxShieldsDefender);
 
       // Si alguna de las dos flotas esta completamente destruida, termina el combate
-      termino = fleetAtk.length == 0 || fleetDef.length == 0;
+      termino = fleetAtk.length === 0 || fleetDef.length === 0;
     }
 
     let res = {};     // Devuelvo el resultado de la batalla en res
@@ -695,9 +704,9 @@ var exp = {
 
     // Decido el resultado de la batalla (gana el atacante = 1, gana el defensor = 2, empate = 3)
     res.result = 3;     // Empate
-    if(fleetAtk.length == 0 && fleetDef.length != 0){
+    if(fleetAtk.length === 0 && fleetDef.length !== 0){
       res.result = 2;   // Gano el defensor
-    }else if(fleetAtk.length != 0 && fleetDef.length == 0){
+    }else if(fleetAtk.length !== 0 && fleetDef.length === 0){
       res.result = 1;   // Gano el atacante
     }
     return res;
@@ -765,7 +774,7 @@ var exp = {
     let shipsAux;
     if(fleetD > 0){ // Sumo los escombros de las naves
       for(let item in objAttack.atkShips){
-        if(item != 'solarSatellite'){       // objOriginal.atkShips no tiene atributo 'solarSatellite' encambio tiene 'misil'
+        if(item !== 'solarSatellite'){       // objOriginal.atkShips no tiene atributo 'solarSatellite' encambio tiene 'misil'
           shipsAux = (objOriginal.atkShips[item] - objAttack.atkShips[item]) + (objOriginal.defShips[item] - objAttack.defShips[item]);
           debris.metal += shipsAux * costs[item].metal * fleetD / 100;
           debris.crystal += shipsAux * costs[item].crystal * fleetD / 100;
@@ -793,7 +802,7 @@ var exp = {
   getCantFleets: function(player){
     let res = {expeditions: 0, fleets: player.movement.length};
     for(let i = 0 ; i<player.movement.length ; i++){            // Cuento la cantidad de expediciones en el aire
-      if(player.movement[i].mission == 0) res.expeditions += 1;
+      if(player.movement[i].mission === 0) res.expeditions += 1;
     }
     return res;
   },

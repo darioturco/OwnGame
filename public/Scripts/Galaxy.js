@@ -342,3 +342,20 @@ async function spyFunction(num, moon){
     }
   }
 }
+
+async function usePhalanx(num){
+  if(!(isNaN(parseInt(num)) || num < 0 || num > 15) && ready){
+    ready = false;
+    loadJSON('./api/usePhalanx?gal=' + galaxy + '&sys=' + system + '&pos=' + num, (objRes) => {
+      ready = true;
+      if(objRes.ok){
+        /* Mustro el resultado del phalanxeo bien */
+        console.log(objRes);
+      }else{
+        sendPopUp(objRes.mes);
+      }
+    });
+  }else{
+    sendPopUp("No se puede usar el phalanx en esa posicion.");
+  }
+}

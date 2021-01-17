@@ -59,6 +59,14 @@ router.get('/highscore', function(req, res, next) {
   uni.base.highscoreData(res);
 });
 
+router.get('/usePhalanx', function(req, res, next) {
+  uni.base.usePhalanx(
+    {gal: parseInt(req.query.gal), sys: parseInt(req.query.sys), pos: parseInt(req.query.pos)},
+    uni.player.planets[uni.planeta].coordinates,
+    (uni.player.planets[uni.planeta].moon.active) ? uni.player.planets[uni.planeta].moon.buildings.phalanx : 0,
+    res);
+});
+
 //Se usa set para las direcciones que cambian cosas en la base de datos
 
 // Updatea los valores de resourcesSettings
@@ -137,7 +145,7 @@ router.get('/set/updateRewards', function(req, res, next) {
 });
 
 router.get('/set/abandonPlanet', function(req, res, next) {
-  if(req.query.confirm == "Yes"){
+  if(req.query.confirm === "Yes"){
     uni.base.abandonPlanet(uni.player, uni.planeta, res);
   }else{
     res.send({ok: false, mes: "Parametros de seguridad incorrectos."});

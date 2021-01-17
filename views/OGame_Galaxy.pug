@@ -69,24 +69,28 @@ block content
               td.action
                 a.tooltip.spyEye(href='#' onclick='spyFunction(1, false)')
                   span.icon.icon_eye
-                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
+                  span.tooltipText Spy
                   //espiar (se pone verdecito si ya lo estas espiando)
                 a.tooltip(href='#' onclick='getReport(1);')
                   span.icon.icon_adressbook
-                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
+                  span.tooltipText Report
                   // leer reporte de espionaje (esta negro si no tenes reporte de ese jugador)
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=1&mis=7';")
                   span.icon.icon_missile
-                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
+                  span.tooltipText Attack
                   // ataque personalisado
                 a.tooltip(href='#' onclick='sackFunction(1);')
                   span.icon.icon_against
-                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
+                  span.tooltipText Sack
                   // ataca como si fuera una vaca
                 a.tooltip(href='#' onclick='addVaca(1);')
                   span.icon.icon_mail
-                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
+                  span.tooltipText Vaca
                   // agrega a la lista de vacas
+                a.tooltip(href='#' onclick='usePhalanx(1);')
+                  span.icon.icon_edit
+                  span.tooltipText Phalanx
+                  // intenta usar el phalanx
 
 
 
@@ -109,19 +113,22 @@ block content
               td.action
                 a.tooltip.spyEye(href='#' onclick='spyFunction(2, false)')
                   span.icon.icon_eye
-                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
+                  span.tooltipText Spy
                 a.tooltip(href='#' onclick='getReport(2);')
                   span.icon.icon_adressbook
-                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
+                  span.tooltipText Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=2&mis=7';")
                   span.icon.icon_missile
-                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
+                  span.tooltipText Attack
                 a.tooltip(href='#' onclick='sackFunction(2);')
                   span.icon.icon_against
-                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
+                  span.tooltipText Sack
                 a.tooltip(href='#' onclick='addVaca(2);')
                   span.icon.icon_mail
-                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
+                  span.tooltipText Vaca
+                a.tooltip(href='#' onclick='usePhalanx(2);')
+                  span.icon.icon_edit
+                  span.tooltipText Phalanx
 
 
 
@@ -144,20 +151,22 @@ block content
               td.action
                 a.tooltip.spyEye(href='#' onclick='spyFunction(3, false)')
                   span.icon.icon_eye
-                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
+                  span.tooltipText Spy
                 a.tooltip(href='#' onclick='getReport(3);')
                   span.icon.icon_adressbook
-                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
+                  span.tooltipText Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=3&mis=7';")
                   span.icon.icon_missile
-                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
+                  span.tooltipText Attack
                 a.tooltip(href='#' onclick='sackFunction(3);')
                   span.icon.icon_against
-                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
+                  span.tooltipText Sack
                 a.tooltip(href='#' onclick='addVaca(3);')
                   span.icon.icon_mail
-                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
-
+                  span.tooltipText Vaca
+                a.tooltip(href='#' onclick='usePhalanx(3);')
+                  span.icon.icon_edit
+                  span.tooltipText Phalanx
 
 
             tr.row
@@ -179,20 +188,22 @@ block content
               td.action
                 a.tooltip.spyEye(href='#' onclick='spyFunction(4, false)')
                   span.icon.icon_eye
-                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
+                  span.tooltipText Spy
                 a.tooltip(href='#' onclick='getReport(4);')
                   span.icon.icon_adressbook
-                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
+                  span.tooltipText Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=4&mis=7';")
                   span.icon.icon_missile
-                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
+                  span.tooltipText Attack
                 a.tooltip(href='#' onclick='sackFunction(4);')
                   span.icon.icon_against
-                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
+                  span.tooltipText Sack
                 a.tooltip(href='#' onclick='addVaca(4);')
                   span.icon.icon_mail
-                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
-
+                  span.tooltipText Vaca
+                a.tooltip(href='#' onclick='usePhalanx(4);')
+                  span.icon.icon_edit
+                  span.tooltipText Phalanx
 
 
             tr.row
@@ -214,19 +225,22 @@ block content
               td.action
                 a.tooltip.spyEye(href='#' onclick='spyFunction(5, false)')
                   span.icon.icon_eye
-                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
+                  span.tooltipText Spy
                 a.tooltip(href='#' onclick='getReport(5);')
                   span.icon.icon_adressbook
-                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
+                  span.tooltipText Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=5&mis=7';")
                   span.icon.icon_missile
-                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
+                  span.tooltipText Attack
                 a.tooltip(href='#' onclick='sackFunction(5);')
                   span.icon.icon_against
-                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
+                  span.tooltipText Sack
                 a.tooltip(href='#' onclick='addVaca(5);')
                   span.icon.icon_mail
-                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
+                  span.tooltipText Vaca
+                a.tooltip(href='#' onclick='usePhalanx(5);')
+                  span.icon.icon_edit
+                  span.tooltipText Phalanx
 
 
 
@@ -249,20 +263,22 @@ block content
               td.action
                 a.tooltip.spyEye(href='#' onclick='spyFunction(6, false)')
                   span.icon.icon_eye
-                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
+                  span.tooltipText Spy
                 a.tooltip(href='#' onclick='getReport(6);')
                   span.icon.icon_adressbook
-                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
+                  span.tooltipText Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=6&mis=7';")
                   span.icon.icon_missile
-                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
+                  span.tooltipText Attack
                 a.tooltip(href='#' onclick='sackFunction(6);')
                   span.icon.icon_against
-                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
+                  span.tooltipText Sack
                 a.tooltip(href='#' onclick='addVaca(6);')
                   span.icon.icon_mail
-                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
-
+                  span.tooltipText Vaca
+                a.tooltip(href='#' onclick='usePhalanx(6);')
+                  span.icon.icon_edit
+                  span.tooltipText Phalanx
 
 
             tr.row
@@ -284,19 +300,22 @@ block content
               td.action
                 a.tooltip.spyEye(href='#' onclick='spyFunction(7, false)')
                   span.icon.icon_eye
-                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
+                  span.tooltipText Spy
                 a.tooltip(href='#' onclick='getReport(7);')
                   span.icon.icon_adressbook
-                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
+                  span.tooltipText Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=7&mis=7';")
                   span.icon.icon_missile
-                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
+                  span.tooltipText Attack
                 a.tooltip(href='#' onclick='sackFunction(7);')
                   span.icon.icon_against
-                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
+                  span.tooltipText Sack
                 a.tooltip(href='#' onclick='addVaca(7);')
                   span.icon.icon_mail
-                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
+                  span.tooltipText Vaca
+                a.tooltip(href='#' onclick='usePhalanx(7);')
+                  span.icon.icon_edit
+                  span.tooltipText Phalanx
 
 
 
@@ -319,19 +338,22 @@ block content
               td.action
                 a.tooltip.spyEye(href='#' onclick='spyFunction(8, false)')
                   span.icon.icon_eye
-                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
+                  span.tooltipText Spy
                 a.tooltip(href='#' onclick='getReport(8);')
                   span.icon.icon_adressbook
-                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
+                  span.tooltipText Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=8&mis=7';")
                   span.icon.icon_missile
-                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
+                  span.tooltipText Attack
                 a.tooltip(href='#' onclick='sackFunction(8);')
                   span.icon.icon_against
-                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
+                  span.tooltipText Sack
                 a.tooltip(href='#' onclick='addVaca(8);')
                   span.icon.icon_mail
-                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
+                  span.tooltipText Vaca
+                a.tooltip(href='#' onclick='usePhalanx(8);')
+                  span.icon.icon_edit
+                  span.tooltipText Phalanx
 
 
 
@@ -354,19 +376,22 @@ block content
               td.action
                 a.tooltip.spyEye(href='#' onclick='spyFunction(9, false)')
                   span.icon.icon_eye
-                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
+                  span.tooltipText Spy
                 a.tooltip(href='#' onclick='getReport(9);')
                   span.icon.icon_adressbook
-                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
+                  span.tooltipText Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=9&mis=7';")
                   span.icon.icon_missile
-                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
+                  span.tooltipText Attack
                 a.tooltip(href='#' onclick='sackFunction(9);')
                   span.icon.icon_against
-                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
+                  span.tooltipText Sack
                 a.tooltip(href='#' onclick='addVaca(9);')
                   span.icon.icon_mail
-                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
+                  span.tooltipText Vaca
+                a.tooltip(href='#' onclick='usePhalanx(9);')
+                  span.icon.icon_edit
+                  span.tooltipText Phalanx
 
 
 
@@ -389,19 +414,22 @@ block content
               td.action
                 a.tooltip.spyEye(href='#' onclick='spyFunction(10, false)')
                   span.icon.icon_eye
-                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
+                  span.tooltipText Spy
                 a.tooltip(href='#' onclick='getReport(10);')
                   span.icon.icon_adressbook
-                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
+                  span.tooltipText Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=10&mis=7';")
                   span.icon.icon_missile
-                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
+                  span.tooltipText Attack
                 a.tooltip(href='#' onclick='sackFunction(10);')
                   span.icon.icon_against
-                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
+                  span.tooltipText Sack
                 a.tooltip(href='#' onclick='addVaca(10);')
                   span.icon.icon_mail
-                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
+                  span.tooltipText Vaca
+                a.tooltip(href='#' onclick='usePhalanx(10);')
+                  span.icon.icon_edit
+                  span.tooltipText Phalanx
 
 
 
@@ -424,18 +452,22 @@ block content
               td.action
                 a.tooltip.spyEye(href='#' onclick='spyFunction(11, false)')
                   span.icon.icon_eye
-                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
+                  span.tooltipText Spy
                 a.tooltip(href='#' onclick='getReport(11);')
                   span.icon.icon_adressbook
-                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
+                  span.tooltipText Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=11&mis=7';")
                   span.icon.icon_missile
-                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
+                  span.tooltipText Attack
                 a.tooltip(href='#' onclick='sackFunction(11);')
                   span.icon.icon_against
-                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
+                  span.tooltipText Sack
                 a.tooltip(href='#' onclick='addVaca(11);')
                   span.icon.icon_mail
+                  span.tooltipText Vaca
+                a.tooltip(href='#' onclick='usePhalanx(11);')
+                  span.icon.icon_edit
+                  span.tooltipText Phalanx
 
 
 
@@ -458,19 +490,22 @@ block content
               td.action
                 a.tooltip.spyEye(href='#' onclick='spyFunction(12, false)')
                   span.icon.icon_eye
-                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
+                  span.tooltipText Spy
                 a.tooltip(href='#' onclick='getReport(12);')
                   span.icon.icon_adressbook
-                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
+                  span.tooltipText Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=12&mis=7';")
                   span.icon.icon_missile
-                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
+                  span.tooltipText Attack
                 a.tooltip(href='#' onclick='sackFunction(12);')
                   span.icon.icon_against
-                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
+                  span.tooltipText Sack
                 a.tooltip(href='#' onclick='addVaca(12);')
                   span.icon.icon_mail
-                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
+                  span.tooltipText Vaca
+                a.tooltip(href='#' onclick='usePhalanx(12);')
+                  span.icon.icon_edit
+                  span.tooltipText Phalanx
 
 
 
@@ -493,19 +528,22 @@ block content
               td.action
                 a.tooltip.spyEye(href='#' onclick='spyFunction(13, false)')
                   span.icon.icon_eye
-                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
+                  span.tooltipText Spy
                 a.tooltip(href='#' onclick='getReport(13);')
                   span.icon.icon_adressbook
-                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
+                  span.tooltipText Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=13&mis=7';")
                   span.icon.icon_missile
-                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
+                  span.tooltipText Attack
                 a.tooltip(href='#' onclick='sackFunction(13);')
                   span.icon.icon_against
-                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
+                  span.tooltipText Sack
                 a.tooltip(href='#' onclick='addVaca(13);')
                   span.icon.icon_mail
-                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
+                  span.tooltipText Vaca
+                a.tooltip(href='#' onclick='usePhalanx(13);')
+                  span.icon.icon_edit
+                  span.tooltipText Phalanx
 
 
 
@@ -528,19 +566,19 @@ block content
               td.action
                 a.tooltip.spyEye(href='#' onclick='spyFunction(14, false)')
                   span.icon.icon_eye
-                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
+                  span.tooltipText Spy
                 a.tooltip(href='#' onclick='getReport(14);')
                   span.icon.icon_adressbook
-                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
+                  span.tooltipText Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=14&mis=7';")
                   span.icon.icon_missile
-                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
+                  span.tooltipText Attack
                 a.tooltip(href='#' onclick='sackFunction(14);')
                   span.icon.icon_against
-                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
+                  span.tooltipText Sack
                 a.tooltip(href='#' onclick='addVaca(14);')
                   span.icon.icon_mail
-                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
+                  span.tooltipText Vaca
 
 
 
@@ -563,19 +601,22 @@ block content
               td.action
                 a.tooltip.spyEye(href='#' onclick='spyFunction(15, false)')
                   span.icon.icon_eye
-                  span.tooltipText(style="bottom: 26px; left: 484px;") Spy
+                  span.tooltipText Spy
                 a.tooltip(href='#' onclick='getReport(15);')
                   span.icon.icon_adressbook
-                  span.tooltipText(style="bottom: 26px; left: 510px;") Report
+                  span.tooltipText Report
                 a.tooltip(href='#' onclick="window.location.href = './Ogame_Fleet.html?gal=' + galaxy + '&sys=' + system + '&pos=15&mis=7';")
                   span.icon.icon_missile
-                  span.tooltipText(style="bottom: 26px; left: 532px;") Attack
+                  span.tooltipText Attack
                 a.tooltip(href='#' onclick='sackFunction(15);')
                   span.icon.icon_against
-                  span.tooltipText(style="bottom: 26px; left: 556px;") Sack
+                  span.tooltipText Sack
                 a.tooltip(href='#' onclick='addVaca(15);')
                   span.icon.icon_mail
-                  span.tooltipText(style="bottom: 26px; left: 580px;") Vaca
+                  span.tooltipText Vaca
+                a.tooltip(href='#' onclick='usePhalanx(15);')
+                  span.icon.icon_edit
+                  span.tooltipText Phalanx
 
     #canvasMoon.canvasMoon(style='left: 264px')
       div(style='width: auto; height: auto;')

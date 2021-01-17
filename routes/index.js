@@ -8,10 +8,10 @@ setTimeout(() => {uni.dailyUpdate();}, 86400000 - (uni.fun.horaActual() % 864000
 
 console.log('\x1b[35m%s\x1b[0m', new Date());
 router.all('/*', (req, res, next) => {
-  if(req.url.slice(1,4) != 'api' && req.url.slice(1,9) != 'Imagenes'){
+  if(req.url.slice(1,4) !== 'api' && req.url.slice(1,9) !== 'Imagenes'){
     if(isFinite(req.query.planet)) uni.planeta = parseInt(req.query.planet);
     if(req.query.moon != undefined) uni.moon = (req.query.moon == 'true');
-    if(uni.moon && uni.player.planets[uni.planeta].moon.active == false) uni.moon = false;
+    if(uni.moon && uni.player.planets[uni.planeta].moon.active === false) uni.moon = false;
     uni.base.getPlayer(uni.player.name, next, false);
   }else{
     next();
@@ -58,7 +58,7 @@ router.get('/', (req, res, next) => {
 
 router.get('/Highscore.html', (req, res, next) => {
   let initVal = req.query.init;
-  if(initVal == undefined || initVal <= 0 || initVal > uni.cantPlayers) initVal = uni.player.highscore;
+  if(initVal === undefined || initVal <= 0 || initVal > uni.cantPlayers) initVal = uni.player.highscore;
   res.render('Highscore', {bodyId: "highscore",
     url: req._parsedOriginalUrl.pathname,
     init: initVal, // Posicion en la que esta player
@@ -69,7 +69,7 @@ router.get('/Highscore.html', (req, res, next) => {
 });
 
 router.get('/MoonBuildings.html', (req, res, next) => {
-  if(uni.moon == true){
+  if(uni.moon){
     res.render('MoonBuildings', {bodyId: "resourceSettings",
       url: req._parsedOriginalUrl.pathname,
       info: uni.moonSetting(uni.planeta),
@@ -147,7 +147,7 @@ router.get('/OGame_Movement.html', (req, res, next) => {
 });
 
 router.get('/OGame_Overview.html', (req, res, next) => {
-  if(req.query.newName != undefined && req.query.newName != "" && req.query.newName.length <= 23){
+  if(req.query.newName !== undefined && req.query.newName !== "" && req.query.newName.length <= 23){
     uni.base.setPlanetName(uni.player, uni.player.planets[uni.planeta].coordinates, req.query.newName, uni.moon); // Cambia el nombre al planeta
   }
   res.render('OGame_Overview', {bodyId: "overview",
@@ -168,7 +168,7 @@ router.get('/OGame_Research.html', (req, res, next) => {
 });
 
 router.get('/OGame_Resources.html', (req, res, next) => {
-  if(uni.moon == true){
+  if(uni.moon){
     res.redirect('./OGame_Facilities.html');
   }else{
     res.render('OGame_Resources', {bodyId: "resources",
@@ -181,7 +181,7 @@ router.get('/OGame_Resources.html', (req, res, next) => {
 });
 
 router.get('/OGame_ResourceSetings.html', (req, res, next) => {
-  if(uni.moon == true){
+  if(uni.moon){
     res.redirect('./MoonBuildings.html');
   }else{
     res.render('OGame_ResourceSetings', {bodyId: "resourceSettings",

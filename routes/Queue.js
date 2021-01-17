@@ -9,8 +9,8 @@ class Queue {
     let fin = this.queue.length - 1;
     let mid = Math.floor((pri+fin) / 2);
     while(pri <= fin){
-      if(this.queue[mid].time == obj.time){
-        if(this.queue[mid].player != obj.player){
+      if(this.queue[mid].time === obj.time){
+        if(this.queue[mid].player !== obj.player){
           this.queue.splice(mid, 0, obj);
         }
         return;
@@ -42,8 +42,8 @@ class Queue {
     let fin = this.queue.length - 1;
     let mid = Math.floor((pri+fin) / 2);
     while(pri <= fin){
-      if(this.queue[mid].time == obj.time){
-        if(this.queue[mid].player == obj.player){
+      if(this.queue[mid].time === obj.time){
+        if(this.queue[mid].player === obj.player){
           this.queue.splice(mid, 1);
           return true;
         }else{
@@ -64,7 +64,7 @@ class Queue {
   }
 
   get isEmpty(){
-    return this.queue.length == 0;
+    return this.queue.length === 0;
   }
 }
 

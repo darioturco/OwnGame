@@ -11,13 +11,13 @@ block content
           a.dark_highlight_tablet(href='javascript:void(0);' onclick='reloadPage();')
             span.icon.icon_reload
             span Reload
-        span.fleetSlots Fleets:
+        span.fleetSlots Fleets:&nbsp
           span.current #{info.slot}
           | /
           span.all #{info.maxSlot}
-        span.expSlots Expeditions:
+        span.expSlots Expeditions:&nbsp
           span.current #{info.expeditions}
-          |  /
+          | /
           span.all #{info.maxExpeditions}
       each val, index in info.movement
         .fleetDetails.detailsOpened

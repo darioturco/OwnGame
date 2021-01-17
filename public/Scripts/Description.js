@@ -50,7 +50,7 @@ function initial(){
   url += getDireccionApi(body);
   loadJSON(url, (res) => {
     info = res;
-    doing = info.doing != false && shipyard == false;
+    doing = info.doing.active && shipyard == false;
     for(let i = 0 ; i<colorImg.length ; i++){
       if(info[info.listInfo[startImg + i]].tech == true && (!inMoon || body == 'station')){
         if(document.getElementById("resources_metal").innerHTML < info[info.listInfo[startImg + i]].metal || document.getElementById("resources_crystal").innerHTML < info[info.listInfo[startImg + i]].crystal || document.getElementById("resources_deuterium").innerHTML < info[info.listInfo[startImg + i]].deuterium || doing){
@@ -88,7 +88,7 @@ function initial(){
         unityDuration.innerText = segundosATiempo(timeNowAux);
         firstLavel.innerText = info.doing[0].cant;
         firstImg.id = info.doing[0].item;
-        timeContShip += info.doing[0].time*info.doing[0].cant + info.doing[0].timeNow;
+        timeContShip += info.doing[0].time*(info.doing[0].cant-1) + info.doing[0].timeNow;
         for(let i=1 ; i<info.doing.length ; i++){
           timeContShip += info.doing[i].time*info.doing[i].cant;
           let elemAux = document.createElement("div");
@@ -98,6 +98,7 @@ function initial(){
           otherShips.appendChild(elemAux);
         }
         timeContShip = Math.floor(timeContShip);
+        console.log(timeContShip);
         totalDuration.innerText = segundosATiempo(timeContShip);
         setInterval(() => {
           timeNowAux -= 1;
@@ -248,7 +249,11 @@ function sendInproveRequest(){
     if(canPress == true){
       loadJSON('./api/set/sendBuildRequest?obj=' + toggle, (obj) => {
         console.log(obj);
-        if(obj.ok == true) location.reload();
+        if(obj.ok == true){
+          location.reload();
+        }else{
+          sendPopUp(obj.mes);
+        }
       });
     }
   }
@@ -258,7 +263,11 @@ function sendResearchRequest(){
   if(canPress == true){
     loadJSON('./api/set/sendResearchRequest?obj=' + toggle, (obj) => {
       console.log(obj);
-      if(obj.ok == true) location.reload();
+      if(obj.ok == true){
+        location.reload();
+      }else{
+        sendPopUp(obj.mes);
+      }
     });
   }
 }
@@ -267,7 +276,11 @@ function sendShipyardRequest(){
   if(canPress == true){
     loadJSON('./api/set/sendShipyardRequest?obj=' + toggle + '&cant=' + inputCant.value, (obj) => {
       console.log(obj);
-      if(obj.ok == true) location.reload();
+      if(obj.ok == true){
+        location.reload();
+      }else{
+        sendPopUp(obj.mes);
+      }
     });
   }
 }
@@ -275,14 +288,22 @@ function sendShipyardRequest(){
 function cancelBuilding(){
   loadJSON('./api/set/cancelBuildRequest', (obj) => {
     console.log(obj);
-    if(obj.ok == true) location.reload();
+    if(obj.ok == true){
+      location.reload();
+    }else{
+      sendPopUp(obj.mes);
+    }
   });
 }
 
 function cancelResearch(){
   loadJSON('./api/set/cancelResearchRequest', (obj) => {
     console.log(obj);
-    if(obj.ok == true) location.reload();
+    if(obj.ok == true){
+      location.reload();
+    }else{
+      sendPopUp(obj.mes);
+    }
   });
 }
 
@@ -290,6 +311,10 @@ function cancelShipyard(shipyardName = null){
   if(shipyardName == null) shipyardName = toggle;
   loadJSON('./api/set/cancelShipyardRequest?obj=' + shipyardName, (obj) => {
     console.log(obj);
-    if(obj.ok == true) location.reload();
+    if(obj.ok == true){
+      location.reload();
+    }else{
+      sendPopUp(obj.mes);
+    }
   });
 }

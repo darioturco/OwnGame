@@ -24,7 +24,7 @@ setTimeout(() => {
       listaFleets[i].timerVal -= 1;
       listaFleets[i].timerText.innerText = segundosATiempo(listaFleets[i].timerVal);
       actualizaDesplazamiento(i);
-      // if(listaFleets[i].timerVal < 0) reloadPage();
+      if(listaFleets[i].timerVal < 0) reloadPage();
     }
   }, 1000);
 }, 0);
