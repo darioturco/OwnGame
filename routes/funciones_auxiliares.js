@@ -112,6 +112,7 @@ var exp = {
   },
   formatNumber: function(num) {
     let res = num;
+    num = parseInt(num);
     let sign = Math.sign(num);
     if(isFinite(num)){
       res = '';
@@ -327,7 +328,7 @@ var exp = {
   },
   cargaEscombros: function(debris, capacidad){
     let res = {metal: 0, crystal: 0};
-     if(debris.metal > capacidad){      // Recolecta el metal
+     if(debris.metal > capacidad){     // Recolecta el metal
         res.metal = capacidad;
     }else{
       res.metal = debris.metal;

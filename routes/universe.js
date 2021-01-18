@@ -547,8 +547,9 @@ var exp  = {
     return {name: this.universo.name,
       speed: this.universo.speed,
       speedFleet: this.universo.speedFleet,
-      donutGalaxy: (this.universo.donutGalaxy) ? 'true' : 'false',
-      donutSystem: (this.universo.donutSystem) ? 'true' : 'false',
+      donutGalaxy: this.universo.donutGalaxy.toString(),
+      donutSystem: this.universo.donutSystem.toString(),
+      siendoAtacado: false, /* Cambiar */
       playerName: this.player.name,
       highscore: this.player.highscore,
       resources: resourcesObj,
@@ -562,6 +563,7 @@ var exp  = {
       numPlanet: planet,
       planets: this.player.planets,
       moon: this.moon,
+      storage: objStorage,
       sendEspionage: this.player.sendEspionage,
       sendSmall: this.player.sendSmall,
       sendLarge: this.player.sendLarge,
@@ -597,7 +599,7 @@ var exp  = {
     let res = {};
     if(moon){ // Si esta en la luna todos los almecenes estan en 0, ya que no importan
       res = fun.zeroResources();
-    }else{  // La funcion para calcular cada almacenamiento es: 5000 * 2.5 * e^(0.61 * almacen)
+    }else{    // La funcion para calcular cada almacenamiento es: 5000 * 2.5 * e^(0.61 * almacen)
       res = {metal:    5000 * Math.floor(2.5 * Math.pow(Math.E, 0.61 * planetObj.buildings.metalStorage)),
             crystal:   5000 * Math.floor(2.5 * Math.pow(Math.E, 0.61 * planetObj.buildings.crystalStorage)),
             deuterium: 5000 * Math.floor(2.5 * Math.pow(Math.E, 0.61 * planetObj.buildings.deuteriumStorage))};
@@ -635,10 +637,7 @@ var exp  = {
       maxEnergy: maxEnergyAux,
       usageEnergy: energyUsage,
       resourcesHour: this.player.planets[planet].resourcesAdd,
-      /* Ya hay una funcion que calcula el storage del planeta */
-      storage: {metal: 5000*Math.floor(2.5*Math.pow(Math.E, 0.61*minas.metalStorage)),
-               crystal: 5000*Math.floor(2.5*Math.pow(Math.E, 0.61*minas.crystalStorage)),
-               deuterium: 5000*Math.floor(2.5*Math.pow(Math.E, 0.61*minas.deuteriumStorage))},
+      storage: this.getAlmacen(this.player.planets[planet], false),
       plasma: this.player.research.plasma}
   },
 
@@ -1629,6 +1628,7 @@ var exp  = {
             for(let i = 0 ; i<player.planets.length && !missionCumplida ; i++){
               if(player.planets[i].buildings.deuteriumMine >= 2 && player.planets[i].buildings.shipyard >= 1 && player.planets[i].defense.rocketLauncher >= 1){
                 missionCumplida = true;
+                objReward['puntos'] = 2;
                 objReward['planets.0.defense.rocketLauncher'] = 1;
               }
             }
@@ -1657,6 +1657,7 @@ var exp  = {
               for(let i = 0 ; i<player.planets.length && !missionCumplida ; i++){
                 if(player.planets[i].fleet.espionageProbe >= 1){
                   missionCumplida = true;
+                  objReward['puntos'] = 2;
                   objReward['planets.0.fleet.espionageProbe'] = 2;
                 }
               }
@@ -1665,6 +1666,7 @@ var exp  = {
           case 6:
             if(player.research.impulse >= 1 && player.research.armour >= 1 && player.research.astrophysics >= 1){
               missionCumplida = true;
+              objReward['puntos'] = 40;
               objReward['planets.0.fleet.heavyFighter'] = 2;
               objReward['planets.0.fleet.smallCargo'] = 5;
             }
@@ -1672,6 +1674,7 @@ var exp  = {
           case 7:
             if(player.research.laser >= 1 && player.research.impulse >= 3 && player.planets.length >= 2){
               missionCumplida = true;
+              objReward['puntos'] = 32;
               objReward['planets.0.resources.metal'] = 10000;
               objReward['planets.0.resources.crystal'] = 10000;
               objReward['planets.0.resources.deuterium'] = 10000;
@@ -1694,16 +1697,18 @@ var exp  = {
               for(let i = 0 ; i<player.planets.length && !missionCumplida ; i++){
                 if(player.planets[i].fleet.recycler >= 1){
                   missionCumplida = true;
+                  objReward['puntos'] = 36;
                   objReward['planets.0.fleet.recycler'] = 2;
                 }
               }
             }
             break;
-          default:
+          default: // Mission 10
             if(player.research.ion >= 2 && player.research.impulse >= 4){
               for(let i = 0 ; i<player.planets.length && !missionCumplida ; i++){
                 if(player.planets[i].fleet.cruiser >= 2){
                   missionCumplida = true;
+                  objReward['puntos'] = 130;
                   objReward['planets.0.fleet.lightFighter'] = 10;
                   objReward['planets.0.fleet.heavyFighter'] = 3;
                   objReward['planets.0.fleet.battleship'] = 1;
@@ -1769,11 +1774,13 @@ module.exports = exp;
 
 /* Completar los mesajes de espionage (y todos en general)
 /* Mostrar bien los reportes de espionage y de batallas
-/* Avisar al atacado que lo estan atacando (API de bots)(Terminar la linea 170 de layout.pug)
+/* Avisar al atacado que lo estan atacando (API de bots)(Terminar la linea 211 de layout.pug)
 /* Que se pueda misilear, espiar y atacar desde la vision de galaxia
 /* Hacer que se pueda atacar desde la pagina de vacas, search y los reportes de espionage
 /* Crear la API con la que interactuan los bots (Los bots no los va a controlar el servidor)
 /* Pasar todo el juego a ingles (Todo lo que lee el usuario)
 /* Mostrar bien los datos del phalanx en el cliente
 /* Mejorar el codigo del cliente
+/* Si un jugador regala una flota a otro jugador tiene que cambiar los puntos
+/* Revisar el consumo de energia mostrado en resources setings
 */

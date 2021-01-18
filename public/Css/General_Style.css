@@ -850,22 +850,37 @@ margin:4px 0 2px 0}
 left:-9999px;
 overflow:hidden;
 position:absolute;
-width:1px}.techtree .textlabel{height:1px;
+width:1px}
+.techtree .textlabel{height:1px;
 left:-9999px;
 overflow:hidden;
 position:absolute;
-width:1px}.highscore_table{width:140px;
-text-align:left}.highscore_one{width:115px}.highscore_two{width:25px}#info li .value{color:#a6b8cb;
-font:normal 9px/11px Verdana,Arial,Helvetica,sans-serif;
-text-align:center}.value font{font-size:9px}ul#resources{list-style-type:none}#info ul#resources li{position:absolute;
+width:1px}
+.highscore_table{
+  width:140px;
+  text-align:left;
+}
+.highscore_one{width:115px}
+.highscore_two{width:25px}
+#info li .value{
+  color:#a6b8cb;
+  font:normal 9px/11px Verdana,Arial,Helvetica,sans-serif;
+  text-align:center;
+}
+.value font{font-size:9px}
+ul#resources{list-style-type:none}
+#info ul#resources li{
+  position:absolute;
 height:47px;
 top:34px;
 width:64px;
 text-align:center}
-ul#resources .resourceIcon,#info ul#resources li img{
+ul#resources .resourceIcon{
   margin:0 8px 2px 8px;
   width:48px;
-  height:32px}
+  height:32px;
+  cursor: pointer;
+}
 #info ul#resources li img{margin-bottom:0}
 #info ul#resources li.metal{left:232px}
 #info ul#resources li.crystal{left:334px}
@@ -1884,22 +1899,82 @@ background-repeat:no-repeat;
 display:block;
 height:40px;
 margin:0 0 0 5px;
-width:62px}#galaxy #attack_alert a{height:45px;
-margin:1px 0 0 6px}#attack_alert.longtime a{background-position:-490px 0}#galaxy #attack_alert.longtime a{background-position:-490px -80px}#attack_alert.today a{background-position:-490px -40px}#galaxy #attack_alert.today a{background-position:-490px -125px}#attack_alert.soon a{background:transparent  url("../Imagenes/Background.jpg") 0 0 no-repeat}#galaxy #attack_alert.soon a{background:transparent  url("../Imagenes/Background.jpg") 0 0 no-repeat}#attack_alert.wreckField a{background:transparent  url("../Imagenes/Background.jpg") -22px 0 no-repeat}#galaxy #attack_alert.wreckField a{background:transparent  url("../Imagenes/Background.jpg") 0 0 no-repeat}#attack_alert .wreckFieldCountDown{position:relative;
-top:-13px;
-left:10px}#messages_collapsed{font-size:11px;
-height:38px;
-line-height:17px;
-margin:2px 0 0 20px;
-overflow:visible;
-text-align:left;
-width:430px}#message-wrapper div.event-new{width:398px}#messageheader{background:#000}#messagefooter{background:transparent  url("../Imagenes/Background.jpg") no-repeat top left;
-height:20px}#info #message-wrapper table{margin-top:0;
-margin-left:2px;
-width:490px}#info #messages_collapsed table{margin-top:0;
-margin-left:3px;
-width:490px}#message-wrapper table td.col1{padding-left:5px}#message-wrapper table td{white-space:nowrap;
-overflow:hidden}#eventz tr.alt td{background-color:#29313c}#eventz tr.friendly td,#phalanx tr.friendly td{color:#4af74d}
+width:62px}
+#galaxy #attack_alert a{
+  height:45px;
+  margin:1px 0 0 6px;
+}
+#attack_alert.longtime a{background-position:-490px 0}
+#galaxy #attack_alert.longtime a{background-position:-490px -80px}
+#attack_alert.today a{background-position:-490px -40px}
+#galaxy #attack_alert.today a{background-position:-490px -125px}
+#attack_alert.soon a{
+  background:transparent  url("../Imagenes/Buttons.png") 0 0 no-repeat;
+  background-position:-490px -0px;
+  animation: battleComming 0.5s infinite;
+  animation-timing-function: steps(1, end);
+}
+@keyframes battleComming {
+  0%{
+    background-position:-490px 0;
+  }
+  46%{
+    background-position:-490px -40px;
+  }
+}
+#galaxy #attack_alert.soon a{
+  background: transparent url("../Imagenes/Buttons.png") 0 0 no-repeat;
+  background-position:-490px -125px;
+  animation: battleCommingGalaxy 0.5s infinite;
+  animation-timing-function: steps(1, end);
+}
+@keyframes battleCommingGalaxy {
+  0%{
+    background-position:-490px -80px;
+  }
+  46%{
+    background-position:-490px -125px;
+  }
+}
+#attack_alert.wreckField a{background:transparent url("../Imagenes/Buttons.png") -22px 0 no-repeat}
+#galaxy #attack_alert.wreckField a{background:transparent url("../Imagenes/Buttons.png") 0 0 no-repeat}
+#attack_alert .wreckFieldCountDown{
+  position:relative;
+  top:-13px;
+  left:10px;
+}
+#messages_collapsed{
+  font-size:11px;
+  height:38px;
+  line-height:17px;
+  margin:2px 0 0 20px;
+  overflow:visible;
+  text-align:left;
+  width:430px;
+}
+#message-wrapper div.event-new{width:398px}
+#messageheader{background:#000}
+#messagefooter{
+  background:transparent url("../Imagenes/Background.jpg") no-repeat top left;
+  height:20px;
+}
+#info #message-wrapper table{
+  margin-top:0;
+  margin-left:2px;
+  width:490px;
+}
+#info #messages_collapsed table{
+  margin-top:0;
+  margin-left:3px;
+  width:490px;
+}
+#message-wrapper table td.col1{padding-left:5px}
+#message-wrapper table td{
+  white-space:nowrap;
+  overflow:hidden;
+}
+#eventz tr.alt td{background-color:#29313c}
+#eventz tr.friendly td,#phalanx tr.friendly td{color:#4af74d}
 .comm_menu{
   background-image: url("../Imagenes/Message.png");
   background-repeat:no-repeat;
@@ -4361,7 +4436,7 @@ color:#0e1012}
   top: 22px;
   right: 50px;
   z-index: 999;
-  background: #2c3949;
+  background: linear-gradient(#2c3949, #0D1014);
   width: 100px;
   min-height: 40px;
   border-radius: 6px;
@@ -7186,4 +7261,24 @@ div.tickDiv > div {
 th a.playerNameVacas, th a.playerSearchText {
   color: #f1f1f1;
   text-decoration: none;
+}
+
+div #metalInfoDiv, div #crystalInfoDiv, div #deuteriumInfoDiv{
+  display: none;
+  background: linear-gradient(#2c3949, #0D1014);
+  z-index: 999;
+  margin: auto;
+  margin-top: 8px;
+  width: 200%;
+  height: 60px;
+  padding-top: 4px;
+  position: relative;
+  border-radius: 10px;
+  right: 24px;
+  overflow: visible;
+  font-size: smaller;
+}
+
+div #metalInfoDiv .productionCant, div #crystalInfoDiv .productionCant, div #deuteriumInfoDiv .productionCant{
+  display: inline;
 }

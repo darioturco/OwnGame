@@ -1,4 +1,4 @@
-const cargaList = [50,100,800,1500,750,500,2000,1000000,5000,25000,7500,20000,0,0];
+const cargaList = [50, 100, 800, 1500, 750, 500, 2000, 1000000, 5000, 25000, 7500, 20000, 0, 0];
 const deuteriumList = [10, 20, 150, 250, 120, 500, 500, 1, 5, 25, 500, 150, 0, 0];
 /*cazador ligero | casadorpesado | cruzero | nave de batalla | acorazado | bombardero | destructor | estrella de la muerte | nave pequenia de carga | nave grande de carga | colonizador | resiclador | sonde de espionage | misil*/
 const missionNameList = [' Expedition', ' Colonisation', ' Recycle', ' Transport', ' Deployment', ' Espionage', ' Misil', ' Attack', ' Moon Destruction'];
@@ -230,7 +230,7 @@ function updateSpeedPanel(){
 
 function changeResourcesInputFunction(num){
   let suma = 0;
-  let listAux = [parseInt(metal_res.innerText), parseInt(crystal_res.innerText), parseInt(deuterium_res.innerText)];
+  let listAux = [metalTotal, crystalTotal, deuteriumTotal];
   if(cargeInputs[num].value < 0) cargeInputs[num].value = 0;
   if(cargeInputs[num].value > listAux[num]) cargeInputs[num].value = listAux[num];
   for(let i = 0 ; i<3 ; i++){
@@ -253,7 +253,7 @@ function cargeResourcesFunction(all, num){
   let suma = 0;
   if(all == true){
     let maxCarge = 0;//todos los recursos que pueda poner
-    let listAux = [parseInt(metal_res.innerText), parseInt(crystal_res.innerText), parseInt(deuterium_res.innerText)];
+    let listAux = [metalTotal, crystalTotal, deuteriumTotal];
     for(let i = 0 ; i<3 ; i++){
       if(i != num) suma += parseInt(cargeInputs[i].value);
     }

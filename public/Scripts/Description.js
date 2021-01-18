@@ -53,8 +53,8 @@ function initial(){
     doing = info.doing.active && shipyard == false;
     for(let i = 0 ; i<colorImg.length ; i++){
       if(info[info.listInfo[startImg + i]].tech == true && (!inMoon || body == 'station')){
-        if(document.getElementById("resources_metal").innerHTML < info[info.listInfo[startImg + i]].metal || document.getElementById("resources_crystal").innerHTML < info[info.listInfo[startImg + i]].crystal || document.getElementById("resources_deuterium").innerHTML < info[info.listInfo[startImg + i]].deuterium || doing){
-          if(doing == true && info.doing.item == info.listInfo[startImg + i]){
+        if(metalTotal < info[info.listInfo[startImg + i]].metal || crystalTotal < info[info.listInfo[startImg + i]].crystal || deuteriumTotal < info[info.listInfo[startImg + i]].deuterium || doing){
+          if(doing && info.doing.item == info.listInfo[startImg + i]){
             timeContdown = info.doing.time - Math.floor((new Date().getTime() - info.doing.init)/1000);
             contdownText = document.createElement("span");
             contdownText.classList.add('time');
@@ -66,7 +66,7 @@ function initial(){
               if((timeContdown - contContdown) < 0) setTimeout(() => {location.reload();}, 1000);
             }, 1000);
           }else{
-            if(info[info.listInfo[startImg + i]].name != "Solar Satellite") colorImg[i].classList.add('disabled');
+            if(info[info.listInfo[startImg + i]].name != "Solar Satellite" || (crystalTotal < info[info.listInfo[startImg + i]].crystal || deuteriumTotal < info[info.listInfo[startImg + i]].deuterium)) colorImg[i].classList.add('disabled');
           }
         }
       }else{
@@ -98,7 +98,6 @@ function initial(){
           otherShips.appendChild(elemAux);
         }
         timeContShip = Math.floor(timeContShip);
-        console.log(timeContShip);
         totalDuration.innerText = segundosATiempo(timeContShip);
         setInterval(() => {
           timeNowAux -= 1;
@@ -145,7 +144,7 @@ function toggleDescription(id){
 }
 
 function setInfo(){
-  let totalRosources = [metal_res.innerText, crystal_res.innerText, deuterium_res.innerText, energy_res.innerText];
+  let totalRosources = [metalTotal, crystalTotal, deuteriumTotal, parseInt(energy_res.innerText)];
   let resourcesList = [info[toggle].metal, info[toggle].crystal, info[toggle].deuterium, info[toggle].energy];
   let cont = 0;
   for(let i = 0 ; i<3 ; i++){//limpia los 3 mostradores de recursos

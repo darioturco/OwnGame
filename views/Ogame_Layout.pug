@@ -15,6 +15,9 @@ head
   meta(name='ogame-add-metal' content=basic.add.metal)
   meta(name='ogame-add-crystal' content=basic.add.crystal)
   meta(name='ogame-add-deuterium' content=basic.add.deuterium)
+  meta(name='ogame-storage-metal' content=basic.storage.metal)
+  meta(name='ogame-storage-crystal' content=basic.storage.crystal)
+  meta(name='ogame-storage-deuterium' content=basic.storage.deuterium)
   meta(name='ogame-espionage' content=basic.sendEspionage)
   meta(name='ogame-small-cargos' content=basic.sendSmall)
   meta(name='ogame-large-cargos' content=basic.sendLarge)
@@ -56,28 +59,59 @@ body(id=bodyId onLoad='initFunction();')
               a(href='./Search.html') Search
             li
               a(href='./Options.html') Options
+            li
+              a(href='./OGame_Reward.html') Tutorial
+            li
+              a(href='./Ogame_Galaxy.html?gal=' + basic.planets[basic.numPlanet].coordinates.gal + '&sys=' + basic.planets[basic.numPlanet].coordinates.sys) Galaxy
             li#Clock.OGameClock 07.12.2019 16:17:18
         ul#resources
           li#metal_box.metal
-            .resourceIcon.metal
+            .resourceIcon.metal(onclick='toggleResourcesInfo(1);')
             span.value
-              span#resources_metal(class=basic.classObjResources.metal) #{Math.floor(basic.resources.metal)}
+              span#resources_metal(class=basic.classObjResources.metal data-val=basic.resources.metal) #{basic.format(basic.resources.metal)}
+            div#metalInfoDiv
+              p Metal
+              p.productionCant Production:&nbsp
+              if basic.moon
+                p.productionCant 0
+              else
+                p.productionCant.undermark +#{basic.format(basic.add.metal)}
+              p Storage: #{basic.format(basic.storage.metal)}
+              p#metalTime Time:
           li#crystal_box.crystal
-            .resourceIcon.crystal
+            .resourceIcon.crystal(onclick='toggleResourcesInfo(2);')
             span.value
-              span#resources_crystal(class=basic.classObjResources.crystal) #{Math.floor(basic.resources.crystal)}
+              span#resources_crystal(class=basic.classObjResources.crystal data-val=basic.resources.crystal) #{basic.format(basic.resources.crystal)}
+            div#crystalInfoDiv
+              p Crystal
+              p.productionCant Production:&nbsp
+              if basic.moon
+                p.productionCant 0
+              else
+                p.productionCant.undermark +#{basic.format(basic.add.crystal)}
+              p Storage: #{basic.format(basic.storage.crystal)}
+              p#crystalTime Time:
           li#deuterium_box.deuterium
-            .resourceIcon.deuterium
+            .resourceIcon.deuterium(onclick='toggleResourcesInfo(3);')
             span.value
-              span#resources_deuterium(class=basic.classObjResources.deuterium) #{Math.floor(basic.resources.deuterium)}
+              span#resources_deuterium(class=basic.classObjResources.deuterium data-val=basic.resources.deuterium) #{basic.format(basic.resources.deuterium)}
+            div#deuteriumInfoDiv
+              p Deuterium
+              p.productionCant Production:&nbsp
+              if basic.moon
+                p.productionCant 0
+              else
+                p.productionCant.undermark +#{basic.format(basic.add.deuterium)}
+              p Storage: #{basic.format(basic.storage.deuterium)}
+              p#deuteriumTime Time:
           li#energy_box.energy
-            .resourceIcon.energy
+            .resourceIcon.energy(onclick='goToResourcesSettings();')
             span.value
               span#resources_energy(class=(basic.resources.energy < 0) ? 'overmark' : '') #{basic.resources.energy}
           li#darkmatter_box.darkmatter.dark_highlight_tablet
             img(src='./Imagenes/Dark_matter.gif')
             span.value
-              span#resources_darkmatter #{basic.dark}
+              span#resources_darkmatter #{basic.format(basic.dark)}
         #message-wrapper
           // Mensajes
           a.comm_menu.messages(href='./Ogame_messages.html' class=(bodyId == 'messages') ? 'selected': '')
@@ -92,8 +126,8 @@ body(id=bodyId onLoad='initFunction();')
               else
                 pre.fleetInfoFirstMovement Missions: #{basic.cantMovments}
                 pre(data-time=basic.nextFleetTime)#fleetInfoFirstMovementDown.fleetInfoFirstMovement Next: -                                      Type: #{basic.nextFleetMission}
-          #attack_alert.eventToggle.noAttack
-            a(href='javascript:void(0);')
+          #attack_alert.eventToggle(class=(basic.siendoAtacado) ? 'soon' : 'noAttack').soon
+            a(href='./Ogame_Movement.html')
           br.clearfloat
         #helper
           a.highlight.Close(href='./OGame_Reward.html') ?
