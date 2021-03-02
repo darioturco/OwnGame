@@ -335,8 +335,11 @@ var exp = {
         if(index === -1 || (moon && !res.planets[index].moon.active)){ // Me fijo que halla un planeta o luna en el lugar a espiar
           report = {type: 3, title: "Espionage Report Failed", text: (index === -1) ? "There is no planet in the coordinates..." : "There is no moon in the coordinates...", data: {}};
         }else{
-          // Agrego los recursos y el resto lo dejo sin definir para agregarlo despues si hace falta
-          let dataEsp = moon ? {resources: res.planets[index].moon.resources} : {resources: res.planets[index].resources};
+          // Agrego los recursos e informacion basica y el resto lo dejo sin definir para agregarlo despues si hace falta
+
+          let dataEsp = {moon, coor, playerName: res.name};
+          dataEsp.planetName = moon ? res.planets[index].moon.name : res.planets[index].name;
+          dataEsp.resources = moon ? res.planets[index].moon.resources : res.planets[index].resources;
           if(indiceDeEspionage >= 2){
             // Agrego fleet
             dataEsp.fleet = moon ? res.planets[index].moon.fleet : res.planets[index].fleet;

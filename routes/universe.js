@@ -1740,7 +1740,6 @@ var exp  = {
       let horaActual = fun.horaActual();
       let salir = false;
 
-      //console.log(events);
       // Recorro la cola de jugadores a actualizar y si el tiempo llego, los actualizo
       while(!events.isEmpty && events.next().time <= horaActual){
         let updateObj = events.useNext();

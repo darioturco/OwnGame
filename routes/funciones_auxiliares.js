@@ -47,9 +47,9 @@ const shipsDefensesNumber = {lightFighter:  0, heavyFighter: 1, cruiser: 2, batt
 
 var exp = {
   generateNewTypeOfPlanet: function(pos, mod) {
-    let temp = 10, rango = 40;
     let tipo = this.getTypePlanet(pos, mod);
-    rango = Math.floor(Math.random()*20+10);
+    let rango = Math.floor(Math.random()*20 + 10);
+    let temp = 10;
     if(pos < 4){
       temp = Math.floor(this.normalRandom(310-pos*50, 230-pos*50)); // Cerca
     }else{

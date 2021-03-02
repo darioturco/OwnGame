@@ -176,7 +176,8 @@ body(id=bodyId onLoad='initFunction();')
                 span.textlabel Fleet
             li
               span.menu_icon
-                .menuImage.galaxy(class=(bodyId == "galaxy")?'highlighted':'')
+                a(href='./Options.html' target='_self')
+                  .menuImage.galaxy(class=(bodyId == "galaxy")?'highlighted':'')
               a.menubutton(href='./Ogame_Galaxy.html?gal=' + basic.planets[basic.numPlanet].coordinates.gal + '&sys=' + basic.planets[basic.numPlanet].coordinates.sys target='_self' class=(bodyId == "galaxy")?'selected':'')
                 span.textlabel Galaxy
           br.clearfloat

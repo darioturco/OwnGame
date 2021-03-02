@@ -227,3 +227,7 @@ function zeroFleet(){
 function goToResourcesSettings(){
   window.location.href = "./Ogame_ResourceSetings.html";
 }
+
+function coorToCorch(coor){
+  return '[' + coor.gal + ':' + coor.sys + ':' + coor.pos + ']';
+}
