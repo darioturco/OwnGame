@@ -340,6 +340,10 @@ var exp = {
           let dataEsp = {moon, coor, playerName: res.name};
           dataEsp.planetName = moon ? res.planets[index].moon.name : res.planets[index].name;
           dataEsp.resources = moon ? res.planets[index].moon.resources : res.planets[index].resources;
+
+          /* Borrar Linea */
+          indiceDeEspionage = 8000; /* Borrar */
+
           if(indiceDeEspionage >= 2){
             // Agrego fleet
             dataEsp.fleet = moon ? res.planets[index].moon.fleet : res.planets[index].fleet;
@@ -348,7 +352,7 @@ var exp = {
               dataEsp.defense = moon ? uni.fun.zeroDefense() : res.planets[index].defense;
               if(indiceDeEspionage >= 5){
                 // Agrego research
-                dataEsp.research = res.planets[index].research;
+                dataEsp.research = res.research;
                 if(indiceDeEspionage >= 7){
                   // Agrego buildings
                   dataEsp.buildings = moon ? res.planets[index].moon.buildings : res.planets[index].buildings;

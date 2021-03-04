@@ -171,7 +171,7 @@ box-shadow:inset 0 1px 1px rgba(62,81,100,0.4)}
 .title_txt,#eventboxBlank,.blue_txt{color:#6f9fc8}
 .premium_txt{color:#2cbef2}
 .bold{font-weight:700}
-.h2,#buttonz h2,#fleet #sendfleet h2,#movement h3 a,#statistics h3,#highscoreContent h2,#traderOverview .div_trader h2{
+.h2,#buttonz h2,#fleet #sendfleet h2,#movement h3 a,#statistics h3,#highscoreContent h2,#traderOverview .div_trader h2, #spyReport h2{
   color:#6f9fc8;
   font:700 12px/28px Verdana,Arial,Helvetica,sans-serif;
 }
@@ -624,7 +624,7 @@ height:67px}
   background:#22313b;
   padding:7px;
   position:relative;
-  z-index:2;
+  /*z-index:2;*/
 }
 .tabs_btn .tabs_btn_img{
   background:transparent  url("../Imagenes/MessageIcons.png") 0 0 no-repeat;
@@ -1159,13 +1159,24 @@ font-weight:bold}
   text-decoration:none;
 }
 #planetdata a:hover{text-decoration:underline}
-#overview #planet #moon{left:30px;
-position:absolute;
-top:15px}#overview #planet #planet_as_moon{left:0;
-position:absolute;
-top:0}#overview #planet #moon img{width:109px;
-height:109px}#overview #planet #planet_as_moon img{width:135px;
-height:154px}
+#overview #planet #moon{
+  left:30px;
+  position:absolute;
+  top:15px;
+}
+#overview #planet #planet_as_moon{
+  left:0;
+  position:absolute;
+  top:0;
+}
+#overview #planet #moon img{
+  width:109px;
+  height:109px;
+}
+#overview #planet #planet_as_moon img{
+  width:135px;
+  height:154px;
+}
 .c-left,.c-right{
   height:39px;
   width:28px;
@@ -1181,21 +1192,30 @@ height:154px}
   background: url("../Imagenes/C-Right.gif") no-repeat;
   left:642px;
 }
-#selectedplanet{display:none;
-left:866px;
-position:absolute;
-top:19px}#selectedPlanetName{display:none;
-color:cyan;
-height:16px;
-left:866px;
-position:absolute;
-top:121px;
-font-size:11px;
-width:130px}#inhalt .content-box-s .content{min-height:46px;
-height:auto!important;
-height:46px;
-padding-top:2px;
-position:relative}#inhalt .content-box-s .content td.idle{padding:10px 0;
+#selectedplanet{
+  display:none;
+  left:866px;
+  position:absolute;
+  top:19px;
+}
+#selectedPlanetName{
+  display:none;
+  color:cyan;
+  height:16px;
+  left:866px;
+  position:absolute;
+  top:121px;
+  font-size:11px;
+  width:130px;
+}
+#inhalt .content-box-s .content{
+  min-height:46px;
+  height:auto!important;
+  height:46px;
+  padding-top:2px;
+  position:relative;
+}
+#inhalt .content-box-s .content td.idle{padding:10px 0;
 text-align:center;
 width:177px}#inhalt .content-box-s .content td.idle a:link,#inhalt .content-box-s .content td.idle a:visited,#inhalt .content-box-s .content td.idle a:active{display:block;
 color:#fff;
@@ -1226,16 +1246,42 @@ width:176px}#inhalt .content-box-s .build-faster-img,#inhalt .content-box-s .bui
 float:left;
 height:25px;
 margin:1px 7px 0 7px;
-width:25px}#inhalt .content-box-s .order_dm{margin-left:7px}#inhalt .content-box-s .build-faster.disabled .build-faster-img{background-position:-25px -50px}#inhalt .content-box-s .build-finish-img{background-position:0 0}#inhalt .content-box-s .build-faster.disabled .build-finish-img{background-position:0 -50px}#inhalt .content-box-s .dm_cost,#inhalt .content-box-s .buy_dm{color:#848484;
-display:inline-block}#inhalt .content-box-s .dm_cost .oldPrice{text-decoration:line-through;
-font-style:italic}img.queuePic{border:1px solid #141e26;
-border-radius:3px}a:hover img.queuePic{border-color:#e7ae46}#inhalt .content-box-s .construction .first{padding-left:0;
-padding-top:8px;
-position:relative;
-width:43px}#inhalt .content-box-s .construction .first div{position:relative}#inhalt .content-box-s .construction .data .desc{padding-left:12px;
-width:130px;
-vertical-align:middle}#inhalt .content-box-s .construction .data .timer{color:#fff}#inhalt .content-box-s .construction .data .ausbau{padding-top:8px}#inhalt .content-box-s .level{color:#a26d00}#inhalt .content-box-s .construction .data .timeProdShip{padding-top:5px}#inhalt .content-box-s .construction .data .timeProdAll{padding:5px 0 0 12px}#inhalt .content-box-s .construction .data .timeProdAll .shipAllCountdown,#inhalt .content-box-s .construction .data .timeProdShip .shipCountdown{color:#fff;
-font-weight:700}#inhalt .content-box-s .content table.construction tr.queue td{color:#848484;
+width:25px}
+#inhalt .content-box-s .order_dm{margin-left:7px}
+#inhalt .content-box-s .build-faster.disabled .build-faster-img{background-position:-25px -50px}#inhalt .content-box-s .build-finish-img{background-position:0 0}#inhalt .content-box-s .build-faster.disabled .build-finish-img{background-position:0 -50px}#inhalt .content-box-s .dm_cost,#inhalt .content-box-s .buy_dm{color:#848484;
+display:inline-block}
+#inhalt .content-box-s .dm_cost .oldPrice{
+  text-decoration:line-through;
+  font-style:italic;
+}
+img.queuePic{
+  border:1px solid #141e26;
+  border-radius:3px;
+}
+a:hover img.queuePic{border-color:#e7ae46}
+#inhalt .content-box-s .construction .first{
+  padding-left:0;
+  padding-top:8px;
+  position:relative;
+  width:43px;
+}
+#inhalt .content-box-s .construction .first div{position:relative}
+#inhalt .content-box-s .construction .data .desc{
+  padding-left:12px;
+  width:130px;
+  vertical-align:middle;
+}
+#inhalt .content-box-s .construction .data .timer{color:#fff}
+#inhalt .content-box-s .construction .data .ausbau{padding-top:8px}
+#inhalt .content-box-s .level{color:#a26d00}
+#inhalt .content-box-s .construction .data .timeProdShip{padding-top:5px}
+#inhalt .content-box-s .construction .data .timeProdAll{padding:5px 0 0 12px}
+#inhalt .content-box-s .construction .data .timeProdAll .shipAllCountdown,#inhalt .content-box-s .construction .data .timeProdShip .shipCountdown{
+  color:#fff;
+  font-weight:700;
+}
+#inhalt .content-box-s .content table.construction tr.queue td{
+  color:#848484;
 padding:4px 0;
 text-align:center;
 width:40px}#inhalt .content-box-s .queue_link{color:#fff;
@@ -2623,71 +2669,116 @@ position:fixed;
 top:25%;
 width:250px;
 z-index:10000000;
-pointer-events:none}.fadeBox p{color:#6f9fc8;
-display:inline;
-float:left;
-font:100 10px Verdana,Arial,SunSans-Regular,Sans-Serif;
-line-height:normal;
-margin:10px 0 0 10px;
-width:164px;
-overflow:hidden}.fadeBox div{display:table-cell;
-height:85px;
-padding:0;
-position:relative;
-vertical-align:middle}.fadeBox span{border:0;
-float:left;
-display:inline;
-height:43px;
-margin:3px 0 0 15px;
-width:46px}.fadeBox .success{background:transparent  url("../Imagenes/Background.jpg") no-repeat}.fadeBox .failed{background:transparent  url("../Imagenes/Background.jpg") no-repeat}#overview .fadeBox,#resources .fadeBox,#station .fadeBox,#station-moon .fadeBox{top:35%}
-#trader .fadeBox,#research .fadeBox,#shipyard .fadeBox,#defense .fadeBox,#empire .fadeBox,#premium .fadeBox{top:32%}#fleet .fadeBox,#messages .fadeBox{top:40%}#galaxy .fadeBox{top:50%}div#onet{background-color:#404040;
-color:#fff;
-font-family:Verdana,Arial,Helvetica,sans-serif;
-font-size:9px;
-font-style:normal;
-font-variant:normal;
-font-weight:normal;
-text-decoration:none;
-width:100%;
-text-align:right;
-height:20px}div#onet span#onet_partner{line-height:2}div#onet a img{padding-right:15px;
-vertical-align:top}div#banner_skyscraper{position:absolute;
-top:40px;
-left:1005px}div#banner_skyscraper a.close_details{position:absolute;
-top:0;
-right:0;
-margin:0}
-div#banner_skyscraper a{display:block}.premiumHighligt span{color:#ffd700}
+pointer-events:none}
+.fadeBox p{
+  color:#6f9fc8;
+  display:inline;
+  float:left;
+  font:100 10px Verdana,Arial,SunSans-Regular,Sans-Serif;
+  line-height:normal;
+  margin:10px 0 0 10px;
+  width:164px;
+  overflow:hidden;
+}
+.fadeBox div{
+  display:table-cell;
+  height:85px;
+  padding:0;
+  position:relative;
+  vertical-align:middle;
+}
+.fadeBox span{
+  border:0;
+  float:left;
+  display:inline;
+  height:43px;
+  margin:3px 0 0 15px;
+  width:46px;
+}
+.fadeBox .success{background:transparent  url("../Imagenes/Background.jpg") no-repeat}
+.fadeBox .failed{background:transparent  url("../Imagenes/Background.jpg") no-repeat}
+#overview .fadeBox,#resources .fadeBox,#station .fadeBox,#station-moon .fadeBox{top:35%}
+#trader .fadeBox,#research .fadeBox,#shipyard .fadeBox,#defense .fadeBox,#empire .fadeBox,#premium .fadeBox{top:32%}
+#fleet .fadeBox,#messages .fadeBox{top:40%}
+#galaxy .fadeBox{top:50%}
+div#onet{
+  background-color:#404040;
+  color:#fff;
+  font-family:Verdana,Arial,Helvetica,sans-serif;
+  font-size:9px;
+  font-style:normal;
+  font-variant:normal;
+  font-weight:normal;
+  text-decoration:none;
+  width:100%;
+  text-align:right;
+  height:20px;
+}
+div#onet span#onet_partner{line-height:2}
+div#onet a img{
+  padding-right:15px;
+  vertical-align:top;
+}
+div#banner_skyscraper{
+  position:absolute;
+  top:40px;
+  left:1005px;
+}
+div#banner_skyscraper a.close_details{
+  position:absolute;
+  top:0;
+  right:0;
+  margin:0;
+}
+div#banner_skyscraper a{display:block}
+.premiumHighligt span{color:#ffd700}
 .planetMoveIcons{
   background-image: url("../Imagenes/Planet_Settings.png");
   background-repeat:no-repeat;
   width:17px;
   height:17px;
 }
-.questionIcons{background-image: url("../Imagenes/Background.jpg");
-background-repeat:no-repeat;
-width:17px;
-height:17px}.MobilequestionIcons{background-image: url("../Imagenes/Background.jpg");
-background-repeat:no-repeat;
-width:30px;
-height:30px}div#resourceSettings{width:315px;
-height:210px;
-float:right;
-margin:5px 15px 0 5px;
-background:#13181d;
-position:relative;
-z-index:2}div#resourceSettings td{padding:2px}.ally_apply_desc_div{width:522px;
-word-wrap:break-word;
--ms-word-wrap:break-word;
-white-space:pre-line;
-word-break:normal}.newpoints{color:gold!important}div#feedback{height:330px;
-border:2px solid black;
-margin:1px auto 0 1px;
-color:#6f9fc8;
-background-color:#0d1014;
-overflow:auto;
-text-align:center;
-margin:0}form#feedback{width:100%}form#feedback textarea{max-width:500px;
+.questionIcons{
+  background-image: url("../Imagenes/Background.jpg");
+  background-repeat:no-repeat;
+  width:17px;
+  height:17px;
+}
+.MobilequestionIcons{
+  background-image: url("../Imagenes/Background.jpg");
+  background-repeat:no-repeat;
+  width:30px;
+  height:30px;
+}
+div#resourceSettings{
+  width:315px;
+  height:210px;
+  float:right;
+  margin:5px 15px 0 5px;
+  background:#13181d;
+  position:relative;
+  z-index:2;
+}
+div#resourceSettings td{padding:2px}
+.ally_apply_desc_div{
+  width:522px;
+  word-wrap:break-word;
+  -ms-word-wrap:break-word;
+  white-space:pre-line;
+  word-break:normal;
+}
+.newpoints{color:gold!important}
+div#feedback{
+  height:330px;
+  border:2px solid black;
+  margin:1px auto 0 1px;
+  color:#6f9fc8;
+  background-color:#0d1014;
+  overflow:auto;
+  text-align:center;
+  margin:0;
+}
+form#feedback{width:100%}form#feedback textarea{max-width:500px;
 width:500px;
 height:200px}form#feedback .field{margin-top:15px;
 width:100%}.allylogo{border:#848484 solid thin;
@@ -2704,9 +2795,13 @@ color:#6f9fc8;
 background-color:#0d1014;
 overflow:auto;
 margin:1px auto 0 1px;
-text-align:center}div#announcement .text{padding:10px 20px 10px 20px}div#announcement a.close_details{margin:0;
-float:right;
-display:inline}.tipsPlayer{text-decoration:underline;
+text-align:center}div#announcement .text{padding:10px 20px 10px 20px}
+div#announcement a.close_details{
+  margin:0;
+  float:right;
+  display:inline;
+}
+.tipsPlayer{text-decoration:underline;
 color:white}#happyedit h2{margin-top:10px;
 margin-bottom:10px;
 font-size:1.5em}#happyedit .tabsbelow li,#happyedit .tabsbelow li a{width:100px}.searchMark{border-bottom:1px solid grey;
@@ -2814,13 +2909,13 @@ figure.planetIcon.planet{display:none}
   background:transparent  url("../Imagenes/Resources.png") 0 0 no-repeat;
   width:48px;
   height:32px;
-  float:left
+  float:left;
 }
 .resourceIconSmall{
   background:transparent  url("../Imagenes/Resources.png") 0 0 no-repeat;
   width:30px;
   height:20px;
-  float:left
+  float:left;
 }
 .resourceIcon.metal{background-position:0 -160px !important}
 .resourceIcon.crystal{background-position:-48px -160px !important}
@@ -4308,7 +4403,11 @@ margin:0}#fleet #sftcontainer a.close{
 margin:0 5px 0 0;
 text-align:center;
 width:100%}
-#fleet a#sendall:link,#fleet a#sendall:visited,#fleet a#sendall:hover,#fleet a#sendall:active{text-decoration:none}#sftcontainer a.close_details{margin:-1px 8px 0 0}#sftcontainer #fleetTemplatesEdit .shipDesc{padding:4px 5px}#sftcontainer #fleetTemplatesEdit .shipDesc img{float:left;
+#fleet a#sendall:link,#fleet a#sendall:visited,#fleet a#sendall:hover,#fleet a#sendall:active{text-decoration:none}
+#sftcontainer a.close_details{margin:-1px 8px 0 0}
+#sftcontainer #fleetTemplatesEdit .shipDesc{padding:4px 5px}
+#sftcontainer #fleetTemplatesEdit .shipDesc img{
+  float:left;
 margin:1px 10px 2px 0}
 #sftcontainer .fleetDesc a:link,#sftcontainer .fleetDesc a:visited,#sftcontainer .fleetDesc a:hover,#sftcontainer .fleetDesc a:active{display:block}
 #sftcontainer .fleetDesc-hover{background-color:#212933}
@@ -5834,7 +5933,8 @@ width:110px;
 text-overflow:ellipsis;
 display:inline-block;
 white-space:nowrap}#eventFooter{background:transparent  url("../Imagenes/Background.jpg") 2px 0 no-repeat;
-height:17px}#eventContent .odd,#eventContent .part-even{background-color:#13181d}.missionFleet{text-align:left}#eventHeader a.close_details{right:5px;
+height:17px}#eventContent .odd,#eventContent .part-even{background-color:#13181d}.missionFleet{text-align:left}
+#eventHeader a.close_details{right:5px;
 position:absolute;
 margin:7px 30px 7px 7px;
 }
@@ -7312,5 +7412,184 @@ div #metalInfoDiv .productionCant, div #crystalInfoDiv .productionCant, div #deu
 
 #messages .msg_content input {
   margin: 4px 10px 0 10px;
-
 }
+
+#messages #spyDivReport {
+  height: 100vh;
+  width: 100vw;
+  background: rgba(50, 50, 50, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  animation-duration: 0.15s;
+  transform-origin: center;
+  animation-fill-mode: forwards;
+  z-index: 999;
+  border-radius: 10px;
+}
+
+#messages #spyReport {
+  position: fixed;
+  width: 666px;
+  height: 640px;
+  background: #0c1014;
+  overflow: hidden auto;
+  top: 32px;
+  left: calc(50vw - 333px);
+  z-index: 9999;
+  animation-duration: 0.18s;
+  transform-origin: center;
+  animation-fill-mode: forwards;
+  display: none;
+  animation-timing-function: cubic-bezier(.75,.35,.64,1.28);
+}
+
+#messages #spyReport #spyTittle {
+  background:transparent  url("../Imagenes/Bar.gif") 0 0 no-repeat;
+}
+
+#messages #spyReport #spyGeneralInfo > p {
+  margin-left: 16px;
+}
+
+#messages #spyReport #spyCross {
+  bottom: 24px;
+  position: relative;
+}
+
+#messages #spyReport #spyResources > h2, #messages #spyReport #spyFleet > h2, #messages #spyReport #spyDefence > h2, #messages #spyReport #spyResearch > h2, #messages #spyReport #spyBuildings > h2, #messages #spyReport #spyMoonBuildings > h2 {
+  background:transparent  url("../Imagenes/Line.gif") 0 0/98% no-repeat;
+  margin-left: 6px;
+}
+
+#messages #spyReport #divSpyResoucesGrid {
+  display: grid;
+  grid-template: repeat(2, 50%) / repeat(2, 50%);
+}
+
+#messages #spyReport #divSpyFleetGrid, #messages #spyReport #divSpyDefenceGrid, #messages #spyReport #divSpyResearchGrid, #messages #spyReport #divSpyBuildingsGrid, #messages #spyReport #divSpyMoonBuildingsGrid {
+  display: grid;
+  grid-template: repeat(5, 20%) / repeat(2, 50%);
+}
+
+#messages #spyReport #divSpyResoucesGrid > div, #messages #spyReport #divSpyFleetGrid > div, #messages #spyReport #divSpyDefenceGrid > div, #messages #spyReport #divSpyResearchGrid > div, #messages #spyReport #divSpyBuildingsGrid > div, #messages #spyReport #divSpyMoonBuildingsGrid > div{
+  width: 200px;
+  height: 32px;
+  margin-left: 30px;
+}
+
+#messages #spyReport #divSpyResoucesGrid .spyMiniImg{
+  width:48px;
+  height:32px;
+  display: inline-block;
+}
+
+#messages #spyReport .spyMiniImg{
+  width:32px;
+  height:32px;
+  display: inline-block;
+}
+
+#messages #spyReport #divSpyResoucesGrid p, #messages #spyReport #divSpyFleetGrid p, #messages #spyReport #divSpyDefenceGrid p, #messages #spyReport #divSpyResearchGrid p, #messages #spyReport #divSpyBuildingsGrid p, #messages #spyReport #divSpyMoonBuildingsGrid p{
+  height:34px;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0 0 8px;
+}
+
+#messages .openBackgroud {
+  animation-name: openBackgroud;
+}
+
+#messages .closeBackgroud {
+  animation-name: closeBackgroud;
+}
+
+@keyframes openBackgroud {
+  0%{
+    transform: scale(0, 0);
+  }
+  100%{
+    transform: scale(1, 1);
+  }
+}
+
+@keyframes closeBackgroud {
+  0%{
+    transform: scale(1, 1);
+    display: block;
+  }
+  100%{
+    transform: scale(0, 0);
+    display: none;
+  }
+}
+
+#messages #spyReport #spyMetalImg{background:transparent  url("../Imagenes/Resources.png") 0 -160px no-repeat;}
+#messages #spyReport #spyCrystalImg{background:transparent  url("../Imagenes/Resources.png") -48px -160px no-repeat;}
+#messages #spyReport #spyDeuteriumImg{background:transparent  url("../Imagenes/Resources.png") -96px -160px no-repeat;}
+#messages #spyReport #spyEnergyImg{background:transparent  url("../Imagenes/Resources.png") -144px -160px no-repeat;}
+#messages #spyReport #spyLightImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") 0 0/2400% no-repeat;}
+#messages #spyReport #spyHeavyImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -32px 0/2400% no-repeat;}
+#messages #spyReport #spyCruiserImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -64px 0/2400% no-repeat;}
+#messages #spyReport #spyBattleshipImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -96px 0/2400% no-repeat;}
+#messages #spyReport #spyBattlecruiserImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -128px 0/2400% no-repeat;}
+#messages #spyReport #spyBomberImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -160px 0/2400% no-repeat;}
+#messages #spyReport #spyDestroyerImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -192px 0/2400% no-repeat;}
+#messages #spyReport #spyDeathstarImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -224px 0/2400% no-repeat;}
+#messages #spyReport #spySmallImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -256px 0/2400% no-repeat;}
+#messages #spyReport #spyLargeImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -288px 0/2400% no-repeat;}
+#messages #spyReport #spyColonyImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -320px 0/2400% no-repeat;}
+#messages #spyReport #spyRecyclerImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -352px 0/2400% no-repeat;}
+#messages #spyReport #spyEspionageImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -384px 0/2400% no-repeat;}
+#messages #spyReport #spySolarImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -416px 0/2400% no-repeat;}
+#messages #spyReport #spyRocketLauncherImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -448px 0/2400% no-repeat;}
+#messages #spyReport #spyLightLaserImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -480px 0/2400% no-repeat;}
+#messages #spyReport #spyHeavyLaserImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -512px 0/2400% no-repeat;}
+#messages #spyReport #spyGaussImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -544px 0/2400% no-repeat;}
+#messages #spyReport #spyIonImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -576px 0/2400% no-repeat;}
+#messages #spyReport #spyPlasmaImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -608px 0/2400% no-repeat;}
+#messages #spyReport #spySmallShieldImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -640px 0/2400% no-repeat;}
+#messages #spyReport #spyLargeShieldImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -672px 0/2400% no-repeat;}
+#messages #spyReport #spyAntiMissilesImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -704px 0/2400% no-repeat;}
+#messages #spyReport #spyMissilesImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -736px 0/2400% no-repeat;}
+#messages #spyReport #spyEnergyTechImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") 0 0/1600% no-repeat;}
+#messages #spyReport #spyLaserTechImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -32px 0/1600% no-repeat;}
+#messages #spyReport #spyIonTechImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -64px 0/1600% no-repeat;}
+#messages #spyReport #spyHyperspaceTechImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -96px 0/1600% no-repeat;}
+#messages #spyReport #spyPlasmaTechImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -128px 0/1600% no-repeat;}
+#messages #spyReport #spyEspionageTechImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -256px 0/1600% no-repeat;}
+#messages #spyReport #spyComputerImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -288px 0/1600% no-repeat;}
+#messages #spyReport #spyAstrophysicsImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -320px 0/1600% no-repeat;}
+#messages #spyReport #spyIntergalacticImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -352px 0/1600% no-repeat;}
+#messages #spyReport #spyGravitonImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -384px 0/1600% no-repeat;}
+#messages #spyReport #spyCombustionDriveImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -160px 0/1600% no-repeat;}
+#messages #spyReport #spyImpulseDriveImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -192px 0/1600% no-repeat;}
+#messages #spyReport #spyHyperspaceDriveImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -224px 0/1600% no-repeat;}
+#messages #spyReport #spyWeaponsImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -448px 0/1600% no-repeat;}
+#messages #spyReport #spyShieldingImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -480px 0/1600% no-repeat;}
+#messages #spyReport #spyArmourImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -416px 0/1600% no-repeat;}
+#messages #spyReport #spyMetalMineImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") 0 0/1200% no-repeat;}
+#messages #spyReport #spyCrystalMineImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") -32px 0/1200% no-repeat;}
+#messages #spyReport #spyDeuteriumMineImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") -64px 0/1200% no-repeat;}
+#messages #spyReport #spySolarPlantImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") -96px 0/1200% no-repeat;}
+#messages #spyReport #spyFusionReactorImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") -128px 0/1200% no-repeat;}
+#messages #spyReport #spyMetalStorageImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") -192px 0/1200% no-repeat;}
+#messages #spyReport #spyCrystalStorageImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") -224px 0/1200% no-repeat;}
+#messages #spyReport #spyDeuteriumStorageImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") -256px 0/1200% no-repeat;}
+#messages #spyReport #spyRoboticsFactoryImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails.jpg") 0 0/700% no-repeat;}
+#messages #spyReport #spyShipyardImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails.jpg") -32px 0/700% no-repeat;}
+#messages #spyReport #spyResearchLabImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails.jpg") -64px 0/700% no-repeat;}
+#messages #spyReport #spyAllianceImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails.jpg") -96px 0/700% no-repeat;}
+#messages #spyReport #spySiloImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails.jpg") -128px 0/700% no-repeat;}
+#messages #spyReport #spyNaniteFactoryImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails.jpg") -160px 0/700% no-repeat;}
+#messages #spyReport #spyTerraformerImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails.jpg") -192px 0/700% no-repeat;}
+#messages #spyReport #spyLunarBaseImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") 0 0/800% no-repeat;}
+#messages #spyReport #spyPhalanxImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") -32px 0/800% no-repeat;}
+#messages #spyReport #spySpaceDockImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") -64px 0/800% no-repeat;}
+#messages #spyReport #spyMarketplaceImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") -96px 0/800% no-repeat;}
+#messages #spyReport #spyLunarSunshadeImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") -128px 0/800% no-repeat;}
+#messages #spyReport #spyLunarBeamImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") -160px 0/800% no-repeat;}
+#messages #spyReport #spyJumpGateImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") -192px 0/800% no-repeat;}
+#messages #spyReport #spyMoonShieldImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") -224px 0/800% no-repeat;}

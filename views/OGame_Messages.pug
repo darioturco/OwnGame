@@ -29,12 +29,311 @@ block content
             ul#listNode.tab_inner
               li.no_msg
                 | There are currently no messages available in this tab
-
-
         .footer
+
         li#orginalMessage.msg(style='display: none')
           a.fright(href='javascript: void(0);' onclick='deleteMessage(this)')
             span.icon_nf.icon_refuse
           span.msg_title.blue_txt Titulo
           span.msg_date.fright 30.11.2019 12:46:08
-          span.msg_content Hola este es el primer mensaje super hardcoreado XD
+          span.msg_content Contenido del mensage.
+
+        #spyDivReport.closeBackgroud(onClick="closeSpyReport(this)")
+        #spyReport
+          #spyGeneralInfo
+            h2#spyTittle Spy Report
+            a#spyCross.close_details(href='javascript: void(0);' onclick='closeSpyReport(this)')
+            p#spyDateComplete 30.11.2019 12:46:08
+            p#spyPlanetInfo Planeta
+
+          #spyResources
+            h2 Resources
+            #divSpyResoucesGrid
+              #spyMetal
+                #spyMetalImg.spyMiniImg
+                p Metal:
+                p#spyMetalContent -
+              #spyCrystal
+                #spyCrystalImg.spyMiniImg
+                p Crystal:
+                p#spyCrystalContent -
+              #spyDeuterium
+                #spyDeuteriumImg.spyMiniImg
+                p Deuterium:
+                p#spyDeuteriumContent -
+              #spyEnergy
+                #spyEnergyImg.spyMiniImg
+                p Energy:
+                p#spyEnergyContent -
+
+          #spyFleet
+            h2 Fleet
+            #divSpyFleetGrid
+              #spyLight
+                #spyLightImg.spyMiniImg
+                p Light Fighter:
+                p#spyLightContent -
+              #spyHeavy
+                #spyHeavyImg.spyMiniImg
+                p Heavy Fighter:
+                p#spyHeavyContent -
+              #spyCruiser
+                #spyCruiserImg.spyMiniImg
+                p Cruiser:
+                p#spyCruiserContent -
+              #spyBattleship
+                #spyBattleshipImg.spyMiniImg
+                p Battleship:
+                p#spyBattleshipContent -
+              #spyBattlecruiser
+                #spyBattlecruiserImg.spyMiniImg
+                p Battlecruiser:
+                p#spyBattlecruiserContent -
+              #spyBomber
+                #spyBomberImg.spyMiniImg
+                p Bomber:
+                p#spyBomberContent -
+              #spyDestroyer
+                #spyDestroyerImg.spyMiniImg
+                p Destroyer:
+                p#spyDestroyerContent -
+              #spyDeathstar
+                #spyDeathstarImg.spyMiniImg
+                p Deathstar:
+                p#spyDeathstarContent -
+              #spySmall
+                #spySmallImg.spyMiniImg
+                p Small Cargo:
+                p#spySmallContent -
+              #spyLarge
+                #spyLargeImg.spyMiniImg
+                p Large Cargo:
+                p#spyLargeContent -
+              #spyColony
+                #spyColonyImg.spyMiniImg
+                p Colony Ship:
+                p#spyColonyContent -
+              #spyRecycler
+                #spyRecyclerImg.spyMiniImg
+                p Recycler:
+                p#spyRecyclerContent -
+              #spyEspionage
+                #spyEspionageImg.spyMiniImg
+                p Espionage Probe:
+                p#spyEspionageContent -
+              #spySolar
+                #spySolarImg.spyMiniImg
+                p Solar Satellite:
+                p#spySolarContent -
+
+          #spyDefence
+            h2 Defense
+            #divSpyDefenceGrid
+              #spyRocketLauncher
+                #spyRocketLauncherImg.spyMiniImg
+                p Rocket Launcher:
+                p#spyRocketLauncherContent -
+              #spyLightLaser
+                #spyLightLaserImg.spyMiniImg
+                p Light Laser:
+                p#spyLightLaserContent -
+              #spyHeavyLaser
+                #spyHeavyLaserImg.spyMiniImg
+                p Heavy Laser:
+                p#spyHeavyLaserContent -
+              #spyGauss
+                #spyGaussImg.spyMiniImg
+                p Gauss Cannon:
+                p#spyGaussContent -
+              #spyIon
+                #spyIonImg.spyMiniImg
+                p Ion Cannon:
+                p#spyIonContent -
+              #spyPlasma
+                #spyPlasmaImg.spyMiniImg
+                p Plasma Turret:
+                p#spyPlasmaContent -
+              #spySmallShield
+                #spySmallShieldImg.spyMiniImg
+                p Small Shield Dome:
+                p#spySmallShieldContent -
+              #spyLargeShield
+                #spyLargeShieldImg.spyMiniImg
+                p Large Shield Dome:
+                p#spyLargeShieldContent -
+              #spyAntiMissiles
+                #spyAntiMissilesImg.spyMiniImg
+                p Anti-Ballistic Missiles:
+                p#spyAntiMissilesContent -
+              #spyMissiles
+                #spyMissilesImg.spyMiniImg
+                p Interplanetary Missiles:
+                p#spyMissilesContent -
+
+          #spyResearch
+            h2 Research
+            #divSpyResearchGrid
+              #spyEnergyTech
+                #spyEnergyTechImg.spyMiniImg
+                p Energy Technology:
+                p#spyEnergyTechContent -
+              #spyLaserTech
+                #spyLaserTechImg.spyMiniImg
+                p Laser Technology:
+                p#spyLaserTechContent -
+              #spyIonTech
+                #spyIonTechImg.spyMiniImg
+                p Ion Technology:
+                p#spyIonTechContent -
+              #spyHyperspaceTech
+                #spyHyperspaceTechImg.spyMiniImg
+                p Hyperspace Technology:
+                p#spyHyperspaceTechContent -
+              #spyPlasmaTech
+                #spyPlasmaTechImg.spyMiniImg
+                p Plasma Technology:
+                p#spyPlasmaTechContent -
+              #spyEspionageTech
+                #spyEspionageTechImg.spyMiniImg
+                p Espionage Technology:
+                p#spyEspionageTechContent -
+              #spyComputer
+                #spyComputerImg.spyMiniImg
+                p Computer Technology:
+                p#spyComputerContent -
+              #spyAstrophysics
+                #spyAstrophysicsImg.spyMiniImg
+                p Astrophysics:
+                p#spyAstrophysicsContent -
+              #spyIntergalactic
+                #spyIntergalacticImg.spyMiniImg
+                p Intergalactic Research:
+                p#spyIntergalacticContent -
+              #spyGraviton
+                #spyGravitonImg.spyMiniImg
+                p Graviton Technology:
+                p#spyGravitonContent -
+              #spyCombustionDrive
+                #spyCombustionDriveImg.spyMiniImg
+                p Combustion Drive:
+                p#spyCombustionDriveContent -
+              #spyImpulseDrive
+                #spyImpulseDriveImg.spyMiniImg
+                p Impulse Drive:
+                p#spyImpulseDriveContent -
+              #spyHyperspaceDrive
+                #spyHyperspaceDriveImg.spyMiniImg
+                p Hyperspace Drive:
+                p#spyHyperspaceDriveContent -
+              #spyWeapons
+                #spyWeaponsImg.spyMiniImg
+                p Weapons Technology:
+                p#spyWeaponsContent -
+              #spyShielding
+                #spyShieldingImg.spyMiniImg
+                p Shielding Technology:
+                p#spyShieldingContent -
+              #spyArmour
+                #spyArmourImg.spyMiniImg
+                p Armour Technology:
+                p#spyArmourContent -
+
+          #spyBuildings
+            h2 Buildings
+            #divSpyBuildingsGrid
+              #spyMetalMine
+                #spyMetalMineImg.spyMiniImg
+                p Metal Mine:
+                p#spyMetalMineContent -
+              #spyCrystalMine
+                #spyCrystalMineImg.spyMiniImg
+                p Crystal Mine:
+                p#spyCrystalMineContent -
+              #spyDeuteriumMine
+                #spyDeuteriumMineImg.spyMiniImg
+                p Deuterium Mine:
+                p#spyDeuteriumMineContent -
+              #spySolarPlant
+                #spySolarPlantImg.spyMiniImg
+                p Solar Plant:
+                p#spySolarPlantContent -
+              #spyFusionReactor
+                #spyFusionReactorImg.spyMiniImg
+                p Fusion Reactor:
+                p#spyFusionReactorContent -
+              #spyMetalStorage
+                #spyMetalStorageImg.spyMiniImg
+                p Metal Storage:
+                p#spyMetalStorageContent -
+              #spyCrystalStorage
+                #spyCrystalStorageImg.spyMiniImg
+                p Crystal Storage:
+                p#spyCrystalStorageContent -
+              #spyDeuteriumStorage
+                #spyDeuteriumStorageImg.spyMiniImg
+                p Deuterium Storage:
+                p#spyDeuteriumStorageContent -
+              #spyRoboticsFactory
+                #spyRoboticsFactoryImg.spyMiniImg
+                p Robotics Factory:
+                p#spyRoboticsFactoryContent -
+              #spyShipyard
+                #spyShipyardImg.spyMiniImg
+                p Shipyard:
+                p#spyShipyardContent -
+              #spyResearchLab
+                #spyResearchLabImg.spyMiniImg
+                p Research Lab:
+                p#spyResearchLabContent -
+              #spyAlliance
+                #spyAllianceImg.spyMiniImg
+                p Alliance Depot:
+                p#spyAllianceContent -
+              #spySilo
+                #spySiloImg.spyMiniImg
+                p Silo:
+                p#spySiloContent -
+              #spyNaniteFactory
+                #spyNaniteFactoryImg.spyMiniImg
+                p Nanite Factory:
+                p#spyNaniteFactoryContent -
+              #spyTerraformer
+                #spyTerraformerImg.spyMiniImg
+                p Terraformer:
+                p#spyTerraformerContent -
+
+          #spyMoonBuildings
+            h2 Moon Buildings
+            #divSpyMoonBuildingsGrid
+              #spyLunarBase
+                #spyLunarBaseImg.spyMiniImg
+                p Lunar Base:
+                p#spyLunarBaseContent -
+              #spyPhalanx
+                #spyPhalanxImg.spyMiniImg
+                p Phalanx:
+                p#spyPhalanxContent -
+              #spySpaceDock
+                #spySpaceDockImg.spyMiniImg
+                p Space Dock:
+                p#spySpaceDockContent -
+              #spyMarketplace
+                #spyMarketplaceImg.spyMiniImg
+                p Marketplace:
+                p#spyMarketplaceContent -
+              #spyLunarSunshade
+                #spyLunarSunshadeImg.spyMiniImg
+                p Lunar Sunshade:
+                p#spyLunarSunshadeContent -
+              #spyLunarBeam
+                #spyLunarBeamImg.spyMiniImg
+                p Lunar Beam:
+                p#spyLunarBeamContent -
+              #spyJumpGate
+                #spyJumpGateImg.spyMiniImg
+                p Jump Gate:
+                p#spyJumpGateContent -
+              #spyMoonShield
+                #spyMoonShieldImg.spyMiniImg
+                p Moon Shield:
+                p#spyMoonShieldContent -

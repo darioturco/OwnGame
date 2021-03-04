@@ -5,9 +5,15 @@ block content
     #planet(style='background-image:url(' + urlImg + ');')
       #detailWrapper
         if basic.planets[basic.numPlanet].moon.active
-          #moon(style='display: ' + ((basic.planets[basic.numPlanet].moon.active == true && basic.moon == false) ? 'block' : 'none'))
-            a.tooltipBottom.tpd-hideOnClickOutside(href='/Ogame_Overview.html?moon=true')
-              img(alt=' ' src='./Imagenes/Planets/Moon_Big_' + basic.planets[basic.numPlanet].moon.type + '.gif')
+
+          if basic.moon
+            #planet_as_moon
+              a.tooltipBottom.tpd-hideOnClickOutside(href='/Ogame_Overview.html?moon=false')
+                img(alt=' ' src='./Imagenes/Planets/fromMoon/From_Planet_' + basic.planets[basic.numPlanet].type + '.jpg')
+          else
+            #moon
+              a.tooltipBottom.tpd-hideOnClickOutside(href='/Ogame_Overview.html?moon=true')
+                img(alt=' ' src='./Imagenes/Planets/Moon_Big_' + basic.planets[basic.numPlanet].moon.type + '.gif')
         #header_text
           h2
             span.openPlanetRenameGiveupBox
