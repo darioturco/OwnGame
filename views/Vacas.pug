@@ -25,6 +25,7 @@ block content
               th.ct_th.ct_sortable_title Coordinates
               th.ct_th.textCenter Actions
           tbody
+            - console.log(vacas);
             each item, index in vacas
               tr
                 th #{index + 1}
@@ -36,14 +37,14 @@ block content
                     a.coordinatesLink(href='./Ogame_Galaxy.html?gal=' + item.coordinates.gal + '&sys=' + item.coordinates.sys target='_self')
                       p [#{item.coordinates.gal}:#{item.coordinates.sys}:#{item.coordinates.pos}]
                 th.action
-                  a.tooltip(href='#' onclick='sendEspionage(' + item.coordinates.gal + ', ' + item.coordinates.sys + ', ' + item.coordinates.pos + ');' title='espiar')
+                  a.tooltip(href='#' onclick='sendEspionageFun(' + item.coordinates.gal + ', ' + item.coordinates.sys + ', ' + item.coordinates.pos + ');' title='espiar')
                     span.icon.icon_eye
-                  a.tooltip(href='#' onclick='spyReport(' + item.coordinates.gal + ', ' + item.coordinates.sys + ', ' + item.coordinates.pos + ');' title='reporte de espionage')
-                    span.icon.icon_adressbook
                   a.tooltip(href='#' onclick='personalAttack(' + item.coordinates.gal + ', ' + item.coordinates.sys + ', ' + item.coordinates.pos + ');' title='ataque personalisado')
                     span.icon.icon_missile
-                  a.tooltip(href='#' onclick='vacaAttack(' + item.coordinates.gal + ', ' + item.coordinates.sys + ', ' + item.coordinates.pos + ');' title='ataque vaca')
+                  a.tooltip(href='#' onclick='vacaAttack(' + item.coordinates.gal + ', ' + item.coordinates.sys + ', ' + item.coordinates.pos + ', true);' title='ataque vaca small')
                     span.icon.icon_against
+                  a.tooltip(href='#' onclick='vacaAttack(' + item.coordinates.gal + ', ' + item.coordinates.sys + ', ' + item.coordinates.pos + ', false);' title='ataque vaca large')
+                    span.icon.icon.icon_close
                   a.tooltip(href='#' onclick='removeVaca(this, ' + item.coordinates.gal + ', ' + item.coordinates.sys + ', ' + item.coordinates.pos + ');' title='eliminar')
                     span.icon.icon_mail
       .footer

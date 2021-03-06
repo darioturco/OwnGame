@@ -6,6 +6,7 @@ var spyDiv = undefined, spyClose = undefined;
 var spyDate, spyPlanetInfo;
 var fleetDivSpy, defenceDivSpy, researchDivSpy, buildingDivSpy, moonDivSpy;
 var resourcesSpy, fleetSpy, defenceSpy, researchSpy, buildingSpy, moonSpy;
+var ready = false;
 
 setTimeout(() => {
   original = document.getElementById('orginalMessage');
@@ -27,6 +28,7 @@ setTimeout(() => {
           otherList.push(obj.list[i]);
       }
     }
+    ready = true;
     messageList = obj.list;
     changeTypeMessage(1, true);
   });
@@ -86,8 +88,8 @@ function cargaData(conteiner, obj, num){
         text += "</pre>";
       }
       // Pongo los botones para atacar
-      text += "<input type='button' value='Small(" + getCantShips(obj.data.resources, 5000) + ")' onClick='sendCargos(" + getCantShips(obj.data.resources, 5000) + ", true)'/>" +
-              "<input type='button' value='Large(" + getCantShips(obj.data.resources, 25000) + ")' onClick='sendCargos(" + getCantShips(obj.data.resources, 25000) + ", false)' />" +
+      text += "<input type='button' value='Small(" + getCantShips(obj.data.resources, 5000) + ")' onClick='sendCargos(" + getCantShips(obj.data.resources, 5000) + ", true, " + num + ")' />" +
+              "<input type='button' value='Large(" + getCantShips(obj.data.resources, 25000) + ")' onClick='sendCargos(" + getCantShips(obj.data.resources, 25000) + ", false, " + num + ")' />" +
               "<input type='button' value='Attack' onClick='attackCustom(" + obj.data.coor.gal + ", " + obj.data.coor.sys + ", " + obj.data.coor.pos + ")' />" +
               "<input type='button' value='See Report' onClick='seeCompleteReport(" + num + ")'/>";
       break;
@@ -161,7 +163,6 @@ function seeCompleteReport(num){
       moonDivSpy.style.display = 'none';
     }
   }
-  console.log(espList[num]);
 }
 
 function closeSpyReport(e){
@@ -173,9 +174,35 @@ function closeSpyReport(e){
   }
 }
 
-function sendCargos(cant, small){
-  /* Completar esta funcion */
-  console.log("Mando: " + cant + " de naves " + small);
+async function sendCargos(cant, small, num){
+  if(ready){
+    let data = {};
+    ready = false;
+    data.ships = zeroFleet();
+    if(small){
+      data.ships.smallCargo = cant;
+    }else{
+      data.ships.largeCargo = cant;
+    }
+
+    data.coorDesde = {gal: parseInt(document.getElementsByName('ogame-planet-galaxy')[0].content),
+                      sys: parseInt(document.getElementsByName('ogame-planet-system')[0].content),
+                      pos: parseInt(document.getElementsByName('ogame-planet-position')[0].content)};
+
+    data.coorHasta = {gal: espList[num].data.coor.gal, sys: espList[num].data.coor.sys, pos: espList[num].data.coor.pos};
+    data.destination = espList[num].data.moon ? 2 : 1; // 1 = planeta, 2 = moon, 3 = debris
+    data.porce = 10;
+    data.mission = 7;
+    data.resources = {metal: 0, crystal: 0, deuterium: 0};
+    let res = await fetch('./api/set/addFleetMovement', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+    let objRes = await res.json();
+    ready = true;
+    if(objRes.ok){
+      sendTick();
+    }else{
+      sendPopUp(objRes.mes);
+    }
+  }
 }
 
 function attackCustom(gal, sys, pos){

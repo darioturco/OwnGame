@@ -173,26 +173,29 @@ function setInfo(){
       cont++;
     }
   }
-  if(body == 'resources'){
-    if(toggle == "solarSatellite"){
+  if(body === 'resources'){
+    if(toggle === "solarSatellite"){
       inputCantConteiner.style.display = 'block';
     }else{
       inputCantConteiner.style.display = 'none';
     }
   }
   nameText.innerHTML = info[toggle].name;
-  levelText.innerHTML = ((toggle == 'solarSatellite') ? 'Number: ' : level) + info[toggle].level;
+  levelText.innerHTML = ((toggle === 'solarSatellite') ? 'Number: ' : level) + info[toggle].level;
   timeText.innerHTML = segundosATiempo(tiempoParaEdificios(info[toggle].metal + info[toggle].crystal));// calcula el tiempo y lo pasa a segundos
   descriptionText.innerHTML = info[toggle].description;
   imgInfo.id = toggle;
   canPress = true;
-  if((info[toggle].tech == false) || doing || (inMoon && body != 'station') || (totalRosources[0] < info[toggle].metal) || (totalRosources[1] < info[toggle].crystal) || (totalRosources[2] < info[toggle].deuterium)){
+  console.log(doing);
+  if((info[toggle].tech === false) || (doing && toggle !== 'solarSatellite') || (inMoon && body != 'station') || (totalRosources[0] < info[toggle].metal) || (totalRosources[1] < info[toggle].crystal) || (totalRosources[2] < info[toggle].deuterium)){
+    console.log("true");
     canPress = false;
     colorButton.classList.add("build-it_disabled");
     posibleText.innerHTML = segundosATiempo(minimoPara(totalRosources, resourcesList));
     if(info[toggle].tech == false) posibleText.innerHTML = " req. are no met";
     if(doing) cancelButton.style.display = (info.doing.item == toggle) ? 'block' : 'none';
   }else{
+    console.log("false");
     posibleText.innerHTML = " now";
     colorButton.classList.remove("build-it_disabled");
   }

@@ -12,7 +12,11 @@ router.all('/*', (req, res, next) => {
     if(isFinite(req.query.planet)) uni.planeta = parseInt(req.query.planet);
     if(req.query.moon != undefined) uni.moon = (req.query.moon == 'true');
     if(uni.moon && uni.player.planets[uni.planeta].moon.active === false) uni.moon = false;
-    uni.base.getPlayer(uni.player.name, next, false);
+    if(uni.player != undefined){
+      uni.base.getPlayer(uni.player.name, next, false);
+    }else{
+      uni.base.getListCord(next);
+    }
   }else{
     next();
   }
@@ -22,12 +26,12 @@ router.all('/*', (req, res, next) => {
 router.get('/', (req, res, next) => {
   if(process.debugMode){
     //uni.base.deleteCollection(["jugadores", "universo"]);
-    //uni.createUniverse(process.env.UNIVERSE_NAME, 5, {name: "", inicio: 0, maxGalaxies: 9, donutGalaxy: true, donutSystem: true, speed: 1, speedFleet: 5000, fleetDebris: 30, defenceDebris: 0, maxMoon: 20, rapidFire: true, repearDefenses: true});
-    //uni.addNewPlayer("dturco", 1);
-    //uni.base.setPlanetDataDev(uni.player.planets[0].coordinates, "dturco");
-    //uni.base.setMoonDataDev(uni.player.planets[0].coordinates, "dturco");
+    //uni.createUniverse(process.env.UNIVERSE_NAME, 5, {name: "", inicio: 0, maxGalaxies: 9, donutGalaxy: true, donutSystem: true, speed: 1, speedFleet: 100, fleetDebris: 30, defenceDebris: 0, maxMoon: 20, rapidFire: true, repearDefenses: true});
+    //uni.base.addNewPlayer("dturco", 1);
+    //uni.base.setPlanetDataDev(uni.player.planets[0].coordinates);
+    //uni.base.setMoonDataDev(uni.player.planets[0].coordinates);
     //uni.base.sendMessage("dturco", {type: 1, title: "Nuevo titulo", text: "Mensaje oficial", data: {}});
-    //uni.colonize({gal: 1, sys: 2, pos: 7}, 'dturco');
+    //uni.colonize({gal: 1, sys: 2, pos: 7}, uni.player);
     //uni.base.contPoint('dturco');
     //uni.contMoonFields(uni.player, uni.planeta);
     /*let navesAux = uni.fun.zeroShips();

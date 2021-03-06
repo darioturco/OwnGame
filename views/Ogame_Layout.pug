@@ -63,7 +63,7 @@ body(id=bodyId onLoad='initFunction();')
               a(href='./OGame_Reward.html') Tutorial
             li
               a(href='./Ogame_Galaxy.html?gal=' + basic.planets[basic.numPlanet].coordinates.gal + '&sys=' + basic.planets[basic.numPlanet].coordinates.sys) Galaxy
-            li#Clock.OGameClock 07.12.2019 16:17:18
+            li#Clock.OGameClock -
         ul#resources
           li#metal_box.metal
             .resourceIcon.metal(onclick='toggleResourcesInfo(1);')
@@ -210,4 +210,5 @@ body(id=bodyId onLoad='initFunction();')
                     img.icon-moon(alt=' ' src=(basic.planets[index].moon.active) ? ('./Imagenes/Planets/Moon_Big_' + basic.planets[index].moon.type + '.gif') : ('') width='20' heigth='20')
                     div.divMiniMoon
                       img.alertMiniMoon(style='display:' + ((false/*Si estan atacando esta luna*/) ? 'inline' : 'none') src='./Imagenes/Alert_Mini.gif')
-                      img.buildMiniMoon(style='display:' + ((basic.planets[index].moon.buildingConstrucction.active) ? 'inline' : 'none') src='./Imagenes/Llave_Mini.gif')
+                      if basic.planets[index].moon.active
+                        img.buildMiniMoon(style='display:' + ((basic.planets[index].moon.buildingConstrucction.active) ? 'inline' : 'none') src='./Imagenes/Llave_Mini.gif')

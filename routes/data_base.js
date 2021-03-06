@@ -341,9 +341,6 @@ var exp = {
           dataEsp.planetName = moon ? res.planets[index].moon.name : res.planets[index].name;
           dataEsp.resources = moon ? res.planets[index].moon.resources : res.planets[index].resources;
 
-          /* Borrar Linea */
-          indiceDeEspionage = 8000; /* Borrar */
-
           if(indiceDeEspionage >= 2){
             // Agrego fleet
             dataEsp.fleet = moon ? res.planets[index].moon.fleet : res.planets[index].fleet;
@@ -776,6 +773,7 @@ var exp = {
     let defenses = /*uni.fun.zeroDefense();*/{rocketLauncher: 100, lightLaser: 10, heavyLaser: 0, gauss: 5, ion: 0, plasma: 0, smallShield: 0, largeShield: 0, antiballisticMissile: 3, interplanetaryMissile: 1000};
     let moon = /*{active: false, size: 0};*/uni.createNewMoon(8888);
     let debris = {active: true, metal:1000, crystal: 2000};
+    console.log("holaaaaaaa");
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
       {planets :{$elemMatch: {coordinates: coor}}},
       {$set: {'planets.$.resources': resources,'planets.$.buildings': building, 'planets.$.fleet': fleet, 'planets.$.defense': defenses,'planets.$.moon': moon, 'planets.$.debris': debris}});
@@ -785,7 +783,7 @@ var exp = {
   //  -coor = Coordenadas de la luna a modificar
   setMoonDataDev: function(coor){ // Asume el planeta tiene luna, de lo contrario no hace nada
     let resources = {metal: 50000000, crystal: 40000000, deuterium: 10000000, energy: 0};
-    let building = {lunarBase: 0, phalanx: 0, spaceDock: 0, marketplace: 0, lunarSunshade: 0, lunarBeam: 0, jumpGate: 0, moonShield: 0};
+    let building = {lunarBase: 10, phalanx: 4, spaceDock: 0, marketplace: 0, lunarSunshade: 0, lunarBeam: 0, jumpGate: 0, moonShield: 0};
     let fleet = {lightFighter: 1000, heavyFighter: 0, cruiser: 1, battleship: 30, battlecruiser: 0, bomber: 0, destroyer: 0, deathstar: 100, smallCargo: 10, largeCargo: 200, colony: 0, recycler: 20, espionageProbe: 0, solarSatellite: 0};
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
       {planets :{$elemMatch: {coordinates: coor}}},

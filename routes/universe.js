@@ -490,6 +490,7 @@ var exp  = {
   //  -rand = Si es true la coordenada es alatoria, si no se busca la glaxia numero 'comienzoBusquedaNewCoor'
   newCord: function(rand = true) {
     // Busca un cordenada libre y la devuelve
+    console.log(this.allCord);
     let newCoor = {};
     for(newCoor.gal = this.comienzoBusquedaNewCoor ; newCoor.gal<=9; newCoor.gal++){ // Comienza en la galaxia numero comienzoBusquedaNewCoor
       for(newCoor.sys = 1 ; newCoor.sys<=499; newCoor.sys++){
@@ -1566,7 +1567,7 @@ var exp  = {
     if(fun.coordenadaValida(query.coor)){
       let elimino = false;
       for(let i = 0 ; i<player.vacas.length ; i++){ // Busco si el jugador agregado ya esta en la lista de vacas
-        if(fun.equalCoor(player.vacas[i].coordinates, query.coor.gal)){
+        if(fun.equalCoor(player.vacas[i].coordinates, query.coor)){
           elimino = true;
           player.vacas.splice(i, 1);
           i--;
@@ -1771,14 +1772,11 @@ module.exports = exp;
 
 // Lista de cosas por hacer:
 
-/* Completar los mesajes de espionage (y todos en general)
-/* Mostrar bien los reportes de espionage y de batallas
+/* Mostrar bien los reportes de batallas
+/* Hacer que el space dock funcione
 /* Avisar al atacado que lo estan atacando (API de bots)(Terminar la linea 211 de layout.pug)
-/* Que se pueda misilear, espiar y atacar desde la vision de galaxia
-/* Hacer que se pueda atacar desde la pagina de vacas, search y los reportes de espionage
 /* Crear la API con la que interactuan los bots (Los bots no los va a controlar el servidor)
 /* Pasar todo el juego a ingles (Todo lo que lee el usuario)
-/* Mostrar bien los datos del phalanx en el cliente
 /* Mejorar el codigo del cliente
 /* Si un jugador regala una flota a otro jugador tiene que cambiar los puntos
 /* Revisar el consumo de energia mostrado en resources setings

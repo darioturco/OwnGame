@@ -57,6 +57,7 @@ setTimeout(() => {
     controls.push(document.getElementById("downButton" + i));
     open.push(false);
   }
+  calculaDistancia();
 }, 0);
 
 function clickSelect(num){

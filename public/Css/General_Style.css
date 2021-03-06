@@ -171,7 +171,7 @@ box-shadow:inset 0 1px 1px rgba(62,81,100,0.4)}
 .title_txt,#eventboxBlank,.blue_txt{color:#6f9fc8}
 .premium_txt{color:#2cbef2}
 .bold{font-weight:700}
-.h2,#buttonz h2,#fleet #sendfleet h2,#movement h3 a,#statistics h3,#highscoreContent h2,#traderOverview .div_trader h2, #spyReport h2{
+.h2,#buttonz h2,#fleet #sendfleet h2,#movement h3 a,#statistics h3,#highscoreContent h2,#traderOverview .div_trader h2, #spyReport h2, #phalanxReport h2{
   color:#6f9fc8;
   font:700 12px/28px Verdana,Arial,Helvetica,sans-serif;
 }
@@ -1980,34 +1980,7 @@ width:62px}
 #galaxy #attack_alert.longtime a{background-position:-490px -80px}
 #attack_alert.today a{background-position:-490px -40px}
 #galaxy #attack_alert.today a{background-position:-490px -125px}
-#attack_alert.soon a{
-  background:transparent  url("../Imagenes/Buttons.png") 0 0 no-repeat;
-  background-position:-490px -0px;
-  animation: battleComming 0.5s infinite;
-  animation-timing-function: steps(1, end);
-}
-@keyframes battleComming {
-  0%{
-    background-position:-490px 0;
-  }
-  46%{
-    background-position:-490px -40px;
-  }
-}
-#galaxy #attack_alert.soon a{
-  background: transparent url("../Imagenes/Buttons.png") 0 0 no-repeat;
-  background-position:-490px -125px;
-  animation: battleCommingGalaxy 0.5s infinite;
-  animation-timing-function: steps(1, end);
-}
-@keyframes battleCommingGalaxy {
-  0%{
-    background-position:-490px -80px;
-  }
-  46%{
-    background-position:-490px -125px;
-  }
-}
+#attack_alert.soon a{background:transparent url("../Imagenes/attackComming.gif") 0 0 no-repeat;}
 #attack_alert.wreckField a{background:transparent url("../Imagenes/Buttons.png") -22px 0 no-repeat}
 #galaxy #attack_alert.wreckField a{background:transparent url("../Imagenes/Buttons.png") 0 0 no-repeat}
 #attack_alert .wreckFieldCountDown{
@@ -7414,7 +7387,7 @@ div #metalInfoDiv .productionCant, div #crystalInfoDiv .productionCant, div #deu
   margin: 4px 10px 0 10px;
 }
 
-#messages #spyDivReport {
+#messages #spyDivReport, #galaxy #spyDivReport, #galaxy #phalanxDivReport {
   height: 100vh;
   width: 100vw;
   background: rgba(50, 50, 50, 0.5);
@@ -7429,7 +7402,7 @@ div #metalInfoDiv .productionCant, div #crystalInfoDiv .productionCant, div #deu
   border-radius: 10px;
 }
 
-#messages #spyReport {
+#messages #spyReport, #galaxy #spyReport {
   position: fixed;
   width: 666px;
   height: 640px;
@@ -7445,64 +7418,64 @@ div #metalInfoDiv .productionCant, div #crystalInfoDiv .productionCant, div #deu
   animation-timing-function: cubic-bezier(.75,.35,.64,1.28);
 }
 
-#messages #spyReport #spyTittle {
+#messages #spyReport #spyTittle, #galaxy #spyReport #spyTittle, #galaxy #phalanxReport #phalanxTittle {
   background:transparent  url("../Imagenes/Bar.gif") 0 0 no-repeat;
 }
 
-#messages #spyReport #spyGeneralInfo > p {
+#messages #spyReport #spyGeneralInfo > p, #galaxy #spyReport #spyGeneralInfo > p, #galaxy #phalanxReport #phalanxGeneralInfo > p {
   margin-left: 16px;
 }
 
-#messages #spyReport #spyCross {
+#messages #spyReport #spyCross, #galaxy #spyReport #spyCross {
   bottom: 24px;
   position: relative;
 }
 
-#messages #spyReport #spyResources > h2, #messages #spyReport #spyFleet > h2, #messages #spyReport #spyDefence > h2, #messages #spyReport #spyResearch > h2, #messages #spyReport #spyBuildings > h2, #messages #spyReport #spyMoonBuildings > h2 {
+#spyReport #spyResources > h2, #spyReport #spyFleet > h2, #spyReport #spyDefence > h2, #spyReport #spyResearch > h2, #spyReport #spyBuildings > h2, #spyReport #spyMoonBuildings > h2 {
   background:transparent  url("../Imagenes/Line.gif") 0 0/98% no-repeat;
   margin-left: 6px;
 }
 
-#messages #spyReport #divSpyResoucesGrid {
+#messages #spyReport #divSpyResoucesGrid, #galaxy #spyReport #divSpyResoucesGrid {
   display: grid;
   grid-template: repeat(2, 50%) / repeat(2, 50%);
 }
 
-#messages #spyReport #divSpyFleetGrid, #messages #spyReport #divSpyDefenceGrid, #messages #spyReport #divSpyResearchGrid, #messages #spyReport #divSpyBuildingsGrid, #messages #spyReport #divSpyMoonBuildingsGrid {
+#spyReport #divSpyFleetGrid, #spyReport #divSpyDefenceGrid, #spyReport #divSpyResearchGrid, #spyReport #divSpyBuildingsGrid, #spyReport #divSpyMoonBuildingsGrid {
   display: grid;
   grid-template: repeat(5, 20%) / repeat(2, 50%);
 }
 
-#messages #spyReport #divSpyResoucesGrid > div, #messages #spyReport #divSpyFleetGrid > div, #messages #spyReport #divSpyDefenceGrid > div, #messages #spyReport #divSpyResearchGrid > div, #messages #spyReport #divSpyBuildingsGrid > div, #messages #spyReport #divSpyMoonBuildingsGrid > div{
+#spyReport #divSpyResoucesGrid > div, #spyReport #divSpyFleetGrid > div, #spyReport #divSpyDefenceGrid > div, #spyReport #divSpyResearchGrid > div, #spyReport #divSpyBuildingsGrid > div, #spyReport #divSpyMoonBuildingsGrid > div{
   width: 200px;
   height: 32px;
   margin-left: 30px;
 }
 
-#messages #spyReport #divSpyResoucesGrid .spyMiniImg{
+#messages #spyReport #divSpyResoucesGrid .spyMiniImg, #galaxy #spyReport #divSpyResoucesGrid .spyMiniImg{
   width:48px;
   height:32px;
   display: inline-block;
 }
 
-#messages #spyReport .spyMiniImg{
+#messages #spyReport .spyMiniImg, #galaxy #spyReport .spyMiniImg{
   width:32px;
   height:32px;
   display: inline-block;
 }
 
-#messages #spyReport #divSpyResoucesGrid p, #messages #spyReport #divSpyFleetGrid p, #messages #spyReport #divSpyDefenceGrid p, #messages #spyReport #divSpyResearchGrid p, #messages #spyReport #divSpyBuildingsGrid p, #messages #spyReport #divSpyMoonBuildingsGrid p{
+#spyReport #divSpyResoucesGrid p, #spyReport #divSpyFleetGrid p, #spyReport #divSpyDefenceGrid p, #spyReport #divSpyResearchGrid p, #spyReport #divSpyBuildingsGrid p, #spyReport #divSpyMoonBuildingsGrid p{
   height:34px;
   display: inline-block;
   vertical-align: middle;
   margin: 0 0 0 8px;
 }
 
-#messages .openBackgroud {
+#messages .openBackgroud, #galaxy .openBackgroud {
   animation-name: openBackgroud;
 }
 
-#messages .closeBackgroud {
+#messages .closeBackgroud, #galaxy .closeBackgroud {
   animation-name: closeBackgroud;
 }
 
@@ -7526,70 +7499,127 @@ div #metalInfoDiv .productionCant, div #crystalInfoDiv .productionCant, div #deu
   }
 }
 
-#messages #spyReport #spyMetalImg{background:transparent  url("../Imagenes/Resources.png") 0 -160px no-repeat;}
-#messages #spyReport #spyCrystalImg{background:transparent  url("../Imagenes/Resources.png") -48px -160px no-repeat;}
-#messages #spyReport #spyDeuteriumImg{background:transparent  url("../Imagenes/Resources.png") -96px -160px no-repeat;}
-#messages #spyReport #spyEnergyImg{background:transparent  url("../Imagenes/Resources.png") -144px -160px no-repeat;}
-#messages #spyReport #spyLightImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") 0 0/2400% no-repeat;}
-#messages #spyReport #spyHeavyImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -32px 0/2400% no-repeat;}
-#messages #spyReport #spyCruiserImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -64px 0/2400% no-repeat;}
-#messages #spyReport #spyBattleshipImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -96px 0/2400% no-repeat;}
-#messages #spyReport #spyBattlecruiserImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -128px 0/2400% no-repeat;}
-#messages #spyReport #spyBomberImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -160px 0/2400% no-repeat;}
-#messages #spyReport #spyDestroyerImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -192px 0/2400% no-repeat;}
-#messages #spyReport #spyDeathstarImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -224px 0/2400% no-repeat;}
-#messages #spyReport #spySmallImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -256px 0/2400% no-repeat;}
-#messages #spyReport #spyLargeImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -288px 0/2400% no-repeat;}
-#messages #spyReport #spyColonyImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -320px 0/2400% no-repeat;}
-#messages #spyReport #spyRecyclerImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -352px 0/2400% no-repeat;}
-#messages #spyReport #spyEspionageImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -384px 0/2400% no-repeat;}
-#messages #spyReport #spySolarImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -416px 0/2400% no-repeat;}
-#messages #spyReport #spyRocketLauncherImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -448px 0/2400% no-repeat;}
-#messages #spyReport #spyLightLaserImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -480px 0/2400% no-repeat;}
-#messages #spyReport #spyHeavyLaserImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -512px 0/2400% no-repeat;}
-#messages #spyReport #spyGaussImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -544px 0/2400% no-repeat;}
-#messages #spyReport #spyIonImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -576px 0/2400% no-repeat;}
-#messages #spyReport #spyPlasmaImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -608px 0/2400% no-repeat;}
-#messages #spyReport #spySmallShieldImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -640px 0/2400% no-repeat;}
-#messages #spyReport #spyLargeShieldImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -672px 0/2400% no-repeat;}
-#messages #spyReport #spyAntiMissilesImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -704px 0/2400% no-repeat;}
-#messages #spyReport #spyMissilesImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -736px 0/2400% no-repeat;}
-#messages #spyReport #spyEnergyTechImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") 0 0/1600% no-repeat;}
-#messages #spyReport #spyLaserTechImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -32px 0/1600% no-repeat;}
-#messages #spyReport #spyIonTechImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -64px 0/1600% no-repeat;}
-#messages #spyReport #spyHyperspaceTechImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -96px 0/1600% no-repeat;}
-#messages #spyReport #spyPlasmaTechImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -128px 0/1600% no-repeat;}
-#messages #spyReport #spyEspionageTechImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -256px 0/1600% no-repeat;}
-#messages #spyReport #spyComputerImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -288px 0/1600% no-repeat;}
-#messages #spyReport #spyAstrophysicsImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -320px 0/1600% no-repeat;}
-#messages #spyReport #spyIntergalacticImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -352px 0/1600% no-repeat;}
-#messages #spyReport #spyGravitonImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -384px 0/1600% no-repeat;}
-#messages #spyReport #spyCombustionDriveImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -160px 0/1600% no-repeat;}
-#messages #spyReport #spyImpulseDriveImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -192px 0/1600% no-repeat;}
-#messages #spyReport #spyHyperspaceDriveImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -224px 0/1600% no-repeat;}
-#messages #spyReport #spyWeaponsImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -448px 0/1600% no-repeat;}
-#messages #spyReport #spyShieldingImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -480px 0/1600% no-repeat;}
-#messages #spyReport #spyArmourImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -416px 0/1600% no-repeat;}
-#messages #spyReport #spyMetalMineImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") 0 0/1200% no-repeat;}
-#messages #spyReport #spyCrystalMineImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") -32px 0/1200% no-repeat;}
-#messages #spyReport #spyDeuteriumMineImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") -64px 0/1200% no-repeat;}
-#messages #spyReport #spySolarPlantImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") -96px 0/1200% no-repeat;}
-#messages #spyReport #spyFusionReactorImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") -128px 0/1200% no-repeat;}
-#messages #spyReport #spyMetalStorageImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") -192px 0/1200% no-repeat;}
-#messages #spyReport #spyCrystalStorageImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") -224px 0/1200% no-repeat;}
-#messages #spyReport #spyDeuteriumStorageImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") -256px 0/1200% no-repeat;}
-#messages #spyReport #spyRoboticsFactoryImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails.jpg") 0 0/700% no-repeat;}
-#messages #spyReport #spyShipyardImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails.jpg") -32px 0/700% no-repeat;}
-#messages #spyReport #spyResearchLabImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails.jpg") -64px 0/700% no-repeat;}
-#messages #spyReport #spyAllianceImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails.jpg") -96px 0/700% no-repeat;}
-#messages #spyReport #spySiloImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails.jpg") -128px 0/700% no-repeat;}
-#messages #spyReport #spyNaniteFactoryImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails.jpg") -160px 0/700% no-repeat;}
-#messages #spyReport #spyTerraformerImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails.jpg") -192px 0/700% no-repeat;}
-#messages #spyReport #spyLunarBaseImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") 0 0/800% no-repeat;}
-#messages #spyReport #spyPhalanxImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") -32px 0/800% no-repeat;}
-#messages #spyReport #spySpaceDockImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") -64px 0/800% no-repeat;}
-#messages #spyReport #spyMarketplaceImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") -96px 0/800% no-repeat;}
-#messages #spyReport #spyLunarSunshadeImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") -128px 0/800% no-repeat;}
-#messages #spyReport #spyLunarBeamImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") -160px 0/800% no-repeat;}
-#messages #spyReport #spyJumpGateImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") -192px 0/800% no-repeat;}
-#messages #spyReport #spyMoonShieldImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") -224px 0/800% no-repeat;}
+#messages #spyReport #spyMetalImg, #galaxy #spyReport #spyMetalImg{background:transparent  url("../Imagenes/Resources.png") 0 -160px no-repeat;}
+#messages #spyReport #spyCrystalImg, #galaxy #spyReport #spyCrystalImg{background:transparent  url("../Imagenes/Resources.png") -48px -160px no-repeat;}
+#messages #spyReport #spyDeuteriumImg, #galaxy #spyReport #spyDeuteriumImg{background:transparent  url("../Imagenes/Resources.png") -96px -160px no-repeat;}
+#messages #spyReport #spyEnergyImg, #galaxy #spyReport #spyEnergyImg{background:transparent  url("../Imagenes/Resources.png") -144px -160px no-repeat;}
+#messages #spyReport #spyLightImg, #galaxy #spyReport #spyLightImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") 0 0/2400% no-repeat;}
+#messages #spyReport #spyHeavyImg, #galaxy #spyReport #spyHeavyImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -32px 0/2400% no-repeat;}
+#messages #spyReport #spyCruiserImg, #galaxy #spyReport #spyCruiserImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -64px 0/2400% no-repeat;}
+#messages #spyReport #spyBattleshipImg, #galaxy #spyReport #spyBattleshipImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -96px 0/2400% no-repeat;}
+#messages #spyReport #spyBattlecruiserImg, #galaxy #spyReport #spyBattlecruiserImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -128px 0/2400% no-repeat;}
+#messages #spyReport #spyBomberImg, #galaxy #spyReport #spyBomberImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -160px 0/2400% no-repeat;}
+#messages #spyReport #spyDestroyerImg, #galaxy #spyReport #spyDestroyerImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -192px 0/2400% no-repeat;}
+#messages #spyReport #spyDeathstarImg, #galaxy #spyReport #spyDeathstarImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -224px 0/2400% no-repeat;}
+#messages #spyReport #spySmallImg, #galaxy #spyReport #spySmallImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -256px 0/2400% no-repeat;}
+#messages #spyReport #spyLargeImg, #galaxy #spyReport #spyLargeImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -288px 0/2400% no-repeat;}
+#messages #spyReport #spyColonyImg, #galaxy #spyReport #spyColonyImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -320px 0/2400% no-repeat;}
+#messages #spyReport #spyRecyclerImg, #galaxy #spyReport #spyRecyclerImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -352px 0/2400% no-repeat;}
+#messages #spyReport #spyEspionageImg, #galaxy #spyReport #spyEspionageImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -384px 0/2400% no-repeat;}
+#messages #spyReport #spySolarImg, #galaxy #spyReport #spySolarImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -416px 0/2400% no-repeat;}
+#messages #spyReport #spyRocketLauncherImg, #galaxy #spyReport #spyRocketLauncherImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -448px 0/2400% no-repeat;}
+#messages #spyReport #spyLightLaserImg, #galaxy #spyReport #spyLightLaserImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -480px 0/2400% no-repeat;}
+#messages #spyReport #spyHeavyLaserImg, #galaxy #spyReport #spyHeavyLaserImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -512px 0/2400% no-repeat;}
+#messages #spyReport #spyGaussImg, #galaxy #spyReport #spyGaussImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -544px 0/2400% no-repeat;}
+#messages #spyReport #spyIonImg, #galaxy #spyReport #spyIonImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -576px 0/2400% no-repeat;}
+#messages #spyReport #spyPlasmaImg, #galaxy #spyReport #spyPlasmaImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -608px 0/2400% no-repeat;}
+#messages #spyReport #spySmallShieldImg, #galaxy #spyReport #spySmallShieldImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -640px 0/2400% no-repeat;}
+#messages #spyReport #spyLargeShieldImg, #galaxy #spyReport #spyLargeShieldImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -672px 0/2400% no-repeat;}
+#messages #spyReport #spyAntiMissilesImg, #galaxy #spyReport #spyAntiMissilesImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -704px 0/2400% no-repeat;}
+#messages #spyReport #spyMissilesImg, #galaxy #spyReport #spyMissilesImg{background:transparent  url("../Imagenes/Shipyard/ShipyardAll.jpg") -736px 0/2400% no-repeat;}
+#messages #spyReport #spyEnergyTechImg, #galaxy #spyReport #spyEnergyTechImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") 0 0/1600% no-repeat;}
+#messages #spyReport #spyLaserTechImg, #galaxy #spyReport #spyLaserTechImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -32px 0/1600% no-repeat;}
+#messages #spyReport #spyIonTechImg, #galaxy #spyReport #spyIonTechImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -64px 0/1600% no-repeat;}
+#messages #spyReport #spyHyperspaceTechImg, #galaxy #spyReport #spyHyperspaceTechImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -96px 0/1600% no-repeat;}
+#messages #spyReport #spyPlasmaTechImg, #galaxy #spyReport #spyPlasmaTechImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -128px 0/1600% no-repeat;}
+#messages #spyReport #spyEspionageTechImg, #galaxy #spyReport #spyEspionageTechImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -256px 0/1600% no-repeat;}
+#messages #spyReport #spyComputerImg, #galaxy #spyReport #spyComputerImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -288px 0/1600% no-repeat;}
+#messages #spyReport #spyAstrophysicsImg, #galaxy #spyReport #spyAstrophysicsImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -320px 0/1600% no-repeat;}
+#messages #spyReport #spyIntergalacticImg, #galaxy #spyReport #spyIntergalacticImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -352px 0/1600% no-repeat;}
+#messages #spyReport #spyGravitonImg, #galaxy #spyReport #spyGravitonImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -384px 0/1600% no-repeat;}
+#messages #spyReport #spyCombustionDriveImg, #galaxy #spyReport #spyCombustionDriveImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -160px 0/1600% no-repeat;}
+#messages #spyReport #spyImpulseDriveImg, #galaxy #spyReport #spyImpulseDriveImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -192px 0/1600% no-repeat;}
+#messages #spyReport #spyHyperspaceDriveImg, #galaxy #spyReport #spyHyperspaceDriveImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -224px 0/1600% no-repeat;}
+#messages #spyReport #spyWeaponsImg, #galaxy #spyReport #spyWeaponsImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -448px 0/1600% no-repeat;}
+#messages #spyReport #spyShieldingImg, #galaxy #spyReport #spyShieldingImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -480px 0/1600% no-repeat;}
+#messages #spyReport #spyArmourImg, #galaxy #spyReport #spyArmourImg{background:transparent  url("../Imagenes/Research/Tecnologies_All.jpg") -416px 0/1600% no-repeat;}
+#messages #spyReport #spyMetalMineImg, #galaxy #spyReport #spyMetalMineImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") 0 0/1200% no-repeat;}
+#messages #spyReport #spyCrystalMineImg, #galaxy #spyReport #spyCrystalMineImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") -32px 0/1200% no-repeat;}
+#messages #spyReport #spyDeuteriumMineImg, #galaxy #spyReport #spyDeuteriumMineImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") -64px 0/1200% no-repeat;}
+#messages #spyReport #spySolarPlantImg, #galaxy #spyReport #spySolarPlantImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") -96px 0/1200% no-repeat;}
+#messages #spyReport #spyFusionReactorImg, #galaxy #spyReport #spyFusionReactorImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") -128px 0/1200% no-repeat;}
+#messages #spyReport #spyMetalStorageImg, #galaxy #spyReport #spyMetalStorageImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") -192px 0/1200% no-repeat;}
+#messages #spyReport #spyCrystalStorageImg, #galaxy #spyReport #spyCrystalStorageImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") -224px 0/1200% no-repeat;}
+#messages #spyReport #spyDeuteriumStorageImg, #galaxy #spyReport #spyDeuteriumStorageImg{background:transparent  url("../Imagenes/Resources/Mines.jpg") -256px 0/1200% no-repeat;}
+#messages #spyReport #spyRoboticsFactoryImg, #galaxy #spyReport #spyRoboticsFactoryImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails.jpg") 0 0/700% no-repeat;}
+#messages #spyReport #spyShipyardImg, #galaxy #spyReport #spyShipyardImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails.jpg") -32px 0/700% no-repeat;}
+#messages #spyReport #spyResearchLabImg, #galaxy #spyReport #spyResearchLabImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails.jpg") -64px 0/700% no-repeat;}
+#messages #spyReport #spyAllianceImg, #galaxy #spyReport #spyAllianceImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails.jpg") -96px 0/700% no-repeat;}
+#messages #spyReport #spySiloImg, #galaxy #spyReport #spySiloImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails.jpg") -128px 0/700% no-repeat;}
+#messages #spyReport #spyNaniteFactoryImg, #galaxy #spyReport #spyNaniteFactoryImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails.jpg") -160px 0/700% no-repeat;}
+#messages #spyReport #spyTerraformerImg, #galaxy #spyReport #spyTerraformerImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails.jpg") -192px 0/700% no-repeat;}
+#messages #spyReport #spyLunarBaseImg, #galaxy #spyReport #spyLunarBaseImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") 0 0/800% no-repeat;}
+#messages #spyReport #spyPhalanxImg, #galaxy #spyReport #spyPhalanxImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") -32px 0/800% no-repeat;}
+#messages #spyReport #spySpaceDockImg, #galaxy #spyReport #spySpaceDockImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") -64px 0/800% no-repeat;}
+#messages #spyReport #spyMarketplaceImg, #galaxy #spyReport #spyMarketplaceImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") -96px 0/800% no-repeat;}
+#messages #spyReport #spyLunarSunshadeImg, #galaxy #spyReport #spyLunarSunshadeImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") -128px 0/800% no-repeat;}
+#messages #spyReport #spyLunarBeamImg, #galaxy #spyReport #spyLunarBeamImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") -160px 0/800% no-repeat;}
+#messages #spyReport #spyJumpGateImg, #galaxy #spyReport #spyJumpGateImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") -192px 0/800% no-repeat;}
+#messages #spyReport #spyMoonShieldImg, #galaxy #spyReport #spyMoonShieldImg{background:transparent  url("../Imagenes/Facilities/Faclities_Deatails_Moon.jpg") -224px 0/800% no-repeat;}
+
+#galaxy #phalanxReport {
+  position: fixed;
+  width: 658px;
+  height: 640px;
+  background: #0c1014;
+  overflow: hidden auto;
+  top: 32px;
+  left: calc(50vw - 333px);
+  z-index: 9999;
+  animation-duration: 0.18s;
+  transform-origin: center;
+  animation-fill-mode: forwards;
+  display: none;
+  animation-timing-function: cubic-bezier(.75,.35,.64,1.28);
+}
+
+#galaxy #phalanxReport h2 {
+  text-align: center;
+}
+
+#galaxy #phalanxReport li {
+  width: 80%;
+  height: 32px;
+  margin: 28px auto 0 auto;
+  padding: 12px 0 0 8px;
+  background: linear-gradient(#112637, #0f304a);
+  border-radius: 8px;
+}
+
+#galaxy #phalanxReport li p {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 4px;
+}
+
+#galaxy #phalanxReport li a {
+  display: inline-block;
+  margin: 0 0 0 40px;
+  height: 16px;
+  width: 16px;
+  position: absolute;
+  cursor: pointer;
+}
+
+#galaxy #phalanxDivList .phalanxFleetCont{
+  display: none;
+  position: relative;
+  top: 8px;
+  left: 80px;
+  z-index: 999;
+  background: linear-gradient(#2c3949, #0D1014);
+  width: 100px;
+  min-height: 40px;
+  border-radius: 6px;
+  padding: 4px;
+}

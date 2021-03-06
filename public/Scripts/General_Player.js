@@ -59,7 +59,7 @@ function actualizaFleet(){
 
 function actualizaFecha(){ // Se ejecuta cada un segunda y updatea el reloj de la esquina derecha
   let fecha = new Date();
-  clock.innerHTML = fecha.getDate() + "." + (fecha.getMonth()+1) + "." + fecha.getFullYear() + " " + ((fecha.getHours() < 10) ? ('0'+fecha.getHours()) : (fecha.getHours())) + ":" + ((fecha.getMinutes() < 10) ? ('0'+fecha.getMinutes()) : (fecha.getMinutes())) + ":" + ((fecha.getSeconds() < 10) ? ('0'+fecha.getSeconds()) : (fecha.getSeconds()));
+  clock.innerHTML = fecha.getDate() + "/" + (fecha.getMonth()+1) + "/" + fecha.getFullYear() + "  " + ((fecha.getHours() < 10) ? ('0'+fecha.getHours()) : (fecha.getHours())) + ":" + ((fecha.getMinutes() < 10) ? ('0'+fecha.getMinutes()) : (fecha.getMinutes())) + ":" + ((fecha.getSeconds() < 10) ? ('0'+fecha.getSeconds()) : (fecha.getSeconds()));
 }
 
 function toggleResourcesInfo(num){
