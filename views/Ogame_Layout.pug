@@ -114,14 +114,14 @@ body(id=bodyId onLoad='initFunction();')
               span#resources_darkmatter #{basic.format(basic.dark)}
         #message-wrapper
           // Mensajes
-          a.comm_menu.messages(href='./Ogame_messages.html' class=(bodyId == 'messages') ? 'selected': '')
-            span.new_msg_count(class=(basic.messagesNoRead == 0) ? 'noMessage': '') #{basic.messagesNoRead}
+          a.comm_menu.messages(href='./Ogame_messages.html' class=(bodyId === 'messages') ? 'selected': '')
+            span.new_msg_count(class=(basic.messagesNoRead === 0) ? 'noMessage': '') #{basic.messagesNoRead}
           // Vacas
-          a.comm_menu.chat(href='./Vacas.html' class=(bodyId == 'vacas') ? 'selected': '')
+          a.comm_menu.chat(href='./Vacas.html' class=(bodyId === 'vacas') ? 'selected': '')
           // Flotas
           #messages_collapsed
             #eventboxBlank.textCenter
-              if basic.cantMovments == 0
+              if basic.cantMovments === 0
                 a#fleetMesage(href='./Ogame_Fleet.html') No fleet movement
               else
                 pre.fleetInfoFirstMovement Missions: #{basic.cantMovments}
@@ -138,47 +138,47 @@ body(id=bodyId onLoad='initFunction();')
             li
               span.menu_icon
                 a(href='./Ogame_Reward.html' target='_self')
-                  .menuImage.overview(class=(bodyId == "overview")?'highlighted':'')
-              a.menubutton(href='./Ogame_Overview.html' target='_self' class=(bodyId == "overview")?'selected':'')
+                  .menuImage.overview(class=(bodyId === "overview" || bodyId === "reward")?'highlighted':'')
+              a.menubutton(href='./Ogame_Overview.html' target='_self' class=(bodyId === "overview" || bodyId === "reward")?'selected':'')
                 span.textlabel Overview
             li
               span.menu_icon
                 a(href=(basic.moon) ? './MoonBuildings.html' : './Ogame_ResourceSetings.html' target='_self')
-                  .menuImage.resources(class=(bodyId == "resources" || bodyId == "resourceSettings")?'highlighted':'')
-              a.menubutton(href='./Ogame_Resources.html' target='_self' class=(bodyId == "resources" || bodyId == "resourceSettings")?'selected':'')
+                  .menuImage.resources(class=(bodyId === "resources" || bodyId === "resourceSettings")?'highlighted':'')
+              a.menubutton(href='./Ogame_Resources.html' target='_self' class=(bodyId === "resources" || bodyId === "resourceSettings")?'selected':'')
                 span.textlabel Resources
             li
               span.menu_icon
-                .menuImage.station(class=(bodyId == "station")?'highlighted':'')
-              a.menubutton(href='./Ogame_Facilities.html' target='_self' class=(bodyId == "station")?'selected':'')
+                .menuImage.station(class=(bodyId === "station")?'highlighted':'')
+              a.menubutton(href='./Ogame_Facilities.html' target='_self' class=(bodyId === "station")?'selected':'')
                 span.textlabel Facilities
             li
               span.menu_icon
-                a.overlay.Right(href='./Ogame_Tecnology.html' target='_self')
-                  .menuImage.research(class=(bodyId == "research" || bodyId == "tecnology")?'highlighted':'')
-              a.menubutton(href='./Ogame_Research.html' target='_self' class=(bodyId == "research" || bodyId == "tecnology")?'selected':'')
+                a.overlay.Right(href='./Ogame_Technology.html' target='_self')
+                  .menuImage.research(class=(bodyId === "research" || bodyId === "technology")?'highlighted':'')
+              a.menubutton(href='./Ogame_Research.html' target='_self' class=(bodyId === "research" || bodyId === "technology")?'selected':'')
                 span.textlabel Research
             li
               span.menu_icon
-                .menuImage.shipyard(class=(bodyId == "shipyard")?'highlighted':'')
-              a.menubutton(href='./Ogame_Shipyard.html' target='_self' class=(bodyId == "shipyard")?'selected':'')
+                .menuImage.shipyard(class=(bodyId === "shipyard")?'highlighted':'')
+              a.menubutton(href='./Ogame_Shipyard.html' target='_self' class=(bodyId === "shipyard")?'selected':'')
                 span.textlabel Shipyard
             li
               span.menu_icon
-                .menuImage.defense(class=(bodyId == "defense")?'highlighted':'')
-              a.menubutton(href='./Ogame_Defence.html' target='_self' class=(bodyId == "defense")?'selected':'')
+                .menuImage.defense(class=(bodyId === "defense")?'highlighted':'')
+              a.menubutton(href='./Ogame_Defence.html' target='_self' class=(bodyId === "defense")?'selected':'')
                 span.textlabel Defence
             li
               span.menu_icon
                 a(href='./Ogame_Movement.html' target='_self')
-                  .menuImage.fleet(class=(bodyId == "fleet" || bodyId == "movement")?'highlighted':'')
-              a.menubutton(href='./Ogame_Fleet.html' target='_self' class=(bodyId == "fleet" || bodyId == "movement")?'selected':'')
+                  .menuImage.fleet(class=(bodyId === "fleet" || bodyId === "movement")?'highlighted':'')
+              a.menubutton(href='./Ogame_Fleet.html' target='_self' class=(bodyId === "fleet" || bodyId === "movement")?'selected':'')
                 span.textlabel Fleet
             li
               span.menu_icon
                 a(href='./Options.html' target='_self')
-                  .menuImage.galaxy(class=(bodyId == "galaxy")?'highlighted':'')
-              a.menubutton(href='./Ogame_Galaxy.html?gal=' + basic.planets[basic.numPlanet].coordinates.gal + '&sys=' + basic.planets[basic.numPlanet].coordinates.sys target='_self' class=(bodyId == "galaxy")?'selected':'')
+                  .menuImage.galaxy(class=(bodyId === "galaxy" || bodyId === "options")?'highlighted':'')
+              a.menubutton(href='./Ogame_Galaxy.html?gal=' + basic.planets[basic.numPlanet].coordinates.gal + '&sys=' + basic.planets[basic.numPlanet].coordinates.sys target='_self' class=(bodyId === "galaxy" || bodyId === "options")?'selected':'')
                 span.textlabel Galaxy
           br.clearfloat
       #contentWrapper
@@ -195,8 +195,8 @@ body(id=bodyId onLoad='initFunction();')
             #planetList
               each item, index in basic.planets
                 .smallplanet
-                  - let clase = (index == basic.numPlanet && basic.moon != true) ? 'active' : '';
-                  - let claseLuna = (index == basic.numPlanet && basic.moon == true) ? 'active' : '';
+                  - let clase = (index === basic.numPlanet && basic.moon != true) ? 'active' : '';
+                  - let claseLuna = (index === basic.numPlanet && basic.moon === true) ? 'active' : '';
                   a.planetlink.Right.Close(class=clase href=url + '?planet=' + index + '&moon=false')
                     img.planetPic(alt='Planet' src="./Imagenes/Planets/Miniatures/Planet_" + item.type + "_" + item.color + ".gif" width='48' height='48')
                     span.planet-name #{item.name}
@@ -205,8 +205,8 @@ body(id=bodyId onLoad='initFunction();')
                       img.alertMini(style='display:' + ((false/*Si estan atacando ese planeta*/) ? 'inline' : 'none') src='./Imagenes/Alert_Mini.gif')
                       img.buildMini(style='display:' + ((basic.planets[index].buildingConstrucction.active) ? 'inline' : 'none') src='./Imagenes/Llave_Mini.gif')
                       img.fleetMini(style='display:' + ((basic.planets[index].shipConstrucction.length != 0) ? 'inline' : 'none') src='./Imagenes/Nave_Mini.gif')
-                      img.labMini(style='display:' + ((basic.researchConstrucction.active && basic.researchConstrucction.planet == index) ? 'inline' : 'none') src='./Imagenes/Lab_Mini.gif')
-                  a.moonlink.tooltipLeft.tooltipClose.tpd-hideOnClickOutside(class=claseLuna href=(url + '?planet=' + index + '&moon=true') style='display: ' + ((item.moon.active == true) ? 'block' : 'none'))
+                      img.labMini(style='display:' + ((basic.researchConstrucction.active && basic.researchConstrucction.planet === index) ? 'inline' : 'none') src='./Imagenes/Lab_Mini.gif')
+                  a.moonlink.tooltipLeft.tooltipClose.tpd-hideOnClickOutside(class=claseLuna href=(url + '?planet=' + index + '&moon=true') style='display: ' + ((item.moon.active === true) ? 'block' : 'none'))
                     img.icon-moon(alt=' ' src=(basic.planets[index].moon.active) ? ('./Imagenes/Planets/Moon_Big_' + basic.planets[index].moon.type + '.gif') : ('') width='20' heigth='20')
                     div.divMiniMoon
                       img.alertMiniMoon(style='display:' + ((false/*Si estan atacando esta luna*/) ? 'inline' : 'none') src='./Imagenes/Alert_Mini.gif')

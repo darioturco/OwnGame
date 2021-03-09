@@ -215,9 +215,10 @@ router.get('/OGame_Shipyard.html', (req, res, next) => {
   });
 });
 
-router.get('/OGame_Tecnology.html', (req, res, next) => {
-  res.render('OGame_Tecnology', {bodyId: "tecnology",
+router.get('/OGame_Technology.html', (req, res, next) => {
+  res.render('OGame_Technology', {bodyId: "technology",
     url: req._parsedOriginalUrl.pathname,
+    info: uni.techInfo(uni.planeta),
     basic: uni.getActualBasicInfo(uni.planeta),
     listScript: []
   });

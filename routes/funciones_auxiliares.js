@@ -312,6 +312,9 @@ var exp = {
             shipyard: 0, researchLab: 0, alliance: 0, silo: 0,
             naniteFactory: 0, terraformer: 0};
   },
+  zeroBuildingsMoon: function(){
+    return {lunarBase: 0, phalanx: 0, spaceDock: 0, marketplace: 0, lunarSunshade: 0, lunarBeam: 0, jumpGate: 0, moonShield: 0}
+  },
   zeroResearch: function(){
     return {energy: 0, laser: 0, ion: 0, hyperspace: 0, plasma: 0, espionage: 0,
             computer: 0, astrophysics: 0, intergalactic: 0, graviton: 0, combustion: 0,

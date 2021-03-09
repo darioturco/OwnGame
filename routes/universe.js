@@ -478,7 +478,7 @@ var exp  = {
       type: Math.floor(Math.random()*5)+1,
       resources: {metal: 0, crystal: 0, deuterium: 0, energy: 0},
       buildingConstrucction: false,
-      buildings: {lunarBase: 0, phalanx: 0, spaceDock: 0, marketplace: 0, lunarSunshade: 0, lunarBeam: 0, jumpGate: 0, moonShield: 0},
+      buildings: fun.zeroBuildingsMoon(),
       // Porcentaje de funcionamiento de esos edificios, al principio no importa mucho porque estan a nivel 0
       values: {sunshade: 10, beam: 10},
       cuantic: 0,
@@ -746,7 +746,7 @@ var exp  = {
             plasma: {metal: 2000*Math.pow(2, research.plasma), crystal: 4000*Math.pow(2, research.plasma), deuterium: 1000*Math.pow(2, research.plasma), energy: 0, tech: lab >= 4 && research.energy >= 8 && research.laser >= 10 && research.ion >= 5, level: research.plasma, name: "Plasma Technology", description: "A further development of ion technology which accelerates high-energy plasma, which then inflicts devastating damage and additionally optimises the production of resources."},
             espionage: {metal: 200*Math.pow(2, research.espionage), crystal: 1000*Math.pow(2, research.espionage), deuterium: 200*Math.pow(2, research.espionage), energy: 0, tech: lab >= 3, level: research.espionage, name: "Espionage Technology", description: "Information about other planets and moons can be gained using this technology."},
             computer: {metal: 0, crystal: 400*Math.pow(2, research.computer), deuterium: 600*Math.pow(2, research.computer), energy: 0, tech: lab >= 1, level: research.computer, name: "Computer Technology", description: "More fleets can be commanded by increasing computer capacities. Each level of computer technology increases the maximum number of fleets by one."},
-            astrophysics: {metal: 4000*Math.pow(2, research.astrophysics), crystal: 8000*Math.pow(2, research.astrophysics), deuterium: 4000*Math.pow(2, research.astrophysics), energy: 0, tech: lab >= 3 && research.espionage >= 4 && research.impulse >= 3, level: research.astrophysics, name: "Astrophysics", description: "With an astrophysics research module, ships can undertake long expeditions. Every second level of this technology will allow you to colonise an extra planet."},
+            astrophysics: {metal: 4000*Math.pow(2, research.astrophysics), crystal: 8000*Math.pow(2, research.astrophysics), deuterium: 4000*Math.pow(2, research.astrophysics), energy: 0, tech: lab >= 3 && research.espionage >= 4, level: research.astrophysics, name: "Astrophysics", description: "With an astrophysics research module, ships can undertake long expeditions. Every second level of this technology will allow you to colonise an extra planet."},
             intergalactic: {metal: 240000*Math.pow(2, research.intergalactic), crystal: 400000*Math.pow(2, research.intergalactic), deuterium: 160000*Math.pow(2, research.intergalactic), energy: 0, tech: lab >= 10 && research.computer >= 8 && research.hyperspace >= 8, level: research.intergalactic, name: "Intergalactic Research Network", description: "Researchers on different planets communicate via this network."},
             graviton: {metal: 0, crystal: 0, deuterium: 0, energy: 300000*Math.pow(2, research.graviton), tech: lab >= 12, level: research.graviton, name: "Graviton Technology", description: "Firing a concentrated charge of graviton particles can create an artificial gravity field, which can destroy ships or even moons."},
             combustion: {metal: 400*Math.pow(2, research.combustion), crystal: 0, deuterium: 600*Math.pow(2, research.combustion), energy: 0, tech: lab >= 1 && research.energy >= 1, level: research.combustion, name: "Combustion Drive", description: "The development of this drive makes some ships faster, although each level increases speed by only 10 % of the base value."},
@@ -1604,6 +1604,76 @@ var exp  = {
     }
   },
 
+  // Devuelve un objeto con la informacin de los niveles de cada cosa y si la tecnologia alcaza o no
+  techInfo: function(planet){
+    let build = this.player.planets[planet].buildings;
+    let research = this.player.research;
+    let buildMoon = this.player.planets[planet].moon.active ? this.player.planets[planet].moon.buildings : fun.zeroBuildingsMoon();
+    return {metalMine: {tech: true, level: build.metalMine},
+      crystalMine: {tech: true, level: build.crystalMine},
+      deuteriumMine: {tech: true, level: build.deuteriumMine},
+      solarPlant: {tech: true, level: build.solarPlant},
+      fusionReactor: {tech: build.deuteriumMine >= 5 && research.energy >= 3, level: build.fusionReactor},
+      metalStorage: {tech: true, level: build.metalStorage},
+      crystalStorage: {tech: true, level: build.crystalStorage},
+      deuteriumStorage: {tech: true, level: build.deuteriumStorage},
+      robotFactory: {tech: true, level: build.robotFactory},
+      shipyard: {tech: build.robotFactory >= 2, level: build.shipyard},
+      researchLab: {tech: true, level: build.researchLab},
+      alliance: {tech: true, level: build.alliance},
+      silo: {tech: build.shipyard >= 1, level: build.silo},
+      naniteFactory: {tech: build.robotFactory >= 10 && research.computer >= 10, level: build.naniteFactory},
+      terraformer: {tech: build.naniteFactory >= 1 && research.energy >= 12, level: build.terraformer},
+      lunarBase: {tech: true, level: buildMoon.lunarBase},
+      phalanx: {tech: buildMoon.lunarBase >= 3, level: buildMoon.phalanx},
+      spaceDock: {tech: buildMoon.lunarBase >= 1, level: buildMoon.spaceDock},
+      marketplace: {tech: buildMoon.lunarBase >= 2 && research.computer >= 8 && build.alliance >= 4, level: buildMoon.marketplace},
+      lunarSunshade: {tech: buildMoon.lunarBase >= 1 && research.laser >= 12, level: buildMoon.lunarSunshade},
+      lunarBeam: {tech: buildMoon.lunarBase >= 1 && research.ion >= 12, level: buildMoon.lunarBeam},
+      jumpGate: {tech: buildMoon.lunarBase >= 1 && research.hyperspace >= 7, level: buildMoon.jumpGate},
+      moonShield: {tech: buildMoon.lunarBase >= 4 && research.graviton >= 1 && research.shielding >= 12, level: buildMoon.moonShield},
+      energy: {tech: build.researchLab >= 1, level: research.energy},
+      laser: {tech: build.researchLab >= 1 && research.energy >= 2, level: research.laser},
+      ion: {tech: build.researchLab >= 4 && research.energy >= 4  && research.laser >= 5, level: research.ion},
+      hyperspace: {tech: build.researchLab >= 7 && research.energy >= 5 && research.shielding >= 5, level: research.hyperspace},
+      plasma: {tech: build.researchLab >= 4 && research.energy >= 8 && research.laser >= 10 && research.ion >= 5, level: research.plasma},
+      espionage: {tech: build.researchLab >= 3, level: research.espionage},
+      computer: {tech: build.researchLab >= 1, level: research.computer},
+      astrophysics: {tech: build.researchLab >= 3 && research.espionage >= 4, level: research.astrophysics},
+      intergalactic: {tech: build.researchLab >= 10 && research.computer >= 8 && research.hyperspace >= 8, level: research.intergalactic},
+      graviton: {tech: build.researchLab >= 12, level: research.graviton},
+      combustion: {tech: build.researchLab >= 1 && research.energy >= 1, level: research.combustion},
+      impulse: {tech: build.researchLab >= 2 && research.energy >= 2, level: research.impulse},
+      hyperspace_drive: {tech: build.researchLab >= 7 && research.hyperspace >= 3, level: research.hyperspace},
+      weapons: {tech: build.researchLab >= 4, level: research.weapons},
+      shielding: {tech: build.researchLab >= 6 && research.energy >= 3, level: research.shielding},
+      armour: {tech: build.researchLab >= 2, level: research.armour},
+      lightFighter: {tech: build.shipyard >= 1 && research.combustion >= 1},
+      heavyFighter: {tech: build.shipyard >= 3 && research.impulse >= 2},
+      cruiser: {tech: build.shipyard >= 5 && research.impulse >= 4 && research.ion >= 2},
+      battleship: {tech: build.shipyard >= 7 && research.hyperspace_drive >= 4},
+      battlecruiser: {tech: build.shipyard >= 8 && research.hyperspace_drive >= 5 && research.laser >= 12 && research.hyperspace >= 5},
+      bomber: {tech: build.shipyard >= 8 && research.impulse >= 6 && research.plasma >= 5},
+      destroyer: {tech: build.shipyard >= 9 && research.hyperspace_drive >= 6 && research.hyperspace >= 5},
+      deathstar: {tech: build.shipyard >= 12 && research.hyperspace_drive >= 7 && research.graviton >= 1 && research.hyperspace >= 6},
+      smallCargo: {tech: build.shipyard >= 2 && research.combustion >= 2},
+      largeCargo: {tech: build.shipyard >= 4 && research.combustion >= 6},
+      colony: {tech: build.shipyard >= 4 && research.impulse >= 3},
+      recycler: {tech: build.shipyard >= 4 && research.impulse >= 6 && research.shielding >= 2},
+      espionageProbe: {tech: build.shipyard >= 3 && research.combustion >= 3 && research.espionage >= 2},
+      solarSatellite: {tech: build.shipyard >= 1},
+      rocketLauncher: {tech: build.shipyard >= 1},
+      lightLaser: {tech: build.shipyard >= 2 && research.laser >= 3},
+      heavyLaser: {tech: build.shipyard >= 4 && research.laser >= 6 && research.energy >= 3},
+      gauss: {tech: build.shipyard >= 6 && research.weapons >= 3 && research.energy >= 6 && research.shielding >= 1},
+      ionCannon: {tech: build.shipyard >= 4 && research.ion >= 4},
+      plasmaTurret: {tech: build.shipyard >= 8 && research.plasma >= 7},
+      smallShield: {tech: build.shipyard >= 1 && research.shielding >= 2},
+      largeShield: {tech: build.shipyard >= 6 && research.shielding >= 6},
+      antiballisticMissile: {tech: build.silo >= 2},
+      interplanetaryMissile: {tech: build.silo >= 4 && research.impulse >= 1}};
+  },
+
   // Verifica si se cumplio una mision y si es asi, entrega la recompensa
   //  -player = Objeto con la informacion del jugador
   //  -mission = Numero de mision a verificar
@@ -1773,6 +1843,7 @@ module.exports = exp;
 // Lista de cosas por hacer:
 
 /* Mostrar bien los reportes de batallas
+/* Fijarse que solo se pueda tener una sola cupula de proteccion pequenia y una grande
 /* Hacer que el space dock funcione
 /* Avisar al atacado que lo estan atacando (API de bots)(Terminar la linea 211 de layout.pug)
 /* Crear la API con la que interactuan los bots (Los bots no los va a controlar el servidor)

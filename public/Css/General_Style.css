@@ -137,28 +137,34 @@ background-clip:padding-box}.border3px{-khtml-border-radius:3px;
 border-radius:3px;
 -moz-background-clip:padding;
 -webkit-background-clip:padding-box;
-background-clip:padding-box}.dark_highlight{background:#181e25 \/*\0*/\ 0 -1030px repeat-x;
-background:-moz-linear-gradient(top,#2d3743 0,#181e25 100%);
-background:-webkit-linear-gradient(top,#2d3743 0,#181e25 100%);
-background:-o-linear-gradient(top,#2d3743 0,#181e25 100%);
-background:-ms-linear-gradient(top,#2d3743 0,#181e25 100%);
-background:linear-gradient(to bottom,#2d3743 0,#181e25 100%);
-border:1px solid black;
-border-color:#28323e #222b34 #232a34 #222b34;
--webkit-border-radius:3px;
--moz-border-radius:3px;
-border-radius:3px;
--webkit-box-shadow:0 1px 3px 0 black,inset 0 1px 1px 0 hsl(213,22%,32%);
--moz-box-shadow:0 1px 3px 0 black,inset 0 1px 1px 0 hsl(213,22%,32%);
-box-shadow:0 1px 3px 0 black,inset 0 1px 1px 0 hsl(213,22%,32%);
-font-size:11px;
-color:#fff;
-display:inline-block;
-padding:3px 0;
-text-decoration:none!important}.box_highlight{background:#171d24;
-border:1px solid #000;
-border-radius:3px;
-box-shadow:inset 0 1px 1px rgba(62,81,100,0.4)}
+background-clip:padding-box}
+.dark_highlight{
+  background:#181e25 \/*\0*/\ 0 -1030px repeat-x;
+  background:-moz-linear-gradient(top,#2d3743 0,#181e25 100%);
+  background:-webkit-linear-gradient(top,#2d3743 0,#181e25 100%);
+  background:-o-linear-gradient(top,#2d3743 0,#181e25 100%);
+  background:-ms-linear-gradient(top,#2d3743 0,#181e25 100%);
+  background:linear-gradient(to bottom,#2d3743 0,#181e25 100%);
+  border:1px solid black;
+  border-color:#28323e #222b34 #232a34 #222b34;
+  -webkit-border-radius:3px;
+  -moz-border-radius:3px;
+  border-radius:3px;
+  -webkit-box-shadow:0 1px 3px 0 black,inset 0 1px 1px 0 hsl(213,22%,32%);
+  -moz-box-shadow:0 1px 3px 0 black,inset 0 1px 1px 0 hsl(213,22%,32%);
+  box-shadow:0 1px 3px 0 black,inset 0 1px 1px 0 hsl(213,22%,32%);
+  font-size:11px;
+  color:#fff;
+  display:inline-block;
+  padding:3px 0;
+  text-decoration:none!important;
+}
+.box_highlight{
+  background:#171d24;
+  border:1px solid #000;
+  border-radius:3px;
+  box-shadow:inset 0 1px 1px rgba(62,81,100,0.4);
+}
 #buttonz .box_highlight .header{
   background:0;
   text-align:left;
@@ -171,7 +177,7 @@ box-shadow:inset 0 1px 1px rgba(62,81,100,0.4)}
 .title_txt,#eventboxBlank,.blue_txt{color:#6f9fc8}
 .premium_txt{color:#2cbef2}
 .bold{font-weight:700}
-.h2,#buttonz h2,#fleet #sendfleet h2,#movement h3 a,#statistics h3,#highscoreContent h2,#traderOverview .div_trader h2, #spyReport h2, #phalanxReport h2{
+.h2,#buttonz h2,#fleet #sendfleet h2,#movement h3 a,#statistics h3,#highscoreContent h2,#traderOverview .div_trader h2, #spyReport h2, #phalanxReport h2, #technology .typeTechnology{
   color:#6f9fc8;
   font:700 12px/28px Verdana,Arial,Helvetica,sans-serif;
 }
@@ -194,9 +200,7 @@ h3{
   color:#6f9fc8;
   font:700 11px/23px Verdana,Arial,Helvetica,sans-serif;
 }
-em{
-  font-style:italic;
-}
+em{font-style:italic}
 div.btn>input[type="button"]{cursor:pointer}
 .btn_blue,input.btn_blue,a.btn_blue,.ui-button, #messages .msg_content input{
   background:#354a5d  url("../Imagenes/Background.jpg") 0 2px repeat-x;
@@ -4993,7 +4997,7 @@ height:80px;
   position:absolute;
   width:1px;
 }
-#reward #planet,#options #planet,#vacas #planet,#shipyard #planet,#research #planet,#search #planet,#defense #planet{height:250px}
+#reward #planet,#options #planet,#vacas #planet,#shipyard #planet,#research #planet,#search #planet,#defense #planet,#technology #planet{height:250px}
 #reward .c-left,#reward .c-right,#search .c-left,#search .c-right,#options .c-left,#options .c-right,#vacas .c-left,#vacas .c-right,#shipyard .c-left,#shipyard .c-right{top:214px}
 #shipyard #battleships,#shipyard #civilships{
   float:left;
@@ -5634,29 +5638,48 @@ border:1px solid black;
 background-color:#0d1014}
 div#resourceSettings .listOfResourceSettingsPerPlanet{width:315px}
 #resourceSettings #inhalt .listOfResourceSettingsPerPlanet{width:600px}
-#resourceSettings #inhalt td#factor,#resourceSettings td#factor{font-weight:700;
-text-align:center;
-line-height:27px;
-vertical-align:middle;
-color:#d3d3d3}#resourceSettings #inhalt td#factor .secondcol,#resourceSettings td#factor .secondcol{display:block;
-float:none;
-margin:0}#resourceSettings #inhalt td#factor span.factorkey,#resourceSettings td#factor span.factorkey{color:#9c0;
-float:left;
-display:inline}#resourceSettings #inhalt td#factor span.factorbutton,#resourceSettings td#factor span.factorbutton{float:right;
-margin-left:13px;
-display:inline}#resourceSettings #inhalt td.textRight,#resourceSettings td.textRight{text-align:right}#resourceSettings #inhalt td.label,#resourceSettings td.label{color:grey;
-text-align:left;
-padding-left:5px}
+#resourceSettings #inhalt td#factor,#resourceSettings td#factor{
+  font-weight:700;
+  text-align:center;
+  line-height:27px;
+  vertical-align:middle;
+  color:#d3d3d3;
+}
+#resourceSettings #inhalt td#factor .secondcol,#resourceSettings td#factor .secondcol{
+  display:block;
+  float:none;
+  margin:0;
+}
+#resourceSettings #inhalt td#factor span.factorkey,#resourceSettings td#factor span.factorkey{
+  color:#9c0;
+  float:left;
+  display:inline;
+}
+#resourceSettings #inhalt td#factor span.factorbutton,#resourceSettings td#factor span.factorbutton{
+  float:right;
+  margin-left:13px;
+  display:inline;
+}
+#resourceSettings #inhalt td.textRight,#resourceSettings td.textRight{text-align:right}#resourceSettings #inhalt td.label,#resourceSettings td.label{
+  color:grey;
+  text-align:left;
+  padding-left:5px;
+}
 #resourceSettings #inhalt .listOfResourceSettingsPerPlanet tr.hover td,#resourceSettings .listOfResourceSettingsPerPlanet tr.hover td,#resourceSettings .listOfResourceSettingsPerPlanet tr:hover td{background-color:#23282d}
 #resourceSettings #inhalt .listOfResourceSettingsPerPlanet td,#resourceSettings #RessLayer .listOfResourceSettingsPerPlanet td{font-size:11px}
-#resourceSettings .mainRS .listOfResourceSettingsPerPlanet td,#resourceSettings .mainRS .listOfResourceSettingsPerPlanet th{text-align:right;
-height:25px}
-#resourceSettings #inhalt .listOfResourceSettingsPerPlanet td em,#resourceSettings .listOfResourceSettingsPerPlanet td em{font-style:normal;
-font-weight:700}
-#resourceSettings #inhalt .listOfResourceSettingsPerPlanet th{
+#resourceSettings .mainRS .listOfResourceSettingsPerPlanet td,#resourceSettings .mainRS .listOfResourceSettingsPerPlanet th{
+  text-align:right;
+  height:25px;
+}
+#resourceSettings #inhalt .listOfResourceSettingsPerPlanet td em,#resourceSettings .listOfResourceSettingsPerPlanet td em{
+  font-style:normal;
   font-weight:700;
-padding-bottom:0;
-vertical-align:middle}
+}
+#resourceSettings #inhalt .listOfResourceSettingsPerPlanet th, #technology thead th {
+  font-weight:700;
+  padding-bottom:0;
+  vertical-align:middle;
+}
 #resourceSettings .listOfResourceSettingsPerPlanet th a:hover,#resourceSettings .listOfResourceSettingsPerPlanet th a:active{text-decoration:underline}
 #resourceSettings #inhalt .listOfResourceSettingsPerPlanet tr.summary td,#resourceSettings .listOfResourceSettingsPerPlanet tr.summary td{border-top:1px dotted #848484}
 #resourceSettings .listOfResourceSettingsPerPlanet select{width:67px}
@@ -5997,33 +6020,10 @@ width:455px}#techinfo th{background-color:#12171c;
 border-bottom:1px dotted #848484;
 font-weight:700;
 padding-bottom:3px}#techinfo th,#techinfo td{text-align:center;
-padding:2px 4px}#techinfo .currentlevel{background-color:#2c4f20}#preferencesTabs div#techinfo table{width:605px!important}#technology .headline{background:#12171c  url("../Imagenes/Background.jpg") no-repeat 13px 10px;
-border-top:1px solid #303b41;
-color:#fff;
-cursor:pointer;
-font-weight:bold;
-height:22px;
-line-height:25px;
-margin:0;
-overflow:hidden;
-padding:10px 0 10px 43px}.techtree_content{display:none}.techtree_content.open{display:block}#technology table{background-color:#0d1014;
-table-layout:fixed;
-width:600px}#technology td{background-color:#0d1014;
-padding:5px;
-text-align:center;
-vertical-align:top;
-width:290px}#technology a{color:#fff;
-background:#1b2028;
-border-radius:5px;
-display:block;
-min-height:34px;
-padding:3px 0;
-text-align:left;
-text-decoration:none}#technology a:hover{background:#29313d}#technology .item img{float:left;
-margin:0 5px}#technology .techtree_pic{background: url("../Imagenes/Background.jpg") -143px 0 no-repeat;
-height:32px;
-margin:0 5px;
-width:32px}#technology .techtree_list{margin:0 0 0 42px}#exodus-indicator{position:relative;
+padding:2px 4px}
+#techinfo .currentlevel{background-color:#2c4f20}
+#preferencesTabs div#techinfo table{width:605px!important}
+#exodus-indicator{position:relative;
 width:138px;
 height:63px;
 margin-top:10px;
@@ -7622,4 +7622,13 @@ div #metalInfoDiv .productionCant, div #crystalInfoDiv .productionCant, div #deu
   min-height: 40px;
   border-radius: 6px;
   padding: 4px;
+}
+
+#technology .typeTechnology{
+  text-align: center;
+}
+
+#technology table{
+  border-collapse: separate;
+  border-spacing: 0 12px;
 }

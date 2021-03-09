@@ -1,0 +1,452 @@
+extends Ogame_Layout
+block content
+  #inhalt
+    #planet(style='background-image:url(./Imagenes/Search.jpg)')
+      #header_text
+        h2 Technology - #{(basic.moon) ? basic.planets[basic.numPlanet].moon.name : basic.planets[basic.numPlanet].name}
+    .c-left
+    .c-right
+    #buttonz
+      .header
+        h2 Technology Table
+      .content
+        - console.log(info);
+        table#technologyTable.content_table.ignorelist
+          colgroup
+            col(span='1' style='width: 70px;')
+            col(span='1' style='width: 120px;')
+            col(span='1' style='width: 150px;')
+            col(span='1' style='width: 40px;')
+          thead
+            tr.ct_head_row
+              th.no.ct_th.first Type
+              th.ct_th.ct_sortable_title Name
+              th.ct_th.ct_sortable_title Requeriments
+              th.ct_th.ct_sortable_title Dificult
+          tbody
+            tr
+              th.typeTechnology Planet Bulding
+              th(class=(info.metalMine.tech ? "undermark" : "overmark")) Metal Mine
+              th -
+              th 1
+            tr
+              th.typeTechnology Planet Bulding
+              th(class=(info.crystalMine.tech ? "undermark" : "overmark")) Crystal Mine
+              th -
+              th 1
+            tr
+              th.typeTechnology Planet Bulding
+              th(class=(info.deuteriumMine.tech ? "undermark" : "overmark")) Deuterium Mine
+              th -
+              th 1
+            tr
+              th.typeTechnology Planet Bulding
+              th(class=(info.solarPlant.tech ? "undermark" : "overmark")) Solar Plant
+              th -
+              th 1
+            tr
+              th.typeTechnology Planet Bulding
+              th(class=(info.fusionReactor.tech ? "undermark" : "overmark")) Fusion Reactor
+              th
+                p(class=(info.deuteriumMine.level >= 5 ? "undermark" : "overmark")) Deuterium Mine (level 5)
+                p(class=(info.energy.level >= 3 ? "undermark" : "overmark")) Energy Technology (level 3)
+              th 4
+            tr
+              th.typeTechnology Planet Bulding
+              th(class=(info.metalStorage.tech ? "undermark" : "overmark")) Metal Storage
+              th -
+              th 1
+            tr
+              th.typeTechnology Planet Bulding
+              th(class=(info.crystalStorage.tech ? "undermark" : "overmark")) Crystal Storage
+              th -
+              th 1
+            tr
+              th.typeTechnology Planet Bulding
+              th(class=(info.deuteriumStorage.tech ? "undermark" : "overmark")) Deuterim Storage
+              th -
+              th 1
+            tr
+              th.typeTechnology Planet Facility
+              th(class=(info.robotFactory.tech ? "undermark" : "overmark")) Robot Factory
+              th -
+              th 1
+            tr
+              th.typeTechnology Planet Facility
+              th(class=(info.shipyard.tech ? "undermark" : "overmark")) Shipyard
+              th
+                p(class=(info.robotFactory.level >= 2 ? "undermark" : "overmark")) Robot Factory(Level 2)
+              th 2
+            tr
+              th.typeTechnology Planet Facility
+              th(class=(info.researchLab.tech ? "undermark" : "overmark")) Research Lab
+              th -
+              th 1
+            tr
+              th.typeTechnology Planet Facility
+              th(class=(info.alliance.tech ? "undermark" : "overmark")) Aliance Depot
+              th -
+              th 2
+            tr
+              th.typeTechnology Planet Facility
+              th(class=(info.silo.tech ? "undermark" : "overmark")) Silo
+              th
+                p(class=(info.shipyard.level >= 1 ? "undermark" : "overmark")) Shipyard (level 1)
+              th 3
+            tr
+              th.typeTechnology Planet Facility
+              th(class=(info.naniteFactory.tech ? "undermark" : "overmark")) Nanite Factory
+              th
+                p(class=(info.robotFactory.level >= 10 ? "undermark" : "overmark")) Robot Factory (level 10)
+                p(class=(info.computer.level >= 10 ? "undermark" : "overmark")) Computer Technology (level 10)
+              th 8
+            tr
+              th.typeTechnology Planet Facility
+              th(class=(info.terraformer.tech ? "undermark" : "overmark")) Terraformer
+              th
+                p(class=(info.naniteFactory.level >= 1 ? "undermark" : "overmark")) Nanite Factory (level 1)
+                p(class=(info.energy.level >= 12 ? "undermark" : "overmark")) Energy Technology (level 12)
+              th 9
+            tr
+              th.typeTechnology Investigation
+              th(class=(info.energy.tech ? "undermark" : "overmark")) Energy Technology
+              th
+                p(class=(info.researchLab.level >= 1 ? "undermark" : "overmark")) Research Lab (level 1)
+              th 2
+            tr
+              th.typeTechnology Investigation
+              th(class=(info.laser.tech ? "undermark" : "overmark")) Laser Technology
+              th
+                p(class=(info.researchLab.level >= 1 ? "undermark" : "overmark")) Research Lab (level 1)
+                p(class=(info.energy.level >= 2 ? "undermark" : "overmark")) Energy Technology (level 2)
+              th 3
+            tr
+              th.typeTechnology Investigation
+              th(class=(info.ion.tech ? "undermark" : "overmark")) Ion Technology
+              th
+                p(class=(info.researchLab.level >= 4 ? "undermark" : "overmark")) Research Lab (level 4)
+                p(class=(info.energy.level >= 4 ? "undermark" : "overmark")) Energy Technology (level 4)
+                p(class=(info.laser.level >= 5 ? "undermark" : "overmark")) Laser Technology (level 5)
+              th 5
+            tr
+              th.typeTechnology Investigation
+              th(class=(info.hyperspace.tech ? "undermark" : "overmark")) Hyperspace Technology
+              th
+                p(class=(info.researchLab.level >= 7 ? "undermark" : "overmark")) Research Lab (level 7)
+                p(class=(info.energy.level >= 5 ? "undermark" : "overmark")) Energy Technology (level 5)
+                p(class=(info.shielding.level >= 5 ? "undermark" : "overmark")) Shielding Technology (level 5)
+              th 6
+            tr
+              th.typeTechnology Investigation
+              th(class=(info.plasma.tech ? "undermark" : "overmark")) Plasma Technology
+              th
+                p(class=(info.researchLab.level >= 4 ? "undermark" : "overmark")) Research Lab (level 4)
+                p(class=(info.energy.level >= 8 ? "undermark" : "overmark")) Energy Technology (level 8)
+                p(class=(info.laser.level >= 10 ? "undermark" : "overmark")) Laser Technology (level 10)
+                p(class=(info.ion.level >= 5 ? "undermark" : "overmark")) Ion Technology (level 5)
+              th 7
+            tr
+              th.typeTechnology Investigation
+              th(class=(info.espionage.tech ? "undermark" : "overmark")) Espionage Technology
+              th
+                p(class=(info.researchLab.level >= 3 ? "undermark" : "overmark")) Research Lab (level 3)
+              th 3
+            tr
+              th.typeTechnology Investigation
+              th(class=(info.computer.tech ? "undermark" : "overmark")) Computer Technology
+              th
+                p(class=(info.researchLab.level >= 1 ? "undermark" : "overmark")) Research Lab (level 1)
+              th 2
+            tr
+              th.typeTechnology Investigation
+              th(class=(info.astrophysics.tech ? "undermark" : "overmark")) Astrophysics
+              th
+                p(class=(info.researchLab.level >= 3 ? "undermark" : "overmark")) Research Lab (level 3)
+                p(class=(info.espionage.level >= 4 ? "undermark" : "overmark")) Espionage Technology (level 4)
+              th 4
+            tr
+              th.typeTechnology Investigation
+              th(class=(info.intergalactic.tech ? "undermark" : "overmark")) Intergalactic Research Network
+              th
+                p(class=(info.researchLab.level >= 10 ? "undermark" : "overmark")) Research Lab (level 10)
+                p(class=(info.computer.level >= 8 ? "undermark" : "overmark")) Computer Technology (level 8)
+                p(class=(info.hyperspace.level >= 8 ? "undermark" : "overmark")) Hyperspace Technology (level 8)
+              th 8
+            tr
+              th.typeTechnology Investigation
+              th(class=(info.graviton.tech ? "undermark" : "overmark")) Graviton Technology
+              th
+                p(class=(info.researchLab.level >= 12 ? "undermark" : "overmark")) Research Lab (level 12)
+              th 10
+            tr
+              th.typeTechnology Investigation
+              th(class=(info.combustion.tech ? "undermark" : "overmark")) Combustion Drive
+              th
+                p(class=(info.researchLab.level >= 1 ? "undermark" : "overmark")) Research Lab (level 1)
+                p(class=(info.energy.level >= 1 ? "undermark" : "overmark")) Energy Technology (level 1)
+              th 3
+            tr
+              th.typeTechnology Investigation
+              th(class=(info.impulse.tech ? "undermark" : "overmark")) Impulse Drive
+              th
+                p(class=(info.researchLab.level >= 2 ? "undermark" : "overmark")) Research Lab (level 2)
+                p(class=(info.energy.level >= 2 ? "undermark" : "overmark")) Energy Technology (level 2)
+              th 4
+            tr
+              th.typeTechnology Investigation
+              th(class=(info.hyperspace_drive.tech ? "undermark" : "overmark")) Hyperspace Drive
+              th
+                p(class=(info.researchLab.level >= 7 ? "undermark" : "overmark")) Research Lab (level 7)
+                p(class=(info.hyperspace.level >= 3 ? "undermark" : "overmark")) Hyperspace Technology (level 3)
+              th 6
+            tr
+              th.typeTechnology Investigation
+              th(class=(info.weapons.tech ? "undermark" : "overmark")) Weapons Technology
+              th
+                p(class=(info.researchLab.level >= 4 ? "undermark" : "overmark")) Research Lab (level 4)
+              th 4
+            tr
+              th.typeTechnology Investigation
+              th(class=(info.shielding.tech ? "undermark" : "overmark")) Shielding Technology
+              th
+                p(class=(info.researchLab.level >= 6 ? "undermark" : "overmark")) Research Lab (level 6)
+                p(class=(info.energy.level >= 3 ? "undermark" : "overmark")) Energy Technology (level 3)
+              th 5
+            tr
+              th.typeTechnology Investigation
+              th(class=(info.armour.tech ? "undermark" : "overmark")) Armour Technology
+              th
+                p(class=(info.researchLab.level >= 2 ? "undermark" : "overmark")) Research Lab (level 2)
+              th 3
+            tr
+              th.typeTechnology Ship
+              th(class=(info.lightFighter.tech ? "undermark" : "overmark")) Light Fighter
+              th
+                p(class=(info.shipyard.level >= 1 ? "undermark" : "overmark")) Shipyard (level 1)
+                p(class=(info.combustion.level >= 1 ? "undermark" : "overmark")) Combustion Drive (level 1)
+              th 3
+            tr
+              th.typeTechnology Ship
+              th(class=(info.heavyFighter.tech ? "undermark" : "overmark")) Heavy Fighter
+              th
+                p(class=(info.shipyard.level >= 3 ? "undermark" : "overmark")) Shipyard (level 3)
+                p(class=(info.impulse.level >= 2 ? "undermark" : "overmark")) Impulse Drive (level 2)
+              th 3
+            tr
+              th.typeTechnology Ship
+              th(class=(info.cruiser.tech ? "undermark" : "overmark")) Cruiser
+              th
+                p(class=(info.shipyard.level >= 5 ? "undermark" : "overmark")) Shipyard (level 5)
+                p(class=(info.impulse.level >= 4 ? "undermark" : "overmark")) Impulse Drive (level 4)
+                p(class=(info.ion.level >= 2 ? "undermark" : "overmark")) Ion Technology (level 2)
+              th 5
+            tr
+              th.typeTechnology Ship
+              th(class=(info.battleship.tech ? "undermark" : "overmark")) Battleship
+              th
+                p(class=(info.shipyard.level >= 7 ? "undermark" : "overmark")) Shipyard (level 7)
+                p(class=(info.hyperspace_drive.level >= 4 ? "undermark" : "overmark")) Hyperspace Drive (level 4)
+              th 6
+            tr
+              th.typeTechnology Ship
+              th(class=(info.battlecruiser.tech ? "undermark" : "overmark")) Battlecruiser
+              th
+                p(class=(info.shipyard.level >= 8 ? "undermark" : "overmark")) Shipyard (level 8)
+                p(class=(info.hyperspace_drive.level >= 5 ? "undermark" : "overmark")) Hyperspace Drive (level 5)
+                p(class=(info.laser.level >= 12 ? "undermark" : "overmark")) Laser Technology (level 12)
+                p(class=(info.hyperspace.level >= 5 ? "undermark" : "overmark")) Hyperspace Technology (level 5)
+              th 7
+            tr
+              th.typeTechnology Ship
+              th(class=(info.bomber.tech ? "undermark" : "overmark")) Bomber
+              th
+                p(class=(info.shipyard.level >= 8 ? "undermark" : "overmark")) Shipyard (level 8)
+                p(class=(info.impulse.level >= 6 ? "undermark" : "overmark")) Impulse Drive (level 6)
+                p(class=(info.plasma.level >= 5 ? "undermark" : "overmark")) Plasma Technology (level 5)
+              th 8
+            tr
+              th.typeTechnology Ship
+              th(class=(info.destroyer.tech ? "undermark" : "overmark")) Destroyer
+              th
+                p(class=(info.shipyard.level >= 9 ? "undermark" : "overmark")) Shipyard (level 9)
+                p(class=(info.hyperspace_drive.level >= 6 ? "undermark" : "overmark")) Hyperspace Drive (level 6)
+                p(class=(info.hyperspace.level >= 5 ? "undermark" : "overmark")) Hyperspace Technology (level 5)
+              th 9
+            tr
+              th.typeTechnology Ship
+              th(class=(info.deathstar.tech ? "undermark" : "overmark")) Deathstar
+              th
+                p(class=(info.shipyard.level >= 12 ? "undermark" : "overmark")) Shipyard (level 12)
+                p(class=(info.hyperspace_drive.level >= 7 ? "undermark" : "overmark")) Hyperspace Drive (level 7)
+                p(class=(info.graviton.level >= 1 ? "undermark" : "overmark")) Graviton Technology (level 1)
+                p(class=(info.hyperspace.level >= 6 ? "undermark" : "overmark")) Hyperspace Technology (level 6)
+              th 10
+            tr
+              th.typeTechnology Ship
+              th(class=(info.smallCargo.tech ? "undermark" : "overmark")) Small Cargo
+              th
+                p(class=(info.shipyard.level >= 2 ? "undermark" : "overmark")) Shipyard (level 2)
+                p(class=(info.combustion.level >= 2 ? "undermark" : "overmark")) Combustion Drive (level 2)
+              th 3
+            tr
+              th.typeTechnology Ship
+              th(class=(info.largeCargo.tech ? "undermark" : "overmark")) Large Cargo
+              th
+                p(class=(info.shipyard.level >= 4 ? "undermark" : "overmark")) Shipyard (level 4)
+                p(class=(info.combustion.level >= 6 ? "undermark" : "overmark")) Combustion Drive (level 6)
+              th 5
+            tr
+              th.typeTechnology Ship
+              th(class=(info.colony.tech ? "undermark" : "overmark")) Colony Ship
+              th
+                p(class=(info.shipyard.level >= 4 ? "undermark" : "overmark")) Shipyard (level 4)
+                p(class=(info.impulse.level >= 3 ? "undermark" : "overmark")) Impulse Drive (level 3)
+              th 4
+            tr
+              th.typeTechnology Ship
+              th(class=(info.recycler.tech ? "undermark" : "overmark")) Recycler
+              th
+                p(class=(info.shipyard.level >= 4 ? "undermark" : "overmark")) Shipyard (level 4)
+                p(class=(info.combustion.level >= 6 ? "undermark" : "overmark")) Combustion Drive (level 6)
+                p(class=(info.shielding.level >= 2 ? "undermark" : "overmark")) Shielding Technology (level 2)
+              th 5
+            tr
+              th.typeTechnology Ship
+              th(class=(info.espionageProbe.tech ? "undermark" : "overmark")) Espionage Probe
+              th
+                p(class=(info.shipyard.level >= 3 ? "undermark" : "overmark")) Shipyard (level 3)
+                p(class=(info.combustion.level >= 3 ? "undermark" : "overmark")) Combustion Drive (level 3)
+                p(class=(info.espionage.level >= 2 ? "undermark" : "overmark")) Espionage Technology (level 2)
+              th 3
+            tr
+              th.typeTechnology Ship
+              th(class=(info.solarSatellite.tech ? "undermark" : "overmark")) Solar Satellite
+              th
+                p(class=(info.shipyard.level >= 1 ? "undermark" : "overmark")) Shipyard (level 1)
+              th 2
+            tr
+              th.typeTechnology Defence
+              th(class=(info.rocketLauncher.tech ? "undermark" : "overmark")) Rocket Launcher
+              th
+                p(class=(info.shipyard.level >= 1 ? "undermark" : "overmark")) Shipyard (level 1)
+              th 2
+            tr
+              th.typeTechnology Defence
+              th(class=(info.lightLaser.tech ? "undermark" : "overmark")) Light Laser
+              th
+                p(class=(info.shipyard.level >= 2 ? "undermark" : "overmark")) Shipyard (level 2)
+                p(class=(info.laser.level >= 3 ? "undermark" : "overmark")) Laser Technology (level 3)
+              th 3
+            tr
+              th.typeTechnology Defence
+              th(class=(info.heavyLaser.tech ? "undermark" : "overmark")) Heavy Laser
+              th
+                p(class=(info.shipyard.level >= 4 ? "undermark" : "overmark")) Shipyard (level 4)
+                p(class=(info.shipyard.level >= 6 ? "undermark" : "overmark")) Laser Technology (level 6)
+              th 5
+            tr
+              th.typeTechnology Defence
+              th(class=(info.gauss.tech ? "undermark" : "overmark")) Gauss Cannon
+              th
+                p(class=(info.shipyard.level >= 6 ? "undermark" : "overmark")) Shipyard (level 6)
+                p(class=(info.weapons.level >= 3 ? "undermark" : "overmark")) Weapons Technology (level 3)
+                p(class=(info.energy.level >= 6 ? "undermark" : "overmark")) Energy Technology (level 6)
+                p(class=(info.shielding.level >= 1 ? "undermark" : "overmark")) Shielding Technology (level 1)
+              th 6
+            tr
+              th.typeTechnology Defence
+              th(class=(info.ionCannon.tech ? "undermark" : "overmark")) Ion Cannon
+              th
+                p(class=(info.shipyard.level >= 4 ? "undermark" : "overmark")) Shipyard (level 4)
+                p(class=(info.ion.level >= 4 ? "undermark" : "overmark")) Ion Technology (level 4)
+              th 5
+            tr
+              th.typeTechnology Defence
+              th(class=(info.plasmaTurret.tech ? "undermark" : "overmark")) Plasma Turret
+              th
+                p(class=(info.shipyard.level >= 8 ? "undermark" : "overmark")) Shipyard (level 8)
+                p(class=(info.plasma.level >= 7 ? "undermark" : "overmark")) Plasma Technology (level 7)
+              th 8
+            tr
+              th.typeTechnology Defence
+              th(class=(info.smallShield.tech ? "undermark" : "overmark")) Small Shield Dome
+              th
+                p(class=(info.shipyard.level >= 1 ? "undermark" : "overmark")) Shipyard (level 1)
+                p(class=(info.shielding.level >= 2 ? "undermark" : "overmark")) Shielding Technology (level 2)
+              th 5
+            tr
+              th.typeTechnology Defence
+              th(class=(info.largeShield.tech ? "undermark" : "overmark")) Large Shield Dome
+              th
+                p(class=(info.shipyard.level >= 6 ? "undermark" : "overmark")) Shipyard (level 6)
+                p(class=(info.shielding.level >= 6 ? "undermark" : "overmark")) Shielding Technology (level 6)
+              th 6
+            tr
+              th.typeTechnology Defence
+              th(class=(info.antiballisticMissile.tech ? "undermark" : "overmark")) Anti-Ballistic Missiles
+              th
+                p(class=(info.silo.level >= 2 ? "undermark" : "overmark")) Silo (level 2)
+              th 4
+            tr
+              th.typeTechnology Defence
+              th(class=(info.interplanetaryMissile.tech ? "undermark" : "overmark")) Interplanetary Missiles
+              th
+                p(class=(info.silo.level >= 4 ? "undermark" : "overmark")) Silo (level 4)
+                p(class=(info.impulse.level >= 1 ? "undermark" : "overmark")) Impulse Drive (level 1)
+              th 5
+            tr
+              th.typeTechnology Lunar Facility
+              th(class=(info.lunarBase.tech ? "undermark" : "overmark")) Lunar Base
+              th -
+              th 6
+            tr
+              th.typeTechnology Lunar Facility
+              th(class=(info.phalanx.tech ? "undermark" : "overmark")) Phalanx
+              th
+                p(class=(info.lunarBase.level >= 3 ? "undermark" : "overmark")) Lunar Base (level 3)
+              th 7
+            tr
+              th.typeTechnology Lunar Facility
+              th(class=(info.spaceDock.tech ? "undermark" : "overmark")) Space Dock
+              th
+                p(class=(info.lunarBase.level >= 1 ? "undermark" : "overmark")) Lunar Base (level 1)
+              th 6
+            tr
+              th.typeTechnology Lunar Facility
+              th(class=(info.marketplace.tech ? "undermark" : "overmark")) Marketplace
+              th
+                p(class=(info.lunarBase.level >= 2 ? "undermark" : "overmark")) Lunar Base (level 2)
+                p(class=(info.computer.level >= 8 ? "undermark" : "overmark")) Computer Technology (level 8)
+                p(class=(info.alliance.level >= 4 ? "undermark" : "overmark")) Aliance Depot (level 4)
+              th 9
+            tr
+              th.typeTechnology Lunar Facility
+              th(class=(info.lunarSunshade.tech ? "undermark" : "overmark")) Lunar Sunshade
+              th
+                p(class=(info.lunarBase.level >= 1 ? "undermark" : "overmark")) Lunar Base (level 1)
+                p(class=(info.laser.level >= 12 ? "undermark" : "overmark")) Laser Technology (level 12)
+              th 7
+            tr
+              th.typeTechnology Lunar Facility
+              th(class=(info.lunarBeam.tech ? "undermark" : "overmark")) Lunar Beam
+              th
+                p(class=(info.lunarBase.level >= 1 ? "undermark" : "overmark")) Lunar Base (level 1)
+                p(class=(info.ion.level >= 12 ? "undermark" : "overmark")) Ion Technology (level 12)
+              th 7
+            tr
+              th.typeTechnology Lunar Facility
+              th(class=(info.jumpGate.tech ? "undermark" : "overmark")) Jump Gate
+              th
+                p(class=(info.lunarBase.level >= 1 ? "undermark" : "overmark")) Lunar Base (level 1)
+                p(class=(info.hyperspace.level >= 7 ? "undermark" : "overmark")) Hyperspace Technology (level 7)
+              th 9
+            tr
+              th.typeTechnology Lunar Facility
+              th(class=(info.moonShield.tech ? "undermark" : "overmark")) Moon Shield
+              th
+                p(class=(info.lunarBase.level >= 4 ? "undermark" : "overmark")) Lunar Base (level 4)
+                p(class=(info.graviton.level >= 1 ? "undermark" : "overmark")) Graviton Technology (level 1)
+                p(class=(info.shielding.level >= 12 ? "undermark" : "overmark")) Shielding Technology (level 12)
+              th 10
+
+      .footer
