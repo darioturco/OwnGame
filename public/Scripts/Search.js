@@ -24,7 +24,6 @@ setTimeout(() => {
 function setSearch(){
   let playerName = inputIn.value;
   loadJSON('./api/searchPlayer?name=' + playerName, (obj) => {
-    console.log(obj);
     if(obj.ok === true){
       withInfo = true;
       ready = true;

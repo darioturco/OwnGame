@@ -1,5 +1,4 @@
-var express = require('express');
-var router = express.Router();
+var router = require('express').Router();
 var uni = require('./universe');
 
 // Rutas de informacion usadas solo para obtener informacion sobre el universo
@@ -67,7 +66,7 @@ router.get('/usePhalanx', function(req, res, next) {
     res);
 });
 
-//Se usa set para las direcciones que cambian cosas en la base de datos
+// Se usa set para las direcciones que cambian cosas en la base de datos
 
 // Updatea los valores de resourcesSettings
 router.get('/set/updateResources', function(req, res, next) {

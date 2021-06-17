@@ -1,8 +1,7 @@
 require('dotenv').config();
 const UPDATE_TIME = 500;
-var express = require('express');
 var uni = require('./universe');
-var router = express.Router();
+var router = require('express').Router();
 var updater = setInterval(() => {uni.updateUniverse();}, UPDATE_TIME);
 setTimeout(() => {uni.dailyUpdate();}, 86400000 - (uni.fun.horaActual() % 86400000));
 

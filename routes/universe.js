@@ -490,7 +490,6 @@ var exp  = {
   //  -rand = Si es true la coordenada es alatoria, si no se busca la glaxia numero 'comienzoBusquedaNewCoor'
   newCord: function(rand = true) {
     // Busca un cordenada libre y la devuelve
-    console.log(this.allCord);
     let newCoor = {};
     for(newCoor.gal = this.comienzoBusquedaNewCoor ; newCoor.gal<=9; newCoor.gal++){ // Comienza en la galaxia numero comienzoBusquedaNewCoor
       for(newCoor.sys = 1 ; newCoor.sys<=499; newCoor.sys++){
@@ -506,7 +505,7 @@ var exp  = {
       return this.newCord(false); // Si no encontro ninguna coordenada aletoriamente busca la primera que este libre
     }else{
       // Si ya busco linealmente la primer coordenada libre y no hay, tira un mensaje de error y devuelve undefined
-      console.log("No hay coordenada libre");
+      console.log("There is no coordinate available.");
       return undefined;
     }
   },
@@ -1130,7 +1129,6 @@ var exp  = {
     objInc['planets.' + planet + '.resources.crystal']   = 0;
     objInc['planets.' + planet + '.resources.deuterium'] = 0;
     for(let i = 0 ; i<player.planets[planet].shipConstrucction.length ; i++){
-      console.log(player.planets[planet].shipConstrucction[i]);
       if(player.planets[planet].shipConstrucction[i].item === shipyardName){
         objInc['planets.' + planet + '.resources.metal']     += player.planets[planet].shipConstrucction[i].metal;
         objInc['planets.' + planet + '.resources.crystal']   += player.planets[planet].shipConstrucction[i].crystal;
@@ -1830,7 +1828,7 @@ var exp  = {
 
   // Funcion que se ejecuta una vez por dia, cuando el dia empieza
   dailyUpdate: function(){
-    console.log('\x1b[36m%s\x1b[0m', "Daily update.");
+    console.log('\x1b[36m%s\x1b[0m', "Daily update!!!");
     base.updateAllHighscore();
     // Dentro de un dia se va a ejecutar de nuevo
     setTimeout(() => {this.dailyUpdate();}, 86400000);
@@ -1847,8 +1845,9 @@ module.exports = exp;
 /* Hacer que el space dock funcione
 /* Avisar al atacado que lo estan atacando (API de bots)(Terminar la linea 211 de layout.pug)
 /* Crear la API con la que interactuan los bots (Los bots no los va a controlar el servidor)
-/* Pasar todo el juego a ingles (Todo lo que lee el usuario)
+/* Pasar todo el juego a ingles (Todo lo que lee el usuario) o implementar multiples idiomas
 /* Mejorar el codigo del cliente
 /* Si un jugador regala una flota a otro jugador tiene que cambiar los puntos
 /* Revisar el consumo de energia mostrado en resources setings
+/* Terminar la documentacion
 */

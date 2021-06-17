@@ -1,6 +1,6 @@
-var uni      = null;
-var mongo    = null;
-var date     = new Date();
+var uni   = null;
+var mongo = null;
+var date  = new Date();
 
 require('mongodb').MongoClient.connect(process.env.MONGO_URL, {useUnifiedTopology: true}, (err, db) => {
   if(err) throw err;
@@ -115,7 +115,7 @@ var exp = {
       mongo.db(process.env.UNIVERSE_NAME).dropCollection(nameList[i],
         (err, delOK) => {
           if(err) throw err;
-          if(delOK) console.log('\x1b[35m%s\x1b[0m', "Collection" + nameList[i] + "deleted")
+          if(delOK) console.log('\x1b[35m%s\x1b[0m', "Collection " + nameList[i] + " deleted.")
         });
     }
   },
@@ -127,11 +127,14 @@ var exp = {
     let newCoor = uni.newCord();
     if(newCoor != undefined){
       let newPlanet = uni.createNewPlanet(newCoor, "Planeta Principal", name, 'activo', uni.fun.zeroResources(), uni.fun.zeroShips());
+      let password = uni.fun.randomString();
+      console.log(name + ": " + password);
 
       // Guardo el nivel de espionage del nuevo jugador en esa coordenada, o sea 0
       uni.allCord[newCoor.gal+'_'+newCoor.sys+'_'+newCoor.pos] = {espionage: 0, playerName: name};
       let newPlayer = {'name': name,
         'styleGame': styleGame,
+        pass: uni.fun.hash(password),
         planets: [newPlanet],
         maxPlanets: 1,
         highscore: uni.cantPlayers + 1, // Empieza en la ultima posicion
@@ -157,6 +160,7 @@ var exp = {
       uni.cantPlayers++;
       // Agrega al jugador a la base de datos
       mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").insertOne(newPlayer);
+      return password;
     }
   },
 
@@ -244,6 +248,7 @@ var exp = {
   //  -newName = Nuevo nombre del planeta
   setPlanetName: function(player, coor, newName, moon){
     let index = uni.fun.getIndexOfPlanet(player.planets, coor);
+    if(index === -1) return false;
     let objSet = {};
     if(moon){
       objSet['planets.$.moon.name'] = newName;
@@ -255,6 +260,7 @@ var exp = {
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
       {planets :{$elemMatch: {coordinates: coor}}},
       {$set: objSet});
+    return true;
   },
 
   // Elimina un planeta de un jugador
