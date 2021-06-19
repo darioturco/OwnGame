@@ -85,56 +85,59 @@ function loadSystem(gal, sys){
   galaxy = gal;
   system = sys;
   loadJSON('./api/galaxy?gal=' + gal + '&sys=' + sys, (obj) => {
-    // console.log(obj);
-    let cont = 0;
-    debrisList = [];
-    moonList = [];
-    estados = [];
-    pressMoon(-1);//apaga el cartel de la luna
-    pressDebris(-1);//apaga el cartel de los escombros
-    for(let i = 1 ; i<=15 ; i++){
-      if(obj['pos'+i].active){    // Si es el plantea de la posicion i esta colonizado
-        cont++;
-        planets[i-1].src = './Imagenes/Planets/Miniatures/Planet_' + obj['pos'+i].type + '_' + obj['pos'+i].color + '_Mini.gif';
-        playerName[i-1].innerHTML = obj['pos'+i].player + getEstado(obj['pos'+i].estado);
-        //remover todas las posibles classes de estados
-        playerName[i-1].classList.add(obj['pos'+i].estado);
-        planetName[i-1].innerHTML = obj['pos'+i].name;
-        colonyImg[i-1].style.display = 'none';
-        if(obj['pos'+i].moon){
-           moons[i-1].classList.add('activeMoon');
-         }else{
-           moons[i-1].classList.remove('activeMoon');
-         }
-        if(obj['pos'+i].debris){
-          debris[i-1].classList.add('debrisField');
+    //console.log(obj);
+    if(obj.ok){
+      obj = obj.data;
+      let cont = 0;
+      debrisList = [];
+      moonList = [];
+      estados = [];
+      pressMoon(-1);//apaga el cartel de la luna
+      pressDebris(-1);//apaga el cartel de los escombros
+      for(let i = 1 ; i<=15 ; i++){
+        if(obj['pos'+i].active){    // Si es el plantea de la posicion i esta colonizado
+          cont++;
+          planets[i-1].src = './Imagenes/Planets/Miniatures/Planet_' + obj['pos'+i].type + '_' + obj['pos'+i].color + '_Mini.gif';
+          playerName[i-1].innerHTML = obj['pos'+i].player + getEstado(obj['pos'+i].estado);
+          //remover todas las posibles classes de estados
+          playerName[i-1].classList.add(obj['pos'+i].estado);
+          planetName[i-1].innerHTML = obj['pos'+i].name;
+          colonyImg[i-1].style.display = 'none';
+          if(obj['pos'+i].moon){
+             moons[i-1].classList.add('activeMoon');
+           }else{
+             moons[i-1].classList.remove('activeMoon');
+           }
+          if(obj['pos'+i].debris){
+            debris[i-1].classList.add('debrisField');
+          }else{
+            debris[i-1].classList.remove('debrisField');
+          }
+          if(playerActualName == obj['pos'+i].player){
+            actions[i-1].style.display = 'none';
+          }else{
+            actions[i-1].style.display = 'block';
+          }
+          if(obj['pos'+i].esVaca){
+            vacasButtons[i-1].classList.add("icon_mail_active");
+          }else{
+            vacasButtons[i-1].classList.remove("icon_mail_active");
+          }
         }else{
+          planets[i-1].src = './Imagenes/None.gif';
+          playerName[i-1].innerHTML = '';
+          planetName[i-1].innerHTML = '';
+          colonyImg[i-1].style.display = 'inline';
+          actions[i-1].style.display = 'none';
+          moons[i-1].classList.remove('activeMoon');
           debris[i-1].classList.remove('debrisField');
         }
-        if(playerActualName == obj['pos'+i].player){
-          actions[i-1].style.display = 'none';
-        }else{
-          actions[i-1].style.display = 'block';
-        }
-        if(obj['pos'+i].esVaca){
-          vacasButtons[i-1].classList.add("icon_mail_active");
-        }else{
-          vacasButtons[i-1].classList.remove("icon_mail_active");
-        }
-      }else{
-        planets[i-1].src = './Imagenes/None.gif';
-        playerName[i-1].innerHTML = '';
-        planetName[i-1].innerHTML = '';
-        colonyImg[i-1].style.display = 'inline';
-        actions[i-1].style.display = 'none';
-        moons[i-1].classList.remove('activeMoon');
-        debris[i-1].classList.remove('debrisField');
+        estados.push(obj['pos'+i].estado);
+        debrisList.push({debris: obj['pos'+i].debris, metal: obj['pos'+i].metalDebris, crystal: obj['pos'+i].crystalDebris});
+        moonList.push({active: obj['pos'+i].moon, size: obj['pos'+i].moonSize, name: obj['pos'+i].moonName});
       }
-      estados.push(obj['pos'+i].estado);
-      debrisList.push({debris: obj['pos'+i].debris, metal: obj['pos'+i].metalDebris, crystal: obj['pos'+i].crystalDebris});
-      moonList.push({active: obj['pos'+i].moon, size: obj['pos'+i].moonSize, name: obj['pos'+i].moonName});
+      colonized.innerHTML = cont + " Planets colonised";
     }
-    colonized.innerHTML = cont + " Planets colonised";
   });
 }
 

@@ -70,16 +70,12 @@ router.get('/usePhalanx', function(req, res, next) {
 
 // Updatea los valores de resourcesSettings
 router.get('/set/updateResources', function(req, res, next) {
-  uni.updateResourcesData(() => {
-    res.send({ok: true});
-  }, uni.player, uni.planeta, req.query);
+  uni.updateResourcesData(res, uni.player, uni.planeta, req.query);
 });
 
 // Updatea los valores de resourcesSettings de la luna
 router.get('/set/updateResourcesMoon', function(req, res, next) {
-  uni.updateResourcesDataMoon(() => {
-    res.send({ok: true});
-  }, uni.player, uni.planeta, req.query);
+  uni.updateResourcesDataMoon(res, uni.player, uni.planeta, req.query);
 });
 
 router.get('/set/deleteMessages', function(req, res, next) {

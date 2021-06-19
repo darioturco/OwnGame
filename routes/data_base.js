@@ -273,10 +273,10 @@ var exp = {
       objPull.planets  = {coordinates: player.planets[planet].coordinates}; // Elimino el planeta nuemro planet de la lista
       objPull.movement = {coorDesde: player.planets[planet].coordinates};   // Elimino todos los movment que salieron del planeta eliminado
       this.savePlayerData(player.name, undefined, undefined, undefined, objPull, () => {
-        res.send({ok: true});
+        uni.fun.writeRes(res, {ok: true});
       });
     }else{
-      res.send({ok: false, mes: "No se puede abandonar el unico planeta que tenes."});
+      uni.fun.writeRes(res, {ok: false, mes: "No podes abandonar el unico planeta que tenes."});
     }
   },
 
@@ -410,6 +410,10 @@ var exp = {
   //  -gal = Numero de galaxia
   //  -sys = Nuemero de sistema
   systemInfo: function(res, gal, sys){
+    if(!uni.fun.coordenadaValida({gal, sys, pos: 1})){
+      uni.fun.writeRes(res, {ok: false, mes: "Coordenadas no validas"});
+      return res;
+    }
     let respuesta = {};
     for(let i = 1 ; i<=15 ; i++){   // Al principio todos los 16 planetas estan desactivados
       respuesta['pos' + i] = {active: false};
@@ -418,7 +422,7 @@ var exp = {
     // Obtengo todas las vacas de ese sistema solar
     let listaPosiblesVacas = uni.fun.posiblesVacas(uni.player.vacas, gal, sys);
     let cursor = mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").find(
-      {planets :{$elemMatch: {coordinatesCod: gal+'_'+sys}}});
+      {planets: {$elemMatch: {coordinatesCod: gal+'_'+sys}}});
 
     // Busco todos los planetas colonizados de ese sistema solar y completo la informacion de cada activo
     cursor.forEach((doc, err) => {
@@ -441,7 +445,8 @@ var exp = {
         }
       }
     }, () => {
-      res.send(respuesta);
+      uni.fun.writeRes(res, {ok: true, mes: "Info de la galaxia: " + gal + ", sistema: " + sys, data: respuesta});
+      //res.send(respuesta);
     });
   },
 

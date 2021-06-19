@@ -123,6 +123,14 @@ var exp = {
   hash: function(str){
     return hashjs.sha256().update(str).digest('hex');
   },
+  writeRes: function(res, obj){
+    if(res.req.method === "GET"){
+      res.send(obj);
+    }else{
+      res.json(obj);
+    }
+    return res;
+  },
   normalRandom: function(min, max, podaMin = -Infinity, podaMax = Infinity) {// la esperanza es (max+min)/2
     /* Pasar algoritmo */
     let u = Math.random();
@@ -206,11 +214,12 @@ var exp = {
     return coor.gal >= 1 && coor.sys >= 1 && coor.pos >= 1 && coor.gal <= 9 && coor.sys <= 499 && coor.pos <= 16;
   },
   validResourcesSettingsObj: function(obj, moon){
-    let valid = true;
+    if(obj == undefined) return false;
     for(let i in obj){ // Me fijo que todos los valores de 'obj' sean numeros validos
-      valid &= this.validInt(obj[i]);
+      if(!this.validInt(obj[i])) return false;
     }
 
+    let valid = true;
     if(moon){
       // Si es la luna, fijo que las dos propiedades que me interesan esten definidas y que sean numeros entre 0 y 10 inclusibe
       valid &= 10 >= parseInt(obj.sunshade) && 0 <= parseInt(obj.sunshade);
@@ -223,6 +232,9 @@ var exp = {
       valid &= 10 >= parseInt(obj.energy) && 0 <= parseInt(obj.energy);
     }
     return valid;
+  },
+  validPlanetNum: function(player, num){
+    return this.validInt(num) && num >= 0 && player.planets.length > num;
   },
   validShips: function(ships){
     let res = ships['misil'] != undefined && this.validInt(ships['misil']);
@@ -503,6 +515,7 @@ var exp = {
     res.weapons = research.weapons + Math.floor(Math.random() * 6 - 3);
     res.shielding = research.shielding + Math.floor(Math.random() * 6 - 3);
     res.armour = research.armour + Math.floor(Math.random() * 6 - 3);
+
     // Me fijo que ninguna tecnologia sea negativa y si lo es la dejo en 0
     for(let item in res){
       if(res[item] < 0) res[item] = 0
@@ -861,6 +874,11 @@ var exp = {
     }else{
       return 'active';
     }
+  },
+  cleanDataSession: function(obj){
+    delete obj.id;
+    delete obj.username;
+    delete obj.password;
   }
 };
 

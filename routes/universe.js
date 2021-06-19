@@ -1147,13 +1147,13 @@ var exp  = {
   //  -player = Objeto con la infomacion sobre el jugador
   //  -planet = Numero de planeta
   //  -obj = Objeto con los nuevos valores de los multiplicadores, es null los valores quedan iguales pero actualiza los niveles de energia y produccion de cada mina
-  updateResourcesData: function(f, player, planet, obj = undefined) { // Updatea los multiplicadores de los recursos(NO toca los recursos)
+  updateResourcesData: function(res, player, planet, obj = undefined) { // Updatea los multiplicadores de los recursos(NO toca los recursos)
     let objSet = {};
     let spd    = this.universo.speed;
     let plasma = player.research.plasma;
     let minas  = player.planets[planet].buildings;
     let temp   = (player.planets[planet].temperature.max + player.planets[planet].temperature.min)/2;
-    if(obj != undefined && fun.validResourcesSettingsObj(obj, false)){
+    if(fun.validResourcesSettingsObj(obj, false)){
       player.planets[planet].resourcesPercentage = obj;
       objSet['planets.$.resourcesPercentage'] = obj;
     }
@@ -1184,7 +1184,7 @@ var exp  = {
     player.planets[planet].resourcesAdd     = objSet['planets.$.resourcesAdd'];
     player.planets[planet].resources.energy = energy;
     if(obj != undefined){
-      base.updateResourcesDataBase(player.planets[planet].coordinates, objSet, () => {f();});
+      base.updateResourcesDataBase(player.planets[planet].coordinates, objSet, () => {res.send({ok: true})});
     }
   },
 
@@ -1193,8 +1193,8 @@ var exp  = {
   //  -player = Objeto con la infomacion sobre el jugador
   //  -planet = Numero de planeta
   //  -obj = Objeto con los nuevos niveles de produccion de sunshade y lunar beam
-  updateResourcesDataMoon: function(f, player, planet, obj){
-    if(obj != null && fun.validResourcesSettingsObj(obj, true)){
+  updateResourcesDataMoon: function(res, player, planet, obj){
+    if(fun.validResourcesSettingsObj(obj, true)){
       let objSet = {};
       obj.sunshade = parseInt(obj.sunshade);
       obj.beam     = parseInt(obj.beam);
@@ -1205,7 +1205,7 @@ var exp  = {
       objSet['planets.$.moon.values'] = obj;
       base.updateResourcesDataBase(player.planets[planet].coordinates, objSet, () => {
         // Recalcula la produccion de las minas y guarda todo en la base de datos
-        this.updateResourcesData(f, player, planet, player.planets[planet].resourcesPercentage);
+        this.updateResourcesData(res, player, planet, player.planets[planet].resourcesPercentage);
       });
     }
   },

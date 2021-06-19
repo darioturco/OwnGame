@@ -15,7 +15,7 @@ module.exports = function (passport, uni) {
       if(sessions[req.body.id] == undefined){
         // Verifico si el username y password son correctos
         uni.base.findAndExecuteByName(username, (usuario) => {
-    			if(usuario === null) return done(null, false, {data: 'Wrong username'});
+    			if(usuario == null) return done(null, false, {data: 'Wrong username'});
     			if(uni.fun.hash(password) === usuario.pass){
             let newId = ""
             let tieneId = false;
