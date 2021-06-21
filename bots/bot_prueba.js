@@ -236,10 +236,79 @@ async function showTechnology(){
   console.log(res);
 }
 
+async function showHighscore(){
+  let data = {};
+  let res = await fetch('http://localhost:3000/bot/showHighscore', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function searchPlayer(){
+  let data = {name: 'dturco'};
+  let res = await fetch('http://localhost:3000/bot/searchPlayer', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function seeRewards(){
+  let data = {};
+  let res = await fetch('http://localhost:3000/bot/seeRewards', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function updateReward(){
+  let data = {id, mission: 1};
+  let res = await fetch('http://localhost:3000/bot/updateReward', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function usePhalanx(){
+  let data = {id, planetNum: 0, coor: {gal: 1, sys: 2, pos: 8}};
+  let res = await fetch('http://localhost:3000/bot/usePhalanx', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function useJumpGate(){
+  let data = {id, planetNum: 0, data: {ships: { lightFighter: 0,
+    heavyFighter: 0,
+    cruiser: 0,
+    battleship: 0,
+    battlecruiser: 0,
+    bomber: 0,
+    destroyer: 0,
+    deathstar: 0,
+    smallCargo: 0,
+    largeCargo: 0,
+    colony: 0,
+    recycler: 5,
+    espionageProbe: 0}, coorHasta: {gal: 1, sys: 2, pos: 8}}};
+  let res = await fetch('http://localhost:3000/bot/useJumpGate', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function useMarketMoon(){
+  // button: 0 = metal por crystal, 1 = metal por deuterium, 2 = crystal por metal, 3 = crystal por deuterium, 4 = deuterium por metal, 5 = deuterium por crystal
+  let data = {id, planetNum: 0, data: {cantidad: 10000, button: 0}};
+  let res = await fetch('http://localhost:3000/bot/useMarketMoon', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function changePassword(){
+  let data = {id, username: "dturco", password: "idnhlahf", newPassword: "jukulkf"};
+  let res = await fetch('http://localhost:3000/bot/changePassword', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
 async function combinar(){
   await login();
   //await deleteMessage();
-  await showTechnology();
+  //await changePassword();
   //setTimeout(returnFleet, 250);
   //setTimeout(changePlanetName, 1000);
 }
@@ -248,7 +317,8 @@ async function combinar(){
 //logout();
 //changePlanetName();
 
-combinar();
+//combinar();
+changePassword();
 
 console.log("Fin codigo");
 
@@ -287,13 +357,12 @@ console.log("Fin codigo");
   - deleteMessage
   - changeOptions
   - showTechnology
-  showHighscore
-  searchPlayer
-  usePhalanx
-  useJumpGate
-  seeMarketMoon
-  useMarketMoon
-  changePassword
-  seeRewards
-  updateRewards
+  - showHighscore
+  - searchPlayer
+  - seeRewards
+  - updateReward
+  - usePhalanx
+  - useJumpGate
+  - useMarketMoon
+  - changePassword
 */

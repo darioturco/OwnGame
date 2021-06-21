@@ -241,4 +241,58 @@ router.post('/showTechnology', async function(req, res, next) {
   res.send(uni.fun.getTechnology());
 });
 
+router.post('/showHighscore', async function(req, res, next) {
+  uni.base.highscoreData(res);
+});
+
+router.post('/searchPlayer', async function(req, res, next) {
+  uni.base.searchPlayer(res, req.body.name);
+});
+
+router.post('/seeRewards', async function(req, res, next) {
+  res.send(uni.fun.getRewards());
+});
+
+router.post('/updateReward', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    uni.updateRewards(player, req.body.mission, res);
+  });
+});
+
+router.post('/usePhalanx', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    if(uni.fun.validPlanetNum(player, req.body.planetNum)){
+      uni.base.usePhalanx(req.body.coor, player.planets[req.body.planetNum].coordinates, uni.fun.phalanxLevel(player.planets[req.body.planetNum].moon), res);
+    }else{
+      res.send({ok: false, mes: "Invalid planet number."});
+    }
+  });
+});
+
+router.post('/useJumpGate', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    if(uni.fun.validPlanetNum(player, req.body.planetNum)){
+      uni.moveCuanticFleet(player, uni.planeta, req.body.data, res);
+    }else{
+      res.send({ok: false, mes: "Invalid planet number."});
+    }
+  });
+});
+
+router.post('/useMarketMoon', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    if(uni.fun.validPlanetNum(player, req.body.planetNum, true)){
+      uni.marketResources(player, req.body.planetNum, req.body.data, res);
+    }else{
+      res.send({ok: false, mes: "Invalid moon number."});
+    }
+  });
+});
+
+router.post('/changePassword', async function(req, res, next) {
+  auth(req, res, next, false, (req, res, next, userId, player) => {
+    uni.base.changePassword(player.name, req.body.newPassword, res);
+  });
+});
+
 module.exports = router;

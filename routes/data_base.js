@@ -393,7 +393,7 @@ var exp = {
   //  -phal = Nivel del sensor palanx, si no se tiene una luna es 0
   //  -res = Objeto respuesta a enviar al cliente
   usePhalanx: function(coor, coorDesde, phal, res){
-    if(uni.fun.coordenadaValida(coor)){
+    if(uni.fun.coordenadaValida(coor) && uni.fun.coordenadaValida(coorDesde)){
       // Verifica que se pueda palanxear a ese jugador desde el planeta
       let alcance = phal * phal - 1;
       let estaEnRango = false;
@@ -793,6 +793,20 @@ var exp = {
     }, () => {});
   },
 
+  // Cambia la password de un usuario
+  //  -user = Nombre del usuario al que se le va a cambiar la password
+  //  -newPass = Nueva password del usuario
+  //  -res = Objeto con la respuesta a enviar al cliente
+  changePassword: function(user, newPass, res){
+    console.log("Cambio la pass");
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+      {name: user}, {$set: {"pass": uni.fun.hash(newPass)}}, (err, resBD) => {
+        if(err) throw err;
+        console.log("Listo");
+        res.send({ok: true});
+    });
+  },
+
   // Escribe datos en el planeta (Usada para debugear)
   //  -coor = Coordenadas del planeta a modificar
   setPlanetDataDev: function(coor){
@@ -812,7 +826,7 @@ var exp = {
   //  -coor = Coordenadas de la luna a modificar
   setMoonDataDev: function(coor){ // Asume el planeta tiene luna, de lo contrario no hace nada
     let resources = {metal: 50000000, crystal: 40000000, deuterium: 10000000, energy: 0};
-    let building = {lunarBase: 10, phalanx: 4, spaceDock: 0, marketplace: 0, lunarSunshade: 0, lunarBeam: 0, jumpGate: 0, moonShield: 0};
+    let building = {lunarBase: 10, phalanx: 4, spaceDock: 0, marketplace: 2, lunarSunshade: 0, lunarBeam: 0, jumpGate: 5, moonShield: 0};
     let fleet = {lightFighter: 1000, heavyFighter: 0, cruiser: 1, battleship: 30, battlecruiser: 0, bomber: 0, destroyer: 0, deathstar: 100, smallCargo: 10, largeCargo: 200, colony: 0, recycler: 20, espionageProbe: 0, solarSatellite: 0};
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
       {planets :{$elemMatch: {coordinates: coor}}},

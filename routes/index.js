@@ -28,7 +28,7 @@ router.get('/', (req, res, next) => {
     //uni.createUniverse(process.env.UNIVERSE_NAME, 5, {name: "", inicio: 0, maxGalaxies: 9, donutGalaxy: true, donutSystem: true, speed: 1, speedFleet: 100, fleetDebris: 30, defenceDebris: 0, maxMoon: 20, rapidFire: true, repearDefenses: true});
     //uni.base.addNewPlayer("dturco", 1);
     //uni.base.setPlanetDataDev(uni.player.planets[0].coordinates);
-    //uni.base.setMoonDataDev(uni.player.planets[0].coordinates);
+    uni.base.setMoonDataDev(uni.player.planets[0].coordinates);
     //uni.base.sendMessage("dturco", {type: 1, title: "Nuevo titulo", text: "Mensaje oficial", data: {}});
     //uni.colonize({gal: 1, sys: 2, pos: 7}, uni.player);
     //uni.base.contPoint('dturco');

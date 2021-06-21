@@ -190,17 +190,17 @@ function changeMercado(num){
     if(marketInputs[num].value == "") marketInputs[num].value = ""; // value es igual a '' si hay algun caracter no numerico
     switch(num) {
     case 0: // Vendo metal
-      if(marketInputs[num].value != "" && parseInt(marketInputs[num].value) > metal_res.innerHTML) marketInputs[num].value = metal_res.innerHTML;
+      if(marketInputs[num].value != "" && parseInt(marketInputs[num].value) > metalTotal) marketInputs[num].value = metalTotal;
       marketButtons[0].value = marketInputs[num].value == '' ? 0 : formatNumber(Math.floor(parseInt(marketInputs[num].value)*(2/3)*(9/10)));
       marketButtons[1].value = marketInputs[num].value == '' ? 0 : formatNumber(Math.floor(parseInt(marketInputs[num].value)/3*(9/10)));
       break;
     case 1: // Vendo Cristal
-      if(marketInputs[num].value != "" && parseInt(marketInputs[num].value) > crystal_res.innerHTML) marketInputs[num].value = crystal_res.innerHTML;
+      if(marketInputs[num].value != "" && parseInt(marketInputs[num].value) > crystalTotal) marketInputs[num].value = crystalTotal;
       marketButtons[2].value = marketInputs[num].value == '' ? 0 : formatNumber(Math.floor(parseInt(marketInputs[num].value)*(3/2)*(9/10)));
       marketButtons[3].value = marketInputs[num].value == '' ? 0 : formatNumber(Math.floor(parseInt(marketInputs[num].value)/2*(9/10)));
       break;
     case 2: // Vendo deuterio
-      if(marketInputs[num].value != "" && parseInt(marketInputs[num].value) > deuterium_res.innerHTML) marketInputs[num].value = deuterium_res.innerHTML;
+      if(marketInputs[num].value != "" && parseInt(marketInputs[num].value) > deuteriumTotal) marketInputs[num].value = deuteriumTotal;
       marketButtons[4].value = marketInputs[num].value == '' ? 0 : formatNumber(Math.floor(parseInt(marketInputs[num].value)*3*(9/10)));
       marketButtons[5].value = marketInputs[num].value == '' ? 0 : formatNumber(Math.floor(parseInt(marketInputs[num].value)*2*(9/10)));
     }

@@ -1429,15 +1429,16 @@ var exp  = {
     if(player.planets[planet].moon.active && player.planets[planet].moon.buildings.jumpGate > 0 && fun.estaColonizado(this.allCord, obj.coorHasta)){
       let index = fun.getIndexOfPlanet(player.planets, obj.coorHasta);
       // Se fija que se salte a otra luna, que exista la luna a la que se quiere saltar y que tenga salto cuantico
-      if(index !== planet && player.planets[index].moon.active && player.planets[index].moon.buildings.jumpGate > 0){
+      if(index !== -1 && index !== planet && player.planets[index].moon.active && player.planets[index].moon.buildings.jumpGate > 0){
         // Se fija que el salto cuantico de salida este listo para usar (el de destino no necesita estar listo)
         if(player.planets[planet].moon.cuantic - fun.horaActual() <= 0){
           let incorrerctFleet = false;  // Se fija que la cantidad de flotas este bien
           let zeroFleet = true;
+          let validShips = fun.zeroShips();
           for(let item in obj.ships){
             if(!fun.validInt(obj.ships[item]) || obj.ships[item] < 0) obj.ships[item] = 0;
             if(obj.ships[item] > 0) zeroFleet = false;
-            if(obj.ships[item] > player.planets[planet].moon.fleet[item]) incorrerctFleet = true;
+            if(obj.ships[item] > player.planets[planet].moon.fleet[item] || validShips[item] == undefined) incorrerctFleet = true;
           }
           if(!incorrerctFleet && !zeroFleet){ // Paso las naves a la luna que salto y actualizo la info de la luna
             base.addPlanetData(obj.coorHasta, fun.zeroResources(), obj.ships, true);
@@ -1447,13 +1448,13 @@ var exp  = {
             res.send({ok: false, mes: "Flota incorrecta."});
           }
         }else{
-          res.send({ok: false, mes: "El salto cuantico esta cargandose"});
+          res.send({ok: false, mes: "El salto cuantico esta cargandose."});
         }
       }else{
         if(index === planet){
           res.send({ok: false, mes: "No se puede saltar a la misma luna."});
         }else{
-          res.send({ok: false, mes: "No se puede saltar a esa luna."});
+          res.send({ok: false, mes: (index === -1) ? "Coordenas de salto invalidas." : "No se puede saltar a esa luna."});
         }
       }
     }else{
@@ -1610,6 +1611,7 @@ var exp  = {
   },
 
   // Devuelve un objeto con la informacin de los niveles de cada cosa y si la tecnologia alcaza o no
+  //  -planet = Numero de planeta en el que se va a contar las tecnologias
   techInfo: function(planet){
     let build = this.player.planets[planet].buildings;
     let research = this.player.research;
@@ -1684,12 +1686,12 @@ var exp  = {
   //  -mission = Numero de mision a verificar
   //  -res = Objeto respuesta a devolver al cliente
   updateRewards: function(player, mission, res){
+    mission = parseInt(mission);
     if(fun.validInt(mission) && 0 < mission && mission <= 10){
-      mission = parseInt(mission);
       if(!player.tutorial[mission-1]){
         let missionCumplida = false;
         let objReward = {};
-        switch (mission) {  // Para cada mision me fijo si se cumplieron los requisitos y que no le halla dado la recompensa ya
+        switch (mission) { // Para cada mision me fijo si se cumplieron los requisitos y que no le halla dado la recompensa ya
           // Los requisitos los tiene que cumplir almenos un planeta individualmente, no se cuentan las flotas en la luna ni en vuelo
           case 1:
             for(let i = 0 ; i<player.planets.length && !missionCumplida ; i++){
@@ -1852,9 +1854,10 @@ module.exports = exp;
 /* Hacer que el space dock funcione
 /* Avisar al atacado que lo estan atacando (API de bots)(Terminar la linea 211 de layout.pug)
 /* Crear la API con la que interactuan los bots (Los bots no los va a controlar el servidor)
-/* Pasar todo el juego a ingles (Todo lo que lee el usuario) o implementar multiples idiomas
+/* Pensar como manejar multiples idiomas
 /* Mejorar el codigo del cliente
 /* Si un jugador regala una flota a otro jugador tiene que cambiar los puntos
+/* Revisar la segurad de los parametros strings de la api de los bots
 /* Revisar el consumo de energia mostrado en resources setings
 /* Terminar la documentacion
 */

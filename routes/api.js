@@ -64,12 +64,12 @@ router.get('/highscore', function(req, res, next) {
   uni.base.highscoreData(res);
 });
 
+/* Esta ruta deberia estar en /set y tendra que pasarse unas cordenadas, no 3 numeros sueltos*/
 router.get('/usePhalanx', function(req, res, next) {
   uni.base.usePhalanx(
     {gal: parseInt(req.query.gal), sys: parseInt(req.query.sys), pos: parseInt(req.query.pos)},
     uni.player.planets[uni.planeta].coordinates,
-    (uni.player.planets[uni.planeta].moon.active) ? uni.player.planets[uni.planeta].moon.buildings.phalanx : 0,
-    res);
+    uni.fun.phalanxLevel(uni.player.planets[uni.planeta].moon), res);
 });
 
 // Se usa set para las direcciones que cambian cosas en la base de datos
@@ -142,6 +142,7 @@ router.get('/set/returnFleet', function(req, res, next) {
 });
 
 router.get('/set/marketMoon', function(req, res, next) {
+  console.log(req.query);
   uni.marketResources(uni.player, uni.planeta, req.query, res);
 });
 

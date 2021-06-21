@@ -120,8 +120,8 @@ var exp = {
            smallCargo:     {shipyard: 2, combustion: 2},
            largeCargo:     {shipyard: 4, combustion: 6},
            colony:         {shipyard: 4, impulse: 3},
-           recycler:       {shipyard: 4, combustion: 6},
-           espionageProbe: {shipyard: 3, combustion: 3},
+           recycler:       {shipyard: 4, combustion: 6, shielding: 2},
+           espionageProbe: {shipyard: 3, combustion: 3, espionage: 2},
            solarSatellite: {shipyard: 1},
            rocketLauncher: {shipyard: 1},
            lightLaser:     {shipyard: 2, laser: 3},
@@ -173,6 +173,28 @@ var exp = {
            shielding: {researchLab: 6, energy: 3},
            armour:    {researchLab: 2}};
   },
+  getRewards: function(){
+    return {requeriments: [{metalMine: 4, crystalMine: 2, solarPlant: 4},
+            {deuteriumMine: 2, shipyard: 1, rocketLauncher: 1},
+            {metalMine: 10, crystalMine: 7, deuteriumMine: 5},
+            {researchLab: 1, combustion: 2, smallCargo: 1},
+            {combustion: 3, espionage: 2, espionageProbe: 1},
+            {impulse: 1, armour: 1, astrophysics: 1},
+            {laser: 3, impulse: 3, planetCant: 2},
+            {metalMine: 17, crystalMine: 15, deuteriumMine: 12},
+            {combustion: 6, shielding: 2, recycler: 1},
+            {ionTech: 2, impulse: 4, cruiser: 2}],
+           rewards: [{metal: 200, crystal: 100},
+            {rocketLauncher: 1},
+            {metal: 2000, crystal: 500},
+            {deuterium: 1500},
+            {espionageProbe: 2},
+            {heavyFighter: 2, smallCargo: 5},
+            {smallCargo: 5, largeCargo: 1, metal: 10000, crystal: 10000, deuterium: 10000},
+            {metal: 20000, crystal: 15000, deuterium: 10000},
+            {recycler: 2},
+            {lightFighter: 10, heavyFighter: 3, battleship: 1}]};
+  },
   cantidadMisiles: function(planeta){
     // En el juego ambos tipos de misil ocupan un solo lugar
     return planeta.defense.antiballisticMissile + planeta.defense.interplanetaryMissile;
@@ -180,6 +202,9 @@ var exp = {
   capacidadSilo: function(planeta){
     // Por cada nivel del silo se puede agregar 10 misiles de cualquier tipo
     return planeta.buildings.silo * 10;
+  },
+  phalanxLevel: function(moon){
+    return (moon.active) ? moon.buildings.phalanx : 0;
   },
   timeBuild: function(recursos, mult, elev, uniSpeed){
     let divisor = 2500 * (1+mult) * Math.pow(2,elev) * uniSpeed;
