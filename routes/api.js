@@ -1,5 +1,6 @@
 var router = require('express').Router();
 var uni = require('./universe');
+var fs = require("fs");
 
 // Rutas de informacion usadas solo para obtener informacion sobre el universo
 router.get('/info/universoInfo', function(req, res, next) {
@@ -18,6 +19,12 @@ router.get('/info/allPlayers', function(req, res, next) {
 
 router.get('/info/collection', function(req, res, next) {
   uni.base.seeDataBase(res, req.query.collection, true, "Item", req.query.filtro);
+});
+
+router.get('/info/documentation', function(req, res, next) {
+  var pdfDoc = fs.readFileSync('./public/Documentation.pdf');
+  res.contentType("application/pdf");
+  res.send(pdfDoc);
 });
 
 // Api usada por el cliente para interactuar con el servidor
@@ -46,8 +53,7 @@ router.get('/galaxy', function(req, res, next) {
 });
 
 router.get('/readMessages', function(req, res, next) {
-  let listMes = uni.player.messages;
-  res.send({ok: true, list: listMes});
+  res.send({ok: true, list: uni.player.messages});
 });
 
 router.get('/searchPlayer', function(req, res, next) {
@@ -70,17 +76,24 @@ router.get('/usePhalanx', function(req, res, next) {
 
 // Updatea los valores de resourcesSettings
 router.get('/set/updateResources', function(req, res, next) {
-  uni.updateResourcesData(res, uni.player, uni.planeta, req.query);
+  if(uni.fun.validResourcesSettingsObj(req.query, false)){
+    uni.updateResourcesData(res, uni.player, uni.planeta, req.query);
+  }else{
+    res.send({ok: false});
+  }
 });
 
 // Updatea los valores de resourcesSettings de la luna
 router.get('/set/updateResourcesMoon', function(req, res, next) {
-  uni.updateResourcesDataMoon(res, uni.player, uni.planeta, req.query);
+  if(uni.fun.validResourcesSettingsObj(req.query, true)){
+    uni.updateResourcesDataMoon(res, uni.player, uni.planeta, req.query);
+  }else{
+    res.send({ok: false});
+  }
 });
 
 router.get('/set/deleteMessages', function(req, res, next) {
-  uni.base.deleteMessage(uni.player.name, req.query.all == 'true', req.query.id);
-  res.send({ok: true});
+  uni.base.deleteMessage(uni.player.name, req.query.all == 'true', req.query.id, res);
 });
 
 router.get('/set/addVaca', function(req, res, next) {
@@ -89,10 +102,7 @@ router.get('/set/addVaca', function(req, res, next) {
 });
 
 router.get('/set/setOptions', function(req, res, next) {
-  let esp = parseInt(req.query.esp);
-  let small = parseInt(req.query.sml);
-  let large = parseInt(req.query.lar);
-  uni.base.setOptions(uni.player.name, res, esp, small, large);
+  uni.base.setOptions(uni.player.name, res, parseInt(req.query.esp), parseInt(req.query.sml), parseInt(req.query.lar));
 });
 
 router.get('/set/sendBuildRequest', function(req, res, next) {
@@ -148,6 +158,7 @@ router.get('/set/abandonPlanet', function(req, res, next) {
 });
 
 router.post('/set/addFleetMovement', function(req, res, next) {
+  console.log(req.body);
   uni.addFleetMovement(uni.player, uni.planeta, uni.moon, req.body, res);
 });
 

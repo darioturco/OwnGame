@@ -28,9 +28,9 @@ module.exports = function (passport, uni) {
             if(!tieneId){
               do{
                 newId = uni.fun.randomString() + uni.fun.randomString();
+                usuario["_id"] = newId;
                 if(sessions[newId] === undefined) sessions[newId] = usuario;
               } while (sessions[newId] === undefined);
-              usuario["_id"] = newId;
             }
     				return done(null, newId, usuario);
     			}else{
@@ -39,8 +39,11 @@ module.exports = function (passport, uni) {
     		});
       }else{
         // Me salteo toda la etapa de verificacion de usuario
-        /* Talvez seria bueno buscar el usuario en la base de datos para devolverlo actualizado */
-        return done(null, req.body.id, sessions[req.body.id]);
+        uni.base.findAndExecuteByName(sessions[req.body.id].name, (usuario) => {
+          usuario["_id"] = req.body.id;
+          sessions[req.body.id] = usuario;
+          return done(null, req.body.id, sessions[req.body.id]);
+        });
       }
     })
   );
@@ -56,7 +59,7 @@ module.exports = function (passport, uni) {
       }
       passport.authenticate('local', { session: false }, function(err, userId, data) {
         if (err) { return next(err); }
-        if (!userId) { res.json({ok: false, data}); return res; }
+        if (!userId) { res.send({ok: false, data}); return res; }
         req.logIn(userId, function(err) {
           if (err) { return next(err); }
           f(req, res, next, userId, data);
@@ -69,18 +72,17 @@ module.exports = function (passport, uni) {
         for(let u in sessions){ // Reviso si ese usuario esta logeado
           if(sessions[u].name === username){
             sessions[sessions[u]["_id"]] = undefined;
-            res.json({ok: true, mes: "Logout realizado correctamente."});
+            res.send({ok: true, mes: "Logout realizado correctamente."});
             return true;
           }
         }
-        res.json({ok: false, mes: "Usauario no encontrado."});
+        res.send({ok: false, mes: "Usauario no encontrado."});
         return false;
       }else{
         sessions[id] = undefined;
-        res.json({ok: true, mes: "Logout realizado correctamente."});
+        res.send({ok: true, mes: "Logout realizado correctamente."});
         return true;
       }
     }
   };
-
 }

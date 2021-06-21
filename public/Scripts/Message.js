@@ -117,7 +117,7 @@ function seeCompleteReport(num){
     spyDate.innerText = "Date: " + espList[num].date;
     spyPlanetInfo.innerHTML = espList[num].data.playerName + " (" +espList[num].data.planetName + ") <a href='./Ogame_Galaxy.html?gal=" + espList[num].data.coor.gal + "&sys=" + espList[num].data.coor.sys + "'>" + coorToCorch(espList[num].data.coor) + "</a>";
     for(item in espList[num].data.resources){
-      resourcesSpy[item].innerText = espList[num].data.resources[item];
+      resourcesSpy[item].innerText = Math.floor(espList[num].data.resources[item]);
     }
     if(espList[num].data.fleet != undefined){
       fleetDivSpy.style.display = 'block';

@@ -108,6 +108,71 @@ var exp = {
     if(mod === 1 && (pos <= 3)) tipo = 7;                                                               // Desert
     return tipo;
   },
+  getTechnology: function(){
+    return {lightFighter:  {shipyard: 1, combustion: 1},
+           heavyFighter:   {shipyard: 3, impulse: 2, armour: 2},
+           cruiser:        {shipyard: 5, impulse: 4, ionTech: 2},
+           battleship:     {shipyard: 7, hyperspace_drive: 4},
+           battlecruiser:  {shipyard: 8, hyperspace_drive: 5, laser: 12, hyperspace: 5},
+           bomber:         {shipyard: 8, impulse: 6, plasma: 5},
+           destroyer:      {shipyard: 9, hyperspace_drive: 6, hyperspace: 5},
+           deathstar:      {shipyard: 12, hyperspace_drive: 7, hyperspace: 6, graviton: 1},
+           smallCargo:     {shipyard: 2, combustion: 2},
+           largeCargo:     {shipyard: 4, combustion: 6},
+           colony:         {shipyard: 4, impulse: 3},
+           recycler:       {shipyard: 4, combustion: 6},
+           espionageProbe: {shipyard: 3, combustion: 3},
+           solarSatellite: {shipyard: 1},
+           rocketLauncher: {shipyard: 1},
+           lightLaser:     {shipyard: 2, laser: 3},
+           heavyLaser:     {shipyard: 4, laser: 6, energy: 3},
+           gauss:          {shipyard: 6, energy: 6, weapons: 3, shielding: 1},
+           ion:            {shipyard: 4, ionTech: 4},
+           plasma:         {shipyard: 8, plasma: 7, armour: 6},
+           smallShield:    {shipyard: 1, shielding: 2},
+           largeShield:    {shipyard: 6, shielding: 6},
+           antiballisticMissile:  {silo: 2},
+           interplanetaryMissile: {silo: 4, impulse: 1},
+           metalMine:        {},
+           crystalMine:      {},
+           deuteriumMine:    {},
+           solarPlant:       {},
+           fusionReactor:    {deuteriumMine: 5, energy: 3},
+           metalStorage:     {},
+           crystalStorage:   {},
+           deuteriumStorage: {},
+           robotFactory:  {},
+           shipyard:      {robotFactory: 2},
+           researchLab:   {},
+           alliance:      {},
+           silo:          {shipyard: 1},
+           naniteFactory: {robotFactory: 10, computer: 10},
+           terraformer:   {naniteFactory: 1, energy: 12},
+           lunarBase:     {},
+           phalanx:       {lunarBase: 3},
+           spaceDock:     {lunarBase: 1},
+           marketplace:   {lunarBase: 2, computer: 8, alliance: 4},
+           lunarSunshade: {lunarBase: 1, laser: 12},
+           lunarBeam:     {lunarBase: 1, ionTech: 12},
+           jumpGate:      {lunarBase: 1, hyperspace: 7},
+           moonShield:    {lunarBase: 4, graviton: 1, shielding: 12},
+           energy:        {researchLab: 1},
+           laser:         {researchLab: 1, energy: 2},
+           ionTech:       {researchLab: 4, laser: 5, energy: 4},
+           hyperspace:    {researchLab: 7, energy: 5, shielding: 5},
+           plasma:        {researchLab: 4, energy: 8, laser: 10, ionTech: 8},
+           espionage:     {researchLab: 3},
+           computer:      {researchLab: 1},
+           astrophysics:  {researchLab: 3, espionage: 4, computer: 2},
+           intergalactic: {researchLab: 10, computer: 8, hyperspace: 8},
+           graviton:      {researchLab: 12},
+           combustion:    {researchLab: 1, energy: 1},
+           impulse:       {researchLab: 2, energy: 2},
+           hyperspace_drive: {researchLab: 7, hyperspace: 3},
+           weapons:   {researchLab: 4},
+           shielding: {researchLab: 6, energy: 3},
+           armour:    {researchLab: 2}};
+  },
   cantidadMisiles: function(planeta){
     // En el juego ambos tipos de misil ocupan un solo lugar
     return planeta.defense.antiballisticMissile + planeta.defense.interplanetaryMissile;
@@ -123,25 +188,16 @@ var exp = {
   hash: function(str){
     return hashjs.sha256().update(str).digest('hex');
   },
-  writeRes: function(res, obj){
-    if(res.req.method === "GET"){
-      res.send(obj);
-    }else{
-      res.json(obj);
-    }
-    return res;
-  },
-  normalRandom: function(min, max, podaMin = -Infinity, podaMax = Infinity) {// la esperanza es (max+min)/2
-    /* Pasar algoritmo */
+  normalRandom: function(min, max, podaMin = -Infinity, podaMax = Infinity) { // La esperanza es (max+min)/2
     let u = Math.random();
     let v = Math.random();
-    if(u === 0) u = 0.5; //Converting [0,1) to (0,1)
+    if(u === 0) u = 0.5; // Converting [0,1) to (0,1)
     let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v); // Box–Muller transform
     num = num / 10.0 + 0.5; // Translate to 0 -> 1
-    if (num > 1 || num < 0) num = Math.random(); // resample between 0 and 1 if out of range
+    if (num > 1 || num < 0) num = Math.random(); // Resample between 0 and 1 if out of range
     num *= max - min; // Stretch to fill range
-    num += min; // offset to min
-    if (num > podaMax || num < podaMin) num = Math.random()*(podaMax-podaMin)+(podaMin);
+    num += min; // Offset to min
+    if (num > podaMax || num < podaMin) num = Math.random()*(podaMax-podaMin) + (podaMin);
     return num;
   },
   randomBool: function(){
@@ -151,8 +207,7 @@ var exp = {
     return Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, parseInt(Math.random()*6 + 5));
   },
   validInt: function(num) {
-    num = parseInt(num);
-    return !isNaN(num);
+    return !isNaN(parseInt(num));
   },
   validShipyardName: function(name) {
     return (shipsDefensesNumber[name] != undefined || name === "antiballisticMissile" || name === "interplanetaryMissile");
@@ -233,8 +288,16 @@ var exp = {
     }
     return valid;
   },
-  validPlanetNum: function(player, num){
-    return this.validInt(num) && num >= 0 && player.planets.length > num;
+  validPlanetNum: function(player, num, moon = false){
+    if(moon){
+        return this.validMoonNum(player, num);
+    }else{
+        return this.validInt(num) && num >= 0 && player.planets.length > num;
+    }
+
+  },
+  validMoonNum: function(player, num){
+    return this.validPlanetNum(player, num) && player.planets[num].moon.active;
   },
   validShips: function(ships){
     let res = ships['misil'] != undefined && this.validInt(ships['misil']);

@@ -742,10 +742,10 @@ var exp  = {
             laser: {metal: 200*Math.pow(2, research.laser), crystal: 100*Math.pow(2, research.laser), deuterium: 0, energy: 0, tech: lab >= 1 && research.energy >= 2, level: research.laser, name: "Laser Technology", description: "Focusing light produces a beam that causes damage when it strikes an object."},
             ion: {metal: 1000*Math.pow(2, research.ion), crystal: 300*Math.pow(2, research.ion), deuterium: 100*Math.pow(2, research.ion), energy: 0, tech: lab >= 4 && research.energy >= 4  && research.laser >= 5, level: research.ion, name: "Ion Technology", description: "The concentration of ions allows for the construction of cannons, which can inflict enormous damage."},
             hyperspace: {metal: 0, crystal: 4000*Math.pow(2, research.hyperspace), deuterium: 2000*Math.pow(2, research.hyperspace), energy: 0, tech: lab >= 7 && research.energy >= 5 && research.shielding >= 5, level: research.hyperspace, name: "Hyperspace Technology", description: "By integrating the 4th and 5th dimensions it is now possible to research a new kind of drive that is more economical and efficient."},
-            plasma: {metal: 2000*Math.pow(2, research.plasma), crystal: 4000*Math.pow(2, research.plasma), deuterium: 1000*Math.pow(2, research.plasma), energy: 0, tech: lab >= 4 && research.energy >= 8 && research.laser >= 10 && research.ion >= 5, level: research.plasma, name: "Plasma Technology", description: "A further development of ion technology which accelerates high-energy plasma, which then inflicts devastating damage and additionally optimises the production of resources."},
+            plasma: {metal: 2000*Math.pow(2, research.plasma), crystal: 4000*Math.pow(2, research.plasma), deuterium: 1000*Math.pow(2, research.plasma), energy: 0, tech: lab >= 4 && research.energy >= 8 && research.laser >= 10 && research.ion >= 8, level: research.plasma, name: "Plasma Technology", description: "A further development of ion technology which accelerates high-energy plasma, which then inflicts devastating damage and additionally optimises the production of resources."},
             espionage: {metal: 200*Math.pow(2, research.espionage), crystal: 1000*Math.pow(2, research.espionage), deuterium: 200*Math.pow(2, research.espionage), energy: 0, tech: lab >= 3, level: research.espionage, name: "Espionage Technology", description: "Information about other planets and moons can be gained using this technology."},
             computer: {metal: 0, crystal: 400*Math.pow(2, research.computer), deuterium: 600*Math.pow(2, research.computer), energy: 0, tech: lab >= 1, level: research.computer, name: "Computer Technology", description: "More fleets can be commanded by increasing computer capacities. Each level of computer technology increases the maximum number of fleets by one."},
-            astrophysics: {metal: 4000*Math.pow(2, research.astrophysics), crystal: 8000*Math.pow(2, research.astrophysics), deuterium: 4000*Math.pow(2, research.astrophysics), energy: 0, tech: lab >= 3 && research.espionage >= 4, level: research.astrophysics, name: "Astrophysics", description: "With an astrophysics research module, ships can undertake long expeditions. Every second level of this technology will allow you to colonise an extra planet."},
+            astrophysics: {metal: 4000*Math.pow(2, research.astrophysics), crystal: 8000*Math.pow(2, research.astrophysics), deuterium: 4000*Math.pow(2, research.astrophysics), energy: 0, tech: lab >= 3 && research.espionage >= 4 && research.computer >= 2, level: research.astrophysics, name: "Astrophysics", description: "With an astrophysics research module, ships can undertake long expeditions. Every second level of this technology will allow you to colonise an extra planet."},
             intergalactic: {metal: 240000*Math.pow(2, research.intergalactic), crystal: 400000*Math.pow(2, research.intergalactic), deuterium: 160000*Math.pow(2, research.intergalactic), energy: 0, tech: lab >= 10 && research.computer >= 8 && research.hyperspace >= 8, level: research.intergalactic, name: "Intergalactic Research Network", description: "Researchers on different planets communicate via this network."},
             graviton: {metal: 0, crystal: 0, deuterium: 0, energy: 300000*Math.pow(2, research.graviton), tech: lab >= 12, level: research.graviton, name: "Graviton Technology", description: "Firing a concentrated charge of graviton particles can create an artificial gravity field, which can destroy ships or even moons."},
             combustion: {metal: 400*Math.pow(2, research.combustion), crystal: 0, deuterium: 600*Math.pow(2, research.combustion), energy: 0, tech: lab >= 1 && research.energy >= 1, level: research.combustion, name: "Combustion Drive", description: "The development of this drive makes some ships faster, although each level increases speed by only 10 % of the base value."},
@@ -769,7 +769,7 @@ var exp  = {
     let research = player.research;
     let yard = player.planets[planet].buildings.shipyard;
     return {lightFighter: {metal: 3000, crystal: 1000, deuterium: 0, energy: 0, tech: yard >= 1 && research.combustion >= 1, level: fleet.lightFighter, name: "Light Fighter", description: "This is the first fighting ship all emperors will build. The light fighter is an agile ship, but vulnerable on its own. In mass numbers, they can become a great threat to any empire. They are the first to accompany small and large cargoes to hostile planets with minor defences."},
-            heavyFighter: {metal: 6000, crystal: 4000, deuterium: 0, energy: 0, tech: yard >= 3 && research.impulse >= 2, level: fleet.heavyFighter, name: "Heavy Fighter", description: "This fighter is better armoured and has a higher attack strength than the light fighter."},
+            heavyFighter: {metal: 6000, crystal: 4000, deuterium: 0, energy: 0, tech: yard >= 3 && research.impulse >= 2 && research.armour >= 2, level: fleet.heavyFighter, name: "Heavy Fighter", description: "This fighter is better armoured and has a higher attack strength than the light fighter."},
             cruiser: {metal: 2000, crystal: 7000, deuterium: 2000, energy: 0, tech: yard >= 5 && research.impulse >= 4 && research.ion >= 2, level: fleet.cruiser, name: "Cruiser", description: "Cruisers are armoured almost three times as heavily as heavy fighters and have more than twice the firepower. In addition, they are very fast."},
             battleship: {metal: 45000, crystal: 15000, deuterium: 0, energy: 0, tech: yard >= 7 && research.hyperspace_drive >= 4, level: fleet.battleship, name: "Battleship", description: "Battleships form the backbone of a fleet. Their heavy cannons, high speed, and large cargo holds make them opponents to be taken seriously."},
             battlecruiser: {metal: 30000, crystal: 40000, deuterium: 15000, energy: 0, tech: yard >= 8 && research.hyperspace_drive >= 5 && research.laser >= 12 && research.hyperspace >= 5, level: fleet.battlecruiser, name: "Battlecruiser", description: "The Battlecruiser is highly specialized in the interception of hostile fleets."},
@@ -779,7 +779,7 @@ var exp  = {
             smallCargo: {metal: 2000, crystal: 2000, deuterium: 0, energy: 0, tech: yard >= 2 && research.combustion >= 2, level: fleet.smallCargo, name: "Small Cargo", description: "The small cargo is an agile ship which can quickly transport resources to other planets."},
             largeCargo: {metal: 6000, crystal: 6000, deuterium: 0, energy: 0, tech: yard >= 4 && research.combustion >= 6, level: fleet.largeCargo, name: "Large Cargo", description: "This cargo ship has a much larger cargo capacity than the small cargo, and is generally faster thanks to an improved drive."},
             colony: {metal: 10000, crystal: 20000, deuterium: 10000, energy: 0, tech: yard >= 4 && research.impulse >= 3, level: fleet.colony, name: "Colony Ship", description: "Vacant planets can be colonised with this ship."},
-            recycler: {metal: 10000, crystal: 6000, deuterium: 2000, energy: 0, tech: yard >= 4 && research.impulse >= 6 && research.shielding >= 2, level: fleet.recycler, name: "Recycler", description: "Recyclers are the only ships able to harvest debris fields floating in a planet`s orbit after combat."},
+            recycler: {metal: 10000, crystal: 6000, deuterium: 2000, energy: 0, tech: yard >= 4 && research.combustion >= 6 && research.shielding >= 2, level: fleet.recycler, name: "Recycler", description: "Recyclers are the only ships able to harvest debris fields floating in a planet`s orbit after combat."},
             espionageProbe: {metal: 0, crystal: 1000, deuterium: 0, energy: 0, tech: yard >= 3 && research.combustion >= 3 && research.espionage >= 2, level: fleet.espionageProbe, name: "Espionage Probe", description: "Espionage probes are small, agile drones that provide data on fleets and planets over great distances."},
             solarSatellite: {metal: 0, crystal: 2000, deuterium: 500, energy: 0, tech: yard >= 1, level: fleet.solarSatellite, name: "Solar Satellite", description: "Solar satellites are simple platforms of solar cells, located in a high, stationary orbit. A solar satellite produces " + Math.floor(((player.planets[planet].temperature.max + player.planets[planet].temperature.min)/2+160)/6) + " energy on this planet."},
             listInfo: ["lightFighter", "heavyFighter", "cruiser", "battleship", "battlecruiser", "bomber", "destroyer", "deathstar", "smallCargo", "largeCargo", "colony", "recycler", "espionageProbe", "solarSatellite"],
@@ -800,7 +800,7 @@ var exp  = {
             heavyLaser: {metal: 6000, crystal: 2000, deuterium: 0, energy: 0, tech: yard >= 4 && research.laser >= 6 && research.energy >= 3, level: defense.heavyLaser, name: "Heavy Laser", description: "The heavy laser is the logical development of the light laser."},
             gauss: {metal: 20000, crystal: 15000, deuterium: 0, energy: 0, tech: yard >= 6 && research.weapons >= 3 && research.energy >= 6 && research.shielding >= 1, level: defense.gauss, name: "Gauss Cannon", description: "The Gauss Cannon fires projectiles weighing tons at high speeds."},
             ion: {metal: 2000, crystal: 6000, deuterium: 0, energy: 0, tech: yard >= 4 && research.ion >= 4, level: defense.ion, name: "Ion Cannon", description: "The Ion Cannon fires a continuous beam of accelerating ions, causing considerable damage to objects it strikes."},
-            plasma: {metal: 50000, crystal: 50000, deuterium: 30000, energy: 0, tech: yard >= 8 && research.plasma >= 7, level: defense.plasma, name: "Plasma Turret", description: "Plasma Turrets release the energy of a solar flare and surpass even the destroyer in destructive effect."},
+            plasma: {metal: 50000, crystal: 50000, deuterium: 30000, energy: 0, tech: yard >= 8 && research.plasma >= 7 && research.armour >= 6, level: defense.plasma, name: "Plasma Turret", description: "Plasma Turrets release the energy of a solar flare and surpass even the destroyer in destructive effect."},
             smallShield: {metal: 10000, crystal: 10000, deuterium: 0, energy: 0, tech: yard >= 1 && research.shielding >= 2, level: defense.smallShield, name: "Small Shield Dome", description: "The small shield dome covers an entire planet with a field which can absorb a tremendous amount of energy."},
             largeShield: {metal: 50000, crystal: 50000, deuterium: 0, energy: 0, tech: yard >= 6 && research.shielding >= 6, level: defense.largeShield, name: "Large Shield Dome", description: "The evolution of the small shield dome can employ significantly more energy to withstand attacks."},
             antiballisticMissile: {metal: 8000, crystal: 0, deuterium: 2000, energy: 0, tech: player.planets[planet].buildings.silo >= 2, level: defense.antiballisticMissile, name: "Anti-Ballistic Missiles", description: "Anti-Ballistic Missiles destroy attacking interplanetary missiles"},
@@ -879,26 +879,26 @@ var exp  = {
           objInc['planets.' + planet + '.resources.deuterium'] = -deuterium;
           events.addElement({time: buildingConstrucctionAux.init + buildingConstrucctionAux.time*1000, player: player.name});
           base.savePlayerData(player.name, buildingConstrucction, objInc, undefined, undefined, () => {
-            res.send({ok: true});
+            res.send({ok: true, mes: "Operation successful."});
           });
         }else{ // Manejo de los errores
           let mesAux = '';
           if(!enough){
-            mesAux = "Recursos no suficientes";
+            mesAux = "Recursos no suficientes.";
           }else if(!tech){
-            mesAux = "Tecnologia no alcanzada";
+            mesAux = "Tecnologia no alcanzada.";
           }else if(!enoughEnergy){
-            mesAux = "No hay energia suficiente para construir el terraformer";
+            mesAux = "No hay energia suficiente para construir el terraformer.";
           }else{
-            mesAux = "Campos insuficientes";
+            mesAux = "Campos insuficientes.";
           }
           res.send({ok: false, mes: mesAux});
         }
       }else{
-        res.send({ok: false, mes: "Edificio invalido"});
+        res.send({ok: false, mes: "Edificio invalido."});
       }
     }else{
-      res.send({ok: false, mes: "Ya se esta construyendo un edificio en ese planeta"});
+      res.send({ok: false, mes: "Ya se esta construyendo un edificio en ese planeta."});
     }
   },
 
@@ -932,24 +932,24 @@ var exp  = {
           objInc['planets.' + planet + '.moon.resources.deuterium'] = -deuterium;
           events.addElement({time: buildingConstrucctionAux.init + buildingConstrucctionAux.time*1000, player: player.name});
           base.savePlayerData(player.name, buildingConstrucction, objInc, undefined, undefined, () => {
-            res.send({ok: true});
+            res.send({ok: true, mes: "Operation successful."});
           });
         }else{ // Manejo de errores
           let mesAux = '';
           if(!enough){
-            mesAux = "Recursos insuficientes";
+            mesAux = "Recursos insuficientes.";
           }else if(!tech){
-            mesAux = "Tecnologia no alcanzada";
+            mesAux = "Tecnologia no alcanzada.";
           }else{
-            mesAux = "Campos insuficientes";
+            mesAux = "Campos insuficientes.";
           }
           res.send({ok: false, mes: mesAux});
         }
       }else{
-        res.send({ok: false, mes: "Edificio invalido"});
+        res.send({ok: false, mes: "Edificio invalido."});
       }
     }else{
-      res.send({ok: false, mes: "Ya se esta contruyendo un edificio en esa luna"});
+      res.send({ok: false, mes: "Ya se esta contruyendo un edificio en esa luna."});
     }
   },
 
@@ -982,17 +982,17 @@ var exp  = {
           objInc['planets.' + planet + '.resources.crystal']   = -crystal;
           objInc['planets.' + planet + '.resources.deuterium'] = -deuterium;
           events.addElement({time: researchConstrucctionAux.init + researchConstrucctionAux.time*1000, player: player.name});
-          base.savePlayerData(player.name, researchConstrucction, objInc, undefined, undefined, () => {
+          base.savePlayerData(player.name, researchConstrucction, objInc, undefined, undefined, (x) => {
             res.send({ok: true});
           });
         }else{
-          res.send({ok: false, mes: ((tech) ? "Recursos insuficientes" : "Tecnologia no alcanzada")});
+          res.send({ok: false, mes: ((tech) ? "Recursos insuficientes." : "Tecnologia no alcanzada.")});
         }
       }else{
-        res.send({ok: false, mes: "Investigacion invalida"});
+        res.send({ok: false, mes: "Investigacion invalida."});
       }
     }else{
-      res.send({ok: false, mes: "Ya se esta investigando algo"});
+      res.send({ok: false, mes: "Ya se esta investigando algo."});
     }
   },
 
@@ -1011,7 +1011,7 @@ var exp  = {
       if(enough && tech){
         // Si voy a construir misiles en el silo, me fijo que haya capacidad para los misiles
         if((shipyardName === "antiballisticMissile" || shipyardName === "interplanetaryMissile") && (shipyardCant + fun.cantidadMisiles(planeta) < fun.capacidadSilo(planeta))){
-          return res.send({ok: false, mes: "No hay mas espacio en el silo"});
+          return res.send({ok: false, mes: "No hay mas espacio en el silo."});
         }
         let shipyardConstrucctionAux = {};
         let shipyardConstrucction    = {};
@@ -1045,10 +1045,10 @@ var exp  = {
           res.send({ok: true});
         });
       }else{
-        res.send({ok: false, mes: ((tech) ? "Recursos insuficientes" : "Tecnologia no alcanzada")});
+        res.send({ok: false, mes: ((tech) ? "Recursos insuficientes." : "Tecnologia no alcanzada.")});
       }
     }else{
-      res.send({ok: false, mes: "Cantidad o nave no valida"});
+      res.send({ok: false, mes: "Cantidad o nave no valida."});
     }
   },
 
@@ -1067,10 +1067,10 @@ var exp  = {
       objInc['planets.' + planet + '.resources.deuterium']   = deuterium;
       events.remove({time: init + time*1000, player: player.name});
       base.savePlayerData(player.name, objSet, objInc, undefined, undefined, () => {
-        res.send({ok: true});
+        res.send({ok: true, mes: "Construction canceled."});
       });
     }else{
-      res.send({ok: false, mes: "No se esta construyendo ningun edificio en ese planeta"});
+      res.send({ok: false, mes: "No se esta construyendo ningun edificio en ese planeta."});
     }
   },
 
@@ -1092,7 +1092,7 @@ var exp  = {
         res.send({ok: true});
       });
     }else{
-      res.send({ok: false, mes: ((player.planets[planet].moon.active) ? "No se esta construyendo nada en la luna" : "No existe la luna...")});
+      res.send({ok: false, mes: ((player.planets[planet].moon.active) ? "No se esta construyendo nada en la luna." : "No existe la luna...")});
     }
   },
 
@@ -1113,7 +1113,7 @@ var exp  = {
         res.send({ok: true});
       });
     }else{
-      res.send({ok: false, mes: "No se esta investigando nada"});
+      res.send({ok: false, mes: "No se esta investigando nada."});
     }
   },
 
@@ -1125,6 +1125,7 @@ var exp  = {
   cancelShipyardRequest: function(player, planet, shipyardName, res){
     let objPull = {};
     let objInc  = {};
+    let canCancel = false;
     objInc['planets.' + planet + '.resources.metal']     = 0;
     objInc['planets.' + planet + '.resources.crystal']   = 0;
     objInc['planets.' + planet + '.resources.deuterium'] = 0;
@@ -1134,11 +1135,17 @@ var exp  = {
         objInc['planets.' + planet + '.resources.crystal']   += player.planets[planet].shipConstrucction[i].crystal;
         objInc['planets.' + planet + '.resources.deuterium'] += player.planets[planet].shipConstrucction[i].deuterium;
         events.remove({time: player.planets[planet].shipConstrucction[i].init + player.planets[planet].shipConstrucction[i].time*1000, player: player.name});
+        canCancel = true;
       }
     }
+
     objPull['planets.' + planet + '.shipConstrucction'] = {item: shipyardName};
     base.savePlayerData(player.name, undefined, objInc, undefined, objPull, () => {
-      res.send({ok: true});
+      if(canCancel){ // Se fija si cancelo algo
+        res.send({ok: true, mes: "Cancel Ship successful."});
+      }else{
+        res.send({ok: false, mes: "Can not cancel ship request. There is no such kind of ship request."});
+      }
     });
   },
 
@@ -1219,33 +1226,33 @@ var exp  = {
   addFleetMovement: function(player, planet, moon, obj, res){
     // Verifica que las cordenadas sean validas
     if(!fun.coordenadaValida(obj.coorDesde)){
-      res.json({ok: false, mes: "Coordenadas de origen invalidas"});
+      res.send({ok: false, mes: "Coordenadas de origen invalidas."});
       return res;
     }
     if(!fun.coordenadaValida(obj.coorHasta)){
-      res.json({ok: false, mes: "Coordenadas de destino invalidas"});
+      res.send({ok: false, mes: "Coordenadas de destino invalidas."});
       return res;
     }
 
     // Verifica que no se este enviando una flota a la misma posicion de salida
     if((fun.equalCoor(obj.coorDesde, obj.coorHasta)) && ((moon && obj.destination === 2) || (!moon && obj.destination === 1))){
-      res.json({ok: false, mes: "No se puede mandar una flota de un lugar a si mismo"});
+      res.send({ok: false, mes: "No se puede mandar una flota de un lugar a si mismo."});
       return res;
     }
 
     // Verifica que las naves enviadas sean validas
     if(!fun.validShips(obj.ships)){
-      res.json({ok: false, mes: "Naves no validas"});
+      res.send({ok: false, mes: "Naves no validas"});
       return res;
     }
 
     // Verifica que halla espacio para una flota o expedicion mas (Comentar el if para tener slot infinitos)
     let fleetExpeditionObj = fun.getCantFleets(player);
     if(fleetExpeditionObj.fleets >= player.research.computer+1){
-      res.json({ok: false, mes: "No hay mas espacio para otra flota."});
+      res.send({ok: false, mes: "No hay mas espacio para otra flota."});
       return res;
     }else if(obj.mission === 0 && fleetExpeditionObj.expeditions >= Math.floor(Math.sqrt(player.research.astrophysics))){
-      res.json({ok: false, mes: "No hay mas espacio para otra expedicion."});
+      res.send({ok: false, mes: "No hay mas espacio para otra expedicion."});
       return res;
     }
     let validMission    = false;
@@ -1277,11 +1284,11 @@ var exp  = {
     // Me fijo por separado el caso de los misiles
     if(obj.ships['misil'] < 0) obj.ships['misil'] = 0;
     if(misil && obj.mission !== 6){
-      res.json({ok: false, mes: "Los misiles solo pueden ser eviados a misilear."});
+      res.send({ok: false, mes: "Los misiles solo pueden ser eviados a misilear."});
       return res;
     }
     if(!fleetVoid && obj.mission === 6){
-      res.json({ok: false, mes: "No se puede misilear con naves que no sean misiles."});
+      res.send({ok: false, mes: "No se puede misilear con naves que no sean misiles."});
       return res;
     }
     if(obj.ships['misil'] > ((moon) ? 0 : player.planets[planet].defense["interplanetaryMissile"])){
@@ -1322,7 +1329,7 @@ var exp  = {
       if(misil){
         minSpeed = navesInfo['misil'].speed;
         if(obj.coorDesde.gal !== obj.coorHasta.gal || Math.abs(obj.coorDesde.sys - obj.coorHasta.sys) > (player.research.impulse * 5)){
-          res.json({ok: false, mes: "No se puede misilear una posicion tan lejana."});
+          res.send({ok: false, mes: "No se puede misilear una posicion tan lejana."});
           return res;
         }
       }
@@ -1394,21 +1401,21 @@ var exp  = {
             }
           }
           base.pushMovementToDataBase(player.planets[planet].coordinates, objInc, pushObj);
-          res.json({ok: true}); // Usa json y no send por ser pedido via POST
+          res.send({ok: true}); // Usa json y no send por ser pedido via POST
         }else{
-          res.json({ok: false, mes: "No se puede cargar tantos recursos."});
+          res.send({ok: false, mes: "No se puede cargar tantos recursos."});
         }
       }else{
-        res.json({ok: false, mes: "Recursos no validos"});
+        res.send({ok: false, mes: "Recursos no validos."});
       }
     }else{
       if(!validMission){
-        res.json({ok: false, mes: "Mission no valida con la flota actual"});
+        res.send({ok: false, mes: "Mission no valida con la flota actual."});
       }else{
         if(neededDeuterium <= deuterioDisponible - obj.resources.deuterium){
-          res.json({ok: false, mes: "Flota no valida"});
+          res.send({ok: false, mes: "Flota no valida."});
         }else{
-          res.json({ok: false, mes: "Deuterio insuficiente como para lanzar la flota"});
+          res.send({ok: false, mes: "Deuterio insuficiente como para lanzar la flota."});
         }
       }
     }
@@ -1435,22 +1442,22 @@ var exp  = {
           if(!incorrerctFleet && !zeroFleet){ // Paso las naves a la luna que salto y actualizo la info de la luna
             base.addPlanetData(obj.coorHasta, fun.zeroResources(), obj.ships, true);
             base.updateCuantic(player.planets[planet].coordinates, fun.negativeObj(obj.ships), fun.horaActual() + Math.floor(12*3600*1000 / player.planets[planet].moon.buildings.jumpGate));
-            res.json({ok: true});
+            res.send({ok: true});
           }else{
-            res.json({ok: false, mes: "Flota incorrecta."});
+            res.send({ok: false, mes: "Flota incorrecta."});
           }
         }else{
-          res.json({ok: false, mes: "El salto cuantico esta cargandose"});
+          res.send({ok: false, mes: "El salto cuantico esta cargandose"});
         }
       }else{
         if(index === planet){
-          res.json({ok: false, mes: "No se puede saltar a la misma luna."});
+          res.send({ok: false, mes: "No se puede saltar a la misma luna."});
         }else{
-          res.json({ok: false, mes: "No se puede saltar a esa luna."});
+          res.send({ok: false, mes: "No se puede saltar a esa luna."});
         }
       }
     }else{
-      res.json({ok: false, mes: "Error en la luna."});
+      res.send({ok: false, mes: "Error en la luna."});
     }
     return res;
   },

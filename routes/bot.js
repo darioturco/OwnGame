@@ -7,7 +7,7 @@ var { auth, logout } = require('./authenticater')(passport, uni);
 
 router.post(/\/(login)|(infoPlayer)/, async function(req, res, next) {
   auth(req, res, next, (req.path === "/infoPlayer"), (req, res, next, userId, player) => {
-    res.json({ok: true, mes: "Login exitoso.", data: player, id: userId});
+    res.send({ok: true, mes: "Login exitoso.", data: player, id: userId});
   });
 });
 
@@ -18,9 +18,9 @@ router.post('/logout', function(req, res, next) {
 router.post('/changeName', async function(req, res, next) {
   auth(req, res, next, true, (req, res, next, userId, player) => {
     if(uni.base.setPlanetName(player, req.body.coor, req.body.newName, req.body.moon)){
-      res.json({ok: true, mes: "Cambio de nombre exitoso."});
+      res.send({ok: true, mes: "Cambio de nombre exitoso."});
     }else{
-      res.json({ok: false, mes: "Coordenadas no validas."});
+      res.send({ok: false, mes: "Coordenadas no validas."});
     }
   });
 });
@@ -28,7 +28,7 @@ router.post('/changeName', async function(req, res, next) {
 router.post('/abandonPlanet', async function(req, res, next) {
   auth(req, res, next, true, (req, res, next, userId, player) => {
     if(player.planets[req.body.planetNum] == undefined){
-      res.json({ok: false, mes: "Numero de planeta incorrecto."});
+      res.send({ok: false, mes: "Numero de planeta incorrecto."});
     }else{
       uni.base.abandonPlanet(uni.player, uni.planeta, res);
     }
@@ -36,7 +36,7 @@ router.post('/abandonPlanet', async function(req, res, next) {
 });
 
 router.post('/infoUniverso', function(req, res, next) {
-  res.json({ok: true, mes: "Info del universo", data: uni.universo});
+  res.send({ok: true, mes: "Info del universo", data: uni.universo});
 });
 
 router.post('/infoGalaxy', function(req, res, next) {
@@ -55,15 +55,190 @@ router.post('/changeResourcesOptions', function(req, res, next) {
         uni.updateResourcesData(res, player, req.body.planetNum, req.body);
       }
     }else{
-      res.json({ok: false, mes: "Parametros invalidos."});
+      res.send({ok: false, mes: "Parametros invalidos."});
     }
   });
 });
 
+router.post('/infoBuildings', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    if(uni.fun.validPlanetNum(player, req.body.planetNum)){
+      res.send(uni.costBuildings(player, req.body.planetNum));
+    }else{
+      res.send({ok: false, mes: "Invalid planet number."});
+    }
+  });
+});
 
+router.post('/buildingRequest', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    if(uni.fun.validPlanetNum(player, req.body.planetNum)){
+      uni.proccesBuildRequest(player, req.body.planetNum, req.body.process, res);
+    }else{
+      res.send({ok: false, mes: "Invalid planet number."});
+    }
+  });
+});
 
+router.post('/cancelBuilding', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    if(uni.fun.validPlanetNum(player, req.body.planetNum)){
+      uni.cancelBuildRequest(player, req.body.planetNum, res);
+    }else{
+      res.send({ok: false, mes: "Invalid planet number."});
+    }
+  });
+});
 
+router.post('/infoBuildingsMoon', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    if(uni.fun.validMoonNum(player, req.body.planetNum)){
+      res.send(uni.costMoon(player, req.body.planetNum));
+    }else{
+      res.send({ok: false, mes: "Invalid moon number."});
+    }
+  });
+});
 
+router.post('/buildingRequestMoon', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    if(uni.fun.validMoonNum(player, req.body.planetNum)){
+      uni.proccesMoonRequest(player, req.body.planetNum, req.body.process, res);
+    }else{
+      res.send({ok: false, mes: "Invalid moon number."});
+    }
+  });
+});
 
+router.post('/cancelBuildingMoon', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    if(uni.fun.validMoonNum(player, req.body.planetNum)){
+      uni.cancelMoonRequest(player, req.body.planetNum, res);
+    }else{
+      res.send({ok: false, mes: "Invalid moon number."});
+    }
+  });
+});
+
+router.post('/infoShips', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    if(uni.fun.validPlanetNum(player, req.body.planetNum, req.body.moon)){
+      res.send(uni.costShipyard(player, req.body.planetNum, req.body.moon));
+    }else{
+      res.send({ok: false, mes: "Invalid planet number."});
+    }
+  });
+});
+
+router.post('/buildShips', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    if(uni.fun.validPlanetNum(player, req.body.planetNum)){
+      uni.proccesShipyardRequest(player, req.body.planetNum, req.body.obj, req.body.cant, res);
+    }else{
+      res.send({ok: false, mes: "Invalid planet number."});
+    }
+  });
+});
+
+router.post('/cancelShips', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    if(uni.fun.validPlanetNum(player, req.body.planetNum)){
+      uni.cancelShipyardRequest(player, req.body.planetNum, req.body.obj, res);
+    }else{
+      res.send({ok: false, mes: "Invalid planet number."});
+    }
+  });
+});
+
+router.post('/infoDefenses', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    if(uni.fun.validPlanetNum(player, req.body.planetNum)){
+      res.send(uni.costDefense(player, req.body.planetNum));
+    }else{
+      res.send({ok: false, mes: "Invalid planet number."});
+    }
+  });
+});
+
+router.post('/buildDefenses', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    if(uni.fun.validPlanetNum(player, req.body.planetNum)){
+      uni.proccesShipyardRequest(player, req.body.planetNum, req.body.obj, req.body.cant, res);
+    }else{
+      res.send({ok: false, mes: "Invalid planet number."});
+    }
+  });
+});
+
+router.post('/cancelDefenses', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    if(uni.fun.validPlanetNum(player, req.body.planetNum)){
+      uni.cancelShipyardRequest(player, req.body.planetNum, req.body.obj, res);
+    }else{
+      res.send({ok: false, mes: "Invalid planet number."});
+    }
+  });
+});
+
+router.post('/infoResearch', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    if(!uni.fun.validPlanetNum(player, req.body.planetNum)) req.body.planetNum = 0;
+    res.send(uni.costResearch(player, player.planets[req.body.planetNum].buildings.researchLab));
+  });
+});
+
+router.post('/buildResearch', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    if(uni.fun.validPlanetNum(player, req.body.planetNum)){
+      uni.proccesResearchRequest(player, req.body.planetNum, req.body.obj, res);
+    }else{
+      res.send({ok: false, mes: "Invalid planet number."});
+    }
+  });
+});
+
+router.post('/cancelResearch', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    uni.cancelResearchRequest(player, res);
+  });
+});
+
+router.post('/sendFleet', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    if(uni.fun.validPlanetNum(player, req.body.planetNum, req.body.moon)){
+      uni.addFleetMovement(player, req.body.planetNum, req.body.moon, req.body.data, res);
+    }else{
+      res.send({ok: false, mes: "Invalid planet number."});
+    }
+  });
+});
+
+router.post('/returnFleet', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    uni.base.returnFleetInDataBase(player, req.body.num, res);
+  });
+});
+
+router.post('/readMessage', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    res.send({ok: true, data: player.messages});
+  });
+});
+
+router.post('/deleteMessage', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    uni.base.deleteMessage(player.name, req.body.all, req.body.data, res);
+  });
+});
+
+router.post('/changeOptions', async function(req, res, next) {
+  auth(req, res, next, true, (req, res, next, userId, player) => {
+    uni.base.setOptions(uni.player.name, res, parseInt(req.body.esp), parseInt(req.body.sml), parseInt(req.body.lar));
+  });
+});
+
+router.post('/showTechnology', async function(req, res, next) {
+  res.send(uni.fun.getTechnology());
+});
 
 module.exports = router;

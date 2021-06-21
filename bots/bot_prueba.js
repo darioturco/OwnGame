@@ -5,7 +5,7 @@ var id = ""
 console.log("Hola bot");
 
 async function login(){
-  let data = {username: "bot_1", password: "nwipre"};
+  let data = {username: "bot_4", password: "vctdd"};
   let res = await fetch('http://localhost:3000/bot/login', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
   res = await res.json();
   id = res.id;
@@ -64,9 +64,183 @@ async function changeResourcesOptions(){
   console.log(res);
 }
 
+async function infoBuildings(){
+  let data = {id, planetNum: 0};
+  let res = await fetch('http://localhost:3000/bot/infoBuildings', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function buildingRequest(){
+  let data = {id, planetNum: 0, process: 'metalMine'};
+  let res = await fetch('http://localhost:3000/bot/buildingRequest', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function cancelBuilding(){
+  let data = {id, planetNum: 0};
+  let res = await fetch('http://localhost:3000/bot/cancelBuilding', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function infoBuildingsMoon(){
+  let data = {id, planetNum: 0};
+  let res = await fetch('http://localhost:3000/bot/infoBuildingsMoon', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function buildingRequestMoon(){
+  let data = {id, planetNum: 0, process: 'lunarBase'};
+  let res = await fetch('http://localhost:3000/bot/buildingRequestMoon', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function cancelBuildingMoon(){
+  let data = {id, planetNum: 0};
+  let res = await fetch('http://localhost:3000/bot/cancelBuildingMoon', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function infoShips(){
+  //let data = {id, planetNum: 0, moon: false};
+  let data = {id, planetNum: 0, moon: true};
+  let res = await fetch('http://localhost:3000/bot/infoShips', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function buildShips(){
+  let data = {id, planetNum: 0, obj: "solarSatellite", cant: 5};
+  let res = await fetch('http://localhost:3000/bot/buildShips', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function cancelShips(){
+  let data = {id, planetNum: 0, obj: "solarSatellite"};
+  let res = await fetch('http://localhost:3000/bot/cancelShips', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function infoDefenses(){
+  let data = {id, planetNum: 0};
+  let res = await fetch('http://localhost:3000/bot/infoDefenses', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function buildDefenses(){
+  let data = {id, planetNum: 0, obj: "rocketLauncher", cant: 5};
+  let res = await fetch('http://localhost:3000/bot/buildDefenses', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function cancelDefenses(){
+  let data = {id, planetNum: 0, obj: "rocketLauncher"};
+  let res = await fetch('http://localhost:3000/bot/cancelDefenses', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function infoResearch(){
+  let data = {id};
+  // let data = {id, planetNum: 0};
+  let res = await fetch('http://localhost:3000/bot/infoResearch', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function buildResearch(){
+  let data = {id, planetNum: 0, obj: "laser"};
+  // let data = {id, planetNum: 0};
+  let res = await fetch('http://localhost:3000/bot/buildResearch', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function cancelResearch(){
+  let data = {id};
+  // let data = {id, planetNum: 0};
+  let res = await fetch('http://localhost:3000/bot/cancelResearch', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function sendFleet(){
+  let data = {id, planetNum: 0, moon: false, data: { ships:
+   { lightFighter: 0,
+     heavyFighter: 0,
+     cruiser: 0,
+     battleship: 0,
+     battlecruiser: 0,
+     bomber: 0,
+     destroyer: 0,
+     deathstar: 0,
+     smallCargo: 0,
+     largeCargo: 0,
+     colony: 0,
+     recycler: 5,
+     espionageProbe: 0,
+     misil: 0 },
+    coorDesde: { gal: 1, sys: 2, pos: 7 },
+    coorHasta: { gal: 1, sys: 2, pos: 7 },
+    destination: 3,
+    porce: 2,
+    mission: 2,
+    resources: { metal: 0, crystal: 0, deuterium: 0 } } };
+  let res = await fetch('http://localhost:3000/bot/sendFleet', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function returnFleet(){
+  let data = {id, num: 0};
+  let res = await fetch('http://localhost:3000/bot/returnFleet', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function readMessage(){
+  let data = {id, num: 0};
+  let res = await fetch('http://localhost:3000/bot/readMessage', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function deleteMessage(){
+  //let data = {id, all: false, data: 'Sun Jun 20 2021 18:50:35'};
+  let data = {id, all: true, data: 2};
+  let res = await fetch('http://localhost:3000/bot/deleteMessage', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function changeOptions(){
+  let data = {id, esp: 3, sml: 3, lar: 1};
+  let res = await fetch('http://localhost:3000/bot/changeOptions', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
+async function showTechnology(){
+  let data = {};
+  let res = await fetch('http://localhost:3000/bot/showTechnology', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data)});
+  res = await res.json();
+  console.log(res);
+}
+
 async function combinar(){
-  login();
-  setTimeout(changeResourcesOptions, 500);
+  await login();
+  //await deleteMessage();
+  await showTechnology();
+  //setTimeout(returnFleet, 250);
   //setTimeout(changePlanetName, 1000);
 }
 
@@ -79,6 +253,7 @@ combinar();
 console.log("Fin codigo");
 
 
+
 /* Funciones a implementar:
 
   - login
@@ -89,29 +264,29 @@ console.log("Fin codigo");
   - infoUniverso
   - infoGalaxy
   - changeResourcesOptions
-  infoBuildings
-  buildingRequest
-  cancelBuilding
-  infoBuildingsMoon
-  buildingRequestMoon
-  cancelBuildingMoon
-  infoShips
-  buildShips
-  cancelShips
-  infoDefenses
-  buildDefenses
-  cancelDefenses
-  infoResearch
-  buildResearch
-  cancelResearch
-  sendFleet
-  returnFleet
+  - infoBuildings
+  - buildingRequest
+  - cancelBuilding
+  - infoBuildingsMoon
+  - buildingRequestMoon
+  - cancelBuildingMoon
+  - infoShips
+  - buildShips
+  - cancelShips
+  - infoDefenses
+  - buildDefenses
+  - cancelDefenses
+  - infoResearch
+  - buildResearch
+  - cancelResearch
+  - sendFleet
+  - returnFleet
   isSomeoneAttackingMe
   keepInfoAttack
-  sendMessage
-  deleteMessage
-  changeOptions
-  showTechnology
+  - readMessage
+  - deleteMessage
+  - changeOptions
+  - showTechnology
   showHighscore
   searchPlayer
   usePhalanx
@@ -119,5 +294,6 @@ console.log("Fin codigo");
   seeMarketMoon
   useMarketMoon
   changePassword
-
+  seeRewards
+  updateRewards
 */

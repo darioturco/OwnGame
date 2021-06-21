@@ -273,10 +273,10 @@ var exp = {
       objPull.planets  = {coordinates: player.planets[planet].coordinates}; // Elimino el planeta nuemro planet de la lista
       objPull.movement = {coorDesde: player.planets[planet].coordinates};   // Elimino todos los movment que salieron del planeta eliminado
       this.savePlayerData(player.name, undefined, undefined, undefined, objPull, () => {
-        uni.fun.writeRes(res, {ok: true});
+        res.send({ok: true});
       });
     }else{
-      uni.fun.writeRes(res, {ok: false, mes: "No podes abandonar el unico planeta que tenes."});
+      res.send({ok: false, mes: "No podes abandonar el unico planeta que tenes."});
     }
   },
 
@@ -312,12 +312,30 @@ var exp = {
   //  -playerName = Nombre del jugador a borrar los mensages
   //  -all = Si elimina todos los mensages de un tipo o no
   //  -borra = Numero del tipo de mensage a eliminar o la fecha del mensage a eliminar
-  deleteMessage: function(playerName, all, borra) {
-    let obj = (all) ? {type: parseInt(borra)} : {date: borra};
+  //  -res = Objeto respuesta a devolver al cliente
+  deleteMessage: function(playerName, all, borra, res) {
+    let obj;
+    if(all === true){
+      if(uni.fun.validInt(borra)){
+        obj = {type: parseInt(borra)};
+        console.log(obj);
+      }else{
+        res.send({ok: false, mes: "Invalid type."});
+        return res;
+      }
+    }else{
+      if(/\w{3} \w{3} .. \d{4} \d{2}:\d{2}:\d{2}/.test(borra)){
+        obj = {date: borra};
+      }else{
+        res.send({ok: false, mes: "Invalid date."});
+        return res;
+      }
+    }
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
       {name: playerName},
       {$pull: {messages: obj}},
       {multi: true});
+    res.send({ok: true});
   },
 
   // Guarda el contador de mensages no leidos en 0 del jugador actual
@@ -411,7 +429,7 @@ var exp = {
   //  -sys = Nuemero de sistema
   systemInfo: function(res, gal, sys){
     if(!uni.fun.coordenadaValida({gal, sys, pos: 1})){
-      uni.fun.writeRes(res, {ok: false, mes: "Coordenadas no validas"});
+      res.send({ok: false, mes: "Coordenadas no validas."});
       return res;
     }
     let respuesta = {};
@@ -445,7 +463,7 @@ var exp = {
         }
       }
     }, () => {
-      uni.fun.writeRes(res, {ok: true, mes: "Info de la galaxia: " + gal + ", sistema: " + sys, data: respuesta});
+      res.send({ok: true, mes: "Info de la galaxia: " + gal + ", sistema: " + sys, data: respuesta});
       //res.send(respuesta);
     });
   },
@@ -457,14 +475,14 @@ var exp = {
   //  -small = Cantidad de naves pequnas de carga
   //  -large = Cantidad de naves grandes de carga
   setOptions: function(playerName, res, esp, small, large){
-    if(isFinite(esp) && esp > 0 && isFinite(small) && small > 0 && isFinite(large) && large > 0){
+    if(uni.fun.validInt(esp) && esp > 0 && uni.fun.validInt(small) && small > 0 && uni.fun.validInt(large) && large > 0){
       mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
         {name: playerName},
         {$set: {sendEspionage: esp, sendSmall: small, sendLarge: large}}, (err) => {
-          res.send({ok: (err == null) ? true : err});
+          res.send({ok: (err == null)});
       });
     }else{
-      res.send({ok: false, mes: "Algo salio mal. Parametros invalidos"});
+      res.send({ok: false, mes: "Algo salio mal. Parametros invalidos."});
     }
   },
 
@@ -624,10 +642,10 @@ var exp = {
             if(res != undefined) res.send({ok: true});
         });
       }else{
-        if(res != undefined) res.send({ok: false, mes: "El viaje ya esta regresando"});
+        if(res != undefined) res.send({ok: false, mes: "El viaje ya esta regresando."});
       }
     }else{
-      if(res != undefined) res.send({ok: false, mes: "Numero de flota invalido"});
+      if(res != undefined) res.send({ok: false, mes: "Numero de flota invalido."});
     }
   },
 
