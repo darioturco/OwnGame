@@ -20,4 +20,6 @@ block content
           label Number of Large Cargo:
           input#inputLarge(type='number' value=info.large)
         a.btn_blue(onclick='setOptions(); return false;') Save options
+        if basic.hazards.length > 0
+          a.btn_blue(onclick='clearHazards(); return false;') Clear Hazards
       .footer

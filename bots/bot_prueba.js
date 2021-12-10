@@ -324,7 +324,7 @@ console.log("Fin codigo");
 
 
 
-/* Funciones a implementar:
+/* Funciones a implementar / implementadas:
 
   - login
   - logout

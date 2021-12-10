@@ -34,6 +34,9 @@ function initFunction(obj){ // Funcion que se ejecuta apenas carga un pagina
   crystalStorage = parseInt(document.getElementsByName('ogame-storage-crystal')[0].content);
   deuteriumStorage = parseInt(document.getElementsByName('ogame-storage-deuterium')[0].content);
   playerActualName = document.getElementsByName('ogame-player-name')[0].content;
+  localCoor = {gal: parseInt(document.getElementsByName('ogame-planet-galaxy')[0].content),
+              sys: parseInt(document.getElementsByName('ogame-planet-system')[0].content),
+              pos: parseInt(document.getElementsByName('ogame-planet-position')[0].content)}
   if(nextFleetText != null){
     fleetTime = Math.ceil((parseInt(nextFleetText.dataset.time) - new Date().getTime()) / 1000);
     missionText = nextFleetText.innerHTML.slice(7);
@@ -105,6 +108,16 @@ function setOptions(){ // Funcion que utiliza la pagina Opcions.html para comuni
   let small = document.getElementById('inputSmall').value;
   let large = document.getElementById('inputLarge').value;
   loadJSON('./api/set/setOptions?esp=' + esp + '&sml=' + small + '&lar=' + large, (obj) => {
+    if(obj.ok == true){
+      location.reload(); // Actualiza la pagina si todo salio bien
+    }else{
+      sendPopUp(obj.mes);
+    }
+  });
+}
+
+function clearHazards(){
+  loadJSON('./api/set/clearHazards', (obj) => {
     if(obj.ok == true){
       location.reload(); // Actualiza la pagina si todo salio bien
     }else{
@@ -230,4 +243,8 @@ function goToResourcesSettings(){
 
 function coorToCorch(coor){
   return '[' + coor.gal + ':' + coor.sys + ':' + coor.pos + ']';
+}
+
+function equalCoor(coor1, coor2){
+  return coor1.gal === coor2.gal && coor1.sys === coor2.sys && coor1.pos === coor2.pos;
 }

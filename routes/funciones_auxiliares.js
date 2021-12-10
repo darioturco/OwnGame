@@ -293,6 +293,9 @@ var exp = {
   coordenadaValida: function(coor){
     return coor.gal >= 1 && coor.sys >= 1 && coor.pos >= 1 && coor.gal <= 9 && coor.sys <= 499 && coor.pos <= 16;
   },
+  coorToCorch: function(coor){
+    return '[' + coor.gal + ':' + coor.sys + ':' + coor.pos + ']';
+  },
   validResourcesSettingsObj: function(obj, moon){
     if(obj == undefined) return false;
     for(let i in obj){ // Me fijo que todos los valores de 'obj' sean numeros validos
@@ -576,6 +579,18 @@ var exp = {
   shipStringToNum: function(ship){
     return shipsDefensesNumber[ship];
   },
+  isBuildingSmallShield: function(listOfShipConstructions){
+    for(i in listOfShipConstructions){
+      if(listOfShipConstructions[i].item === 'smallShield') return true;
+    }
+    return false;
+  },
+  isBuildingLargeShield: function(listOfShipConstructions){
+    for(i in listOfShipConstructions){
+      if(listOfShipConstructions[i].item === 'largeShield') return true;
+    }
+    return false;
+  },
   newPointsRandomFleet: function(puntos){
     let res = this.zeroShips();
     let cost = this.costShipsAndDefenses();
@@ -775,10 +790,10 @@ var exp = {
     return {ataqueRestante: ataque, destroyedDef: destruidos};
   },
   battle: function(attackerShips, defenderShips, defenses, attackerTech, defenderTech, fr){
-    // Implento la version mas naive del algoritmo de batallas, unas ideas para mejorarlo son:
-    //  - Implentar el algoritmo en ASMx86 con operaciones SIMD ( O almenos alguna parte del algoritmo )
-    //  - Usar un modelo estadistico que me de una funcion por cada tipo de nave que apartir de los datos de entrada devuelva un estimado de las naves que sobreviven de ese tipo
-    // Podria implentarlas en funciones distintas e ir probando cada una con casos de test
+    /* Implento la version mas naive del algoritmo de batallas, unas ideas para mejorarlo son:
+        - Implentar el algoritmo en ASMx86 con operaciones SIMD ( O almenos alguna parte del algoritmo )
+        - Usar un modelo estadistico que me de una funcion por cada tipo de nave que apartir de los datos de entrada devuelva un estimado de las naves que sobreviven de ese tipo
+      Podria implentarlas en funciones distintas e ir probando cada una con casos de test*/
 
     // Calculo cuanto es el maximo escudo de cada nave para cada bando
     let maxShieldsAttacker = Array.from(shieldNaves);
@@ -812,7 +827,8 @@ var exp = {
     let termino = fleetAtk.length === 0 || fleetDef.length === 0;
 
     // Cada combate consta de maximo 6 rondas
-    for(let ronda = 0 ; ronda<6 && !termino ; ronda++){
+    let ronda = 0
+    for(ronda = 0 ; ronda<6 && !termino ; ronda++){
       // El atacante ataca al defensor
       this.startAttack(fleetAtk, fleetDef, attackAttacker, armourDefender, fr);
       // El defensor ataca al atacante
@@ -826,10 +842,15 @@ var exp = {
       termino = fleetAtk.length === 0 || fleetDef.length === 0;
     }
 
-    let res = {};     // Devuelvo el resultado de la batalla en res
-    res.atkShips = this.zeroShips();
-    res.defShips = this.zeroShips();
-    res.defDefenses = this.zeroDefense();
+    // Devuelvo el resultado de la batalla en res
+    let res = {
+      atkShips: this.zeroShips(),
+      defShips: this.zeroShips(),
+      defDefenses: this.zeroDefense(),
+      winner: 'Draw', // Empate
+      rondas: ronda
+    };
+
 
     let tipoAux;
     // Paso los arreglos de las flotas que sobrevivieron a objetos
@@ -847,11 +868,10 @@ var exp = {
     res.defDefenses.interplanetaryMissile = defenses.interplanetaryMissile;
 
     // Decido el resultado de la batalla (gana el atacante = 1, gana el defensor = 2, empate = 3)
-    res.result = 3;     // Empate
     if(fleetAtk.length === 0 && fleetDef.length !== 0){
-      res.result = 2;   // Gano el defensor
+      res.winner = 'Defenser';   // Gano el defensor
     }else if(fleetAtk.length !== 0 && fleetDef.length === 0){
-      res.result = 1;   // Gano el atacante
+      res.winner = 'Attacker';   // Gano el atacante
     }
     return res;
   },

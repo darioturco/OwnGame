@@ -6,6 +6,8 @@ var spyDiv = undefined, spyClose = undefined;
 var spyDate, spyPlanetInfo;
 var fleetDivSpy, defenceDivSpy, researchDivSpy, buildingDivSpy, moonDivSpy;
 var resourcesSpy, fleetSpy, defenceSpy, researchSpy, buildingSpy, moonSpy;
+var battleDiv, battleClose, battleDate, battlePlanetInfo, battleResult, battleRounds, battleDebris, battleMoonChances;
+var resourcesBattle, fleetBattleAttacker, fleetBattleDefender, defenceBattle;
 var ready = false;
 
 setTimeout(() => {
@@ -69,17 +71,25 @@ function cargaData(conteiner, obj, num){
   let text = '';
   switch (type) {
     case 1: // fleet
-      text = JSON.stringify(obj.data);
-      /* Muestro el informe de batalla bien */
+      // Muestro el informe de batalla bien
+      text = obj.data.playerName + " (" + obj.data.planetName + ") <a href='./Ogame_Galaxy.html?gal=" + obj.data.coorDefender.gal + "&sys=" + obj.data.coorDefender.sys + "'>" + coorToCorch(obj.data.coorDefender) + "</a>";
+      text += "<br> <pre> Rondas: " + obj.data.rounds +
+              "<br> Stolen resources: <br> Metal: " + Math.floor(formatNumber(obj.data.stolenResources.metal)) +
+              "     Crystal: " + Math.floor(formatNumber(obj.data.stolenResources.crystal)) +
+              "     Deuterium: " + Math.floor(formatNumber(obj.data.stolenResources.deuterium)) + '</pre>'
+
+      // Pongo los botones para atacar
+      text += "<input type='button' value='Attack' onClick='attackCustom(" + obj.data.coorDefender.gal + ", " + obj.data.coorDefender.sys + ", " + obj.data.coorDefender.pos + ")' />" +
+              "<input type='button' value='See Report' onClick='seeCompleteBattleReport(" + num + ")'/>";
       break;
     case 2: // espionaje
 
       // Muestro la informacion de espionaje
       text = obj.data.playerName + " (" + obj.data.planetName + ") <a href='./Ogame_Galaxy.html?gal=" + obj.data.coor.gal + "&sys=" + obj.data.coor.sys + "'>" + coorToCorch(obj.data.coor) + "</a>";
-      text += "<br> <pre>Metal: " + Math.floor(obj.data.resources.metal) +
-              "     Crystal: " + Math.floor(obj.data.resources.crystal) +
-              "     Deuterium: " + Math.floor(obj.data.resources.deuterium) +
-              "     Energy: " + Math.floor(obj.data.resources.energy) + "</pre>";
+      text += "<br> <pre>Metal: " + formatNumber(Math.floor(obj.data.resources.metal)) +
+              "     Crystal: " + formatNumber(Math.floor(obj.data.resources.crystal)) +
+              "     Deuterium: " + formatNumber(Math.floor(obj.data.resources.deuterium)) +
+              "     Energy: " + formatNumber(Math.floor(obj.data.resources.energy)) + "</pre>";
       if(obj.data.fleet != undefined){
         text += " <br> <pre>Fleet: " + cantObj(obj.data.fleet);
         if(obj.data.defense != undefined){
@@ -100,77 +110,115 @@ function cargaData(conteiner, obj, num){
   conteiner.style.display = 'block';
 }
 
+function seeCompleteBattleReport(num){
+  if(battleDiv === undefined) loadBattleDivs();
+  battleDiv.style.display = "block";
+  battleDiv.classList.remove("closeBackgroud");
+  battleDiv.classList.add("openBackgroud");
+  battleClose.style.display = "block";
+  battleClose.classList.remove("closeBackgroud");
+  battleClose.classList.add("openBackgroud");
+
+  // Pongo la informacion del informe de batalla
+  battleDate.innerText = "Date: " + fleetList[num].date;
+  battlePlanetInfo.innerHTML = fleetList[num].data.playerName + " (" + fleetList[num].data.planetName + ") <a href='./Ogame_Galaxy.html?gal=" + fleetList[num].data.coorDefender.gal + "&sys=" + fleetList[num].data.coorDefender.sys + "'>" + coorToCorch(fleetList[num].data.coorDefender) + "</a>";
+  battleResult.innerHTML = 'Result of the battle: ' + fleetList[num].data.winner;
+  battleRounds.innerHTML = 'Rounds: ' + fleetList[num].data.rounds;
+  battleDebris.innerHTML = 'Debris = ' + 'Metal: ' + formatNumber(fleetList[num].data.newDebris.metal) +
+                           ', Crystal: ' + formatNumber(fleetList[num].data.newDebris.crystal);
+  battleMoonChances.innerHTML = 'Moon Chances: ' + fleetList[num].data.lunaChance + '%';
+
+  for(let item in fleetList[num].data.stolenResources){
+    resourcesBattle[item].innerText = formatNumber(Math.floor(fleetList[num].data.stolenResources[item]));
+  }
+  for(let item in fleetList[num].data.fleetAttackBefore){
+    fleetBattleAttacker[item].innerText = fleetList[num].data.fleetAttackBefore[item] + ' > ' + fleetList[num].data.fleetAttackAfter[item];
+  }
+  fleetBattleAttacker['misil'].innerText = fleetList[num].data.fleetAttackBefore['misil'] + ' > ' + 0;
+  for(let item in fleetList[num].data.fleetDefenseBefore){
+    fleetBattleDefender[item].innerText = fleetList[num].data.fleetDefenseBefore[item] + ' > ' + fleetList[num].data.fleetDefenseAfter[item];
+  }
+  for(let item in fleetList[num].data.defensesBefore){
+    defenceBattle[item].innerText = fleetList[num].data.defensesBefore[item] + ' > ' + fleetList[num].data.defensesAfter[item];
+  }
+}
+
 function seeCompleteReport(num){
-  if(spyDiv === undefined){
-    loadSpyDivs();
-    if(spyDiv !== undefined) seeCompleteReport(num);
+  if(spyDiv === undefined) loadSpyDivs();
+  spyDiv.style.display = "block";
+  spyDiv.classList.remove("closeBackgroud");
+  spyDiv.classList.add("openBackgroud");
+  spyClose.style.display = "block";
+  spyClose.classList.remove("closeBackgroud");
+  spyClose.classList.add("openBackgroud");
+
+  // Pongo la informacion del informe
+  let item;
+  spyDate.innerText = "Date: " + espList[num].date;
+  spyPlanetInfo.innerHTML = espList[num].data.playerName + " (" +espList[num].data.planetName + ") <a href='./Ogame_Galaxy.html?gal=" + espList[num].data.coor.gal + "&sys=" + espList[num].data.coor.sys + "'>" + coorToCorch(espList[num].data.coor) + "</a>";
+  for(item in espList[num].data.resources){
+    resourcesSpy[item].innerText = formatNumber(Math.floor(espList[num].data.resources[item]));
+  }
+  if(espList[num].data.fleet != undefined){
+    fleetDivSpy.style.display = 'block';
+    for(item in espList[num].data.fleet){
+      fleetSpy[item].innerText = espList[num].data.fleet[item];
+    }
   }else{
-    spyDiv.style.display = "block";
-    spyDiv.classList.remove("closeBackgroud");
-    spyDiv.classList.add("openBackgroud");
-    spyClose.style.display = "block";
-    spyClose.classList.remove("closeBackgroud");
-    spyClose.classList.add("openBackgroud");
+    fleetDivSpy.style.display = 'none';
+  }
+  if(espList[num].data.defense != undefined){
+    defenceDivSpy.style.display = 'block';
+    for(item in espList[num].data.defense){
+      defenceSpy[item].innerText = espList[num].data.defense[item];
+    }
+  }else{
+    defenceDivSpy.style.display = 'none';
+  }
+  if(espList[num].data.research != undefined){
+    researchDivSpy.style.display = 'block';
+    for(item in espList[num].data.research){
+      researchSpy[item].innerText = espList[num].data.research[item];
+    }
+  }else{
+    researchDivSpy.style.display = 'none';
+  }
 
-    // Pongo la informacion del informe
-    let item;
-    spyDate.innerText = "Date: " + espList[num].date;
-    spyPlanetInfo.innerHTML = espList[num].data.playerName + " (" +espList[num].data.planetName + ") <a href='./Ogame_Galaxy.html?gal=" + espList[num].data.coor.gal + "&sys=" + espList[num].data.coor.sys + "'>" + coorToCorch(espList[num].data.coor) + "</a>";
-    for(item in espList[num].data.resources){
-      resourcesSpy[item].innerText = Math.floor(espList[num].data.resources[item]);
-    }
-    if(espList[num].data.fleet != undefined){
-      fleetDivSpy.style.display = 'block';
-      for(item in espList[num].data.fleet){
-        fleetSpy[item].innerText = espList[num].data.fleet[item];
-      }
-    }else{
-      fleetDivSpy.style.display = 'none';
-    }
-    if(espList[num].data.defense != undefined){
-      defenceDivSpy.style.display = 'block';
-      for(item in espList[num].data.defense){
-        defenceSpy[item].innerText = espList[num].data.defense[item];
-      }
-    }else{
-      defenceDivSpy.style.display = 'none';
-    }
-    if(espList[num].data.research != undefined){
-      researchDivSpy.style.display = 'block';
-      for(item in espList[num].data.research){
-        researchSpy[item].innerText = espList[num].data.research[item];
-      }
-    }else{
-      researchDivSpy.style.display = 'none';
-    }
-
-    if(espList[num].data.buildings != undefined){
-      if(espList[num].data.moon){
-        buildingDivSpy.style.display = 'none';
-        moonDivSpy.style.display = 'block';
-        for(item in espList[num].data.buildings){
-          moonSpy[item].innerText = espList[num].data.buildings[item];
-        }
-      }else{
-        buildingDivSpy.style.display = 'block';
-        moonDivSpy.style.display = 'none';
-        for(item in espList[num].data.buildings){
-          buildingSpy[item].innerText = espList[num].data.buildings[item];
-        }
-      }
-    }else{
+  if(espList[num].data.buildings != undefined){
+    if(espList[num].data.moon){
       buildingDivSpy.style.display = 'none';
+      moonDivSpy.style.display = 'block';
+      for(item in espList[num].data.buildings){
+        moonSpy[item].innerText = espList[num].data.buildings[item];
+      }
+    }else{
+      buildingDivSpy.style.display = 'block';
       moonDivSpy.style.display = 'none';
+      for(item in espList[num].data.buildings){
+        buildingSpy[item].innerText = espList[num].data.buildings[item];
+      }
     }
+  }else{
+    buildingDivSpy.style.display = 'none';
+    moonDivSpy.style.display = 'none';
   }
 }
 
 function closeSpyReport(e){
-  if(e.id === 'spyCross' || !document.getElementById("spyReport").contains(e.target)){
+  if(e.id === 'spyCross' || !spyDiv.contains(e.target)){
     spyDiv.classList.add("closeBackgroud");
     spyDiv.classList.remove("openBackgroud");
     spyClose.classList.add("closeBackgroud");
     spyClose.classList.remove("openBackgroud");
+  }
+}
+
+function closeBattleReport(e){
+  if(e.id === 'battleCross' || !battleDiv.contains(e.target)){
+    battleDiv.classList.add("closeBackgroud");
+    battleDiv.classList.remove("openBackgroud");
+    battleClose.classList.add("closeBackgroud");
+    battleClose.classList.remove("openBackgroud");
   }
 }
 
@@ -185,10 +233,7 @@ async function sendCargos(cant, small, num){
       data.ships.largeCargo = cant;
     }
 
-    data.coorDesde = {gal: parseInt(document.getElementsByName('ogame-planet-galaxy')[0].content),
-                      sys: parseInt(document.getElementsByName('ogame-planet-system')[0].content),
-                      pos: parseInt(document.getElementsByName('ogame-planet-position')[0].content)};
-
+    data.coorDesde = localCoor;
     data.coorHasta = {gal: espList[num].data.coor.gal, sys: espList[num].data.coor.sys, pos: espList[num].data.coor.pos};
     data.destination = espList[num].data.moon ? 2 : 1; // 1 = planeta, 2 = moon, 3 = debris
     data.porce = 10;
@@ -331,4 +376,57 @@ function loadSpyDivs(){
     moonShield: document.getElementById("spyMoonShieldContent"),
     phalanx: document.getElementById("spyPhalanxContent"),
     spaceDock: document.getElementById("spySpaceDockContent")};
+}
+
+function loadBattleDivs(){
+  battleDiv = document.getElementById("battleReport");
+  battleClose = document.getElementById("battleDivReport");
+  battleDate = document.getElementById("battleDateComplete");
+  battlePlanetInfo = document.getElementById("battlePlanetInfo");
+  battleResult = document.getElementById("battleResult");
+  battleRounds = document.getElementById("battleRounds");
+  battleDebris = document.getElementById("battleDebris");
+  battleMoonChances = document.getElementById("battleMoonChances");
+
+  resourcesBattle = {metal: document.getElementById("battleMetalContent"),
+    crystal: document.getElementById("battleCrystalContent"),
+    deuterium: document.getElementById("battleDeuteriumContent")};
+  fleetBattleAttacker = { battlecruiser: document.getElementById("battleBattlecruiserContentAtk"),
+    battleship: document.getElementById("battleBattleshipContentAtk"),
+    bomber: document.getElementById("battleBomberContentAtk"),
+    colony: document.getElementById("battleColonyContentAtk"),
+    cruiser: document.getElementById("battleCruiserContentAtk"),
+    deathstar: document.getElementById("battleDeathstarContentAtk"),
+    destroyer: document.getElementById("battleDestroyerContentAtk"),
+    espionageProbe: document.getElementById("battleEspionageContentAtk"),
+    heavyFighter: document.getElementById("battleHeavyContentAtk"),
+    largeCargo: document.getElementById("battleLargeContentAtk"),
+    lightFighter: document.getElementById("battleLightContentAtk"),
+    recycler: document.getElementById("battleRecyclerContentAtk"),
+    smallCargo: document.getElementById("battleSmallContentAtk"),
+    misil: document.getElementById("battleMisilContentAtk")};
+  fleetBattleDefender = { battlecruiser: document.getElementById("battleBattlecruiserContentDef"),
+    battleship: document.getElementById("battleBattleshipContentDef"),
+    bomber: document.getElementById("battleBomberContentDef"),
+    colony: document.getElementById("battleColonyContentDef"),
+    cruiser: document.getElementById("battleCruiserContentDef"),
+    deathstar: document.getElementById("battleDeathstarContentDef"),
+    destroyer: document.getElementById("battleDestroyerContentDef"),
+    espionageProbe: document.getElementById("battleEspionageContentDef"),
+    heavyFighter: document.getElementById("battleHeavyContentDef"),
+    largeCargo: document.getElementById("battleLargeContentDef"),
+    lightFighter: document.getElementById("battleLightContentDef"),
+    recycler: document.getElementById("battleRecyclerContentDef"),
+    smallCargo: document.getElementById("battleSmallContentDef"),
+    solarSatellite: document.getElementById("battleSolarContentDef")};
+  defenceBattle = {antiballisticMissile: document.getElementById("battleAntiMissilesContent"),
+    gauss: document.getElementById("battleGaussContent"),
+    heavyLaser: document.getElementById("battleHeavyLaserContent"),
+    interplanetaryMissile: document.getElementById("battleMissilesContent"),
+    ion: document.getElementById("battleIonContent"),
+    largeShield: document.getElementById("battleLargeShieldContent"),
+    lightLaser: document.getElementById("battleLightLaserContent"),
+    plasma: document.getElementById("battlePlasmaContent"),
+    rocketLauncher: document.getElementById("battleRocketLauncherContent"),
+    smallShield: document.getElementById("battleSmallShieldContent")};
 }

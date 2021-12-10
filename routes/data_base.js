@@ -74,7 +74,7 @@ var exp = {
     cursor.forEach((doc, err) => {
       espionageLevel = doc.research.espionage;
       for(let i = 0 ; i<doc.planets.length ; i++){
-        obj[doc.planets[i].coordinates.gal + '_' + doc.planets[i].coordinates.sys + '_' + doc.planets[i].coordinates.pos] = {espionage: espionageLevel, playerName: doc.planets[i].player, color: doc.planets[i].color};
+        obj[doc.planets[i].coordinates.gal + '_' + doc.planets[i].coordinates.sys + '_' + doc.planets[i].coordinates.pos] = {espionage: espionageLevel, playerName: doc.planets[i].player, type: doc.planets[i].type, color: doc.planets[i].color};
       }
     }, () => {
       uni.allCord = obj;
@@ -128,7 +128,6 @@ var exp = {
     if(newCoor != undefined){
       let newPlanet = uni.createNewPlanet(newCoor, "Planeta Principal", name, 'activo', uni.fun.zeroResources(), uni.fun.zeroShips());
       let password = uni.fun.randomString();
-      console.log(name + ": " + password);
 
       // Guardo el nivel de espionage del nuevo jugador en esa coordenada, o sea 0
       uni.allCord[newCoor.gal+'_'+newCoor.sys+'_'+newCoor.pos] = {espionage: 0, playerName: name};
@@ -153,7 +152,8 @@ var exp = {
         tutorial: [false, false, false, false, false, false, false, false, false, false],
         research: uni.fun.zeroResearch(),
         lastVisit: uni.fun.horaActual(),  // Pone el tiempo actual
-        type: "activo" // (activo inactivo InactivoFuerte fuerte debil)
+        type: "activo", // (activo inactivo InactivoFuerte fuerte debil)
+        hazards: []     // Lista con las flotas que estan atacando al jugador
       };
 
       // Aumenta en uno la cantidad de jugadores del universo
@@ -178,7 +178,6 @@ var exp = {
     if(objPull != undefined) changeObj['$pull'] = objPull;
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOneAndUpdate(
       {name: playerName}, changeObj,
-      {returnOriginal: false},    // Hace que devuelva el objeto modificado, no el original
       (err, res) => {
         if(err) throw err;
         f(res.value);
@@ -318,7 +317,6 @@ var exp = {
     if(all === true){
       if(uni.fun.validInt(borra)){
         obj = {type: parseInt(borra)};
-        console.log(obj);
       }else{
         res.send({ok: false, mes: "Invalid type."});
         return res;
@@ -486,6 +484,14 @@ var exp = {
     }
   },
 
+  clearHazards: function(player, res){
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+      {name: player.name},
+      {$set: {hazards: []}}, (err) => {
+        res.send({ok: (err == null)});
+    });
+  },
+
   // Dado el nombre de un jugador y devuelve las coordenadas de todos sus planetas
   //  -res = Respuesta a enviar al cliente
   //  -playerName = Nombre del jugador a buscar
@@ -589,6 +595,16 @@ var exp = {
     });
   },
 
+  // Agrega un warning al jugador de nombre  playerName
+  //  -coor = Coordenadas del planeta del jugador a avisar
+  //  -objeto con la informacion del warning
+  warnFromAttack: function(cord, warnObj){
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+      {planets: {$elemMatch: {coordinates: cord}}},
+      {$push: warnObj});
+
+  },
+
   // Agrega un movement a la lista de movements de un jugador
   //  -cord = El movement se agrega al jugador que tenga el planeta en estas coordenadas
   //  -objInc = Objeto con los recursos y naves que salieron del planeta
@@ -635,6 +651,12 @@ var exp = {
         }
         uni.events.addElement({time: updateObjAux['llegada'], player: player.name});
         player.movement[num] = updateObjAux; // Actualizo la flota de la lista de flotas volando
+
+        // Si es un ataque, le aviso al atacado que ya no lo atacan
+        if(player.movement[num].mission >= 6){
+          this.removeHazard(player.movement[num].coorHasta, oldLlegada);
+        }
+
         mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
           {name: player.name, "movement.time": oldTime, "movement.llegada": oldLlegada},
           {$set: {"movement.$": updateObjAux}}, (err, resBD) => {
@@ -669,8 +691,20 @@ var exp = {
     pushObj.movement.llegada     = actual + newTime*1000;
     uni.events.addElement({time: pushObj.movement.llegada, player: uni.fun.playerName(uni.allCord, movement.coorDesde)});
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
-      {planets :{$elemMatch: {coordinates: movement.coorDesde}}},
+      {planets: {$elemMatch: {coordinates: movement.coorDesde}}},
       {$push: pushObj});
+  },
+
+  // Elimina un hazard del jugador con el planeta en coor
+  //  -coor = Coordenadas con las que se busca al jugador
+  //  -time = Tiempo de llegada del hazard a eliminar
+  removeHazard: function(coor, time){
+    let objPull = {hazards: {time: time}};
+    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+      {planets: {$elemMatch: {coordinates: coor}}}, {$pull: objPull},
+      (err, res) => {
+        if(err) throw err;
+    });
   },
 
   // Cuenta los puntos de un jugador
@@ -816,7 +850,6 @@ var exp = {
     let defenses = /*uni.fun.zeroDefense();*/{rocketLauncher: 100, lightLaser: 10, heavyLaser: 0, gauss: 5, ion: 0, plasma: 0, smallShield: 0, largeShield: 0, antiballisticMissile: 3, interplanetaryMissile: 1000};
     let moon = /*{active: false, size: 0};*/uni.createNewMoon(8888);
     let debris = {active: true, metal:1000, crystal: 2000};
-    console.log("holaaaaaaa");
     mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
       {planets :{$elemMatch: {coordinates: coor}}},
       {$set: {'planets.$.resources': resources,'planets.$.buildings': building, 'planets.$.fleet': fleet, 'planets.$.defense': defenses,'planets.$.moon': moon, 'planets.$.debris': debris}});

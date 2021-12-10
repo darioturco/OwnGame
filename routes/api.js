@@ -64,7 +64,6 @@ router.get('/highscore', function(req, res, next) {
   uni.base.highscoreData(res);
 });
 
-/* Esta ruta deberia estar en /set y tendra que pasarse unas cordenadas, no 3 numeros sueltos*/
 router.get('/usePhalanx', function(req, res, next) {
   uni.base.usePhalanx(
     {gal: parseInt(req.query.gal), sys: parseInt(req.query.sys), pos: parseInt(req.query.pos)},
@@ -105,6 +104,10 @@ router.get('/set/setOptions', function(req, res, next) {
   uni.base.setOptions(uni.player.name, res, parseInt(req.query.esp), parseInt(req.query.sml), parseInt(req.query.lar));
 });
 
+router.get('/set/clearHazards', function(req, res, next) {
+  uni.base.clearHazards(uni.player, res);
+});
+
 router.get('/set/sendBuildRequest', function(req, res, next) {
   if(uni.moon){
     uni.proccesMoonRequest(uni.player, uni.planeta, req.query.obj, res);
@@ -142,7 +145,6 @@ router.get('/set/returnFleet', function(req, res, next) {
 });
 
 router.get('/set/marketMoon', function(req, res, next) {
-  console.log(req.query);
   uni.marketResources(uni.player, uni.planeta, req.query, res);
 });
 
@@ -159,7 +161,6 @@ router.get('/set/abandonPlanet', function(req, res, next) {
 });
 
 router.post('/set/addFleetMovement', function(req, res, next) {
-  console.log(req.body);
   uni.addFleetMovement(uni.player, uni.planeta, uni.moon, req.body, res);
 });
 

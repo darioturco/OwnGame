@@ -31,10 +31,11 @@ var exp  = {
   //  -player = Objeto player a actualizar
   //  -f = Funcion que se ejecuta despues de ejecutar esta funcion
   updatePlayer: function(player, f){
+    /* Separarlas en funciones mas chiquitas */
     let horaActual = fun.horaActual();
     let objSet = {};
     let objInc = {};
-    let objPull = {movement: {llegada: {$lt: horaActual}}}; // Va a eliminar todos los movement que su llegada es menor que la hora actual
+    let objPull = {movement: {llegada: {$lt: horaActual}}, hazards: {time: {$lt: horaActual}}}; // Va a eliminar todos los movement que su llegada es menor que la hora actual y lo mismo para los hazzards
     let listShip = [];
     let timeLastUpdate = horaActual - player.lastVisit;
     let updateResourcesAddOfAllPlanets = false;
@@ -181,9 +182,9 @@ var exp  = {
             if(fun.estaColonizado(this.allCord, player.movement[i].coorHasta)){
               base.addPlanetData(player.movement[i].coorHasta, player.movement[i].resources, {}, player.movement[i].destination === 2);
             }
-            newTime = (player.movement[i].llegada - player.movement[i].time)/1000;  // Calculo el tiempo que va a tardar el viaje en completarse
-            newTime -= (horaActual - player.movement[i].llegada)/1000;                   // Le resto el tiempo que ya paso
-            if(newTime < 0) newTime = 0;  // Si el tiempo dio negativo, la flota ya tendria que haber vuelto
+            newTime = (player.movement[i].llegada - player.movement[i].time)/1000; // Calculo el tiempo que va a tardar el viaje en completarse
+            newTime -= (horaActual - player.movement[i].llegada)/1000;             // Le resto el tiempo que ya paso
+            if(newTime < 0) newTime = 0;                                           // Si el tiempo dio negativo, la flota ya tendria que haber vuelto
             base.returnFleetInDataBase(player, i, undefined, newTime, fun.zeroResources(), undefined);
             break;
 
@@ -212,7 +213,6 @@ var exp  = {
                 base.saveDebris(player.movement[i].coorHasta, newDebris, true);
 
                 // Aviso a los jugadores lo que paso
-                /* Completar los mesajes de espionage */
                 let nameEspiado = fun.playerName(this.allCord, player.movement[i].coorHasta);
                 if(nameEspia !== nameEspiado){
                   let infoMesEspiado = {type: 4, title: "Spy captured", text: player.movement[i].ships.espionageProbe + " Espionages probes has been destroyed in ", data: {}};
@@ -228,9 +228,9 @@ var exp  = {
                 } // Las sondas no vuelven pero el resto de la flota si
               }
             }
-            newTime = (player.movement[i].llegada - player.movement[i].time)/1000;  // Calculo el tiempo que va a tardar el viaje en completarse
-            newTime -= (horaActual - player.movement[i].llegada)/1000;                   // Le resto el tiempo que ya paso
-            if(newTime < 0) newTime = 0;                                                      // Si el tiempo dio negativo, la flota ya tendria que haber vuelto
+            newTime = (player.movement[i].llegada - player.movement[i].time)/1000; // Calculo el tiempo que va a tardar el viaje en completarse
+            newTime -= (horaActual - player.movement[i].llegada)/1000;             // Le resto el tiempo que ya paso
+            if(newTime < 0) newTime = 0;                                           // Si el tiempo dio negativo, la flota ya tendria que haber vuelto
             base.returnFleetInDataBase(player, i, undefined, newTime, undefined, player.movement[i].ships);
             break;
 
@@ -249,15 +249,14 @@ var exp  = {
                 if(objMisAttack.attackedDef){
                   let aux = objMisAttack.survivorDefenses.interplanetaryMissile;
                   objMisAttack.survivorDefenses.interplanetaryMissile = 0;
-                  /* Completar bien los mensajes sobre los misiles, indicar que planeta atacaron */
                   if(fun.isZeroObj(objMisAttack.survivorDefenses)){
-                    infoMesDestruido.text = "The player fulanito had attacked you with missils, every defense is destroyed.";
+                    infoMesDestruido.text = "The player " + player.name + "(" + fun.coorToCorch(player.movement[i].coorDesde) + ") had attacked you with missils, every defense is destroyed.";
                   }else{
-                    infoMesDestruido.text = "The player fulanito had attacked you with missils, los danos fueron: ";
+                    infoMesDestruido.text = "The player " + player.name + "(" + fun.coorToCorch(player.movement[i].coorDesde) + ") had attacked you with missils, some defenses survived.";
                     objMisAttack.survivorDefenses.interplanetaryMissile = aux;
                   }
                 }else{
-                  infoMesDestruido.text = "The player fulanito had attacked you with missils, but the Anti-Balistic missils worked fine.";
+                  infoMesDestruido.text = "The player " + player.name + "(" + fun.coorToCorch(player.movement[i].coorDesde) + ") had attacked you with missils, but the Anti-Balistic missils worked fine.";
                 }
                 base.sendMessage(res.name, infoMesDestruido);
               });
@@ -266,17 +265,13 @@ var exp  = {
 
           case 7: // Ataque
           case 8: // Moon Destruction
-            /* Si estoy atacando la luna se tiene que fijar que halla luna */
             if(fun.estaColonizado(this.allCord, player.movement[i].coorHasta)){
               base.findAndExecute(player.movement[i].coorHasta, (res) => {
                 let indexPlanet = fun.getIndexOfPlanet(res.planets, player.movement[i].coorHasta);
                 if(player.movement[i].destination === 2 && !res.planets[indexPlanet].moon.active){
                   // Si se ataca una luna que ya no existe (por un error o porque fue destruida), la flota vuelve
-                  newTime = (player.movement[i].llegada - player.movement[i].time)/1000;  // Calculo el tiempo que va a tardar el viaje en completarse
-                  newTime -= (horaActual - player.movement[i].llegada)/1000;                   // Le resto el tiempo que ya paso
-                  if(newTime < 0) newTime = 0;                                                      // Si el tiempo dio negativo, la flota ya tendria que haber vuelto
-                  base.returnFleetInDataBase(player, i, undefined, newTime, undefined, player.movement[i].ships);
-                  /* Aviso que la luna que se intento atacar ya no esta mas */
+                  base.returnFleet(player.movement[i]);
+                  base.sendMessage(player.name, {type: 4, title: 'There Is No Moon', text: 'There is no moon on ' + fun.coorToCorch(player.movement[i].coorHasta) + ' , the fleet has returned.', data: {}});
                   return null;
                 }
                 let defenses = {};
@@ -295,8 +290,9 @@ var exp  = {
 
                 let newDebris = fun.calcularEscombros(objAttack, {atkShips: player.movement[i].ships, defShips: defenderFleet, defDefenses: defenses}, this.universo.fleetDebris, this.universo.defenceDebris);
                 let newMoonObj = undefined;
+                let lunaChance = 0;
                 if(!res.planets[indexPlanet].moon.active){ // Si no tiene luna, me fijo si se genera una luna en ese planeta
-                  let lunaChance = fun.lunaChance(newDebris, this.universo.maxMoon);
+                  lunaChance = fun.lunaChance(newDebris, this.universo.maxMoon);
                   if(lunaChance > Math.floor(Math.random() * 100)){
                     let moonSize = (this.universo.maxMoon === lunaChance) ? 9999 : Math.floor(fun.normalRandom(6999, 9999, 6999, 9999));
                     newMoonObj = this.createNewMoon(moonSize);
@@ -305,13 +301,18 @@ var exp  = {
                   }
                 }
 
-                /* Intento usar el space dock */
+                // Calculo las flotas reparadas por el space dock
+                if(res.planets[indexPlanet].moon.active){
+                  let restoredPorcentage = Math.min(35, Math.log(res.planets[indexPlanet].moon.buildings.spaceDock * 0.4 + 1) * 10) / 100;
+                  for(ship in objAttack.defShips){
+                    objAttack.defShips[ship] += Math.floor(restoredPorcentage * (defenderFleet[ship] - objAttack.defShips[ship]));
+                  }
+                }
 
                 let stolenResources = fun.zeroResources();
                 let recursosCargados;
-                switch (objAttack.result) {
-                  case 1: // Gano el atante
-                    console.log("Gano el atacante");
+                switch (objAttack.winner) {
+                  case 'Attacker': // Gano el atante
                     let recursos;
                     if(player.movement[i].destination === 2){
                       // Intento destruir la luna del atacado
@@ -324,9 +325,11 @@ var exp  = {
                         if(objAttack.atkShips.deathstar < 0) objAttack.atkShips.deathstar = 0;
                         if(destroyPercentage > Math.random()*100){ // Se destruye la luna
                           destroyedMoon = true;
-                          /* Aviso que le destruyeron la luna */
+                          base.sendMessage(player.name, {type: 4, title: 'Moon Destruction', text: 'The moon on ' + fun.coorToCorch(player.movement[i].coorHasta) + ' was destroyed.', data: {}});
+                          base.sendMessage(res.name, {type: 4, title: 'Moon Destruction', text: 'Your moon on ' + fun.coorToCorch(player.movement[i].coorHasta) + ' was destroyed.', data: {}});
                         }else{
-                          /* Aviso que la destruccion de luna fallo*/
+                          base.sendMessage(player.name, {type: 4, title: 'Moon Destruction Fails', text: 'The moon on ' + fun.coorToCorch(player.movement[i].coorHasta) + ' was datempted to be destroyed, was it fails.', data: {}});
+                          base.sendMessage(res.name, {type: 4, title: 'Moon Destruction Fails', text: 'Your moon on ' + fun.coorToCorch(player.movement[i].coorHasta) + ' was datempted to be destroyed, was it fails', data: {}});
                         }
                       }
                     }else{
@@ -339,21 +342,39 @@ var exp  = {
                       // Regresan el resto de las naves
                       base.returnFleet(player.movement[i], recursosCargados.newCarga, objAttack.atkShips);
                     }
-                    /* Informo con mensajes de lo ocurrido */
                     break;
-                  case 2: // Gano el defensor
-                    console.log("Gano el defensor");
-                    /* Informo con mensajes de lo ocurrido */
+
+                  case 'Defenser': // Gano el defensor
                     break;
+
                   default: // Empate
-                    console.log("Empate");
                     // Como podrian morir algunas naves la capacidad de carga es menor, me fijo si se perdieron algunos recursos que se llevaban
                     let movementAux = {ships: objAttack.atkShips, resources: fun.zeroResources()};
                     recursosCargados = fun.loadResources(movementAux, player.movement[i].resources);
                     // Regresan las naves que sobrevivieron
                     base.returnFleet(player.movement[i], recursosCargados, objAttack.atkShips);
-                    /* Informo con mensajes de lo ocurrido */
                 } // Actualizo el planeta del defensor
+
+                // Informo con mensajes de lo ocurrido
+                battleData = {playerName: res.name,
+                              planetName: res.planets[indexPlanet].name,
+                              coorAttacker: player.movement[i].coorDesde,
+                              coorDefender: player.movement[i].coorHasta,
+                              fleetAttackBefore: player.movement[i].ships,
+                              fleetAttackAfter: objAttack.atkShips,
+                              fleetDefenseBefore: defenderFleet,
+                              fleetDefenseAfter: objAttack.defShips,
+                              defensesBefore: defenses,
+                              defensesAfter: objAttack.defDefenses,
+                              stolenResources: stolenResources,
+                              newDebris: newDebris,
+                              lunaChance: lunaChance,
+                              winner: objAttack.winner,
+                              rapidFire: this.universo.rapidFire,
+                              rounds: objAttack.rondas};
+                base.sendMessage(player.name, {type: 1, title: 'Battle in space', text: '', data: battleData});
+                base.sendMessage(res.name, {type: 1, title: 'Battle in space', text: '', data: battleData});
+
                 for(let item in stolenResources){
                   if(player.movement[i].destination === 2){
                     res.planets[indexPlanet].moon.resources[item] -= stolenResources[item];
@@ -374,11 +395,8 @@ var exp  = {
                 base.saveDebris(res.planets[indexPlanet].coordinates, newDebris, true);
               });
             }else{ // Se intento atacar un planeta no colonizado y la flota vuelve sin nada
-              newTime = (player.movement[i].llegada - player.movement[i].time)/1000;  // Calculo el tiempo que va a tardar el viaje en completarse
-              newTime -= (horaActual - player.movement[i].llegada)/1000;                   // Le resto el tiempo que ya paso
-              if(newTime < 0) newTime = 0;                                                      // Si el tiempo dio negativo, la flota ya tendria que haber vuelto
-              base.returnFleetInDataBase(player, i, undefined, newTime, undefined, player.movement[i].ships);
-              /* Aviso que se intento atacar un planeta no colonizado */
+              base.returnFleet(player.movement[i]);
+              base.sendMessage(player.name, {type: 4, title: 'There Is No Planet', text: 'There is no planet on ' + fun.coorToCorch(player.movement[i].coorHasta) + ' , the fleet has returned.', data: {}});
             }
             break;
 
@@ -549,7 +567,7 @@ var exp  = {
       speedFleet: this.universo.speedFleet,
       donutGalaxy: this.universo.donutGalaxy.toString(),
       donutSystem: this.universo.donutSystem.toString(),
-      siendoAtacado: false, /* Cambiar */
+      /*siendoAtacado: false,  Cambiar */
       playerName: this.player.name,
       highscore: this.player.highscore,
       resources: resourcesObj,
@@ -572,7 +590,8 @@ var exp  = {
       missionNumToString: fun.missionNumToString,
       cantMovments: this.player.movement.length,
       nextFleetTime: firstMovement.time,
-      nextFleetMission: firstMovement.mission
+      nextFleetMission: firstMovement.mission,
+      hazards: this.player.hazards
     };
   },
 
@@ -704,7 +723,7 @@ var exp  = {
             researchLab: {metal: 200*Math.pow(2, build.researchLab), crystal: 400*Math.pow(2, build.researchLab), deuterium: 200*Math.pow(2, build.researchLab), energy: 0, tech: true, level: build.researchLab, name: "Research Lab", description: "A research lab is required in order to conduct research into new technologies."},
             alliance: {metal: 20000*Math.pow(2, build.alliance), crystal: 40000*Math.pow(2, build.alliance), deuterium: 0, energy: 0, tech: true, level: build.alliance, name: "Alliance Depot", description: "The alliance depot is essential to trade resourses on a moon."},
             silo: {metal: 20000*Math.pow(2, build.silo), crystal: 20000*Math.pow(2, build.silo), deuterium: 1000*Math.pow(2, build.silo), energy: 0, tech: build.shipyard >= 1, level: build.silo, name: "Silo", description: "Missile silos are used to store missiles."},
-            naniteFactory: {metal: 1000000*Math.pow(2, build.naniteFactory), crystal: 500000*Math.pow(2, build.naniteFactory), deuterium: 100000*Math.pow(2, build.naniteFactory), energy: 0, tech: build.robotFactory >= 10 && player.research.computer >= 10, level: build.naniteFactory, name: "Nanite Factory", description: "This is the ultimate in robotics technology. Each level cuts the construction time for buildings, ships, and defences."},
+            naniteFactory: {metal: 1000000*Math.pow(2, build.naniteFactory), crystal: 500000*Math.pow(2, build.naniteFactory), deuterium: 100000*Math.pow(2, build.naniteFactory), energy: 0, tech: build.robotFactory >= 10 && player.research.computer >= 10, level: build.naniteFactory, name: "Nanite Factory", description: "This is the ultimate in robotics technology. Each level cuts the construction time for buildings, ships, and defenses."},
             terraformer: {metal: 0, crystal: 50000*Math.pow(2, build.terraformer), deuterium: 100000*Math.pow(2, build.terraformer), energy: 1000*Math.pow(2, build.terraformer), tech: build.naniteFactory >= 1 && player.research.energy >= 12, level: build.terraformer, name: "Terraformer", description: "The terraformer increases the usable surface of planets."},
             solarSatellite: {metal: 0, crystal: 2000, deuterium: 500, energy: 0, tech: build.shipyard >= 1, level: player.planets[planet].fleet.solarSatellite, name: "Solar Satellite", description: "Solar satellites are simple platforms of solar cells, located in a high, stationary orbit. A solar satellite produces " + Math.floor(((player.planets[planet].temperature.max + player.planets[planet].temperature.min)/2+160)/6) + " energy on this planet."},
             listInfo: ["metalMine", "crystalMine", "deuteriumMine", "solarPlant", "fusionReactor", "solarSatellite", "metalStorage", "crystalStorage", "deuteriumStorage", "robotFactory", "shipyard", "researchLab", "alliance", "silo", "naniteFactory", "terraformer"],
@@ -768,12 +787,12 @@ var exp  = {
     let fleet = (moon) ? player.planets[planet].moon.fleet : player.planets[planet].fleet;
     let research = player.research;
     let yard = player.planets[planet].buildings.shipyard;
-    return {lightFighter: {metal: 3000, crystal: 1000, deuterium: 0, energy: 0, tech: yard >= 1 && research.combustion >= 1, level: fleet.lightFighter, name: "Light Fighter", description: "This is the first fighting ship all emperors will build. The light fighter is an agile ship, but vulnerable on its own. In mass numbers, they can become a great threat to any empire. They are the first to accompany small and large cargoes to hostile planets with minor defences."},
+    return {lightFighter: {metal: 3000, crystal: 1000, deuterium: 0, energy: 0, tech: yard >= 1 && research.combustion >= 1, level: fleet.lightFighter, name: "Light Fighter", description: "This is the first fighting ship all emperors will build. The light fighter is an agile ship, but vulnerable on its own. In mass numbers, they can become a great threat to any empire. They are the first to accompany small and large cargoes to hostile planets with minor defenses."},
             heavyFighter: {metal: 6000, crystal: 4000, deuterium: 0, energy: 0, tech: yard >= 3 && research.impulse >= 2 && research.armour >= 2, level: fleet.heavyFighter, name: "Heavy Fighter", description: "This fighter is better armoured and has a higher attack strength than the light fighter."},
             cruiser: {metal: 2000, crystal: 7000, deuterium: 2000, energy: 0, tech: yard >= 5 && research.impulse >= 4 && research.ion >= 2, level: fleet.cruiser, name: "Cruiser", description: "Cruisers are armoured almost three times as heavily as heavy fighters and have more than twice the firepower. In addition, they are very fast."},
             battleship: {metal: 45000, crystal: 15000, deuterium: 0, energy: 0, tech: yard >= 7 && research.hyperspace_drive >= 4, level: fleet.battleship, name: "Battleship", description: "Battleships form the backbone of a fleet. Their heavy cannons, high speed, and large cargo holds make them opponents to be taken seriously."},
             battlecruiser: {metal: 30000, crystal: 40000, deuterium: 15000, energy: 0, tech: yard >= 8 && research.hyperspace_drive >= 5 && research.laser >= 12 && research.hyperspace >= 5, level: fleet.battlecruiser, name: "Battlecruiser", description: "The Battlecruiser is highly specialized in the interception of hostile fleets."},
-            bomber: {metal: 50000, crystal: 25000, deuterium: 15000, energy: 0, tech: yard >= 8 && research.impulse >= 6 && research.plasma >= 5, level: fleet.bomber, name: "Bomber", description: "The bomber was developed especially to destroy the planetary defences of a world."},
+            bomber: {metal: 50000, crystal: 25000, deuterium: 15000, energy: 0, tech: yard >= 8 && research.impulse >= 6 && research.plasma >= 5, level: fleet.bomber, name: "Bomber", description: "The bomber was developed especially to destroy the planetary defenses of a world."},
             destroyer: {metal: 60000, crystal: 50000, deuterium: 15000, energy: 0, tech: yard >= 9 && research.hyperspace_drive >= 6 && research.hyperspace >= 5, level: fleet.destroyer, name: "Destroyer", description: "The destroyer is the king of the warships."},
             deathstar: {metal: 5000000, crystal: 4000000, deuterium: 1000000, energy: 0, tech: yard >= 12 && research.hyperspace_drive >= 7 && research.graviton >= 1 && research.hyperspace >= 6, level: fleet.deathstar, name: "Deathstar", description: "The destructive power of the deathstar is unsurpassed."},
             smallCargo: {metal: 2000, crystal: 2000, deuterium: 0, energy: 0, tech: yard >= 2 && research.combustion >= 2, level: fleet.smallCargo, name: "Small Cargo", description: "The small cargo is an agile ship which can quickly transport resources to other planets."},
@@ -1012,6 +1031,12 @@ var exp  = {
         // Si voy a construir misiles en el silo, me fijo que haya capacidad para los misiles
         if((shipyardName === "antiballisticMissile" || shipyardName === "interplanetaryMissile") && (shipyardCant + fun.cantidadMisiles(planeta) < fun.capacidadSilo(planeta))){
           return res.send({ok: false, mes: "No hay mas espacio en el silo."});
+        }
+        if(shipyardName === "smallShield" && (player.planets[planet].defense.smallShield >= 1 || shipyardCant >= 2 || fun.isBuildingSmallShield(player.planets[planet].shipConstrucction))){
+          return res.send({ok: false, mes: "No se puede tener dos cupulas de proteccion chicas."});
+        }
+        if(shipyardName === "largeShield" && (player.planets[planet].defense.largeShield >= 1 || shipyardCant >= 2 || fun.isBuildingLargeShield(player.planets[planet].shipConstrucction))){
+          return res.send({ok: false, mes: "No se puede tener dos cupulas de proteccion grandes."});
         }
         let shipyardConstrucctionAux = {};
         let shipyardConstrucction    = {};
@@ -1361,7 +1386,7 @@ var exp  = {
           pushObjAux['desdeName']   = player.planets[planet].name;  // Nombre del planeta de salida
           pushObjAux['desdeType']   = player.planets[planet].type;  // Tipo del planeta de salida
           pushObjAux['desdeColor']  = player.planets[planet].color; // Color del planeta de salida
-          pushObjAux['hastaType']   = fun.getTypePlanet(obj.coorHasta.pos, obj.coorHasta.pos % 2); // Tipo del planeta de llegada
+          pushObjAux['hastaType']   = this.allCord[obj.coorHasta.gal+'_'+obj.coorHasta.sys+'_'+obj.coorHasta.pos].type; // Tipo del planeta de llegada
           if(fun.estaColonizado(this.allCord, obj.coorHasta)){
             pushObjAux['hastaColor'] = this.allCord[obj.coorHasta.gal+'_'+obj.coorHasta.sys+'_'+obj.coorHasta.pos].color;   // Color del planeta de llegada
           }else{
@@ -1399,7 +1424,20 @@ var exp  = {
             if(destinoNamePlayer !== player.name){
               events.addElement({time: (pushObjAux['llegada'] - 1000), player: destinoNamePlayer});
             }
+            let warnObjAux = {name: player.name,
+                      planetName: player.planets[planet].name,
+                      moon: (obj.destination === 2),
+                      coorDesde: obj.coorDesde,
+                      coorHasta: obj.coorHasta,
+                      time: pushObjAux['llegada'],
+                      desdeType: pushObjAux['desdeType'],
+                      desdeColor: pushObjAux['desdeColor'],
+                      hastaType: pushObjAux['hastaType'],
+                      hastaColor: pushObjAux['hastaColor']};
+            let warnObj = {hazards: warnObjAux}
+            base.warnFromAttack(obj.coorHasta, warnObj);
           }
+
           base.pushMovementToDataBase(player.planets[planet].coordinates, objInc, pushObj);
           res.send({ok: true}); // Usa json y no send por ser pedido via POST
         }else{
@@ -1849,15 +1887,10 @@ module.exports = exp;
 
 // Lista de cosas por hacer:
 
-/* Mostrar bien los reportes de batallas
-/* Fijarse que solo se pueda tener una sola cupula de proteccion pequenia y una grande
-/* Hacer que el space dock funcione
-/* Avisar al atacado que lo estan atacando (API de bots)(Terminar la linea 211 de layout.pug)
-/* Crear la API con la que interactuan los bots (Los bots no los va a controlar el servidor)
 /* Pensar como manejar multiples idiomas
-/* Mejorar el codigo del cliente
 /* Si un jugador regala una flota a otro jugador tiene que cambiar los puntos
 /* Revisar la segurad de los parametros strings de la api de los bots
-/* Revisar el consumo de energia mostrado en resources setings
 /* Terminar la documentacion
+/* Tener un bot que testee las funcionalidades
+/* Refactorizar todo el codigo
 */

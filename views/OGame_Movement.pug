@@ -19,6 +19,8 @@ block content
           span.current #{info.expeditions}
           | /
           span.all #{info.maxExpeditions}
+        span.expSlots Hazards:&nbsp
+            span.current #{basic.hazards.length}
       each val, index in info.movement
         .fleetDetails.detailsOpened
           span.timer.tooltip(id="timer"+index data-ida=(val.ida ? "True" : "False") data-time=val.llegada data-total=(Math.abs(val.time-val.llegada))) -
@@ -99,3 +101,51 @@ block content
           span.nextTimer #{basic.segundosATiempo(Math.ceil(val.duracion))}
           span.nextabsTime #{new Date((val.ida ? val.llegada : val.time) - 10800000).toGMTString().slice(17, 25)} Clock
           span.nextMission.friendly.textBeefy #{val.ida ? "Going" : "Returning"}
+
+      each val, index in basic.hazards
+        .fleetDetails.detailsOpened
+          span.timer.tooltip(id="timerAttack"+index data-time=val.time) -
+          span.playerName.overmark #{val.name}
+          span.planetName.overmark #{val.planetName}
+
+          span.mission.neutral.textBeefy #{basic.missionNumToString(val.mission)}
+          span.allianceName
+          span.originData
+            -
+              let coorDesde = "[" + val.coorDesde.gal + ":" + val.coorDesde.sys + ":" + val.coorDesde.pos + "]";
+              let coorHasta = "[" + val.coorHasta.gal + ":" + val.coorHasta.sys + ":" + val.coorHasta.pos + "]";
+              let coorDesdeLink = './Ogame_Galaxy.html?gal=' + val.coorDesde.gal + '&sys=' + val.coorDesde.sys;
+              let coorHastaLink = './Ogame_Galaxy.html?gal=' + val.coorHasta.gal + '&sys=' + val.coorHasta.sys;
+              let destino = "Planet";
+              let imgDesde = "../Imagenes/Planets/Miniatures/Planet_" + val.desdeType + "_" + val.desdeColor + "_Mini.gif";
+              let imgHasta = "../Imagenes/Planets/Miniatures/Planet_" + val.hastaType + "_" + val.hastaColor + "_Mini.gif";
+
+            span.originCoords.tooltip
+              a(href=coorDesdeLink) #{coorDesde}
+            span.originPlanet
+              figure.planetIcon.planet
+              | #{val.desdeName}
+          span.marker01
+          span.marker02
+          span.fleetDetailButton
+            a.tooltipRel.tooltipClose.fleet_icon_forward
+          span.reversal.reversal_time
+            a(style='display: ' + (!val.ida || val.mission == 0 || val.mission == 6 ? 'none' : 'inline') href='javascript:void(0);' onclick='returnFleet(' + index + ');')
+              img(src='../Imagenes/movementBack.gif' width='16' height='16')
+          span.starStreak
+            div(style='position: relative;')
+              .origin.fixed
+                 img(src=imgDesde alt='' width='30' height='30')
+              .route.fixed
+                div(id="nave"+index class="fleet_icon_forward" style='margin-left: 0px;' onclick='showFleet(' + index + ');')
+              .destination.fixed
+                img(src=imgHasta alt='' width='30' height='30')
+          span.destinationData
+            span.destinationPlanet
+              span
+                figure.planetIcon.planet
+                | #{destino}
+            span.destinationCoords.tooltip
+              a(href=coorHastaLink) #{coorHasta}
+          span.nextabsTime #{new Date(val.time - 10800000).toGMTString().slice(17, 25)} Clock
+          span.nextMission.textBeefy.overmark Enemy Attack

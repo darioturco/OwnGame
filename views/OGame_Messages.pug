@@ -337,3 +337,196 @@ block content
                 #spyMoonShieldImg.spyMiniImg
                 p Moon Shield:
                 p#spyMoonShieldContent -
+
+
+        #battleDivReport.closeBackgroud(onClick="closeBattleReport(this)")
+        #battleReport
+          #battleGeneralInfo
+            h2#battleTittle Battle Report
+            a#battleCross.close_details(href='javascript: void(0);' onclick='closeBattleReport(this)')
+            p#battleDateComplete 30.11.2019 12:46:08
+            p#battlePlanetInfo Planeta
+            p#battleResult Winner
+            p#battleRounds Rounds
+            p#battleDebris Debris
+            p#battleMoonChances Moon Chances
+
+          #battleResources
+            h2 Resources
+            #divBattleResoucesGrid
+              #battleMetal
+                #battleMetalImg.battleMiniImg
+                p Metal:
+                p#battleMetalContent -
+              #battleCrystal
+                #battleCrystalImg.battleMiniImg
+                p Crystal:
+                p#battleCrystalContent -
+              #battleDeuterium
+                #battleDeuteriumImg.battleMiniImg
+                p Deuterium:
+                p#battleDeuteriumContent -
+
+          #battleAttackerFleet
+            h2 Attacker Fleet
+            #divBattleFleetGridAtk
+              #battleLightAtk
+                #battleLightImgAtk.battleMiniImg
+                p Light Fighter:
+                p#battleLightContentAtk -
+              #battleHeavyAtk
+                #battleHeavyImgAtk.battleMiniImg
+                p Heavy Fighter:
+                p#battleHeavyContentAtk -
+              #battleCruiserAtk
+                #battleCruiserImgAtk.battleMiniImg
+                p Cruiser:
+                p#battleCruiserContentAtk -
+              #battleBattleshipAtk
+                #battleBattleshipImgAtk.battleMiniImg
+                p Battleship:
+                p#battleBattleshipContentAtk -
+              #battleBattlecruiserAtk
+                #battleBattlecruiserImgAtk.battleMiniImg
+                p Battlecruiser:
+                p#battleBattlecruiserContentAtk -
+              #battleBomberAtk
+                #battleBomberImgAtk.battleMiniImg
+                p Bomber:
+                p#battleBomberContentAtk -
+              #battleDestroyerAtk
+                #battleDestroyerImgAtk.battleMiniImg
+                p Destroyer:
+                p#battleDestroyerContentAtk -
+              #battleDeathstarAtk
+                #battleDeathstarImgAtk.battleMiniImg
+                p Deathstar:
+                p#battleDeathstarContentAtk -
+              #battleSmallAtk
+                #battleSmallImgAtk.battleMiniImg
+                p Small Cargo:
+                p#battleSmallContentAtk -
+              #battleLargeAtk
+                #battleLargeImgAtk.battleMiniImg
+                p Large Cargo:
+                p#battleLargeContentAtk -
+              #battleColonyAtk
+                #battleColonyImgAtk.battleMiniImg
+                p Colony Ship:
+                p#battleColonyContentAtk -
+              #battleRecyclerAtk
+                #battleRecyclerImgAtk.battleMiniImg
+                p Recycler:
+                p#battleRecyclerContentAtk -
+              #battleEspionageAtk
+                #battleEspionageImgAtk.battleMiniImg
+                p Espionage Probe:
+                p#battleEspionageContentAtk -
+              #battleMisilAtk
+                #battleMisilImgAtk.battleMiniImg
+                p interplanetary Missile:
+                p#battleMisilContentAtk -
+
+          #battleDefenserFleet
+            h2 Defenser Fleet
+            #divBattleFleetGridDef
+              #battleLightDef
+                #battleLightImgDef.battleMiniImg
+                p Light Fighter:
+                p#battleLightContentDef -
+              #battleHeavyDef
+                #battleHeavyImgDef.battleMiniImg
+                p Heavy Fighter:
+                p#battleHeavyContentDef -
+              #battleCruiserDef
+                #battleCruiserImgDef.battleMiniImg
+                p Cruiser:
+                p#battleCruiserContentDef -
+              #battleBattleshipDef
+                #battleBattleshipImgDef.battleMiniImg
+                p Battleship:
+                p#battleBattleshipContentDef -
+              #battleBattlecruiserDef
+                #battleBattlecruiserImgDef.battleMiniImg
+                p Battlecruiser:
+                p#battleBattlecruiserContentDef -
+              #battleBomberDef
+                #battleBomberImgDef.battleMiniImg
+                p Bomber:
+                p#battleBomberContentDef -
+              #battleDestroyerDef
+                #battleDestroyerImgDef.battleMiniImg
+                p Destroyer:
+                p#battleDestroyerContentDef -
+              #battleDeathstarDef
+                #battleDeathstarImgDef.battleMiniImg
+                p Deathstar:
+                p#battleDeathstarContentDef -
+              #battleSmallDef
+                #battleSmallImgDef.battleMiniImg
+                p Small Cargo:
+                p#battleSmallContentDef -
+              #battleLargeDef
+                #battleLargeImgDef.battleMiniImg
+                p Large Cargo:
+                p#battleLargeContentDef -
+              #battleColonyDef
+                #battleColonyImgDef.battleMiniImg
+                p Colony Ship:
+                p#battleColonyContentDef -
+              #battleRecyclerDef
+                #battleRecyclerImgDef.battleMiniImg
+                p Recycler:
+                p#battleRecyclerContentDef -
+              #battleEspionageDef
+                #battleEspionageImgDef.battleMiniImg
+                p Espionage Probe:
+                p#battleEspionageContentDef -
+              #battleSolarDef
+                #battleSolarImgDef.battleMiniImg
+                p Solar Satellite:
+                p#battleSolarContentDef -
+
+          #battleDefence
+            h2 Defense
+            #divBattleDefenceGrid
+              #battleRocketLauncher
+                #battleRocketLauncherImg.battleMiniImg
+                p Rocket Launcher:
+                p#battleRocketLauncherContent -
+              #battleLightLaser
+                #battleLightLaserImg.battleMiniImg
+                p Light Laser:
+                p#battleLightLaserContent -
+              #battleHeavyLaser
+                #battleHeavyLaserImg.battleMiniImg
+                p Heavy Laser:
+                p#battleHeavyLaserContent -
+              #battleGauss
+                #battleGaussImg.battleMiniImg
+                p Gauss Cannon:
+                p#battleGaussContent -
+              #battleIon
+                #battleIonImg.battleMiniImg
+                p Ion Cannon:
+                p#battleIonContent -
+              #battlePlasma
+                #battlePlasmaImg.battleMiniImg
+                p Plasma Turret:
+                p#battlePlasmaContent -
+              #battleSmallShield
+                #battleSmallShieldImg.battleMiniImg
+                p Small Shield Dome:
+                p#battleSmallShieldContent -
+              #battleLargeShield
+                #battleLargeShieldImg.battleMiniImg
+                p Large Shield Dome:
+                p#battleLargeShieldContent -
+              #battleAntiMissiles
+                #battleAntiMissilesImg.battleMiniImg
+                p Anti-Ballistic Missiles:
+                p#battleAntiMissilesContent -
+              #battleMissiles
+                #battleMissilesImg.battleMiniImg
+                p Interplanetary Missiles:
+                p#battleMissilesContent -
