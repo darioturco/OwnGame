@@ -4655,18 +4655,34 @@ left:386px}
   top:17px;
 }
 .detailsClosed .absTime{visibility:hidden}
-.detailsOpened .mission{left:7px;
-overflow:hidden;
-top:36px}.detailsOpened .allianceName{color:#f74a4a;
-left:7px;
-top:45px}.detailsOpened .originData{left:122px;
-width:165px}.detailsOpened .quantity{color:#9c0;
-left:290px;
-text-align:center;
-top:0;
-width:30px}.detailsOpened .reversal{left:322px}.detailsClosed .fleetDetailButton{left:395px;
-line-height:normal;
-top:4px}.detailsOpened .originPlanet{width:100px;
+.detailsOpened .mission{
+  left:7px;
+  overflow:hidden;
+  top:36px;
+}
+.detailsOpened .allianceName{
+  color:#f74a4a;
+  left:7px;
+  top:45px;
+}
+.detailsOpened .originData{
+  left:122px;
+  width:165px;
+}
+.detailsOpened .quantity{
+  color:#9c0;
+  left:290px;
+  text-align:center;
+  top:0;
+  width:30px;
+}
+.detailsOpened .reversal{left:322px}
+.detailsClosed .fleetDetailButton{
+  left:395px;
+  line-height:normal;
+  top:4px;
+}
+.detailsOpened .originPlanet{width:100px;
 top:0;
 left:65px;
 white-space:nowrap;

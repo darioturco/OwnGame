@@ -1,343 +1,396 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[legalpaper, margin=0.8in]{geometry}
+\usepackage{enumitem}
 \newcommand\tab[1][1cm]{\hspace*{#1}}
 \newcommand\negtab[1][-1cm]{\hspace*{#1}}
+\setlength{\parskip}{1.3em}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={OwnGame Resumen},
+    pdfpagemode=FullScreen,
+}
+\AtBeginDocument{\renewcommand\contentsname{Tabla de contenidos}}
 
 \title{OwnGame}
 \author{Dario Turco}
 \date{18 March 2020}
 
 \begin{document}
-\section{Proyecto}
-    \subsection{Infonmacion}
-        \subsubsection{Objetivo}
-        El objetivo del projecto es crear una copia local del ogame, en la que se uno pueda crear su propio universo configurable, y progrmar los bots que pueblen en universo. Ademas algunas reglas fueron modificadas con el objetivo de hacer el juego mas dinamico y variado.
-        \subsubsection{Cambios}
-        \begin{itemize}
-            \item El maximo de planetas por jugador es 8.
-            \item El cambio de nombre de los planetas y lunas se hace el la vision general directamente.
-            \item No exiesten las alianzas.
-            \item Se cambiaron misiones del tutorial para que tenga ma sentido y ayuden mas al jugador nuevo.
-            \item Se pueden desplegar naves a planetas de otros jugadores.
-            \item Se pede mantener la poscion en cualquier planeta o luna.
-            \item Se cambio la vista de fleet movment.
-            \item Un jugador upede atacarce a si mismo.
-            \item La luna tiene edificios nuevos, la hacen un objeto mas deseale.
-            \item Existe el edificio lunar, sun shade, el cual puede bajar la temperatura del planeta.
-            \item Existe el edificio lunar, lunar beam, el cual puede subir la temperatura del planeta.
-            \item Existe el edificio lunar, market place, en el cual se puede cambiar recursos y ganar ofertas.
-            \item Existe el edificio lunar, lunar shield, el cual hac mas dificil de destruir una luna.
-            \item El spacial dock ahora es un edicio lunar.
-            \item Se elimino la opcion de ataque ACS attack.
-            \item Se cambio la funcion del deposito de alianza, ahora por cada nivel se puede tener una flota extra defendiendo el planeta.
-        \end{itemize}
-        \subsubsection{Juego original}
-    \subsection{Objetos Importantes}
-        \subsubsection{uni} Objeto con todas las funciones a del juego
-        \subsubsection{player} El objeto que guarda toda la informacion de un jugados, su compocicion es la siguiente: \\
-            \tab id: id en la base de datos del jugador \\
-            \tab name: nombre del jugador \\
-            \tab styleGame: \\
-            \tab planets: lista que guarda los objetos de los planetas del jugador \\
-            \tab maxPlanets: cantidad maxima de planetas que puede tenes el jugador \\
-            \tab highscore: posicion en el ranking del universo\\
-            \tab lastHighscore: \\
-            \tab puntos: puntos del jugador(cada 1000 unidades gastadas de cada recurso se da 1 punto)\\
-            \tab puntosAcum: cantidad de recursos que se gasto pero no alcazo a llegar a 1000 para convertirce en 1 punto\\
-            \tab vacas: lista de jugadores que el jugador puede modificar, son para hacer mas rapidos los ataques\\
-            \tab sendEspionage: cantidad de sondas de espionaje que se envia al apretar espiar en la vista de la galaxia\\
-            \tab sendSmall: cantidad de small cargos que se envia al atcar a una vaca \\
-            \tab sendLarge: cantidad de large cargos que se envia al atcar a una vaca\\
-            \tab dark: cantidad de materia oscura del jugador  \\
-            \tab messagesCant: cantidad de mensajes sin leer del jugador\\
-            \tab messages: lista con todos los mensajes del jugador\\
-            \tab movement: lista con todos los movimientos de flota del jugador\\
-            \tab researchConstrucction: si no se esta investigando nada es un bool que esta en false y si no es un objeto con el siguiente formato:\\
-            \tab\tab metal: metal que requirio la investigacion\\
-            \tab\tab crystal: cristal que requirio la investigacion\\
-            \tab\tab deuterium: deuterio que requirio la investigacion\\
-            \tab\tab item: nombre de la investigacion\\
-            \tab\tab planet: numero de planeta que inicio la investigacion\\
-            \tab\tab init: tiempo en que se incio la investigacion\\
-            \tab\tab time: duracion de la investigacion\\
-            \tab tutorial: lista de booleanos que dicen cual tutorial fue completado y cual no\\
-            \tab research: objeto con los niveles de todas las tecnologias del jugador, su estructura es:\\
-            \tab\tab energy: nivel de la tecnologia de enrgia\\
-            \tab\tab laser: nivel de la tecnologia laser\\
-            \tab\tab ion: nivel de la tecnologia ionica\\
-            \tab\tab hyperspace: nivel de la tecnologia de hyperespacio\\
-            \tab\tab plasma: nivel de la tecnologia de plasma\\
-            \tab\tab espionage: nivel de la tecnologia de espionage\\
-            \tab\tab computer: nivel de la tecnologia de computacion\\
-            \tab\tab astrophysics: nivel de la tecnologia astrifisica\\
-            \tab\tab intergalactic: nivel de la tecnologia intergalactica\\
-            \tab\tab graviton: nivel de la tecnologia de graviton\\
-            \tab\tab combustion: nivel del motor de conbustion\\
-            \tab\tab impulse: nivel del motor de impulso\\
-            \tab\tab hyperspacedrive: nivel del motor de hyper espacio\\
-            \tab\tab weapons: nivel de la tecnologia militar\\
-            \tab\tab shielding: nivel de la tecnologia de defensa\\
-            \tab\tab armour: nivel de la tecnologia de blindaje\\
-            \tab lastVisit: numero que determina en que instante de tiempo se actualizaron los datos de ese jugador por ultima vez\\
-            \tab type: tipo de jugador en la vista de galaxia\\
-        \subsubsection{planeta} El objeto que guarda toda la informacion de un planeta\\
-            \tab idPlanet: id del planeta\\
-            \tab coordinates: objeto con las cordenadas del planeta\\
-            \tab\tab galaxy: numero de galaxia\\
-            \tab\tab system: numero de systema dentro de la galaxia\\
-            \tab\tab pos: numero de posicion dentro del sistema\\
-            \tab coordinatesCod: string con el codigo de las cordenadas galaxy\_system\\
-            \tab player: nombre del jugador al que pertenece el planeta\\
-            \tab playerType: tipo de jugador en la vista de galaxia\\
-            \tab name: nombre del planeta\\
-            \tab type: tipo del planeta\\
-            \tab color: color del planeta\\
-            \tab temperature: objeto que guarda la temperatura maxima y minima del planeta con modificaciones\\
-            \tab\tab max: temperatura maxima\\
-            \tab\tab min: temperatura minima\\
-            \tab temperatureNormal: objeto que guarda la temperatura maxima y minima sin modificaciones, no cambia\\
-            \tab\tab max: temperaturaNormal maxima\\
-            \tab\tab min: temperaturaNormal minima\\
-            \tab camposMax: campos maximos del planeta\\
-            \tab campos: campos que se estan usando en el planeta\\
-            \tab buildingConstrucction: booleano que es true cuando se esta construllendo un edificio\\
-            \tab shipConstrucction: lista de naves que se estan construllendo en el hangar\\
-            \tab resources: objeto que guarda la cantidad que hay en el planeta de cada recurso\\
-            \tab\tab metal: cantidad de metal\\
-            \tab\tab crystal: cantidad de cristal\\
-            \tab\tab deuterium: cantidad de deuterio\\
-            \tab\tab energy: cantidad de energia que se produce\\
-            \tab resourcesAdd: objeto que guarda la cantidad que se produce por hora de cada recurso\\
-            \tab\tab metal: produccion de metal por hora\\
-            \tab\tab crystal: produccion de metal por hora\\
-            \tab\tab deuterium: produccion de metal por hora\\
-            \tab\tab energy: cantidad de energia que sobra o falta\\
-            \tab resourcesPercentage: numero del 0 al 10 que regula la producion y consumo de energia de las minas\\
-            \tab\tab metal: porcentaje de produccion de la mina de metal\\
-            \tab\tab crystal: porcentaje de produccion de la mina de cristal\\
-            \tab\tab deuterium: porcentaje de produccion de la mina de deuterio\\
-            \tab\tab energy: porcentaje de produccion del reactor de fusion\\
-            \tab buildings: objeto que guarda el nivel de todos los edificion del planeta\\
-            \tab\tab metalMine: nivel del edificio\\
-            \tab\tab crystalMine: nivel del edificio\\
-            \tab\tab deuteriumMine: nivel del edificio\\
-            \tab\tab solarPlant: nivel del edificio\\
-            \tab\tab fusionReactor: nivel del edificio\\
-            \tab\tab metalStorage: nivel del edificio\\
-            \tab\tab crystalStorage: nivel del edificio\\
-            \tab\tab deuteriumStorage: nivel del edificio\\
-            \tab\tab robotFactory: nivel del edificio\\
-            \tab\tab shipyard: nivel del edificio\\
-            \tab\tab researchLab: nivel del edificio\\
-            \tab\tab alliance: nivel del edificio\\
-            \tab\tab silo: nivel del edificio\\
-            \tab\tab naniteFactory: nivel del edificio\\
-            \tab\tab terraformer: nivel del edificio\\
-            \tab fleet: objeto que guarda la cantidad de cada nave que hay en el planeta\\
-            \tab\tab lightFighter: cantidad de esa nave\\
-            \tab\tab heavyFighter: cantidad de esa nave\\
-            \tab\tab cruiser: cantidad de esa nave\\
-            \tab\tab battleship: cantidad de esa nave\\
-            \tab\tab battlecruiser: cantidad de esa nave\\
-            \tab\tab bomber: cantidad de esa nave\\
-            \tab\tab destroyer: cantidad de esa nave\\
-            \tab\tab deathstar: cantidad de esa nave\\
-            \tab\tab smallCargo: cantidad de esa nave\\
-            \tab\tab largeCargo: cantidad de esa nave\\
-            \tab\tab colony: cantidad de esa nave\\
-            \tab\tab recycler: cantidad de esa nave\\
-            \tab\tab espionageProbe: cantidad de esa nave\\
-            \tab\tab solarSatellite: cantidad de esa nave\\
-            \tab defense: objeto que guarda la cantidad de cada defensa que hay en el planeta\\
-            \tab\tab rocketLauncher: cantidad de esa defensa\\
-            \tab\tab lightLaser: cantidad de esa defensa\\
-            \tab\tab heavyLaser: cantidad de esa defensa\\
-            \tab\tab gauss: cantidad de esa defensa\\
-            \tab\tab ion: cantidad de esa defensa\\
-            \tab\tab plasma: cantidad de esa defensa\\
-            \tab\tab smallShield: cantidad de esa defensa\\
-            \tab\tab largeShield: cantidad de esa defensa\\
-            \tab\tab antiballisticMissile: cantidad de esa defensa\\
-            \tab\tab interplanetaryMissile: cantidad de esa defensa\\
-            \tab moon: objeto que guarda los datos de la luna\\
-            \tab debris: objeto que guarda la informacion de los escombros de ese planeta\\
-            \tab\tab active: bool que guarda si hay escombros activos o no\\
-            \tab\tab metal: cantidad de metal en los escombros, si active es false esta variable es 0\\
-            \tab\tab crystal: cantidad de cristal en los escombros, si active es false esta variable es 0\\
-            \tab defenseFleets: lista de objetos con todas las flotas que estan defendiendo el planeta. La cantidad maxima de flotas defendiendo el planeta es 1 + el nivel del deposito de alianza. El objeto que guarda aun no esta definido como va a ser.\\
-        \subsubsection{moon} Es el objeto que guarda la informacion de la luna, tiene dos campos que estan siempre disponibles exista la luna o no, los cuales son active y size\\
-            \tab active: boolenao que si es true entonces ese planeta tiene luna\\
-            \tab size: size de la luna. Si active es falso size es igual a 0\\
-            \tab name: nombre de la luna\\
-            \tab camposMax: campos maximos de la luna\\
-            \tab campos: campos que se estan usando en la luna\\
-            \tab type: tipo de luna\\
-            \tab resources: objeto que dice cuantos recursos hay en la luna\\
-            \tab buildingConstrucction: bool que dice si se esta contrullendo un edificio\\
-            \tab buildings: objeto que dice el nivel de cada edificio en la luna\\
-            \tab\tab lunarBase: nivel del edificio lunar\\
-            \tab\tab phalanx: nivel del edificio lunar\\
-            \tab\tab spaceDock: nivel del edificio lunar\\
-            \tab\tab marketplace: nivel del edificio lunar\\
-            \tab\tab lunarSunshade: nivel del edificio lunar\\
-            \tab\tab lunarBeam: nivel del edificio lunar\\
-            \tab\tab jumpGate: nivel del edificio lunar\\
-            \tab\tab moonShield: nivel del edificio lunar\\
-            \tab values: numero del 0 al 10 que representa el porcentaje de actividad del sun shade y del lunar beam\\
-            \tab\tab sunshade: porcentaje de produccion del edificio lunar\\
-            \tab\tab beam: porcentaje de produccion del edificio lunar\\
-            \tab fleet: objeto que dice cuantas naves hay en la luna, la compocicion es similar al objeto fleet de planeta\\
-          \subsubsection{vaca}
-            \tab coordinates: cordenadas del planeta\\
-            \tab playerName: nombre del jugador\\
-            \tab planetName: nombre del planeta\\
-            \tab estado: estado de actividad del jugador\\
-    \subsection{Funciones importantes}
-        \subsubsection{updatePlayer(player, f, help = false)}
-            Actualiza la informacion de 'player'(objeto) y guarda el objeto actualizado en la base de datos, despues de actualizar ejecuta la funcion f
-        \subsubsection{createNewPlanet(cord, planetName, playerName, playerTypeNew)}
-            Crea un nuevo objeto de tipo planeta, con las cordenadas 'cord', de nombre ' planetaName', que pertenece al jugador 'playerName'
-        \subsubsection{createNewMoon(newSize)}
-            Crea un nuevo objeto de tipo luna, esa nueva luna tiene de tamanio 'newSize'
-        \subsubsection{addNewPlayer(name, styleGame)}
-            Agrega un jugador nuevo al universo de nombre 'name' y con 'styleGame', despues lo guarda en la base de datos
-        \subsubsection{getActualBasicInfo(planet)}
-            Devuelve un objeto con la informacion basica del planeta numero 'planet'. Es usado por todo view con el nombre de 'basic'. Ese objeto se compone de la siguiente manera:\\
-            \tab name: nombre del universo\\
-            \tab speed: velocidad de produccion del universo\\
-            \tab speedFleet: velocidad de flota del universo\\
-            \tab donutGalaxy: bool que dice si las galaxias son circulares o no\\
-            \tab donutSystem: bool que dice si los sistemas son circulares o no\\
-            \tab playerName: nombre del jugador que tiene la cuenta abierta\\
-            \tab highscore: posicion del jugador abierto\\
-            \tab resources: objeto que dice los recursos que tiene el planeta o luna en la que se esta\\
-            \tab add: \\
-            \tab dark: cantidad de materia oscura que tiene el jugador abierto\\
-            \tab messagesNoRead: cantidad de mensajes sin leer que tiene el jugador abierto\\
-            \tab classObjResources: objeto que dicta los colores que tiene cada recurso(si el almacen esta lleno o no)\\
-            \tab cantPlanets: cantidad de planetas colonizados del jugador abierto\\
-            \tab maxPlanets: cantidad maxima de planetas que puede tener el jugador abierto\\
-            \tab numPlanet: el index de planeta en la lista de planetas del jugador abierto\\
-            \tab planets: lista con todos los planetas(objetos) del jugador abierto\\
-            \tab moon: booleano que dice si estas en una luna o no\\
-            \tab format: funcion que formatea un numero a un formato lindo\\
-        \subsubsection{resourcesSetting(planet)}
-            Devuelve el objeto 'info' del view ResourceSetings. El objeto tiene el siguiente formato:
-            \tab basic: objeto que dice los ingresos basicos de metal y de cristal en ese universo\\
-            \tab values: objetos con numeros de 0 al 10 que dicta los porcentajes de cada mina\\
-            \tab buildings: objeto con los niveles de cada mina del planeta\\
-            \tab solarSatelite: cantidad de satelites solares en ese planeta\\
-            \tab mines: objeto que dice cuanto produce por hora cada mina\\
-            \tab energy: objeto que dice cuanta energia producen los satelites solares(satellite: ), la planta de fusion(fusion: ) y la planta de energia solar(solar: )\\
-            \tab maxEnergy: objeto que dice cuanto es el consumo de energia requerido para cada mina\\
-            \tab usageEnergy: objeto que dice cuanto de enrgia puede usar cada mina\\
-            \tab resourcesHour: objeto que dice cuanto ganas por hora de cada recurso\\
-            \tab storage: objeto que dice cuanto es el almacenamiento maximo de cada recurso\\
-            \tab plasma: nivel de la tecnologia de plasma del jugador\\
-        \subsubsection{moonSetting(planet)}
-          Devuelve el objeto 'info' del view MoonBuildings. El objeto tiene el siguiente formato:\\
-          \tab buildings: objeto que dice los niveles de todos los edificio de la luna\\
-          \tab values: objeto que da los porcentajes del lunar beam y del sunshade. Su formato es:\\
-          \tab\tab sunshade: numero del 0 al 10\\
-          \tab\tab beam: numero del 0 al 10\\
-          \tab fleets: objeto con la cantida de cada nave en la luna\\
-          \tab cuanticTime: numero que dice cuanto tiempo falta para poder usar el salto cuantico\\
-          \tab cuanticMoonsCord: lista que tiene las cordenadas de todas las lunas a la que se puede hacer un salto cuantico\\
-          \tab campos: objeto que tiene los campos maximos y campos usados de la luna. Tiene el formato:\\
-          \tab\tab campos: campos actualmente usados de la luna\\
-          \tab\tab camposMax: campos maximo de la luna\\
-        \subsubsection{overviewActualInfo(planet)}
-          Devuelve el objeto 'info' del view Overview. El objeto tiene el siguiente formato:\\
-          \tab diameter: tamanio del planeta o luna\\
-          \tab type: tipo del planeta\\
-          \tab temperature: objeto con la temperatura efectiva del planeta\\
-          \tab camposMax: campos maximos del planeta o luna\\
-          \tab campos: campos usados en el planeta o luna\\
-          \tab cantPlayers: cantidad de jugadores en todo el universo\\
-          \tab points: cantidad de puntos del jugador\\
-        \subsubsection{buildingsActualInfo(planet)}
-          Devuelve el objeto 'info' del view Resources y Facilities. Es un objeto que tiene los niveles de todos los edificons del planeta o luna, si es un planeta ademas da el numero de satelites solares del planeta.
-        \subsubsection{navesInfo: function()}
-            Entrega el objeto info de la pagina Fleet. El objeto tiene la forma:\\
-            \tab fleets: objeto con la cantidad de naves del planeta/luna\\
-            \tab speed: lista con la velocidades base de todas las naves\\
-            \tab misil: cantidad de misiles en el planeta, si esta en una luna siempre es 0\\
-            \tab expeditions: cantdad de expediciones que se estan aciendo actualmente\\
-            \tab maxExpeditions: cantidad maxima de espediciones\\
-            \tab slot: catidad de flotas volando actualmente\\
-            \tab maxSlot: cantidad maxima de posibles flotas volando\\
-            \tab vacas: lista de vacas del jugador\\
-        \subsubsection{fleetInfo(planet, moon)}
-            Entrega un objeto que por cada nave que s pueda enviar en una flota retorna un objeto con la siguiente forma:\\
-            \tab speed: velocidad de la nave con respecto a las tecnologias del jugador\\
-            \tab carga: capacidad de carga de una nave de ese tipo\\
-            \tab consumo: consumo de deuterio de una sola nave\\
-        \subsubsection{galaxyInfo(planet)}
-            Entrega el objeto info de la pagina Galaxy. El objeto tiene la forma:\\
-            \tab espionage: cantidad de sondas de espionage en el planeta/luna\\
-            \tab recycler: cantadad de recicladores en el planeta/luna\\
-            \tab misil: cantadad de misiles interplanetarios en el planeta\\
-            \tab slot: cantidad de flotas volando\\
-            \tab maxSlot: cantidad de flotas maximas volando\\
-        \subsubsection{systemInfo(res, gal, sys)}
-            Dada una galaxia y un systema solar retorna un objeto con todos los planetas en ese sistema.\\
-            El objeto esta compuesto por 15 claves que son 'pos + i' donde i es un numero entre 0 y 15 inclusive.\\
-            Si no hay nadie en la posicion 'pos + i' se guarda con esa clave el objeto {active: false}, si hay un planeta se guarda un objeto con la forma:\\
-            \tab active: booleano que dice si hay planeta o no en esa posicion\\
-            \tab player: nombre del jugador duenio del planeta de esa posicion\\
-            \tab type: tipo de planeta\\
-            \tab color: color del planeta\\
-            \tab name: nombre del planeta\\
-            \tab moon: booleano que dice si hay luna en ese planeta\\
-            \tab moonName: nombre de la luna\\
-            \tab moonSize: tamanio de la luna\\
-            \tab debris: booleano que dice si hay escombros en esa posicion\\
-            \tab metalDebris: cantidad de metal en los escombros\\
-            \tab crystalDebris: cantidad de cristal en los escombros\\
-            \tab estado: estado del jugador duenio del planeta en esa posicion\\
-        \subsubsection{updateResourcesData(f, planet, obj = null)}
-        \subsubsection{updateResourcesDataMoon(f, planet, obj)}
-        \subsubsection{contPoint(player)}
-          Cuenta todos los puntos de un jugador y los guarda en la base de datos.
-    \subsection{Funciones API}
-        \subsubsection{costBuildings(planet)}
-          Funcion llamada por la api para saber el coste de cada edificio de un planeta. Devuelve un objeto que por cada edificio tiene un campo con otro objeto que dice el cuanto cuesta y otras cosas. Los campos del objeto principal son:\\
-          metalMine: ,crystalMine: ,deuteriumMine: ,solarPlant: ,fusionReactor: ,metalStorage: ,crystalStorage: ,deuteriumStorage: ,robotFactory: ,shipyard: ,researchLab: ,alliance: ,silo: ,naniteFactory: ,terraformer: ,solarSatellite:, listInfo: ,time: ,doing:\\
-          Los unicos campos que son distintos del resto son listInfo: que es una lista con los nombre de los campos principales, time: que tiene un objeto con los campos mult: y elev: que contienen el nivel de las fabricas de robot y nanobot respectivamente. El campo doing: contiene el booleno que indica si se esta construllendo un edificio.\\
-          Cada campo principal tiene un objeto con el formato:\\
-          \tab metal: cantidad de metal que se necesita para poder iniciar la construccion para el proximo nivel\\
-          \tab crystal: cantidad de cristal que se necesita para poder iniciar la construccion para el proximo nivel\\
-          \tab deuterium: cantidad de deuterio que se necesita para poder iniciar la construccion para el proximo nivel\\
-          \tab energy: \\
-          \tab energyNeed: \\
-          \tab tech: bool que dice si ya se alcanzaron los requisitos para contruir el edificio\\
-          \tab level: nivel del edificio\\
-          \tab name: nombre posta del edificio\\
-          \tab description: informacion para el usuario sobre el edificion\\
-        \subsubsection{costMoon(planet)}
-            Funcion llamada por la api para saber los costes de los edificios de una luna. El objeto que debuelve tiene la forma: lunarBase, phalanx, spaceDock, marketplace, lunarSunshade, lunarBeam, jumpGate, moonShield, listInfo, time, doing. Los campos de time son mult y elev que tienen los niveles de la base lunar y la fabrica de nanobots del planeta, respectivamente. El funcionamiento es similar al objeto de costBuildings.
-        \subsubsection{costResearch(planet)}
-            Funcion llamada por la api para saber los costes de las investigaciones. El objeto tiene la forma: energy, laser, ion, hyperspace, plasma, espionage, computer, astrophysics, intergalactic, graviton, combustion, impulse, hyperspacedrive, weapons, shielding, armour, listInfo, time, doing.
-        \subsubsection{costShipyard(planet)}
-            Funcion llamada por la api para saber los costes de las naves. El objeto tiene la forma: lightFighter, heavyFighter, cruiser, battleship, battlecruiser, bomber, destroyer, deathstar, smallCargo, largeCargo, colony, recycler, espionageProbe, solarSatellite, listInfo, time, doing.
-        \subsubsection{costDefense(planet)}
-            Funcion llamada por la api para saber los costes de las defensas. El objeto tiene la forma: rocketLauncher, lightLaser, heavyLaser, gauss, ion, plasma, smallShield, largeShield, antiballisticMissile, interplanetaryMissile, listInfo, time, doing.
+\maketitle
+\tableofcontents
+\newpage
+\section{Introduccion}
 
-        \subsubsection{proccesBuildRequest(planet, buildingName, res)}
-        \subsubsection{proccesMoonRequest(planet, buildingName, res)}
-        \subsubsection{proccesResearchRequest(planet, researchName, res)}
-        \subsubsection{proccesShipyardRequest(planet, shipyardName, shipyardCant, res)}
-        \subsubsection{cancelBuildRequest(planet, res)}
-        \subsubsection{cancelMoonRequest(planet, res)}
-        \subsubsection{cancelResearchRequest(res)}
-        \subsubsection{cancelShipyardRequest(planet, shipyardName, res)}
-    \subsection{Otros}
-        \subsubsection{Comandos para lanzar el servidor}
-            'service mongod start' Arranca el servicio de mongo\\
-            'npm run start-dev' Arranca el servidor
-        \subsubsection{dataset}
-          Para pasar un dato por html se puede usar la propiedad data-val='valor' y en javascript leerla con item.dataset.val
-        \subsubsection{idea para el servidor}
-          Modularisar el script universe.js. Que contenga una lista de los scripts de cada jugador donde cada script de jugador contiene los algoritmos del jugador y el objeto player del propio jugador y cuando se cambia algo con una funcion de universe.js se pase ese objeto jugador desde el script.js.
+En el siguiente projecto voy a crear un clon del juego \href{https://en.ogame.gameforge.com}{Ogame}, el mismo es un juego de estrategia en tiempo real con tematica sobre naves espaciales y tecnologias futuristicas. En este cada jugador empieza con un planeta y a medida que crece puede crear una flota de naves espaciales, la cual puede utilizar para luchar por recursos con otros jugadores y conquistar nuevos planetas. El juego original es propiedad de Gameforge  y este projecto solo tiene fines educativos.
+
+\section{Objetivo}
+
+El objetivo de este projecto es el de poder introducir bots de manera facil al juego, arreglar algunos problemas que el juego original presenta y por ultimo, poder mejorar el rendimiento general del juego.
+
+En cuanto a los bots, esto se hace con una \texttt{API} con la cual un script externo puede interactuar con el servidor, luego el como funcionan los bots es esta acargo de la persona que creo su script. El funcionamiento de la \texttt{API} esta explicado en la seccion ``\hyperlink{API-Section}{\textbf{API para bots}}''.
+
+En cuanto a los problemas que necesitan arreglo en la version original, la mayoria tiene que ver con la performance del servidor y de los item premium que estan inclinando el juego a favor de la gente que mas dinero pone. En resumen, la siguente lista indica la lista de los cambios mas significativos que se realisaron con respecto a la version original, todos estos cambios tienen como objetivo solucionar algun problema encontrado: 
+
+\begin{itemize}[noitemsep]
+    \item El cambio de nombre de los planetas y lunas se hace el la vision general directamente.
+    \item No existen las alianzas.
+    \item Se elimino todo lo que tenga que ver con la materia oscura y las funcionalidades premuim.
+    \item Se cambiaron misiones del tutorial para que tenga ma sentido y ayuden mas al jugador nuevo.
+    \item Se pueden desplegar naves a planetas de otros jugadores.
+    \item Un jugador puede atacarce a si mismo.
+    \item Existe el edificio lunar, sun shade, el cual puede bajar la temperatura del planeta.
+    \item Existe el edificio lunar, lunar beam, el cual puede subir la temperatura del planeta.
+    \item Existe el edificio lunar, market place, en el cual se puede cambiar recursos y ganar ofertas.
+    \item Existe el edificio lunar, lunar shield, el cual hace mas dificil de destruir una luna.
+    \item El spacial dock ahora es un edicio lunar.
+    \item Se elimino la opcion de ataque ACS attack y ASC defense.
+    \item Se cambio la funcion del deposito de alianza, se necesita para tener un comercio en la luna.
+    \item Cada misil ocupa solo un lugar en el silo, sin importar de que tipo sea.
+    \item Las naves gastan mucho menos deuterio al moverse.
+    \item Pueden cancelarse las construcciones de hangar que estan en la cola.
+    \item Los misiles se usan como una nave de ataque mas.
+    \item Se puede enviar recicladores y ataques con cargueros desde la galaxia o la vista de mensajes.
+\end{itemize}
+        
+Finalmente para mejorar el rendimiento del servidor rehice todo el codigo del servidor y del cliente. De todas maneras es obligatoria ya que no cuento con el codigo original del servidor (aunqe si del cliente web). Con esto espero que al poder entender la totalidad del codigo sea mas facil hacerle modificacion y cambios a la hora de aplicar una posible mejora. Ademas esto tiene otro efecto positivo el cual es que, al crear todo el juego en javascripts con librerias especificas, voy a aprender su funcionamiento de manera practica, lo cual se alinea con la idea de usar este projecto para aprender sobre desarroyo web.
+
+\section{Tecnologias usadas}
+
+Todo el codigo del servidor esta todo hecho en \textit{JavaScript} y corre sobre Node. Para atender las peticiones de la \texttt{API} y del cliente web usa \textit{Express} y el motor de renderisado es \textit{Pug}. Esto es para mentener el diseño simple y minimalista ya que con esos modulos me alcanza para poder realizar todo el proyecto.
+
+En la parte de seguridad la pagina web no tiene ningun tipo de medida, cualquiera se puede conectar con cualquier usuario y hacen lo que quiera. Esto es ai porque la idea de todo esto es que bots jueguen atravez de la \texttt{API} y la interfaz web sirve para que alguien pueda monitorear todo el universo o un bot en espesifico. Por otro lado la \texttt{API} si tiene un sistema de autenticacion con constraseña, el cual tiene cierto nivel de seguridad ya que se usa la libreria \textit{passport.js} sin embargo el objetivo de este projecto no es preveer una \texttt{API} segura, esta autenticacion esta porque es mas comodo identificar a los clientes que hablan con la \texttt{API}.
+
+Por otro lado, al ser mucho el volumen de informacion manejado por el juego, el seridor utiliza una base de datos interna proveida por \textit{MongoDB}. Ademas usa \textit{cookie-parser}, \textit{morgan}, \textit{dotenv}, \textit{nodemon} en modo debug entre otras librerias secundarias.
+
+\section{Funcionamiento}
+Este projecto pretende tener un codigo autodocumentado, si bien en algunas partes eso no esta tan claro, creo que es la mejor manera de documentar como funciona la apliccion. Sin embargo en esta seccion voy a explicar brevemente como funciona, a grandes rasgos, la aplicacion. Este analisis no pretende ser exaustivo, para mas informacion sobre el codigo, lo mejor es mirarlo uno mismo.
+
+El funcionamiento de la aplicacion consiste en un tener dispobles las rutas que se proveen al cliente y cada una, de ser una pagina se envia la misma con los datos correspondientes y en caso de ser una ruta de la \texttt{API} se ejecutan las acciones correspondientes. 
+
+% Explicar como es el funcionamiento de la aplicacion
+% Hacer un diagrama para poder ver como interactuan los modulos del sistema
+
+\subsection{Objetos importantes}
+Algun informacion clave del juego se guarda en objetos de \textit{JavaScript} con ciertas propiedades, a continuacion voy a exponer los mas importantes:
+
+\paragraph{Universo:} Objeto con la informacion principal del universo.
+\vspace{-5mm}
+\begin{itemize}[noitemsep]
+    \item \textit{name}: Nombre del universo.
+    \item \textit{inicio}: %Completar o sacar
+    \item \textit{maxGalaxies}: Numero maximo de galaxias.
+    \item \textit{donutGalaxy}: Si las galaxias son circulares.
+    \item \textit{donutSystem}: Si los sistemas solares son circlares.
+    \item \textit{speed}: Velocidad del universo.
+    \item \textit{speedFleet}: Velocidad de las flotas del universo.
+    \item \textit{fleetDebris}: Porcentage de 0 a 100 de flota a escombros.
+    \item \textit{defenceDebris}: Porcentage de 0 a 100 de defensa a escombros.
+    \item \textit{maxMoon}: Maxima probabilidad de crear una luna. 
+    \item \textit{rapidFire}: Booleano que esta en true si esta activado el fuego rapido en el universo.
+\end{itemize}
+
+\paragraph{Player:} El objeto que guarda toda la informacion de un jugador.
+\vspace{-5mm}
+\begin{itemize}[noitemsep]
+    \item \textit{id}: Id en la base de datos del jugador.
+    \item \textit{name}: Nombre del jugador, es importante que no existan dos jugadores con el mismo nombre.
+    \item \textit{pass}: Contrasenia para identificarse al usar la \texttt{API}.
+    \item \textit{styleGame}: %Completar o sacar.
+    \item \textit{planets}: Lista que guarda los objetos de los planetas del jugador.
+    \item \textit{maxPlanets}: Cantidad maxima de planetas que puede tenes el jugador.
+    \item \textit{highscore}: Posicion en el ranking del universo.
+    \item \textit{lastHighscore}:.
+    \item \textit{puntos}: Puntos del jugador(cada 1000 unidades gastadas de cada recurso se da 1 punto.
+    \item \textit{puntosAcum}: Cantidad de recursos que se gasto pero no alcazo a llegar a 1000 para convertirce en 1 punto.
+    \item \textit{vacas}: Lista de jugadores que el jugador puede modificar, son para hacer mas rapidos los ataque.
+    \item \textit{sendEspionage}: Cantidad de sondas de espionaje que se envia al apretar espiar en la vista de la galaxia.
+    \item \textit{sendSmall}: Cantidad de small cargos que se envia al atacar a una vaca.
+    \item \textit{sendLarge}: Cantidad de large cargos que se envia al atacar a una vaca.
+    \item \textit{dark}: Cantidad de materia oscura del jugador .
+    \item \textit{messagesCant}: Cantidad de mensajes sin leer del jugado.
+    \item \textit{messages}: Lista con todos los mensajes del jugado.
+    \item \textit{movement}: Lista con todos los movimientos de flota del jugado.
+    \item \textit{researchConstrucction}: Si no se investiga nada es un bool que esta en false si no es un objeto con el formato.
+    \begin{itemize}[noitemsep]
+        \item \textit{metal}: Metal que requirio la investigacion.
+        \item \textit{crystal}: Cristal que requirio la investigacion.
+        \item \textit{deuterium}: Deuterio que requirio la investigacion.
+        \item \textit{item}: Nombre de la investigacion.
+        \item \textit{planet}: Numero de planeta que inicio la investigacion.
+        \item \textit{init}: Tiempo en que se incio la investigacion.
+        \item \textit{time}: Duracion de la investigacion.
+    \end{itemize}
+    \item \textit{tutorial}: Lista de booleanos que dicen cual tutorial fue completado y cual no.
+    \item \textit{research}: Objeto con los niveles de todas las tecnologias del jugador.
+    \begin{itemize}[noitemsep]
+        \item \textit{energy}: Nivel de la tecnologia de enrgia.
+        \item \textit{laser}: Nivel de la tecnologia laser.
+        \item \textit{ion}: Nivel de la tecnologia ionica.
+        \item \textit{hyperspace}: Nivel de la tecnologia de hyperespacio.
+        \item \textit{plasma}: Nivel de la tecnologia de plasma.
+        \item \textit{espionage}: Nivel de la tecnologia de espionage.
+        \item \textit{computer}: Nivel de la tecnologia de computacion.
+        \item \textit{astrophysics}: Nivel de la tecnologia astrifisica.
+        \item \textit{intergalactic}: Nivel de la tecnologia intergalactica.
+        \item \textit{graviton}: Nivel de la tecnologia de graviton.
+        \item \textit{combustion}: Nivel del motor de conbustion.
+        \item \textit{impulse}: Nivel del motor de impulso.
+        \item \textit{hyperspacedrive}: Nivel del motor de hyper espacio.
+        \item \textit{weapons}: Nivel de la tecnologia militar.
+        \item \textit{shielding}: Nivel de la tecnologia de defensa.
+        \item \textit{armour}: Nivel de la tecnologia de blindaje.
+    \end{itemize}
+    \item \textit{lastVisit}: Numero que determina en que instante de tiempo se actualizaron los datos de ese jugador por ultima vez.
+    \item \textit{type}: Tipo de jugador en la vista de galaxia.
+    \item \textit{hazards}: Lista con las movements que estan atacando al jugado.
+\end{itemize}
+
+\paragraph{Planeta:} El objeto que guarda toda la informacion de un planet.
+\vspace{-5mm}
+\begin{itemize}[noitemsep]
+    \item \textit{idPlanet}: Id del planeta.
+    \item \textit{coordinates}: Objeto con las cordenadas del planeta.
+    \item \textit{coordinatesCod}: String con el codigo de las cordenadas, en el formato ''galaxy\_system``.
+    \item \textit{player}: Nombre del jugador al que pertenece el planeta.
+    \item \textit{playerType}: Tipo de jugador en la vista de galaxia.
+    \item \textit{name}: Nombre del planeta.
+    \item \textit{type}: Tipo del planeta, numero del 1 al 7.
+    \item \textit{color}: Color del planeta, numero del 1 al 10.
+    \item \textit{temperature}: Objeto que guarda la temperatura maxima y minima del planeta con modificaciones.
+    \begin{itemize}[noitemsep]
+        \item \textit{max}: Temperatura maxima.
+        \item \textit{min}: Temperatura minima.
+    \end{itemize}
+    \item \textit{temperatureNormal}: Objeto que guarda la temperatura maxima y minima sin modificaciones.
+    \begin{itemize}[noitemsep]
+        \item \textit{max}: Temperatura normal maxima.
+        \item \textit{min}: Temperatura normal minima.
+    \end{itemize}
+    \item \textit{camposMax}: Campos maximos del planeta.
+    \item \textit{campos}: Campos que se estan usando en el planeta.
+    \item \textit{buildingConstrucction}: Booleano que es true cuando se esta construllendo un edificio.
+    \item \textit{shipConstrucction}: Lista de naves que se estan construllendo en el hangar.
+    \item \textit{resources}: Objeto que guarda la cantidad que hay en el planeta de cada recurso.
+    \begin{itemize}[noitemsep]
+        \item \textit{metal}: Cantidad de metal.
+        \item \textit{crystal}: Cantidad de cristal.
+        \item \textit{deuterium}: Cantidad de deuterio.
+        \item \textit{energy}: Cantidad de energia que se produce.
+    \end{itemize}
+    \item \textit{resourcesAdd}: Objeto que guarda la cantidad que se produce por hora de cada recurs.
+    \begin{itemize}[noitemsep]
+        \item \textit{metal}: Produccion de metal por hora.
+        \item \textit{crystal}: Produccion de metal por hora.
+        \item \textit{deuterium}: Produccion de metal por hora.
+        \item \textit{energy}: Cantidad de energia que sobra o falta.
+    \end{itemize}
+    \item \textit{resourcesPercentage}: Numero del 0 al 10 que regula la producion y consumo de energia de las minas.
+    \begin{itemize}[noitemsep]
+        \item \textit{metal}: Porcentaje de produccion de la mina de metal.
+        \item \textit{crystal}: Porcentaje de produccion de la mina de cristal.
+        \item \textit{deuterium}: Porcentaje de produccion de la mina de deuterio.
+        \item \textit{energy}: Porcentaje de produccion del reactor de fusion.
+    \end{itemize}
+    \item \textit{buildings}: Objeto que guarda el nivel de todos los edificion del planeta.
+    \begin{itemize}[noitemsep]
+        \item \textit{metalMine}: Nivel del edificio.
+        \item \textit{crystalMine}: Nivel del edificio.
+        \item \textit{deuteriumMine}: Nivel del edificio.
+        \item \textit{solarPlant}: Nivel del edificio.
+        \item \textit{fusionReactor}: Nivel del edificio.
+        \item \textit{metalStorage}: Nivel del edificio.
+        \item \textit{crystalStorage}: Nivel del edificio.
+        \item \textit{deuteriumStorage}: Nivel del edificio.
+        \item \textit{robotFactory}: Nivel del edificio.
+        \item \textit{shipyard}: Nivel del edificio.
+        \item \textit{researchLab}: Nivel del edificio.
+        \item \textit{alliance}: Nivel del edificio.
+        \item \textit{silo}: Nivel del edificio.
+        \item \textit{naniteFactory}: Nivel del edificio.
+        \item \textit{terraformer}: Nivel del edificio.
+    \end{itemize}
+    \item \textit{fleet}: Objeto que guarda la cantidad de cada nave que hay en el planeta.
+    \begin{itemize}[noitemsep]
+        \item \textit{lightFighter}: Cantidad de esa nave.
+        \item \textit{heavyFighter}: Cantidad de esa nave.
+        \item \textit{cruiser}: Cantidad de esa nave.
+        \item \textit{battleship}: Cantidad de esa nave.
+        \item \textit{battlecruiser}: Cantidad de esa nave.
+        \item \textit{bomber}: Cantidad de esa nave.
+        \item \textit{destroyer}: Cantidad de esa nave.
+        \item \textit{deathstar}: Cantidad de esa nave.
+        \item \textit{smallCargo}: Cantidad de esa nave.
+        \item \textit{largeCargo}: Cantidad de esa nave.
+        \item \textit{colony}: Cantidad de esa nave.
+        \item \textit{recycler}: Cantidad de esa nave.
+        \item \textit{espionageProbe}: Cantidad de esa nave.
+        \item \textit{solarSatellite}: Cantidad de esa nave.
+    \end{itemize}
+    \item \textit{defense}: Objeto que guarda la cantidad de cada defensa que hay en el planeta.
+    \begin{itemize}[noitemsep]
+        \item \textit{rocketLauncher}: Cantidad de esa defensa.
+        \item \textit{lightLaser}: Cantidad de esa defensa.
+        \item \textit{heavyLaser}: Cantidad de esa defensa.
+        \item \textit{gauss}: Cantidad de esa defensa.
+        \item \textit{ion}: Cantidad de esa defensa.
+        \item \textit{plasma}: Cantidad de esa defensa.
+        \item \textit{smallShield}: Cantidad de esa defensa.
+        \item \textit{largeShield}: Cantidad de esa defensa.
+        \item \textit{antiballisticMissile}: Cantidad de esa defensa.
+        \item \textit{interplanetaryMissile}: Cantidad de esa defensa.
+    \end{itemize}
+    \item \textit{moon}: Objeto que guarda los datos de la luna.
+    \item \textit{debris}: Objeto que guarda la informacion de los escombros de ese planeta.
+    \begin{itemize}[noitemsep]
+        \item \textit{active}: Bool que guarda si hay escombros activos o no.
+        \item \textit{metal}: Cantidad de metal en los escombros, si el escombro no esta activo esta variable vale 0.
+        \item \textit{crystal}: Cantidad de cristal en los escombros, si el escombro no esta activo esta variable vale 0.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Moon:} Es el objeto que guarda la informacion de la luna, tiene dos campos que estan siempre disponibles exista la luna o no, los cuales son active y size.
+\vspace{-5mm}
+\begin{itemize}[noitemsep]
+    \item \textit{active}: Boolenao que si es true entonces ese planeta tiene luna.
+    \item \textit{size}: Size de la luna. Si active es falso size es igual a 0.
+    \item \textit{name}: Nombre de la luna.
+    \item \textit{camposMax}: Campos maximos de la luna.
+    \item \textit{campos}: Campos que se estan usando en la luna.
+    \item \textit{type}: Tipo de luna.
+    \item \textit{resources}: Objeto que dice cuantos recursos hay en la luna.
+    \item \textit{buildingConstrucction}: Bool que dice si se esta contrullendo un edificio.
+    \item \textit{buildings}: Objeto que dice el nivel de cada edificio en la luna.
+    \begin{itemize}[noitemsep]
+        \item \textit{lunarBase}: Nivel del edificio luna.
+        \item \textit{phalanx}: Nivel del edificio luna.
+        \item \textit{spaceDock}: Nivel del edificio luna.
+        \item \textit{marketplace}: Nivel del edificio luna.
+        \item \textit{lunarSunshade}: Nivel del edificio luna.
+        \item \textit{lunarBeam}: Nivel del edificio luna.
+        \item \textit{jumpGate}: Nivel del edificio luna.
+        \item \textit{moonShield}: Nivel del edificio luna.
+    \end{itemize}
+    \item \textit{values}: Numero del 0 al 10 que representa el porcentaje de actividad del sun shade y del lunar beam.
+    \begin{itemize}[noitemsep]
+        \item \textit{sunshade}: Porcentaje de produccion del edificio luna.
+        \item \textit{beam}: Porcentaje de produccion del edificio luna.
+    \end{itemize}
+    \item \textit{cuantic}: Entero que indica el instante en el que se va a poder usar el salto cuantico otra vez.
+    \item \textit{fleet}: Objeto que dice cuantas naves hay en la luna, la compocicion es similar al objeto fleet de planeta.
+\end{itemize}
+
+\paragraph{Fleet:} Es el objeto que guarda una flota o movement que viaja de un lugar a otro.
+\vspace{-5mm}
+\begin{itemize}[noitemsep]
+    \item \textit{ships}: Objeto con la catidad de cada nave en la flota.
+    \item \textit{moon}: Boolenao que esta en true si la flota salio de una luna y falso si salio desde un planeta.
+    \item \textit{coorDesde}: Coordenadas simplificadas del lugar de partida de la flota.
+    \item \textit{coorHasta}: Coordenadas simplificadas del lugar de llegada de la flota.
+    \item \textit{destination}: Numero que indica si se el destino es un 1 = planeta, 2 = luna, 3 = debris.
+    \item \textit{resources}: Objeto que indica cuatos recursos lleva la flota.
+    \item \textit{speed}: Numero del 1 al 10 que indica a que velocidad va la flota.
+    \item \textit{mission}: Numero del 0 al 8 que indica que numero de mission ejecuta esta flota.
+    \item \textit{time}: Tiempo en que empezo el viaje.
+    \item \textit{duracion}: Cuanto tarda el viaje.
+    \item \textit{llegada}: Tiempo en que la flota llega.
+    \item \textit{ida}: Bool si dice si es un viaje de ida o de vuelta.
+    \item \textit{desdeColor}: Color del planeta de salida. 
+    \item \textit{desdeType}: Tipo del planeta de salida.
+    \item \textit{desdeName}: Nombre del planeta de salida.
+    \item \textit{hastaColor}: Color del planeta de llegda.
+    \item \textit{hastaType}: Tipo del planeta de llegada.
+\end{itemize}
+
+\paragraph{Message:} Es el objeto que guarda un mensaje del jugado.
+\vspace{-5mm}
+\begin{itemize}[noitemsep]
+    \item \textit{date}: String con la fecha de cuando se envio el mensaje.
+    \item \textit{type}: Tipo de mensaje.
+    \begin{itemize}[noitemsep]
+        \item Si es 1 es un reporte de batalla.
+        \item Si es 2 es un reporte de espionaje.
+        \item Si es 3 es un mensaje de texto informativo.
+        \item Si es 4 es un mensaje de la categoria ``otros''.
+    \end{itemize}
+    \item \textit{title}: Titulo del mensaje.
+    \item \textit{text}: Texto del mensaje en caso de ser de tipo.
+    \item \textit{data}: Objeto con informacion extra del mesaje.
+\end{itemize}
+
+\hypertarget{API-Section}{\subsection{\texttt{API} para los bots}}
+
+La aplicacion provee una \texttt{API} para que scripts externos puedan controlar un BOT en el universo. Para esto, el scipt externo debe saber el username y password del BOT, para crear estos se debe hacer directamente desde el servidor.
+
+En este apartado voy a enumerar brevemente los puntos de entrada que provee la \texttt{API}. En el codigo, en la carpeta bots, ahi un archivo con casos de uso de estas funciones que se pueden usar a modo de ejemplo y que esta mas detallado el funcionamiento de la \texttt{API}. Todas los puntos de entrada de la \texttt{API} usan el metodo POST y son los siguientes:
+
+\begin{itemize}[noitemsep]
+    \item \textit{login}: Sirve para loguearse y obtener un token id que estara activo por un tiempo.
+    \item \textit{logout}: Sirve para desloguearse y dar de baja el token id.
+    \item \textit{changePlanetName}: Cambia el nombre de un planeta.
+    \item \textit{abandonPlanet}: Abandona un planeta, se necesecita tener mas de un planeta para poder usarlo.
+    \item \textit{infoPlayer}: Devuelve el objeto con la informacion de un jugador.
+    \item \textit{infoUniverso}: Devuelve el objeto con la informacion del universo.
+    \item \textit{infoGalaxy}: Dada una galaxia y un sistema solar, devuelve la informacion sobre esa posicion del universo.
+    \item \textit{changeResourcesOptions}: Cambiar los porcentajes de uso de las minas de un planeta o edificios de una luna.
+    \item \textit{infoBuildings}: Devuelve el objeto con la informacion sobre la construccion de los edificios de un planeta.
+    \item \textit{buildingRequest}: Envia una solicitud de construccion de un edificio de un planeta.
+    \item \textit{cancelBuilding}: Cancela la construccion de un edificio de un planeta.
+    \item \textit{infoBuildingsMoon}: Devuelve el objeto con la informacion sobre la construccion de los edificios de un luna.
+    \item \textit{buildingRequestMoon}: Envia una solicitud de construccion de un edificio de una luna.
+    \item \textit{cancelBuildingMoon}: Cancela la construccion de un edificio de una luna.
+    \item \textit{infoShips}: Devuelve el objeto con la informacion sobre la construccion de las naves.
+    \item \textit{buildShips}: Envia una solicitud para construir naves en un planeta.
+    \item \textit{cancelShips}: Cancela una solicitud de construccion de naves en un planeta.
+    \item \textit{infoDefenses}: Devuelve el objeto con la informacion sobre la construccion de las defensas.
+    \item \textit{buildDefenses}: Envia una solicitud para construir defensas en un planeta.
+    \item \textit{cancelDefenses}: Cancela una solicitud de construccion de defensas en un planeta.
+    \item \textit{infoResearch}: Devuelve el objeto con la informacion sobre el desarrollo de las investigaciones.
+    \item \textit{buildResearch}: Envia una solicitud para realizar una investigacion.
+    \item \textit{cancelResearch}: Cancela una investigacion en curso.
+    \item \textit{sendFleet}: Envia una flota.
+    \item \textit{returnFleet}: Ordena a una flota regrasar al planeta sin cumplir su mision.
+    \item \textit{isSomeoneAttackingMe}: %Falta completar
+    \item \textit{readMessage}: Devuelve un objeto con todos los mensajes del jugador.
+    \item \textit{deleteMessage}: Elimina un mensaje de un jugador.
+    \item \textit{changeOptions}: Cambia las opciones automaticas.
+    \item \textit{showTechnology}: Devuelve un objeto con los requisitos para construir cada cosa en el juego.
+    \item \textit{showHighscore}: Devuelve un objeto con el ranking de jugadores del universo.
+    \item \textit{searchPlayer}: Dado un jugador busca su informacion publica.
+    \item \textit{seeRewards}: Devuelve un objeto con la informacion sobre las remcompensas.
+    \item \textit{updateReward}: Actualiza las recompensas completadas.
+    \item \textit{usePhalanx}: Permite usar el sensor phalanx de una luna.
+    \item \textit{useJumpGate}: Permite usar el salto cuantico de una luna.
+    \item \textit{useMarketMoon}: Permite usar el mercado lunar de una luna.
+    \item \textit{changePassword}: Cambia la contrasena de un usuario.
+\end{itemize}
+
+El punto de entrada \textit{login} da, en su respuesta, un string llamado \textit{id} el cual se puede usar para autentificarse en otros puntos de entrada sin necesidad de usar la contrasena de nuevo.
+
+\subsection{Comandos importantes}
+Para lanzar el servidor es importante tener la base de datos corriendo en el sistema, para esto una vez installado \textit{mongoDB}, en linux, solo hay que usar el siguiente comando \texttt{service mongod start}.
+
+Para correr el servidor se puede hacer en modo debuger o en modo release, para correrlo en el primer modo se tiene que usar el comando \texttt{npm run start-dev} y para el segundo \texttt{npm run start}.
+
+\section{Resultado Final}
+\subsection{Resultado}
+El resultado final es un juego el cual se puede personalizar mucho y al tener la opcion de llenar el universo con distintos bots, cada uno con sus particularidades, uno puede tener muchas estrategias que probar y muchos desafios que superar.
+
+En cuanto al conocimiento adquirido en la realisacion del projecto, pase de no saber nada sobre express y base de datos a poder manejarme bien y entender lo que estaba haciendo. Tambien aprendi como manejar el desarroyo y diseno del software en un projecto grande, en ese sentido me gustaria cambiar algunas cosas para dejar un codigo aun mas claro.
+
+\subsection{Galeria}
+El apartado grafico del projeto es el mismo que el del juego original, salvo por algunos pequenos casos donde no se consiguieron los assets originales o se cambio la interfaz para mejorar algun aspecto. A continuacion voy a presentar algunas imagenes correspondiente a las pantallas mas importantes del nuevo juego:
+
+% Falta poner las imagenes
+
+\subsection{Futuras mejoras}
+En el futuro me gustaria mejorar todo el codigo del lado del servidor y del cliente para hacerlo mas claro y quitar algunas incongruencias que tiene, como el usar objetos que representan lo mismo pero que difieren en algunos nombres de algunas propiedades, tal como pasa con los misilies o en los objetos del cliente.
+
+Tambien me gustaria revisar el archivo que contiene todo el codigo \textit{css} de la aplicacion y me gustaria agregar algunas funcionalidades a la \texttt{API} de los bots. Algo que estaria bueno agregar seria mejorar el edificio lunar \textit{marketplace} para que tenga promociones diarias. Ademas estaria bueno tener un conjunto de test para poder asegurarse que cada modificacion hecha al codigo siga con la correctud del codigo.
+
+Finalmente una vez terminada la aplicacion me encantaria poder encontrar un buen algoritmo que permita jugar Ogame a un bot de manera totalmente autonoma. Para esto es ideal esta plataforma, ya que probee un espacio ideal en donde distintos algoritmos puede competir, ser comparados y ajustados. Es por eso que estaria bueno, en un futuro, tener un projecto que use este trabajo para, justamente, comparar distintos algoritmos y encontrar el mas eficiente.
 \end{document}

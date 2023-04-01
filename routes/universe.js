@@ -1893,4 +1893,5 @@ module.exports = exp;
 /* Terminar la documentacion
 /* Tener un bot que testee las funcionalidades
 /* Refactorizar todo el codigo
+/* Agregar el fuego rapido en el algoritmo de batalla
 */
