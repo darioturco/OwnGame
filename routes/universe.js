@@ -1,5 +1,9 @@
-var fun  = require('./funciones_auxiliares');
-var base = require('./data_base');
+var fun       = require('./funciones_auxiliares');
+var base      = require('./data_base');
+var costs     = require('./constructions/costs');
+var battle    = require('./battle');
+var rewards   = require('./rewards');
+var expedicion = require('./expedicion');
 var queue = require('./Queue')
 var events = new queue.Queue();
 var actualizando = false;
@@ -23,7 +27,7 @@ var exp  = {
   createUniverse: function(name, cant, data){
     base.setUniverseData(name, data);
     for(let i = 0 ; i<cant ; i++){
-      base.addNewPlayer('bot_' + i, 2);
+      this.addNewPlayer('bot_' + i, 2);
     }
   },
 
@@ -31,105 +35,23 @@ var exp  = {
   //  -player = Objeto player a actualizar
   //  -f = Funcion que se ejecuta despues de ejecutar esta funcion
   updatePlayer: function(player, f){
-    /* Separarlas en funciones mas chiquitas */
     let horaActual = fun.horaActual();
     let objSet = {};
     let objInc = {};
-    let objPull = {movement: {llegada: {$lt: horaActual}}, hazards: {time: {$lt: horaActual}}}; // Va a eliminar todos los movement que su llegada es menor que la hora actual y lo mismo para los hazzards
-    let listShip = [];
+    let objPull = {movement: {llegada: {$lt: horaActual}}, hazards: {time: {$lt: horaActual}}};
     let timeLastUpdate = horaActual - player.lastVisit;
-    let updateResourcesAddOfAllPlanets = false;
     objSet['puntosAcum'] = player.puntosAcum;
 
-    if((player.researchConstrucction.active) && (player.researchConstrucction.time*1000 + player.researchConstrucction.init <= horaActual)){
-      objSet['researchConstrucction'] = {active: false};
-      objSet['puntosAcum'] += player.researchConstrucction.metal + player.researchConstrucction.crystal + player.researchConstrucction.deuterium;
-      objInc['research.' + player.researchConstrucction.item] = 1;
-      player.research[player.researchConstrucction.item] += 1;
-      if(player.researchConstrucction.item === 'energy' || player.researchConstrucction.item === 'plasma') updateResourcesAddOfAllPlanets = true;
-      if(player.researchConstrucction.item === 'espionage'){
-        for(let i = 0 ; i<player.planets.length ; i++){
-          this.allCord[player.planets[i].coordinates.gal+'_'+player.planets[i].coordinates.sys+'_'+player.planets[i].coordinates.pos].espionage += 1;
-        }
-      }
-    }
+    let updateResourcesAddOfAllPlanets = this._completeResearch(player, horaActual, objSet, objInc);
 
-    // Por cada planeta actualiza los datos de ese planeta y si tiene luna tambien la actualiza
-    for(let i = 0 ; i<player.planets.length ; i++){
-      let updateDataThisPlanet = false; // se fija que en ese planeta se halla terminado una contruccion, si es asi actualiza los campos y los valores
+    for(let i = 0; i < player.planets.length; i++){
+      let updateDataThisPlanet = this._completePlanetBuilding(player, i, horaActual, objSet, objInc);
+      this._completeMoonBuilding(player, i, horaActual, objSet, objInc);
+      let {listShip, solarSatelliteBuilt} = this._processShipQueue(player, i, timeLastUpdate, objSet, objInc);
 
-      if((player.planets[i].buildingConstrucction.active) && (1000*player.planets[i].buildingConstrucction.time + player.planets[i].buildingConstrucction.init <= horaActual)){
-        objSet['planets.' + i + '.buildingConstrucction'] = {active: false};
-        objSet['puntosAcum'] += player.planets[i].buildingConstrucction.metal + player.planets[i].buildingConstrucction.crystal + player.planets[i].buildingConstrucction.deuterium;
-        objInc['planets.' + i + '.campos'] = 1;
-        objInc['planets.' + i + '.buildings.' + player.planets[i].buildingConstrucction.item] = 1;
-        updateDataThisPlanet = true;
-        player.planets[i].buildings[player.planets[i].buildingConstrucction.item] += 1;
-        if(player.planets[i].buildingConstrucction.item === "terraformer") objInc['planets.' + i + '.camposMax'] = 5;
-      }
-
-      if(player.planets[i].moon.active && player.planets[i].moon.buildingConstrucction.active && (1000*player.planets[i].moon.buildingConstrucction.time + player.planets[i].moon.buildingConstrucction.init <= horaActual)){
-        objSet['planets.' + i + '.moon.buildingConstrucction'] = {active: false};
-        objSet['puntosAcum'] += player.planets[i].moon.buildingConstrucction.metal + player.planets[i].moon.buildingConstrucction.crystal + player.planets[i].moon.buildingConstrucction.deuterium;
-        objInc['planets.' + i + '.moon.campos'] = 1;
-        objInc['planets.' + i + '.moon.buildings.' + player.planets[i].moon.buildingConstrucction.item] = 1;
-        player.planets[i].moon.buildings[player.planets[i].moon.buildingConstrucction.item] += 1;
-        if(player.planets[i].moon.buildingConstrucction.item === "lunarBase") objInc['planets.' + i + '.moon.camposMax'] = 3;
-      }
-
-      if(player.planets[i].shipConstrucction.length > 0){
-        if(player.planets[i].shipConstrucction[0].new === true){
-          player.planets[i].shipConstrucction[0].new = false;
-          listShip = player.planets[i].shipConstrucction;
-        }else{
-          let timeLastUpdateAux = timeLastUpdate/1000;
-          timeLastUpdateAux -= player.planets[i].shipConstrucction[0].timeNow;
-          if(timeLastUpdateAux < 0){ // No termino ni la primer nave de la lista
-
-            // Actualiza timeNow y no hace nada mas
-            player.planets[i].shipConstrucction[0].timeNow -= timeLastUpdate/1000;
-            listShip = player.planets[i].shipConstrucction;
-
-          }else{ // Contruyo la primer nave y continua con el resto
-
-            let lugar = player.planets[i].shipConstrucction[0].def ? '.defense.' : '.fleet.';
-            player.planets[i].shipConstrucction[0].cant      -= 1;
-            player.planets[i].shipConstrucction[0].metal     -= player.planets[i].shipConstrucction[0].metalOne;
-            player.planets[i].shipConstrucction[0].crystal   -= player.planets[i].shipConstrucction[0].crystalOne;
-            player.planets[i].shipConstrucction[0].deuterium -= player.planets[i].shipConstrucction[0].deuteriumOne;
-            objInc['planets.' + i + lugar + player.planets[i].shipConstrucction[0].item] = 1;
-            objSet['puntosAcum'] += player.planets[i].shipConstrucction[0].metalOne + player.planets[i].shipConstrucction[0].crystalOne + player.planets[i].shipConstrucction[0].deuteriumOne;
-
-            // Me fijo el resto de la s naves a contruir
-            for(let j = 0 ; j<player.planets[i].shipConstrucction.length ; j++){
-              player.planets[i].shipConstrucction[j].new = false;
-              if(timeLastUpdateAux > 0){
-                lugar = player.planets[i].shipConstrucction[j].def ? '.defense.' : '.fleet.';
-                let cantAux = 0;
-                let totalTimeJ = player.planets[i].shipConstrucction[j].time * player.planets[i].shipConstrucction[j].cant;
-                cantAux = timeLastUpdateAux / player.planets[i].shipConstrucction[j].time;
-                if(objInc['planets.' + i + lugar + player.planets[i].shipConstrucction[j].item] === undefined) objInc['planets.' + i + lugar + player.planets[i].shipConstrucction[j].item] = 0;
-                objInc['planets.' + i + lugar + player.planets[i].shipConstrucction[j].item] += Math.min(Math.floor(cantAux), player.planets[i].shipConstrucction[j].cant);
-                objSet['puntosAcum'] += Math.min(Math.floor(cantAux), player.planets[i].shipConstrucction[j].cant)*player.planets[i].shipConstrucction[j].metalOne + Math.min(Math.floor(cantAux), player.planets[i].shipConstrucction[j].cant)*player.planets[i].shipConstrucction[j].crystalOne + Math.min(Math.floor(cantAux), player.planets[i].shipConstrucction[j].cant)*player.planets[i].shipConstrucction[j].deuteriumOne;
-                player.planets[i].shipConstrucction[j].timeNow = (cantAux > 0) ? (player.planets[i].shipConstrucction[j].time - (timeLastUpdateAux - Math.floor(cantAux)*player.planets[i].shipConstrucction[j].time)) : (player.planets[i].shipConstrucction[j].timeNow - (timeLastUpdateAux - Math.floor(cantAux)*player.planets[i].shipConstrucction[j].time));
-                player.planets[i].shipConstrucction[j].cant      -= Math.floor(cantAux);
-                player.planets[i].shipConstrucction[j].metal     -= Math.floor(cantAux)*player.planets[i].shipConstrucction[j].metalOne;
-                player.planets[i].shipConstrucction[j].crystal   -= Math.floor(cantAux)*player.planets[i].shipConstrucction[j].crystalOne;
-                player.planets[i].shipConstrucction[j].deuterium -= Math.floor(cantAux)*player.planets[i].shipConstrucction[j].deuteriumOne;
-                timeLastUpdateAux -= totalTimeJ;
-              }
-              if(player.planets[i].shipConstrucction[j].cant > 0) listShip.push(player.planets[i].shipConstrucction[j]);
-            }
-            if(player.planets[i].shipConstrucction[0].item === 'solarSatellite'){
-              updateDataThisPlanet = true;
-            }
-          }
-        }
-      }
-
-      objSet['planets.' + i + '.shipConstrucction'] = (listShip.length > player.planets[i].shipConstrucction.length) ? player.planets[i].shipConstrucction : listShip;
-      if(updateDataThisPlanet || updateResourcesAddOfAllPlanets){
-        this.updateResourcesData(() => {}, player, i); // Updatea la energia y resourcesAdd
+      objSet['planets.' + i + '.shipConstrucction'] = listShip;
+      if(updateDataThisPlanet || solarSatelliteBuilt || updateResourcesAddOfAllPlanets){
+        this.updateResourcesData(() => {}, player, i);
         objSet['planets.' + i + '.resources.energy']       = player.planets[i].resources.energy;
         objSet['planets.' + i + '.resourcesAdd.metal']     = player.planets[i].resourcesAdd.metal;
         objSet['planets.' + i + '.resourcesAdd.crystal']   = player.planets[i].resourcesAdd.crystal;
@@ -137,321 +59,304 @@ var exp  = {
       }
 
       let almacen = this.getAlmacen(player.planets[i]);
-      // Se queda con la cantidad maxima de recursos que se juntaron, siempre y cuando esa sea menor a la que entar en el almacen y sea poitiva
-      objInc['planets.' + i + '.resources.metal']     = Math.max(0, Math.min(player.planets[i].resourcesAdd.metal*timeLastUpdate/(1000*3600), almacen.metal - player.planets[i].resources.metal));
-      objInc['planets.' + i + '.resources.crystal']   = Math.max(0, Math.min(player.planets[i].resourcesAdd.crystal*timeLastUpdate/(1000*3600), almacen.crystal - player.planets[i].resources.crystal));
+      objInc['planets.' + i + '.resources.metal']     = Math.max(0, Math.min(player.planets[i].resourcesAdd.metal*timeLastUpdate/(1000*3600),     almacen.metal     - player.planets[i].resources.metal));
+      objInc['planets.' + i + '.resources.crystal']   = Math.max(0, Math.min(player.planets[i].resourcesAdd.crystal*timeLastUpdate/(1000*3600),   almacen.crystal   - player.planets[i].resources.crystal));
       objInc['planets.' + i + '.resources.deuterium'] = Math.max(0, Math.min(player.planets[i].resourcesAdd.deuterium*timeLastUpdate/(1000*3600), almacen.deuterium - player.planets[i].resources.deuterium));
     }
-    // Me fijo cuales flotar regresaron y actualizo esos datos
-    for(let i = 0 ; i<player.movement.length ; i++){
-      if(player.movement[i].llegada < horaActual){ // Si esta flota llego a destino
+
+    for(let i = 0; i < player.movement.length; i++){
+      if(player.movement[i].llegada < horaActual){
         if(player.movement[i].ida){
-          let newTime = 0;
-          switch (player.movement[i].mission) {
-          case 1: // Colonizacion
-            player.movement[i].ships.colony -= 1;
-            let resColonia = this.colonize(player.movement[i].coorHasta, player, player.movement[i].resources, player.movement[i].ships);
-            // Informo con un mensaje que paso
-            let infoMes = {type: 3, title: "Colonization", text: "", data: {}};
-            if(resColonia){ // Colonizo bien, mando mensaje de felicitaciones
-              infoMes.text = "Congratulations, you have a new colony!!!";
-            }else{ // Fallo en la colonizacion, la flota se perdio e informo con un mensaje
-              infoMes.text = "Something went wrong. The comunication with the fleet has been lost...";
+          this._processOutgoingMission(player, i, horaActual);
+        }else{
+          this._processReturningFleet(player, player.movement[i], objInc);
+        }
+      }
+    }
+
+    objInc['puntos'] = Math.floor(objSet['puntosAcum']/1000);
+    objSet['puntosAcum'] = objSet['puntosAcum'] % 1000;
+    objSet.lastVisit = horaActual;
+    base.savePlayerData(player.name, objSet, objInc, undefined, objPull, f);
+  },
+
+  _calcReturnTime: function(movement, horaActual){
+    return Math.max(0, (movement.llegada - movement.time)/1000 - (horaActual - movement.llegada)/1000);
+  },
+
+  // Returns CSS class for a resource amount relative to storage capacity
+  _getResourceClass: function(amount, max){
+    if(amount >= max)         return 'overmark';
+    if(amount >= max * 4/5)  return 'middlemark';
+    return '';
+  },
+
+  // Calculates energy production/distribution across mines given numeric percentage values
+  _calcEnergyDistribution: function(minas, pct, energyResearch, solarSatellites, temp){
+    const maxEnergyAux = {
+      metal:     Math.floor(pct.metal     * minas.metalMine     * Math.pow(1.1, minas.metalMine)),
+      crystal:   Math.floor(pct.crystal   * minas.crystalMine   * Math.pow(1.1, minas.crystalMine)),
+      deuterium: Math.floor(2 * pct.deuterium * minas.deuteriumMine * Math.pow(1.1, minas.deuteriumMine))
+    };
+    const auxEnergy = {
+      solar:           Math.floor(20 * minas.solarPlant * Math.pow(1.1, minas.solarPlant)),
+      fusion:          Math.floor(3 * minas.fusionReactor * pct.energy * Math.pow(1.05 + 0.01 * energyResearch, minas.fusionReactor)),
+      fusionDeuterium: -Math.floor(minas.fusionReactor * pct.energy * Math.pow(1.1, minas.fusionReactor)),
+      satillite:       Math.floor((temp + 160) / 6) * solarSatellites
+    };
+    const energyTotal      = auxEnergy.solar + auxEnergy.fusion + auxEnergy.satillite;
+    const totalEnergyUsage = maxEnergyAux.metal + maxEnergyAux.crystal + maxEnergyAux.deuterium;
+    let energyUsage = {
+      metal:     Math.floor(totalEnergyUsage === 0 ? 0 : (maxEnergyAux.metal     * energyTotal) / totalEnergyUsage),
+      crystal:   Math.floor(totalEnergyUsage === 0 ? 0 : (maxEnergyAux.crystal   * energyTotal) / totalEnergyUsage),
+      deuterium: Math.floor(totalEnergyUsage === 0 ? 0 : (maxEnergyAux.deuterium * energyTotal) / totalEnergyUsage)
+    };
+    energyUsage = {
+      metal:     Math.min(energyUsage.metal,     maxEnergyAux.metal),
+      crystal:   Math.min(energyUsage.crystal,   maxEnergyAux.crystal),
+      deuterium: Math.min(energyUsage.deuterium, maxEnergyAux.deuterium)
+    };
+    return {maxEnergyAux, auxEnergy, energyTotal, energyUsage};
+  },
+
+  // Creates a building construction record and persists it to DB
+  _startBuildConstruction: function(player, planet, buildingName, metal, crystal, deuterium, objPrice, pathPrefix, res){
+    const bc = {
+      active: true, metal, crystal, deuterium,
+      item: buildingName,
+      init: fun.horaActual(),
+      time: fun.timeBuild(metal + crystal, objPrice.time.mult, objPrice.time.elev, this.universo.speed)
+    };
+    const objSet = {['planets.' + planet + pathPrefix + '.buildingConstrucction']: bc};
+    const objInc = {
+      ['planets.' + planet + pathPrefix + '.resources.metal']:     -metal,
+      ['planets.' + planet + pathPrefix + '.resources.crystal']:   -crystal,
+      ['planets.' + planet + pathPrefix + '.resources.deuterium']: -deuterium
+    };
+    player.planets[planet].buildingConstrucction = bc;
+    events.addElement({time: bc.init + bc.time * 1000, player: player.name});
+    base.savePlayerData(player.name, objSet, objInc, undefined, undefined, () => {
+      res.send({ok: true, mes: "Operation successful."});
+    });
+  },
+
+  _completeResearch: function(player, horaActual, objSet, objInc){
+    let r = player.researchConstrucction;
+    if(!r.active || r.time*1000 + r.init > horaActual) return false;
+    objSet['researchConstrucction'] = {active: false};
+    objSet['puntosAcum'] += r.metal + r.crystal + r.deuterium;
+    objInc['research.' + r.item] = 1;
+    player.research[r.item] += 1;
+    if(r.item === 'espionage'){
+      for(let i = 0; i < player.planets.length; i++){
+        this.allCord[player.planets[i].coordinates.gal+'_'+player.planets[i].coordinates.sys+'_'+player.planets[i].coordinates.pos].espionage += 1;
+      }
+    }
+    return r.item === 'energy' || r.item === 'plasma';
+  },
+
+  _completePlanetBuilding: function(player, i, horaActual, objSet, objInc){
+    let bc = player.planets[i].buildingConstrucction;
+    if(!bc.active || 1000*bc.time + bc.init > horaActual) return false;
+    objSet['planets.' + i + '.buildingConstrucction'] = {active: false};
+    objSet['puntosAcum'] += bc.metal + bc.crystal + bc.deuterium;
+    objInc['planets.' + i + '.campos'] = 1;
+    objInc['planets.' + i + '.buildings.' + bc.item] = 1;
+    player.planets[i].buildings[bc.item] += 1;
+    if(bc.item === 'terraformer') objInc['planets.' + i + '.camposMax'] = 5;
+    return true;
+  },
+
+  _completeMoonBuilding: function(player, i, horaActual, objSet, objInc){
+    let moon = player.planets[i].moon;
+    let bc = moon.buildingConstrucction;
+    if(!moon.active || !bc.active || 1000*bc.time + bc.init > horaActual) return;
+    objSet['planets.' + i + '.moon.buildingConstrucction'] = {active: false};
+    objSet['puntosAcum'] += bc.metal + bc.crystal + bc.deuterium;
+    objInc['planets.' + i + '.moon.campos'] = 1;
+    objInc['planets.' + i + '.moon.buildings.' + bc.item] = 1;
+    moon.buildings[bc.item] += 1;
+    if(bc.item === 'lunarBase') objInc['planets.' + i + '.moon.camposMax'] = 3;
+  },
+
+  _processShipQueue: function(player, i, timeLastUpdate, objSet, objInc){
+    let queue = player.planets[i].shipConstrucction;
+    let prefix = 'planets.' + i;
+    if(queue.length === 0) return {listShip: [], solarSatelliteBuilt: false};
+
+    if(queue[0].new === true){
+      queue[0].new = false;
+      return {listShip: queue, solarSatelliteBuilt: false};
+    }
+
+    let timeLeft = timeLastUpdate/1000 - queue[0].timeNow;
+    if(timeLeft < 0){
+      queue[0].timeNow -= timeLastUpdate/1000;
+      return {listShip: queue, solarSatelliteBuilt: false};
+    }
+
+    let lugar = queue[0].def ? '.defense.' : '.fleet.';
+    objInc[prefix + lugar + queue[0].item] = 1;
+    objSet['puntosAcum'] += queue[0].metalOne + queue[0].crystalOne + queue[0].deuteriumOne;
+    queue[0].cant      -= 1;
+    queue[0].metal     -= queue[0].metalOne;
+    queue[0].crystal   -= queue[0].crystalOne;
+    queue[0].deuterium -= queue[0].deuteriumOne;
+
+    let listShip = [];
+    let solarSatelliteBuilt = queue[0].item === 'solarSatellite';
+
+    for(let j = 0; j < queue.length; j++){
+      queue[j].new = false;
+      if(timeLeft > 0){
+        lugar = queue[j].def ? '.defense.' : '.fleet.';
+        let cantAux = timeLeft / queue[j].time;
+        let built = Math.min(Math.floor(cantAux), queue[j].cant);
+        let totalTimeJ = queue[j].time * queue[j].cant;
+        let key = prefix + lugar + queue[j].item;
+        if(objInc[key] === undefined) objInc[key] = 0;
+        objInc[key] += built;
+        objSet['puntosAcum'] += built * (queue[j].metalOne + queue[j].crystalOne + queue[j].deuteriumOne);
+        queue[j].timeNow = (cantAux > 0)
+          ? (queue[j].time - (timeLeft - Math.floor(cantAux)*queue[j].time))
+          : (queue[j].timeNow - (timeLeft - Math.floor(cantAux)*queue[j].time));
+        queue[j].cant      -= built;
+        queue[j].metal     -= built * queue[j].metalOne;
+        queue[j].crystal   -= built * queue[j].crystalOne;
+        queue[j].deuterium -= built * queue[j].deuteriumOne;
+        timeLeft -= totalTimeJ;
+      }
+      if(queue[j].cant > 0) listShip.push(queue[j]);
+    }
+
+    return {listShip, solarSatelliteBuilt};
+  },
+
+  _processReturningFleet: function(player, movement, objInc){
+    let planetIndex = fun.getIndexOfPlanet(player.planets, movement.coorDesde);
+    if(planetIndex === -1) return;
+    let lunaString = (movement.moon && player.planets[planetIndex].moon.active) ? '.moon.' : '.';
+    let plaString = 'planets.' + planetIndex + lunaString;
+    for(let item in movement.resources){
+      if(item !== 'misil') objInc[plaString + 'resources.' + item] = movement.resources[item];
+    }
+    for(let item in movement.ships){
+      objInc[plaString + 'fleet.' + item] = movement.ships[item];
+    }
+  },
+
+  _processOutgoingMission: function(player, i, horaActual){
+    let movement = player.movement[i];
+    let newTime = 0;
+    switch(movement.mission){
+      case 1: { // Colonization
+        movement.ships.colony -= 1;
+        let resColonia = this.colonize(movement.coorHasta, player, movement.resources, movement.ships);
+        let text = resColonia ? "Congratulations, you have a new colony!!!" : "Something went wrong. The comunication with the fleet has been lost...";
+        this.sendMessage(player.name, {type: 3, title: "Colonization", text, data: {}});
+        break;
+      }
+      case 2: { // Recycling
+        if(fun.estaColonizado(this.allCord, movement.coorHasta)){
+          base.findAndExecute(movement.coorHasta, (res) => {
+            let indexPlanet = fun.getIndexOfPlanet(res.planets, movement.coorHasta);
+            let newDebris = this.recicleDebris(player.name, res.planets[indexPlanet].debris, movement);
+            if(newDebris != undefined) base.saveDebris(movement.coorHasta, newDebris, false);
+          });
+        }
+        newTime = this._calcReturnTime(movement, horaActual);
+        this.returnFleetInDataBase(player, i, undefined, newTime, movement.resources, undefined);
+        break;
+      }
+      case 3: { // Transport
+        if(fun.estaColonizado(this.allCord, movement.coorHasta)){
+          base.addPlanetData(movement.coorHasta, movement.resources, {}, movement.destination === 2);
+        }
+        newTime = this._calcReturnTime(movement, horaActual);
+        this.returnFleetInDataBase(player, i, undefined, newTime, fun.zeroResources(), undefined);
+        break;
+      }
+      case 4: { // Deployment
+        if(fun.estaColonizado(this.allCord, movement.coorHasta)){
+          base.addPlanetData(movement.coorHasta, movement.resources, movement.ships, movement.destination === 2);
+        }else{
+          this.sendMessage(player.name, {type: 3, title: "Failed deployment", text: "The deployment has failed. The comunication with the fleet has been lost...", data: {}});
+        }
+        break;
+      }
+      case 5: { // Espionage
+        if(fun.estaColonizado(this.allCord, movement.coorHasta)){
+          let nameEspia = fun.playerName(this.allCord, movement.coorDesde);
+          let difEspionageLevel = this.allCord[movement.coorHasta.gal+'_'+movement.coorHasta.sys+'_'+movement.coorHasta.pos].espionage
+                                - this.allCord[movement.coorDesde.gal+'_'+movement.coorDesde.sys+'_'+movement.coorDesde.pos].espionage;
+          let probabilityDetected = Math.floor(Math.pow(2, difEspionageLevel - 2) * movement.ships.espionageProbe);
+          if(probabilityDetected < Math.floor(Math.random()*100)){
+            let indiceDeEspionage = Math.sign(difEspionageLevel) * Math.pow(difEspionageLevel, 2) + movement.ships.espionageProbe;
+            this.sendSpyReport(nameEspia, movement.coorHasta, indiceDeEspionage, movement.destination === 2);
+          }else{
+            let newDebris = {metal: 0, crystal: Math.floor(10000 * movement.ships.espionageProbe / this.universo.fleetDebris)};
+            base.saveDebris(movement.coorHasta, newDebris, true);
+            let nameEspiado = fun.playerName(this.allCord, movement.coorHasta);
+            if(nameEspia !== nameEspiado){
+              this.sendMessage(nameEspiado, {type: 4, title: "Spy captured", text: movement.ships.espionageProbe + " Espionages probes has been destroyed in ", data: {}});
             }
-            base.sendMessage(player.name, infoMes);
-            break;
-
-          case 2: // Reciclaje
-            if(fun.estaColonizado(this.allCord, player.movement[i].coorHasta)){ // Si el planeta esta colonizado
-              base.findAndExecute(player.movement[i].coorHasta, (res) => {
-                let indexPlanet = fun.getIndexOfPlanet(res.planets, player.movement[i].coorHasta);
-                let newDebris = base.recicleDebris(player.name, res.planets[indexPlanet].debris, player.movement[i]);  // Reciclo los escombros
-                if(newDebris != undefined){ // Guardo los nuevos escombros
-                  base.saveDebris(player.movement[i].coorHasta, newDebris, false);
-                }
-              });
-            }
-            // La flota vuelve sin nada, si recicla recursos, se le agregan despues en la funcion de arriba
-            newTime = (player.movement[i].llegada - player.movement[i].time)/1000;  // Calculo el tiempo que va a tardar el viaje en completarse
-            newTime -= (horaActual - player.movement[i].llegada)/1000;                   // Le resto el tiempo que ya paso
-            if(newTime < 0) newTime = 0;
-            base.returnFleetInDataBase(player, i, undefined, newTime, player.movement[i].resources, undefined);
-            break;
-
-          case 3: // Transporte
-            if(fun.estaColonizado(this.allCord, player.movement[i].coorHasta)){
-              base.addPlanetData(player.movement[i].coorHasta, player.movement[i].resources, {}, player.movement[i].destination === 2);
-            }
-            newTime = (player.movement[i].llegada - player.movement[i].time)/1000; // Calculo el tiempo que va a tardar el viaje en completarse
-            newTime -= (horaActual - player.movement[i].llegada)/1000;             // Le resto el tiempo que ya paso
-            if(newTime < 0) newTime = 0;                                           // Si el tiempo dio negativo, la flota ya tendria que haber vuelto
-            base.returnFleetInDataBase(player, i, undefined, newTime, fun.zeroResources(), undefined);
-            break;
-
-          case 4: // Despliege
-            // Si hay un planeta colonizado en esa posicion, la flota se queda ahi, en caso contrario la flota se pierde
-            if(fun.estaColonizado(this.allCord, player.movement[i].coorHasta)){
-              base.addPlanetData(player.movement[i].coorHasta, player.movement[i].resources, player.movement[i].ships, player.movement[i].destination === 2);
-            }else{
-              let infoMes = {type: 3, title: "Failed deployment", text: "The deployment has failed. The comunication with the fleet has been lost...", data: {}};
-              base.sendMessage(player.name, infoMes);
-            }
-            break;
-
-          case 5: // Espionage
-            if(fun.estaColonizado(this.allCord, player.movement[i].coorHasta)){ // Calculo la probabilidad de que destruyan a las sondas de espionage
-              let nameEspia = fun.playerName(this.allCord, player.movement[i].coorDesde);
-              let difEspionageLevel = this.allCord[player.movement[i].coorHasta.gal+'_'+player.movement[i].coorHasta.sys+'_'+player.movement[i].coorHasta.pos].espionage - this.allCord[player.movement[i].coorDesde.gal+'_'+player.movement[i].coorDesde.sys+'_'+player.movement[i].coorDesde.pos].espionage;
-              let probabilityDetected = Math.floor(Math.pow(2, difEspionageLevel - 2) * player.movement[i].ships.espionageProbe);
-              if(probabilityDetected < Math.floor(Math.random()*100)){ // Si no descubren a las sondas de espionage
-                // Uso el indice de espionage para mandar en reporte de espionage
-                let indiceDeEspionage = Math.sign(difEspionageLevel) * Math.pow(difEspionageLevel, 2) + player.movement[i].ships.espionageProbe;
-                base.sendSpyReport(nameEspia, player.movement[i].coorHasta, indiceDeEspionage, player.movement[i].destination === 2);
-              }else{
-                // Calculo los escombros a agregar y los guardo
-                let newDebris = {metal: 0, crystal: Math.floor(10000 * player.movement[i].ships.espionageProbe / this.universo.fleetDebris)};
-                base.saveDebris(player.movement[i].coorHasta, newDebris, true);
-
-                // Aviso a los jugadores lo que paso
-                let nameEspiado = fun.playerName(this.allCord, player.movement[i].coorHasta);
-                if(nameEspia !== nameEspiado){
-                  let infoMesEspiado = {type: 4, title: "Spy captured", text: player.movement[i].ships.espionageProbe + " Espionages probes has been destroyed in ", data: {}};
-                  base.sendMessage(nameEspiado, infoMesEspiado);
-                }
-                let infoMesDestruido = {type: 4, title: "Spy failed", text: "Your espionages probes has been destroyed in ", data: {}};
-                base.sendMessage(nameEspia, infoMesDestruido);
-
-                // Si hay mas naves ademas de las sondas, las devuelvo a su planeta
-                player.movement[i].ships.espionageProbe = 0;
-                if(fun.isZeroObj(player.movement[i].ships)){
-                  break;  // Como no hay naves salgo de switch sin regresar la flota
-                } // Las sondas no vuelven pero el resto de la flota si
-              }
-            }
-            newTime = (player.movement[i].llegada - player.movement[i].time)/1000; // Calculo el tiempo que va a tardar el viaje en completarse
-            newTime -= (horaActual - player.movement[i].llegada)/1000;             // Le resto el tiempo que ya paso
-            if(newTime < 0) newTime = 0;                                           // Si el tiempo dio negativo, la flota ya tendria que haber vuelto
-            base.returnFleetInDataBase(player, i, undefined, newTime, undefined, player.movement[i].ships);
-            break;
-
-          case 6: // Misil
-            // Me fijo que el planeta este colonizado y que el misil se haya enviado a un planeta (las lunas y escombros no se pueden misilear)
-            if(fun.estaColonizado(this.allCord, player.movement[i].coorHasta) && player.movement[i].destination === 1){
-              base.findAndExecute(player.movement[i].coorHasta, (res) => {
-                let indexPlanet = fun.getIndexOfPlanet(res.planets, player.movement[i].coorHasta);
-                let objMisAttack = fun.misilAttack(res.planets[indexPlanet].defense, player.movement[i].ships.misil, res.research.armour, player.research.weapons);
-
-                // Guardo las nuevas defensas del planeta atacado
-                base.setPlanetData(player.movement[i].coorHasta, undefined, undefined, undefined, objMisAttack.survivorDefenses, undefined);
-
-                // Informo al atacado y a el si le digo lo que defensas se rompieron, NO informo al atacante ya que no hay nada que informar
-                let infoMesDestruido = {type: 4, title: "Misil attack", text: "", data: {}};
-                if(objMisAttack.attackedDef){
-                  let aux = objMisAttack.survivorDefenses.interplanetaryMissile;
-                  objMisAttack.survivorDefenses.interplanetaryMissile = 0;
-                  if(fun.isZeroObj(objMisAttack.survivorDefenses)){
-                    infoMesDestruido.text = "The player " + player.name + "(" + fun.coorToCorch(player.movement[i].coorDesde) + ") had attacked you with missils, every defense is destroyed.";
-                  }else{
-                    infoMesDestruido.text = "The player " + player.name + "(" + fun.coorToCorch(player.movement[i].coorDesde) + ") had attacked you with missils, some defenses survived.";
-                    objMisAttack.survivorDefenses.interplanetaryMissile = aux;
-                  }
-                }else{
-                  infoMesDestruido.text = "The player " + player.name + "(" + fun.coorToCorch(player.movement[i].coorDesde) + ") had attacked you with missils, but the Anti-Balistic missils worked fine.";
-                }
-                base.sendMessage(res.name, infoMesDestruido);
-              });
-            }
-            break;
-
-          case 7: // Ataque
-          case 8: // Moon Destruction
-            if(fun.estaColonizado(this.allCord, player.movement[i].coorHasta)){
-              base.findAndExecute(player.movement[i].coorHasta, (res) => {
-                let indexPlanet = fun.getIndexOfPlanet(res.planets, player.movement[i].coorHasta);
-                if(player.movement[i].destination === 2 && !res.planets[indexPlanet].moon.active){
-                  // Si se ataca una luna que ya no existe (por un error o porque fue destruida), la flota vuelve
-                  base.returnFleet(player.movement[i]);
-                  base.sendMessage(player.name, {type: 4, title: 'There Is No Moon', text: 'There is no moon on ' + fun.coorToCorch(player.movement[i].coorHasta) + ' , the fleet has returned.', data: {}});
-                  return null;
-                }
-                let defenses = {};
-                let defenderFleet = {};
-                let destroyedMoon = false;
-                if(player.movement[i].destination === 2){ // Si se ataca a la luna
-                  defenses = fun.zeroDefense();
-                  defenderFleet = res.planets[indexPlanet].moon.fleet;
-                }else{ // Si se ataca al planeta
-                  defenses = res.planets[indexPlanet].defense;
-                  defenderFleet = res.planets[indexPlanet].fleet;
-                }
-
-                // Simula la batalla
-                let objAttack = fun.battle(player.movement[i].ships, defenderFleet, defenses, player.research, res.research, this.universo.rapidFire);
-
-                let newDebris = fun.calcularEscombros(objAttack, {atkShips: player.movement[i].ships, defShips: defenderFleet, defDefenses: defenses}, this.universo.fleetDebris, this.universo.defenceDebris);
-                let newMoonObj = undefined;
-                let lunaChance = 0;
-                if(!res.planets[indexPlanet].moon.active){ // Si no tiene luna, me fijo si se genera una luna en ese planeta
-                  lunaChance = fun.lunaChance(newDebris, this.universo.maxMoon);
-                  if(lunaChance > Math.floor(Math.random() * 100)){
-                    let moonSize = (this.universo.maxMoon === lunaChance) ? 9999 : Math.floor(fun.normalRandom(6999, 9999, 6999, 9999));
-                    newMoonObj = this.createNewMoon(moonSize);
-                    // Le mando un mesage avisandole que tiene una nueva luna
-                    base.sendMessage(res.name, {type: 4, title: "New Moon", text: "Vamos nueva luna en... ", data: {}});
-                  }
-                }
-
-                // Calculo las flotas reparadas por el space dock
-                if(res.planets[indexPlanet].moon.active){
-                  let restoredPorcentage = Math.min(35, Math.log(res.planets[indexPlanet].moon.buildings.spaceDock * 0.4 + 1) * 10) / 100;
-                  for(ship in objAttack.defShips){
-                    objAttack.defShips[ship] += Math.floor(restoredPorcentage * (defenderFleet[ship] - objAttack.defShips[ship]));
-                  }
-                }
-
-                let stolenResources = fun.zeroResources();
-                let recursosCargados;
-                switch (objAttack.winner) {
-                  case 'Attacker': // Gano el atante
-                    let recursos;
-                    if(player.movement[i].destination === 2){
-                      // Intento destruir la luna del atacado
-                      recursos = {...res.planets[indexPlanet].moon.resources};  // Copio el objeto con los recursos de la luna
-                      if(player.movement[i].mission === 8 && objAttack.atkShips.deathstar > 0){
-                        // Calculo las estrellas de la muerte que caen en destrir la luna
-                        let destroyPercentage = (100 - Math.sqrt(res.planets[indexPlanet].moon.size))*Math.sqrt(objAttack.atkShips.deathstar) + player.research.graviton;
-                        destroyPercentage = destroyPercentage / (res.planets[indexPlanet].moon.buildings.moonShield + 1);
-                        objAttack.atkShips.deathstar -= Math.floor(Math.sqrt(res.planets[indexPlanet].moon.size) * Math.random() * 0.6);
-                        if(objAttack.atkShips.deathstar < 0) objAttack.atkShips.deathstar = 0;
-                        if(destroyPercentage > Math.random()*100){ // Se destruye la luna
-                          destroyedMoon = true;
-                          base.sendMessage(player.name, {type: 4, title: 'Moon Destruction', text: 'The moon on ' + fun.coorToCorch(player.movement[i].coorHasta) + ' was destroyed.', data: {}});
-                          base.sendMessage(res.name, {type: 4, title: 'Moon Destruction', text: 'Your moon on ' + fun.coorToCorch(player.movement[i].coorHasta) + ' was destroyed.', data: {}});
-                        }else{
-                          base.sendMessage(player.name, {type: 4, title: 'Moon Destruction Fails', text: 'The moon on ' + fun.coorToCorch(player.movement[i].coorHasta) + ' was datempted to be destroyed, was it fails.', data: {}});
-                          base.sendMessage(res.name, {type: 4, title: 'Moon Destruction Fails', text: 'Your moon on ' + fun.coorToCorch(player.movement[i].coorHasta) + ' was datempted to be destroyed, was it fails', data: {}});
-                        }
-                      }
-                    }else{
-                      recursos = {...res.planets[indexPlanet].resources}; // Copio el objeto con los recursos del planeta
-                    }
-                    if(!fun.isZeroObj(objAttack.atkShips)){ // Si toda la flota que sobrevivio se destruyo en la destruccion de la luna, no regresa nada
-                      // Cargo los recursos robados (los recursos del planeta son pasados por copia, ya que la funcion los rompe)
-                      recursosCargados = fun.loadResourcesAttack(objAttack.atkShips, recursos, player.movement[i].resources);
-                      stolenResources = recursosCargados.saqueado;
-                      // Regresan el resto de las naves
-                      base.returnFleet(player.movement[i], recursosCargados.newCarga, objAttack.atkShips);
-                    }
-                    break;
-
-                  case 'Defenser': // Gano el defensor
-                    break;
-
-                  default: // Empate
-                    // Como podrian morir algunas naves la capacidad de carga es menor, me fijo si se perdieron algunos recursos que se llevaban
-                    let movementAux = {ships: objAttack.atkShips, resources: fun.zeroResources()};
-                    recursosCargados = fun.loadResources(movementAux, player.movement[i].resources);
-                    // Regresan las naves que sobrevivieron
-                    base.returnFleet(player.movement[i], recursosCargados, objAttack.atkShips);
-                } // Actualizo el planeta del defensor
-
-                // Informo con mensajes de lo ocurrido
-                battleData = {playerName: res.name,
-                              planetName: res.planets[indexPlanet].name,
-                              coorAttacker: player.movement[i].coorDesde,
-                              coorDefender: player.movement[i].coorHasta,
-                              fleetAttackBefore: player.movement[i].ships,
-                              fleetAttackAfter: objAttack.atkShips,
-                              fleetDefenseBefore: defenderFleet,
-                              fleetDefenseAfter: objAttack.defShips,
-                              defensesBefore: defenses,
-                              defensesAfter: objAttack.defDefenses,
-                              stolenResources: stolenResources,
-                              newDebris: newDebris,
-                              lunaChance: lunaChance,
-                              winner: objAttack.winner,
-                              rapidFire: this.universo.rapidFire,
-                              rounds: objAttack.rondas};
-                base.sendMessage(player.name, {type: 1, title: 'Battle in space', text: '', data: battleData});
-                base.sendMessage(res.name, {type: 1, title: 'Battle in space', text: '', data: battleData});
-
-                for(let item in stolenResources){
-                  if(player.movement[i].destination === 2){
-                    res.planets[indexPlanet].moon.resources[item] -= stolenResources[item];
-                  }else{
-                    res.planets[indexPlanet].resources[item] -= stolenResources[item];
-                  }
-                }
-                if(player.movement[i].destination === 2){
-                  if(destroyedMoon){
-                    newMoonObj = {active: false, size: 0};
-                    base.setPlanetData(res.planets[indexPlanet].coordinates, undefined, undefined, undefined, undefined, newMoonObj);
-                  }else{
-                    base.setMoonData(res.planets[indexPlanet].coordinates, res.planets[indexPlanet].moon.resources, undefined, objAttack.defShips);
-                  }
-                }else{
-                  base.setPlanetData(res.planets[indexPlanet].coordinates, res.planets[indexPlanet].resources, undefined, objAttack.defShips, objAttack.defDefenses, newMoonObj);
-                }
-                base.saveDebris(res.planets[indexPlanet].coordinates, newDebris, true);
-              });
-            }else{ // Se intento atacar un planeta no colonizado y la flota vuelve sin nada
-              base.returnFleet(player.movement[i]);
-              base.sendMessage(player.name, {type: 4, title: 'There Is No Planet', text: 'There is no planet on ' + fun.coorToCorch(player.movement[i].coorHasta) + ' , the fleet has returned.', data: {}});
-            }
-            break;
-
-          default: // Expedition (0)
-            let expObj = fun.expedition(player.movement[i].ships, player.research);
-            if(!expObj.mueren){ // Si se destruyo toda la flota no hago nada, en caso contrario la devuelvo al planeta
-              let newResources = player.movement[i].resources;
-              if(expObj.evento === 5){ // Se encontraron recursos y los cargo a las naves
-                newResources = fun.loadResources(player.movement[i], expObj.resources);
-              }
-              newTime = (player.movement[i].llegada - player.movement[i].time)/1000;
-              newTime += expObj.time;
-              newTime -= (horaActual - player.movement[i].llegada)/1000;
-              if(newTime < 0) newTime = 0;
-
-              // Recordar que el objeto 'ships' se paso por referencia, por lo tanto ya esta actualizado
-              base.returnFleetInDataBase(player, i, undefined, newTime, newResources, player.movement[i].ships);
-              for(let j = 0 ; j<expObj.mensajes.length ; j++){ // Envio los mensajes de las expediciones
-                base.sendMessage(player.name, expObj.mensajes[j]);
-              }
-            }
+            this.sendMessage(nameEspia, {type: 4, title: "Spy failed", text: "Your espionages probes has been destroyed in ", data: {}});
+            movement.ships.espionageProbe = 0;
+            if(fun.isZeroObj(movement.ships)) break;
           }
-        }else{ // La flota llega al planeta de salida, guardo sus recursos y las naves
-          let planetIndex = fun.getIndexOfPlanet(player.planets, player.movement[i].coorDesde);
-          if(planetIndex !== -1){
-            let lunaString = (player.movement[i].moon) ? '.moon.' : '.'; // Me fijo si la flota va a la luna o al planeta
-            // Si se dirije a la luna y no hay por un error o porque se destruyo, esa flota vuelve al planeta
-            if(!player.planets[planetIndex].moon.active && player.movement[i].moon){
-              lunaString = '.';
+        }
+        newTime = this._calcReturnTime(movement, horaActual);
+        this.returnFleetInDataBase(player, i, undefined, newTime, undefined, movement.ships);
+        break;
+      }
+      case 6: { // Missile
+        if(fun.estaColonizado(this.allCord, movement.coorHasta) && movement.destination === 1){
+          base.findAndExecute(movement.coorHasta, (res) => {
+            let indexPlanet = fun.getIndexOfPlanet(res.planets, movement.coorHasta);
+            let objMisAttack = battle.misilAttack(res.planets[indexPlanet].defense, movement.ships.misil, res.research.armour, player.research.weapons);
+            base.setPlanetData(movement.coorHasta, undefined, undefined, undefined, objMisAttack.survivorDefenses, undefined);
+            let text;
+            if(objMisAttack.attackedDef){
+              let aux = objMisAttack.survivorDefenses.interplanetaryMissile;
+              objMisAttack.survivorDefenses.interplanetaryMissile = 0;
+              if(fun.isZeroObj(objMisAttack.survivorDefenses)){
+                text = "The player " + player.name + "(" + fun.coorToCorch(movement.coorDesde) + ") had attacked you with missils, every defense is destroyed.";
+              }else{
+                text = "The player " + player.name + "(" + fun.coorToCorch(movement.coorDesde) + ") had attacked you with missils, some defenses survived.";
+                objMisAttack.survivorDefenses.interplanetaryMissile = aux;
+              }
+            }else{
+              text = "The player " + player.name + "(" + fun.coorToCorch(movement.coorDesde) + ") had attacked you with missils, but the Anti-Balistic missils worked fine.";
             }
-            let plaString = 'planets.' + planetIndex + lunaString;
+            this.sendMessage(res.name, {type: 4, title: "Misil attack", text, data: {}});
+          });
+        }
+        break;
+      }
+      case 7: // Attack
+      case 8: // Moon Destruction
+        this._processBattle(player, movement);
+        break;
 
-            for(let item in player.movement[i].resources){ // Guardo los recursos
-              if(item !== 'misil') objInc[plaString + 'resources.' + item] = player.movement[i].resources[item];
-            }
-            for(let item in player.movement[i].ships){ // Guardo todas las naves
-              objInc[plaString + 'fleet.' + item] = player.movement[i].ships[item];
-            }
+      default: { // Expedition (0)
+        let expObj = expedicion.expedition(movement.ships, player.research);
+        if(!expObj.mueren){
+          let newResources = (expObj.evento === 5) ? fun.loadResources(movement, expObj.resources) : movement.resources;
+          newTime = (movement.llegada - movement.time)/1000 + expObj.time - (horaActual - movement.llegada)/1000;
+          if(newTime < 0) newTime = 0;
+          this.returnFleetInDataBase(player, i, undefined, newTime, newResources, movement.ships);
+          for(let j = 0; j < expObj.mensajes.length; j++){
+            this.sendMessage(player.name, expObj.mensajes[j]);
           }
         }
       }
     }
-    objInc['puntos'] = Math.floor(objSet['puntosAcum']/1000);
-    objSet['puntosAcum'] = objSet['puntosAcum'] % 1000;
-    objSet.lastVisit = horaActual;    // Updatea la ultima vez que se actualizo este planeta
-    base.savePlayerData(player.name, objSet, objInc, undefined, objPull, f);
   },
 
-  // Devuelve el objeto de un nuevo planeta
-  //  -cood = Coordenadas del nuevo planeta
-  //  -planetName = Nombre del nuevo planeta
-  //  -playerName = Nombre del jugador dueno del planeta
-  //  -playerTypeNew = El typo de jugador del que es el dueno del planeta
-  //  -initResources = Recursos con los que inicia el planeta
-  //  -initShips = Naves con las que inicia el planeta
+  _processBattle: function(player, movement){
+    battle.processBattle(player, movement, this);
+  },
+
   createNewPlanet: function(cord, planetName, playerName, playerTypeNew, initResources, initShips) {
     let typePlanet = fun.generateNewTypeOfPlanet(cord.pos, cord.sys % 2);
     return {idPlanet: Math.pow(500,2)*cord.gal + 500*cord.sys + cord.pos,
@@ -485,8 +390,6 @@ var exp  = {
     };
   },
 
-  // Devuelve el objeto de una nueva luna
-  //  -newSize: Tamano de la nueva luna
   createNewMoon: function(newSize){
     return {active: true,
       size: newSize,
@@ -504,8 +407,7 @@ var exp  = {
     }
   },
 
-  // Devuelve una coorneda que este libre en el universo
-  //  -rand = Si es true la coordenada es alatoria, si no se busca la glaxia numero 'comienzoBusquedaNewCoor'
+  // rand=false forces sequential search instead of random placement
   newCord: function(rand = true) {
     // Busca un cordenada libre y la devuelve
     let newCoor = {};
@@ -528,40 +430,14 @@ var exp  = {
     }
   },
 
-  // Devuelve un objeto con la informacion basica del jugador activo
-  //  -planet = Numero de planeta en el que esta parado el jugador
   getActualBasicInfo: function(planet) {
     let resourcesObj = (this.moon) ? this.player.planets[planet].moon.resources : this.player.planets[planet].resources;
     let classObj = {};
     let firstMovement = this.getFirstMovementInfo();
     let objStorage = this.getAlmacen(this.player.planets[planet], this.moon);
-    if(resourcesObj.metal >= objStorage.metal){
-      classObj.metal = 'overmark'; // Rojo
-    }else{
-      if(resourcesObj.metal >= objStorage.metal*4/5){
-        classObj.metal = 'middlemark'; // Amarillo
-      }else{
-        classObj.metal = ''; // Normal
-      }
-    }
-    if(resourcesObj.crystal >= objStorage.crystal){
-      classObj.crystal = 'overmark'; // Rojo
-    }else{
-      if(resourcesObj.crystal >= objStorage.crystal*4/5){
-        classObj.crystal = 'middlemark'; // Amarillo
-      }else{
-        classObj.crystal = ''; // Normal
-      }
-    }
-    if(resourcesObj.deuterium >= objStorage.deuterium){
-      classObj.deuterium = 'overmark'; // Rojo
-    }else{
-      if(resourcesObj.deuterium >= objStorage.deuterium*4/5){
-        classObj.deuterium = 'middlemark'; // Amarillo
-      }else{
-        classObj.deuterium = ''; // Normal
-      }
-    }
+    classObj.metal     = this._getResourceClass(resourcesObj.metal,     objStorage.metal);
+    classObj.crystal   = this._getResourceClass(resourcesObj.crystal,   objStorage.crystal);
+    classObj.deuterium = this._getResourceClass(resourcesObj.deuterium, objStorage.deuterium);
     return {name: this.universo.name,
       speed: this.universo.speed,
       speedFleet: this.universo.speedFleet,
@@ -595,7 +471,6 @@ var exp  = {
     };
   },
 
-  // Devuelve el tiempo en el que llega la primer flota y la mission mas si esta regresando o no
   getFirstMovementInfo: function(){
     let res = {time: 0, mission: ""};
     if(this.player.movement.length > 0){
@@ -611,9 +486,6 @@ var exp  = {
     return res;
   },
 
-  // Devuelve cuanto es el almacenamiento maximo de cada recurso para un planeta
-  //  -planetaObj = Objeto con la informacion de todo el planeta o luna
-  //  -moon = Si es una luna luna o no
   getAlmacen: function(planetObj, moon = false){
     let res = {};
     if(moon){ // Si esta en la luna todos los almecenes estan en 0, ya que no importan
@@ -626,44 +498,45 @@ var exp  = {
     return res;
   },
 
-  // Devuelve un objeto con la informacion de la produccion de recursos de un planeta
-  //  -planet = Numero de planeta
   resourcesSetting: function(planet) {
-    let spd = this.universo.speed;
+    let spd   = this.universo.speed;
     let minas = this.player.planets[planet].buildings;
-    let temp = (this.player.planets[planet].temperature.max + this.player.planets[planet].temperature.min)/2;
-    let maxEnergyAux = {metal: Math.floor(parseInt(this.player.planets[planet].resourcesPercentage.metal) * minas.metalMine * Math.pow(1.1, minas.metalMine)),
-                        crystal: Math.floor(parseInt(this.player.planets[planet].resourcesPercentage.crystal) * minas.crystalMine * Math.pow(1.1, minas.crystalMine)),
-                        deuterium: Math.floor(2 * parseInt(this.player.planets[planet].resourcesPercentage.deuterium) * minas.deuteriumMine * Math.pow(1.1, minas.deuteriumMine))};
-    let auxEnergy = {solar: Math.floor(20 * minas.solarPlant * Math.pow(1.1,minas.solarPlant)),
-                    fusion: Math.floor(3 * minas.fusionReactor * parseInt(this.player.planets[planet].resourcesPercentage.energy) * Math.pow(1.05 + 0.01*this.player.research.energy, minas.fusionReactor)),
-                    fusionDeuterium: -Math.floor(minas.fusionReactor * parseInt(this.player.planets[planet].resourcesPercentage.energy) * Math.pow(1.1, minas.fusionReactor)),
-                    satillite: Math.floor((temp+160)/6) * this.player.planets[planet].fleet.solarSatellite};
-    let energyTotal = auxEnergy.solar + auxEnergy.fusion + auxEnergy.satillite;
-    let totalEnergyUsage = maxEnergyAux.metal + maxEnergyAux.crystal + maxEnergyAux.deuterium;
-    let energyUsage = {metal: Math.floor((totalEnergyUsage === 0) ? 0 : (maxEnergyAux.metal*energyTotal)/totalEnergyUsage),
-                       crystal: Math.floor((totalEnergyUsage === 0) ? 0 : (maxEnergyAux.crystal*energyTotal)/totalEnergyUsage),
-                       deuterium: Math.floor((totalEnergyUsage === 0) ? 0 : (maxEnergyAux.deuterium*energyTotal)/totalEnergyUsage)};
-    energyUsage = {metal: ((energyUsage.metal > maxEnergyAux.metal) ? maxEnergyAux.metal : energyUsage.metal), crystal: ((energyUsage.crystal > maxEnergyAux.crystal) ? maxEnergyAux.crystal : energyUsage.crystal), deuterium: ((energyUsage.deuterium > maxEnergyAux.deuterium) ? maxEnergyAux.deuterium : energyUsage.deuterium)};
-    return {basic: {metal: 30 * spd, crystal: 15 * spd},
-      values: this.player.planets[planet].resourcesPercentage,
-      buildings: minas,
+    let temp  = (this.player.planets[planet].temperature.max + this.player.planets[planet].temperature.min) / 2;
+    const pct = {
+      metal:     parseInt(this.player.planets[planet].resourcesPercentage.metal),
+      crystal:   parseInt(this.player.planets[planet].resourcesPercentage.crystal),
+      deuterium: parseInt(this.player.planets[planet].resourcesPercentage.deuterium),
+      energy:    parseInt(this.player.planets[planet].resourcesPercentage.energy)
+    };
+    const {maxEnergyAux, auxEnergy, energyTotal, energyUsage} = this._calcEnergyDistribution(
+      minas, pct, this.player.research.energy, this.player.planets[planet].fleet.solarSatellite, temp
+    );
+    const eff = {
+      metal:     isNaN(energyUsage.metal     / maxEnergyAux.metal)     ? 0 : energyUsage.metal     / maxEnergyAux.metal,
+      crystal:   isNaN(energyUsage.crystal   / maxEnergyAux.crystal)   ? 0 : energyUsage.crystal   / maxEnergyAux.crystal,
+      deuterium: isNaN(energyUsage.deuterium / maxEnergyAux.deuterium) ? 0 : energyUsage.deuterium / maxEnergyAux.deuterium
+    };
+    return {
+      basic:         {metal: 30 * spd, crystal: 15 * spd},
+      values:        this.player.planets[planet].resourcesPercentage,
+      buildings:     minas,
       solarSatelite: this.player.planets[planet].fleet.solarSatellite,
-      mines: {metal: Math.floor(3*((isNaN(energyUsage.metal/maxEnergyAux.metal)) ? 0 : (energyUsage.metal/maxEnergyAux.metal)) * spd * parseInt(this.player.planets[planet].resourcesPercentage.metal) * minas.metalMine * Math.pow(1.1, minas.metalMine)),
-              crystal: Math.floor(2*((isNaN(energyUsage.crystal/maxEnergyAux.crystal)) ? 0 : (energyUsage.crystal/maxEnergyAux.crystal)) * spd * parseInt(this.player.planets[planet].resourcesPercentage.crystal) * minas.crystalMine * Math.pow(1.1, minas.crystalMine)),
-              deuterium: Math.floor(((isNaN(energyUsage.deuterium/maxEnergyAux.deuterium)) ? 0 : (energyUsage.deuterium/maxEnergyAux.deuterium)) * spd * parseInt(this.player.planets[planet].resourcesPercentage.deuterium) * minas.deuteriumMine * Math.pow(1.1, minas.deuteriumMine) * (1.36-0.004*temp))},
-      energy: auxEnergy,
-      maxEnergy: maxEnergyAux,
-      usageEnergy: energyUsage,
+      mines: {
+        metal:     Math.floor(3 * eff.metal     * spd * pct.metal     * minas.metalMine     * Math.pow(1.1, minas.metalMine)),
+        crystal:   Math.floor(2 * eff.crystal   * spd * pct.crystal   * minas.crystalMine   * Math.pow(1.1, minas.crystalMine)),
+        deuterium: Math.floor(    eff.deuterium * spd * pct.deuterium * minas.deuteriumMine * Math.pow(1.1, minas.deuteriumMine) * (1.36 - 0.004 * temp))
+      },
+      energy:        auxEnergy,
+      maxEnergy:     maxEnergyAux,
+      usageEnergy:   energyUsage,
       resourcesHour: this.player.planets[planet].resourcesAdd,
-      storage: this.getAlmacen(this.player.planets[planet], false),
-      plasma: this.player.research.plasma}
+      storage:       this.getAlmacen(this.player.planets[planet], false),
+      plasma:        this.player.research.plasma
+    };
   },
 
-  // Devuelve un objeto con la informacion de los settings de una luna
-  //  -planet = Numero de planeta que tiene la luna
   moonSetting: function (planet) {
-    cuanticMoonsCordAux = [];
+    let cuanticMoonsCordAux = [];
     for(let i = 0 ; i<this.player.planets.length ; i++){
       if(this.player.planets[i].moon.active && this.player.planets[i].moon.buildings.jumpGate > 0) cuanticMoonsCordAux.push({name: this.player.planets[i].moon.name, cord: this.player.planets[i].coordinates, num: i});
     }
@@ -676,8 +549,6 @@ var exp  = {
     };
   },
 
-  // Devuelve un objeto con la informacion para servir la pagina overview
-  //  -planet = Numero de planeta en el que el usuario esta parado
   overviewActualInfo: function (planet) {
     let camMax = (this.moon) ? this.player.planets[planet].moon.camposMax : this.player.planets[planet].camposMax;
     let cam = (this.moon) ? this.player.planets[planet].moon.campos : this.player.planets[planet].campos;
@@ -691,8 +562,6 @@ var exp  = {
     };
   },
 
-  // Devuelve un objeto con la informacion para servir la pagina de edificios
-  //  -planet = Numero de planeta en el que el usuario esta parado
   buildingsActualInfo: function (planet) {
     let res;
     if(this.moon){
@@ -704,135 +573,26 @@ var exp  = {
     return res;
   },
 
-  // Devuelve un objeto que, por cada edificio, tiene la informacion de los costos, descripcion, etc.
-  //  -player = Objeto con la informacion del jugador
-  //  -planet = Numero de planeta en el que el usuario esta parado
   costBuildings: function (player, planet){
-    let build = player.planets[planet].buildings;
-    let energyAux = {metal: Math.floor(10*(build.metalMine+1)*Math.pow(1.1, (build.metalMine+1))), crystal: Math.floor(10*(build.crystalMine+1)*Math.pow(1.1, (build.crystalMine+1))), deuterium: Math.floor(20*(build.deuteriumMine+1)*Math.pow(1.1, (build.deuteriumMine+1)))};
-    return {metalMine: {metal: Math.floor(60*Math.pow(1.5, build.metalMine)), crystal: Math.floor(15*Math.pow(1.5, build.metalMine)), deuterium: 0, energy: energyAux.metal, energyNeed: energyAux.metal-Math.floor(10*(build.metalMine)*Math.pow(1.1, (build.metalMine))), tech: true, level: build.metalMine, name: "Metal Mine", description: "Used in the extraction of metal ore, metal mines are of primary importance to all emerging and established empires."},
-            crystalMine: {metal: Math.floor(48*Math.pow(1.6, build.crystalMine)), crystal: Math.floor(24*Math.pow(1.6, build.crystalMine)), deuterium: 0, energy: energyAux.crystal, energyNeed: energyAux.crystal-Math.floor(10*(build.crystalMine)*Math.pow(1.1, (build.crystalMine))), tech: true, level: build.crystalMine, name: "Crystal Mine", description: "Crystals are the main resource used to build electronic circuits and form certain alloy compounds."},
-            deuteriumMine: {metal: Math.floor(225*Math.pow(1.5, build.deuteriumMine)), crystal: Math.floor(75*Math.pow(1.5, build.deuteriumMine)), deuterium: 0, energy: energyAux.deuterium, energyNeed: energyAux.deuterium-Math.floor(20*(build.deuteriumMine)*Math.pow(1.1, (build.deuteriumMine))), tech: true, level: build.deuteriumMine, name: "Deuterium Synthesizer", description: "Deuterium Synthesizers draw the trace Deuterium content from the water on a planet."},
-            solarPlant: {metal: Math.floor(75*Math.pow(1.5, build.solarPlant)), crystal: Math.floor(30*Math.pow(1.5, build.solarPlant)), deuterium: 0, energy:  0, tech: true, level: build.solarPlant, name: "Solar Plant", description: "Solar power plants absorb energy from solar radiation. All mines need energy to operate."},
-            fusionReactor: {metal: Math.floor(900*Math.pow(1.8, build.fusionReactor)), crystal: Math.floor(360*Math.pow(1.8, build.fusionReactor)), deuterium: Math.floor(180*Math.pow(1.8, build.fusionReactor)), energy: 0, tech: build.deuteriumMine >= 5 && player.research.energy >= 3, level: build.fusionReactor, name: "Fusion Reactor", description: "The fusion reactor uses deuterium to produce energy."},
-            metalStorage: {metal: 1000*Math.pow(2, build.metalStorage), crystal: 0, deuterium: 0, energy: 0, tech: true, level: build.metalStorage, name: "Metal Storage", description: "Provides storage for excess metal."},
-            crystalStorage: {metal: 1000*Math.pow(2, build.crystalStorage), crystal: 500*Math.pow(2, build.crystalStorage), deuterium: 0, energy: 0, tech: true, level: build.crystalStorage, name: "Crystal Storage", description: "Provides storage for excess crystal."},
-            deuteriumStorage: {metal: 1000*Math.pow(2, build.deuteriumStorage), crystal: 1000*Math.pow(2, build.deuteriumStorage), deuterium: 0, energy: 0, tech: true, level: build.deuteriumStorage, name: "Deuterium Storage", description: "Giant tanks for storing newly-extracted deuterium."},
-            robotFactory: {metal: 400*Math.pow(2, build.robotFactory), crystal: 120*Math.pow(2, build.robotFactory), deuterium: 200*Math.pow(2, build.robotFactory), energy: 0, tech: true, level: build.robotFactory, name: "Robotics Factory", description: "Robotic factories provide construction robots to aid in the construction of buildings. Each level increases the speed of the upgrade of buildings."},
-            shipyard: {metal: 400*Math.pow(2, build.shipyard), crystal: 200*Math.pow(2, build.shipyard), deuterium: 100*Math.pow(2, build.shipyard), energy: 0, tech: build.robotFactory >= 2, level: build.shipyard, name: "Shipyard", description: "All types of ships and defensive facilities are built in the planetary shipyard."},
-            researchLab: {metal: 200*Math.pow(2, build.researchLab), crystal: 400*Math.pow(2, build.researchLab), deuterium: 200*Math.pow(2, build.researchLab), energy: 0, tech: true, level: build.researchLab, name: "Research Lab", description: "A research lab is required in order to conduct research into new technologies."},
-            alliance: {metal: 20000*Math.pow(2, build.alliance), crystal: 40000*Math.pow(2, build.alliance), deuterium: 0, energy: 0, tech: true, level: build.alliance, name: "Alliance Depot", description: "The alliance depot is essential to trade resourses on a moon."},
-            silo: {metal: 20000*Math.pow(2, build.silo), crystal: 20000*Math.pow(2, build.silo), deuterium: 1000*Math.pow(2, build.silo), energy: 0, tech: build.shipyard >= 1, level: build.silo, name: "Silo", description: "Missile silos are used to store missiles."},
-            naniteFactory: {metal: 1000000*Math.pow(2, build.naniteFactory), crystal: 500000*Math.pow(2, build.naniteFactory), deuterium: 100000*Math.pow(2, build.naniteFactory), energy: 0, tech: build.robotFactory >= 10 && player.research.computer >= 10, level: build.naniteFactory, name: "Nanite Factory", description: "This is the ultimate in robotics technology. Each level cuts the construction time for buildings, ships, and defenses."},
-            terraformer: {metal: 0, crystal: 50000*Math.pow(2, build.terraformer), deuterium: 100000*Math.pow(2, build.terraformer), energy: 1000*Math.pow(2, build.terraformer), tech: build.naniteFactory >= 1 && player.research.energy >= 12, level: build.terraformer, name: "Terraformer", description: "The terraformer increases the usable surface of planets."},
-            solarSatellite: {metal: 0, crystal: 2000, deuterium: 500, energy: 0, tech: build.shipyard >= 1, level: player.planets[planet].fleet.solarSatellite, name: "Solar Satellite", description: "Solar satellites are simple platforms of solar cells, located in a high, stationary orbit. A solar satellite produces " + Math.floor(((player.planets[planet].temperature.max + player.planets[planet].temperature.min)/2+160)/6) + " energy on this planet."},
-            listInfo: ["metalMine", "crystalMine", "deuteriumMine", "solarPlant", "fusionReactor", "solarSatellite", "metalStorage", "crystalStorage", "deuteriumStorage", "robotFactory", "shipyard", "researchLab", "alliance", "silo", "naniteFactory", "terraformer"],
-            time: {mult: build.robotFactory, elev: build.naniteFactory},
-            doing: player.planets[planet].buildingConstrucction
-    };
+    return costs.costBuildings(player, planet);
   },
 
-  // Devuelve un objeto que, por cada edificio lunar, tiene la informacion de los costos, descripcion, etc.
-  //  -player = Objeto con la informacion del jugador
-  //  -planet = Numero de planeta en el que el usuario esta parado
   costMoon: function (player, planet){
-    let build = player.planets[planet].moon.buildings;
-    let research = player.research;
-    return {lunarBase: {metal: 10000*Math.pow(2, build.lunarBase), crystal: 20000*Math.pow(2, build.lunarBase), deuterium: 10000*Math.pow(2, build.lunarBase), energy: 0, tech: true, level: build.lunarBase, name: "Lunar Base", description: "Since the moon has no atmosphere, a lunar base is required to generate habitable space."},
-            phalanx: {metal: 20000*Math.pow(2, build.phalanx), crystal: 40000*Math.pow(2, build.phalanx), deuterium: 20000*Math.pow(2, build.phalanx), energy: 0, tech: build.lunarBase >= 3, level: build.phalanx, name: "Phalanx", description: "Using the sensor phalanx, fleets of other empires can be discovered and observed. The bigger the sensor phalanx array, the larger the range it can scan."},
-            spaceDock: {metal: 10000*Math.pow(3, build.spaceDock), crystal: 1000*Math.pow(2, build.spaceDock), deuterium: 5000*Math.pow(3, build.spaceDock), energy: 0, tech: build.lunarBase >= 1, level: build.spaceDock, name: "Space Dock", description: "Wreckages can be repaired in the Space Dock."},
-            marketplace: {metal: 6000000*Math.pow(2, build.marketplace), crystal: 4000000*Math.pow(2, build.marketplace), deuterium: 2000000*Math.pow(2, build.marketplace), energy: 0, tech: build.lunarBase >= 2 && research.computer >= 8 && player.planets[planet].buildings.alliance >= 4, level: build.marketplace, name: "Marketplace", description: "The place for change resources with other empires, recolectors or even mysterious and dangerous people."},
-            lunarSunshade: {metal: 15000*Math.pow(2, build.lunarSunshade), crystal: 0, deuterium: 50000*Math.pow(2, build.lunarSunshade), energy: 0, tech: build.lunarBase >= 1 && research.laser >= 12, level: build.lunarSunshade, name: "Lunar Sunshade", description: "The system that get cold your planet. For each level you can reduce 3 degrees the minimun temperature from your planet, growing up the deuterium producction but getting worse the energy levels."},
-            lunarBeam: {metal: 0, crystal: 70000*Math.pow(2, build.lunarBeam), deuterium: 90000*Math.pow(2, build.lunarBeam), energy: 0, tech: build.lunarBase >= 1 && research.ion >= 12, level: build.lunarBeam, name: "Lunar Beam", description: "The system that warn your planet. For each level you can reduce 3 degrees the maximun temperature from your planet. The solar satellites will improve the energy."},
-            jumpGate: {metal: 2000000*Math.pow(2, build.jumpGate), crystal: 4000000*Math.pow(2, build.jumpGate), deuterium: 2000000*Math.pow(2, build.jumpGate), energy: 0, tech: build.lunarBase >= 1 && research.hyperspace >= 7, level: build.jumpGate, name: "Jump Gate", description: "Jump gates are huge transceivers capable of sending even the biggest fleet in no time to a distant jump gate."},
-            moonShield: {metal: 9000000*Math.pow(3, build.moonShield), crystal: 5000000*Math.pow(3, build.moonShield), deuterium: 2000000*Math.pow(3, build.moonShield), energy: 0, tech: build.lunarBase >= 4 && research.graviton >= 1 && research.shielding >= 12, level: build.moonShield, name: "Moon Shield", description: "The ultimate defense system. Even the deathstar be afraid of the shield."},
-            listInfo: ["lunarBase", "phalanx", "spaceDock", "marketplace", "lunarSunshade", "lunarBeam", "jumpGate", "moonShield"],
-            time: {mult: build.lunarBase, elev: player.planets[planet].buildings.naniteFactory},
-            doing: player.planets[planet].moon.buildingConstrucction
-    };
+    return costs.costMoon(player, planet);
   },
 
-  // Devuelve un objeto que, por cada tecnologia, tiene la informacion de los costos, descripcion, etc.
-  //  -player = Objeto con la informacion del jugador
-  //  -planet = Nivel del laboratorio de investigacion que tiene el planeta actual
   costResearch: function (player, lab){
-    let research = player.research;
-    return {energy: {metal: 0, crystal: 800*Math.pow(2, research.energy), deuterium: 400*Math.pow(2, research.energy), energy: 0, tech: lab >= 1, level: research.energy, name: "Energy Technology", description: "The command of different types of energy is necessary for many new technologies."},
-            laser: {metal: 200*Math.pow(2, research.laser), crystal: 100*Math.pow(2, research.laser), deuterium: 0, energy: 0, tech: lab >= 1 && research.energy >= 2, level: research.laser, name: "Laser Technology", description: "Focusing light produces a beam that causes damage when it strikes an object."},
-            ion: {metal: 1000*Math.pow(2, research.ion), crystal: 300*Math.pow(2, research.ion), deuterium: 100*Math.pow(2, research.ion), energy: 0, tech: lab >= 4 && research.energy >= 4  && research.laser >= 5, level: research.ion, name: "Ion Technology", description: "The concentration of ions allows for the construction of cannons, which can inflict enormous damage."},
-            hyperspace: {metal: 0, crystal: 4000*Math.pow(2, research.hyperspace), deuterium: 2000*Math.pow(2, research.hyperspace), energy: 0, tech: lab >= 7 && research.energy >= 5 && research.shielding >= 5, level: research.hyperspace, name: "Hyperspace Technology", description: "By integrating the 4th and 5th dimensions it is now possible to research a new kind of drive that is more economical and efficient."},
-            plasma: {metal: 2000*Math.pow(2, research.plasma), crystal: 4000*Math.pow(2, research.plasma), deuterium: 1000*Math.pow(2, research.plasma), energy: 0, tech: lab >= 4 && research.energy >= 8 && research.laser >= 10 && research.ion >= 8, level: research.plasma, name: "Plasma Technology", description: "A further development of ion technology which accelerates high-energy plasma, which then inflicts devastating damage and additionally optimises the production of resources."},
-            espionage: {metal: 200*Math.pow(2, research.espionage), crystal: 1000*Math.pow(2, research.espionage), deuterium: 200*Math.pow(2, research.espionage), energy: 0, tech: lab >= 3, level: research.espionage, name: "Espionage Technology", description: "Information about other planets and moons can be gained using this technology."},
-            computer: {metal: 0, crystal: 400*Math.pow(2, research.computer), deuterium: 600*Math.pow(2, research.computer), energy: 0, tech: lab >= 1, level: research.computer, name: "Computer Technology", description: "More fleets can be commanded by increasing computer capacities. Each level of computer technology increases the maximum number of fleets by one."},
-            astrophysics: {metal: 4000*Math.pow(2, research.astrophysics), crystal: 8000*Math.pow(2, research.astrophysics), deuterium: 4000*Math.pow(2, research.astrophysics), energy: 0, tech: lab >= 3 && research.espionage >= 4 && research.computer >= 2, level: research.astrophysics, name: "Astrophysics", description: "With an astrophysics research module, ships can undertake long expeditions. Every second level of this technology will allow you to colonise an extra planet."},
-            intergalactic: {metal: 240000*Math.pow(2, research.intergalactic), crystal: 400000*Math.pow(2, research.intergalactic), deuterium: 160000*Math.pow(2, research.intergalactic), energy: 0, tech: lab >= 10 && research.computer >= 8 && research.hyperspace >= 8, level: research.intergalactic, name: "Intergalactic Research Network", description: "Researchers on different planets communicate via this network."},
-            graviton: {metal: 0, crystal: 0, deuterium: 0, energy: 300000*Math.pow(2, research.graviton), tech: lab >= 12, level: research.graviton, name: "Graviton Technology", description: "Firing a concentrated charge of graviton particles can create an artificial gravity field, which can destroy ships or even moons."},
-            combustion: {metal: 400*Math.pow(2, research.combustion), crystal: 0, deuterium: 600*Math.pow(2, research.combustion), energy: 0, tech: lab >= 1 && research.energy >= 1, level: research.combustion, name: "Combustion Drive", description: "The development of this drive makes some ships faster, although each level increases speed by only 10 % of the base value."},
-            impulse: {metal: 2000*Math.pow(2, research.impulse), crystal: 4000*Math.pow(2, research.impulse), deuterium: 600*Math.pow(2, research.impulse), energy: 0, tech: lab >= 2 && research.energy >= 2, level: research.impulse, name: "Impulse Drive", description: "The impulse drive is based on the reaction principle. Further development of this drive makes some ships faster, although each level increases speed by only 20 % of the base value."},
-            hyperspace_drive: {metal: 10000*Math.pow(2, research.hyperspace_drive), crystal: 20000*Math.pow(2, research.hyperspace_drive), deuterium: 6000*Math.pow(2, research.hyperspace_drive), energy: 0, tech: lab >= 7 && research.hyperspace >= 3, level: research.hyperspace, name: "Hyperspace Drive", description: "Hyperspace drive warps space around a ship. The development of this drive makes some ships faster, although each level increases speed by only 30 % of the base value."},
-            weapons: {metal: 800*Math.pow(2, research.weapons), crystal: 200*Math.pow(2, research.weapons), deuterium: 0, energy: 0, tech: lab >= 4, level: research.weapons, name: "Weapons Technology", description: "Weapons technology makes weapons systems more efficient. Each level of weapons technology increases the weapon strength of units by 10 % of the base value."},
-            shielding: {metal: 200*Math.pow(2, research.shielding), crystal: 600*Math.pow(2, research.shielding), deuterium: 0, energy: 0, tech: lab >= 6 && research.energy >= 3, level: research.shielding, name: "Shielding Technology", description: "Shielding technology makes the shields on ships and defensive facilities more efficient. Each level of shield technology increases the strength of the shields by 10 % of the base value."},
-            armour: {metal: 1000*Math.pow(2, research.armour), crystal: 0, deuterium: 0, energy: 0, tech: lab >= 2, level: research.armour, name: "Armour Technology", description: "Special alloys improve the armour on ships and defensive structures. The effectiveness of the armour can be increased by 10 % per level."},
-            listInfo: ["energy", "laser", "ion", "hyperspace", "plasma", "combustion", "impulse", "hyperspace_drive", "espionage", "computer", "astrophysics", "intergalactic", "graviton", "weapons", "shielding", "armour"],
-            time: {mult: lab, elev: research.intergalactic},
-            doing: player.researchConstrucction
-    };
+    return costs.costResearch(player, lab);
   },
 
-  // Devuelve un objeto que, por cada nave, tiene la informacion de los costos, descripcion, etc.
-  //  -player = Objeto con la informacion del jugador
-  //  -planet = Numero de planeta en el que el usuario esta parado
-  //  -moon   = Booleano que es true si estamos en la luna y false si no
   costShipyard: function(player, planet, moon){
-    let fleet = (moon) ? player.planets[planet].moon.fleet : player.planets[planet].fleet;
-    let research = player.research;
-    let yard = player.planets[planet].buildings.shipyard;
-    return {lightFighter: {metal: 3000, crystal: 1000, deuterium: 0, energy: 0, tech: yard >= 1 && research.combustion >= 1, level: fleet.lightFighter, name: "Light Fighter", description: "This is the first fighting ship all emperors will build. The light fighter is an agile ship, but vulnerable on its own. In mass numbers, they can become a great threat to any empire. They are the first to accompany small and large cargoes to hostile planets with minor defenses."},
-            heavyFighter: {metal: 6000, crystal: 4000, deuterium: 0, energy: 0, tech: yard >= 3 && research.impulse >= 2 && research.armour >= 2, level: fleet.heavyFighter, name: "Heavy Fighter", description: "This fighter is better armoured and has a higher attack strength than the light fighter."},
-            cruiser: {metal: 2000, crystal: 7000, deuterium: 2000, energy: 0, tech: yard >= 5 && research.impulse >= 4 && research.ion >= 2, level: fleet.cruiser, name: "Cruiser", description: "Cruisers are armoured almost three times as heavily as heavy fighters and have more than twice the firepower. In addition, they are very fast."},
-            battleship: {metal: 45000, crystal: 15000, deuterium: 0, energy: 0, tech: yard >= 7 && research.hyperspace_drive >= 4, level: fleet.battleship, name: "Battleship", description: "Battleships form the backbone of a fleet. Their heavy cannons, high speed, and large cargo holds make them opponents to be taken seriously."},
-            battlecruiser: {metal: 30000, crystal: 40000, deuterium: 15000, energy: 0, tech: yard >= 8 && research.hyperspace_drive >= 5 && research.laser >= 12 && research.hyperspace >= 5, level: fleet.battlecruiser, name: "Battlecruiser", description: "The Battlecruiser is highly specialized in the interception of hostile fleets."},
-            bomber: {metal: 50000, crystal: 25000, deuterium: 15000, energy: 0, tech: yard >= 8 && research.impulse >= 6 && research.plasma >= 5, level: fleet.bomber, name: "Bomber", description: "The bomber was developed especially to destroy the planetary defenses of a world."},
-            destroyer: {metal: 60000, crystal: 50000, deuterium: 15000, energy: 0, tech: yard >= 9 && research.hyperspace_drive >= 6 && research.hyperspace >= 5, level: fleet.destroyer, name: "Destroyer", description: "The destroyer is the king of the warships."},
-            deathstar: {metal: 5000000, crystal: 4000000, deuterium: 1000000, energy: 0, tech: yard >= 12 && research.hyperspace_drive >= 7 && research.graviton >= 1 && research.hyperspace >= 6, level: fleet.deathstar, name: "Deathstar", description: "The destructive power of the deathstar is unsurpassed."},
-            smallCargo: {metal: 2000, crystal: 2000, deuterium: 0, energy: 0, tech: yard >= 2 && research.combustion >= 2, level: fleet.smallCargo, name: "Small Cargo", description: "The small cargo is an agile ship which can quickly transport resources to other planets."},
-            largeCargo: {metal: 6000, crystal: 6000, deuterium: 0, energy: 0, tech: yard >= 4 && research.combustion >= 6, level: fleet.largeCargo, name: "Large Cargo", description: "This cargo ship has a much larger cargo capacity than the small cargo, and is generally faster thanks to an improved drive."},
-            colony: {metal: 10000, crystal: 20000, deuterium: 10000, energy: 0, tech: yard >= 4 && research.impulse >= 3, level: fleet.colony, name: "Colony Ship", description: "Vacant planets can be colonised with this ship."},
-            recycler: {metal: 10000, crystal: 6000, deuterium: 2000, energy: 0, tech: yard >= 4 && research.combustion >= 6 && research.shielding >= 2, level: fleet.recycler, name: "Recycler", description: "Recyclers are the only ships able to harvest debris fields floating in a planet`s orbit after combat."},
-            espionageProbe: {metal: 0, crystal: 1000, deuterium: 0, energy: 0, tech: yard >= 3 && research.combustion >= 3 && research.espionage >= 2, level: fleet.espionageProbe, name: "Espionage Probe", description: "Espionage probes are small, agile drones that provide data on fleets and planets over great distances."},
-            solarSatellite: {metal: 0, crystal: 2000, deuterium: 500, energy: 0, tech: yard >= 1, level: fleet.solarSatellite, name: "Solar Satellite", description: "Solar satellites are simple platforms of solar cells, located in a high, stationary orbit. A solar satellite produces " + Math.floor(((player.planets[planet].temperature.max + player.planets[planet].temperature.min)/2+160)/6) + " energy on this planet."},
-            listInfo: ["lightFighter", "heavyFighter", "cruiser", "battleship", "battlecruiser", "bomber", "destroyer", "deathstar", "smallCargo", "largeCargo", "colony", "recycler", "espionageProbe", "solarSatellite"],
-            time: {mult: yard, elev: player.planets[planet].buildings.naniteFactory},
-            doing: player.planets[planet].shipConstrucction
-    };
+    return costs.costShipyard(player, planet, moon);
   },
 
-  // Devuelve un objeto que, por cada defensa, tiene la informacion de los costos, descripcion, etc.
-  //  -player = Objeto con la informacion del jugador
-  //  -planet = Numero de planeta en el que el usuario esta parado
   costDefense: function(player, planet){
-    let defense = player.planets[planet].defense;
-    let research = player.research;
-    let yard = player.planets[planet].buildings.shipyard;
-    return {rocketLauncher: {metal: 2000, crystal: 0, deuterium: 0, energy: 0, tech: yard >= 1, level: defense.rocketLauncher, name: "Rocket Launcher", description: "The rocket launcher is a simple, cost-effective defensive option."},
-            lightLaser: {metal: 1500, crystal: 500, deuterium: 0, energy: 0, tech: yard >= 2 && research.laser >= 3, level: defense.lightLaser, name: "Light Laser", description: "Concentrated firing at a target with photons can produce significantly greater damage than standard ballistic weapons."},
-            heavyLaser: {metal: 6000, crystal: 2000, deuterium: 0, energy: 0, tech: yard >= 4 && research.laser >= 6 && research.energy >= 3, level: defense.heavyLaser, name: "Heavy Laser", description: "The heavy laser is the logical development of the light laser."},
-            gauss: {metal: 20000, crystal: 15000, deuterium: 0, energy: 0, tech: yard >= 6 && research.weapons >= 3 && research.energy >= 6 && research.shielding >= 1, level: defense.gauss, name: "Gauss Cannon", description: "The Gauss Cannon fires projectiles weighing tons at high speeds."},
-            ion: {metal: 2000, crystal: 6000, deuterium: 0, energy: 0, tech: yard >= 4 && research.ion >= 4, level: defense.ion, name: "Ion Cannon", description: "The Ion Cannon fires a continuous beam of accelerating ions, causing considerable damage to objects it strikes."},
-            plasma: {metal: 50000, crystal: 50000, deuterium: 30000, energy: 0, tech: yard >= 8 && research.plasma >= 7 && research.armour >= 6, level: defense.plasma, name: "Plasma Turret", description: "Plasma Turrets release the energy of a solar flare and surpass even the destroyer in destructive effect."},
-            smallShield: {metal: 10000, crystal: 10000, deuterium: 0, energy: 0, tech: yard >= 1 && research.shielding >= 2, level: defense.smallShield, name: "Small Shield Dome", description: "The small shield dome covers an entire planet with a field which can absorb a tremendous amount of energy."},
-            largeShield: {metal: 50000, crystal: 50000, deuterium: 0, energy: 0, tech: yard >= 6 && research.shielding >= 6, level: defense.largeShield, name: "Large Shield Dome", description: "The evolution of the small shield dome can employ significantly more energy to withstand attacks."},
-            antiballisticMissile: {metal: 8000, crystal: 0, deuterium: 2000, energy: 0, tech: player.planets[planet].buildings.silo >= 2, level: defense.antiballisticMissile, name: "Anti-Ballistic Missiles", description: "Anti-Ballistic Missiles destroy attacking interplanetary missiles"},
-            interplanetaryMissile: {metal: 12500, crystal: 2500, deuterium: 10000, energy: 0, tech: player.planets[planet].buildings.silo >= 4 && research.impulse >= 1 , level: defense.interplanetaryMissile, name: "Interplanetary Missiles", description: "Anti-Ballistic Missiles destroy attacking interplanetary missiles"},
-            listInfo: ["rocketLauncher", "lightLaser", "heavyLaser", "gauss", "ion", "plasma", "smallShield", "largeShield", "antiballisticMissile", "interplanetaryMissile"],
-            time: {mult: yard, elev: player.planets[planet].buildings.naniteFactory},
-            doing: player.planets[planet].shipConstrucction
-    };
+    return costs.costDefense(player, planet);
   },
 
-  // Devuelve un objeto con la informacion para servir la pagina de fleet
-  //  -planet = Numero de planeta en el que el usuario esta parado
-  //  -moon = Booleano que indica si esta en una luna o no
   fleetInfo: function(planet, moon){
     let cantFleetAux = fun.getCantFleets(this.player);
     return {fleets: (moon) ? this.player.planets[planet].moon.fleet : this.player.planets[planet].fleet,
@@ -847,8 +607,6 @@ var exp  = {
     };
   },
 
-  // Devuelve un objeto con la informacion para servir la pagina de galaxia
-  //  -planet = Numero de planeta en el que el usuario esta parado
   galaxyInfo: function(planet){
     let cantFleetAux = fun.getCantFleets(this.player);
     return {espionage: this.player.planets[planet].fleet.espionageProbe,
@@ -860,18 +618,12 @@ var exp  = {
     };
   },
 
-  // Devuelve un objeto con la informacion de cuantas naves mandar para cada ataque automatico
   getQuickAtackDataOptions: function(){
     return {esp: this.player.sendEspionage,
             small: this.player.sendSmall,
             large: this.player.sendLarge};
   },
 
-  // Empieza la construccion de un edificion en un planeta
-  //  -player = Objeto con la informacion del jugador
-  //  -planet = numero de planeta
-  //  -buildingName = String con el nombre del edificio a mejorar
-  //  -res = Respuesta a enviar al cliente
   proccesBuildRequest: function(player, planet, buildingName, res){
     if(!player.planets[planet].buildingConstrucction.active){
       let objPrice = this.costBuildings(player, planet);
@@ -881,25 +633,7 @@ var exp  = {
         let enoughEnergy = buildingName !== 'terraformer' || energy <= player.planets[planet].resourcesAdd.energy;
         let enoughFields = buildingName === 'terraformer' || (player.planets[planet].campos + 1) < player.planets[planet].camposMax;
         if(enough && tech && enoughEnergy && enoughFields){
-          let buildingConstrucctionAux = {};
-          let buildingConstrucction    = {};
-          let objInc                   = {};
-          buildingConstrucctionAux.active    = true;
-          buildingConstrucctionAux.metal     = metal;
-          buildingConstrucctionAux.crystal   = crystal;
-          buildingConstrucctionAux.deuterium = deuterium;
-          buildingConstrucctionAux.item      = buildingName;
-          buildingConstrucctionAux.init      = fun.horaActual();
-          buildingConstrucctionAux.time      = fun.timeBuild(metal + crystal, objPrice.time.mult, objPrice.time.elev, this.universo.speed);
-          buildingConstrucction['planets.' + planet + '.buildingConstrucction'] = buildingConstrucctionAux;
-          player.planets[planet].buildingConstrucction    = buildingConstrucctionAux;
-          objInc['planets.' + planet + '.resources.metal']     = -metal;
-          objInc['planets.' + planet + '.resources.crystal']   = -crystal;
-          objInc['planets.' + planet + '.resources.deuterium'] = -deuterium;
-          events.addElement({time: buildingConstrucctionAux.init + buildingConstrucctionAux.time*1000, player: player.name});
-          base.savePlayerData(player.name, buildingConstrucction, objInc, undefined, undefined, () => {
-            res.send({ok: true, mes: "Operation successful."});
-          });
+          this._startBuildConstruction(player, planet, buildingName, metal, crystal, deuterium, objPrice, '', res);
         }else{ // Manejo de los errores
           let mesAux = '';
           if(!enough){
@@ -921,11 +655,6 @@ var exp  = {
     }
   },
 
-  // Empieza la construccion de un edificion en una luna
-  //  -player = Objeto con la informacion del jugador
-  //  -planet = Numero de planeta
-  //  -buildingName = String con el nombre del edificio a mejorar
-  //  -res = Respuesta a enviar al cliente
   proccesMoonRequest: function(player, planet, buildingName, res){
     if(!player.planets[planet].moon.buildingConstrucction.active){
       let objPrice = this.costMoon(player, planet);
@@ -934,25 +663,7 @@ var exp  = {
         let {metal, crystal, deuterium, tech} = objPrice[buildingName];
         let enoughFields = buildingName === 'lunarBase'|| (player.planets[planet].moon.campos+1) < player.planets[planet].moon.camposMax;
         if(enough && tech && enoughFields){
-          let buildingConstrucctionAux = {};
-          let buildingConstrucction    = {};
-          let objInc                   = {};
-          buildingConstrucctionAux.active    = true;
-          buildingConstrucctionAux.metal     = metal;
-          buildingConstrucctionAux.crystal   = crystal;
-          buildingConstrucctionAux.deuterium = deuterium;
-          buildingConstrucctionAux.item      = buildingName;
-          buildingConstrucctionAux.init      = fun.horaActual();
-          buildingConstrucctionAux.time      = fun.timeBuild(metal + crystal, objPrice.time.mult, objPrice.time.elev, this.universo.speed);
-          buildingConstrucction['planets.' + planet + '.moon.buildingConstrucction'] = buildingConstrucctionAux;
-          player.planets[planet].buildingConstrucction = buildingConstrucctionAux;
-          objInc['planets.' + planet + '.moon.resources.metal']     = -metal;
-          objInc['planets.' + planet + '.moon.resources.crystal']   = -crystal;
-          objInc['planets.' + planet + '.moon.resources.deuterium'] = -deuterium;
-          events.addElement({time: buildingConstrucctionAux.init + buildingConstrucctionAux.time*1000, player: player.name});
-          base.savePlayerData(player.name, buildingConstrucction, objInc, undefined, undefined, () => {
-            res.send({ok: true, mes: "Operation successful."});
-          });
+          this._startBuildConstruction(player, planet, buildingName, metal, crystal, deuterium, objPrice, '.moon', res);
         }else{ // Manejo de errores
           let mesAux = '';
           if(!enough){
@@ -972,11 +683,6 @@ var exp  = {
     }
   },
 
-  // Empieza la investigacion de una tecnologia
-  //  -player = Objeto con la informacion del jugador
-  //  -planet = numero de planeta que inicia la investigacion
-  //  -researchName = String con el nombre de la tecnologia a investigar
-  //  -res = Respuesta a enviar al cliente
   proccesResearchRequest: function(player, planet, researchName, res){
     if(!player.researchConstrucction.active){
       let objPrice = this.costResearch(player, player.planets[planet].buildings.researchLab);
@@ -1015,12 +721,6 @@ var exp  = {
     }
   },
 
-  // Empieza la construccion una cantidad de naves o defensa en un planeta
-  //  -player = Objeto con la informacion del jugador
-  //  -planet = numero de planeta
-  //  -shipyardName = String con el nombre de la nave o defensa a construir
-  //  -shipyardCant = Cantidad de naves o defensas a construir
-  //  -res = Respuesta a enviar al cliente
   proccesShipyardRequest: function(player, planet, shipyardName, shipyardCant, res){
     shipyardCant = parseInt(shipyardCant);
     if(fun.validInt(shipyardCant) && fun.validShipyardName(shipyardName) && shipyardCant > 0){
@@ -1029,7 +729,7 @@ var exp  = {
       let {metal, crystal, deuterium, name, tech} = objPrice[shipyardName];
       if(enough && tech){
         // Si voy a construir misiles en el silo, me fijo que haya capacidad para los misiles
-        if((shipyardName === "antiballisticMissile" || shipyardName === "interplanetaryMissile") && (shipyardCant + fun.cantidadMisiles(planeta) < fun.capacidadSilo(planeta))){
+        if((shipyardName === "antiballisticMissile" || shipyardName === "interplanetaryMissile") && (shipyardCant + fun.cantidadMisiles(player.planets[planet]) >= fun.capacidadSilo(player.planets[planet]))){
           return res.send({ok: false, mes: "No hay mas espacio en el silo."});
         }
         if(shipyardName === "smallShield" && (player.planets[planet].defense.smallShield >= 1 || shipyardCant >= 2 || fun.isBuildingSmallShield(player.planets[planet].shipConstrucction))){
@@ -1077,10 +777,6 @@ var exp  = {
     }
   },
 
-  // Cancela la construccion del edificio que se este mejorando en el planeta
-  //  -player = Objeto con la informacion del jugador
-  //  -planet = Numero de planeta
-  //  -res = Respuesta a enviar al cliente
   cancelBuildRequest: function(player, planet, res){
     if(player.planets[planet].buildingConstrucction.active){
       let objSet = {};
@@ -1099,10 +795,6 @@ var exp  = {
     }
   },
 
-  // Cancela la construccion del edificio que se este mejorando en la luna
-  //  -player = Objeto con la informacion del jugador
-  //  -planet = Numero del planeta de la luna
-  //  -res = Respuesta a enviar al cliente
   cancelMoonRequest: function(player, planet, res){
     if(player.planets[planet].moon.active && player.planets[planet].moon.buildingConstrucction.active){
       let objSet = {};
@@ -1121,9 +813,6 @@ var exp  = {
     }
   },
 
-  // Cancela la investigacion de la tecnologia que se esta mejorando
-  //  -player = Objeto con la informacion del jugador
-  //  -res = Respuesta a enviar al cliente
   cancelResearchRequest: function(player, res){
     if(player.researchConstrucction.active){
       let objSet = {};
@@ -1142,11 +831,6 @@ var exp  = {
     }
   },
 
-  // Cancela una pedido de construccion de una nave en un planeta
-  //  -player = Objeto con la informacion del jugador
-  //  -planet = Numero de planeta
-  //  -shipyardName = Nombre de la nave a cancelar su construccion
-  //  -res = Respuesta a enviar al cliente
   cancelShipyardRequest: function(player, planet, shipyardName, res){
     let objPull = {};
     let objInc  = {};
@@ -1174,12 +858,8 @@ var exp  = {
     });
   },
 
-  // Cambia los niveles de produccion de las minas y con eso updatea los niveles de energia usados por cada una
-  //  -f = Funcion que se ejecuta despues de guardar los nuevos valores en la base de datos
-  //  -player = Objeto con la infomacion sobre el jugador
-  //  -planet = Numero de planeta
-  //  -obj = Objeto con los nuevos valores de los multiplicadores, es null los valores quedan iguales pero actualiza los niveles de energia y produccion de cada mina
-  updateResourcesData: function(res, player, planet, obj = undefined) { // Updatea los multiplicadores de los recursos(NO toca los recursos)
+  // Recalcula produccion/energia de un planeta. Si obj != undefined aplica nuevos porcentajes y guarda en DB.
+  updateResourcesData: function(res, player, planet, obj = undefined){
     let objSet = {};
     let spd    = this.universo.speed;
     let plasma = player.research.plasma;
@@ -1190,29 +870,25 @@ var exp  = {
       objSet['planets.$.resourcesPercentage'] = obj;
     }
     fun.objStringToNum(player.planets[planet].resourcesPercentage);
-    let maxEnergyAux = {metal: Math.floor(player.planets[planet].resourcesPercentage.metal * minas.metalMine * Math.pow(1.1, minas.metalMine)),
-                        crystal: Math.floor(player.planets[planet].resourcesPercentage.crystal * minas.crystalMine * Math.pow(1.1, minas.crystalMine)),
-                        deuterium: Math.floor(2*player.planets[planet].resourcesPercentage.deuterium * minas.deuteriumMine * Math.pow(1.1, minas.deuteriumMine))};
-    let auxEnergy = {solar: Math.floor(20 * minas.solarPlant * Math.pow(1.1,minas.solarPlant)),
-                     fusion: Math.floor(3 * minas.fusionReactor * player.planets[planet].resourcesPercentage.energy * Math.pow(1.05 + 0.01*player.research.energy, minas.fusionReactor)),
-                     fusionDeuterium: -Math.floor(minas.fusionReactor * player.planets[planet].resourcesPercentage.energy * Math.pow(1.1, minas.fusionReactor)),
-                     satillite: Math.floor((temp+160)/6)*player.planets[planet].fleet.solarSatellite};
-    let energyTotal      = auxEnergy.solar + auxEnergy.fusion + auxEnergy.satillite;
-    let totalEnergyUsage = maxEnergyAux.metal + maxEnergyAux.crystal + maxEnergyAux.deuterium;
-    let energyUsage = {metal: Math.floor((maxEnergyAux.metal*energyTotal)/totalEnergyUsage),
-                       crystal: Math.floor((maxEnergyAux.crystal*energyTotal)/totalEnergyUsage),
-                       deuterium: Math.floor((maxEnergyAux.deuterium*energyTotal)/totalEnergyUsage)};
-    energyUsage = {metal: ((energyUsage.metal > maxEnergyAux.metal) ? maxEnergyAux.metal : energyUsage.metal),
-                   crystal: ((energyUsage.crystal > maxEnergyAux.crystal) ? maxEnergyAux.crystal : energyUsage.crystal),
-                   deuterium: ((energyUsage.deuterium > maxEnergyAux.deuterium) ? maxEnergyAux.deuterium : energyUsage.deuterium)};
+    const pct = player.planets[planet].resourcesPercentage;
+    const {maxEnergyAux, auxEnergy, energyTotal, energyUsage} = this._calcEnergyDistribution(
+      minas, pct, player.research.energy, player.planets[planet].fleet.solarSatellite, temp
+    );
+    const eff = {
+      metal:     isNaN(energyUsage.metal     / maxEnergyAux.metal)     ? 0 : energyUsage.metal     / maxEnergyAux.metal,
+      crystal:   isNaN(energyUsage.crystal   / maxEnergyAux.crystal)   ? 0 : energyUsage.crystal   / maxEnergyAux.crystal,
+      deuterium: isNaN(energyUsage.deuterium / maxEnergyAux.deuterium) ? 0 : energyUsage.deuterium / maxEnergyAux.deuterium
+    };
     let energy = Math.floor(energyTotal - maxEnergyAux.metal - maxEnergyAux.crystal - maxEnergyAux.deuterium);
     objSet['planets.$.resources.energy'] = energy;
-    let deuteriumHour = spd * ((isNaN(energyUsage.deuterium/maxEnergyAux.deuterium)) ? 0 : (energyUsage.deuterium/maxEnergyAux.deuterium)) * player.planets[planet].resourcesPercentage.deuterium * minas.deuteriumMine*Math.pow(1.1, minas.deuteriumMine)*(1.36-0.004*temp)*(100+plasma/3)/100 + auxEnergy.fusionDeuterium;
-    if(deuteriumHour < 0) deuteriumHour = 0; // Si la ganancia de deuterio es nagativa se la redondea a 0
-    objSet['planets.$.resourcesAdd'] = {metal: 30*spd+3*((isNaN(energyUsage.metal/maxEnergyAux.metal)) ? 0 : (energyUsage.metal/maxEnergyAux.metal))*spd*player.planets[planet].resourcesPercentage.metal*minas.metalMine*Math.pow(1.1, minas.metalMine)*(100+plasma)/100,
-                                        crystal: 15*spd+2*((isNaN(energyUsage.crystal/maxEnergyAux.crystal)) ? 0 : (energyUsage.crystal/maxEnergyAux.crystal))*spd*player.planets[planet].resourcesPercentage.crystal*minas.crystalMine*Math.pow(1.1, minas.crystalMine)*(100+plasma*(2/3))/100,
-                                        deuterium: deuteriumHour,
-                                        energy: energyTotal};
+    let deuteriumHour = spd * eff.deuterium * pct.deuterium * minas.deuteriumMine * Math.pow(1.1, minas.deuteriumMine) * (1.36 - 0.004 * temp) * (100 + plasma/3) / 100 + auxEnergy.fusionDeuterium;
+    if(deuteriumHour < 0) deuteriumHour = 0;
+    objSet['planets.$.resourcesAdd'] = {
+      metal:     30*spd + 3*eff.metal     * spd * pct.metal     * minas.metalMine     * Math.pow(1.1, minas.metalMine)     * (100 + plasma)     / 100,
+      crystal:   15*spd + 2*eff.crystal   * spd * pct.crystal   * minas.crystalMine   * Math.pow(1.1, minas.crystalMine)   * (100 + plasma*2/3) / 100,
+      deuterium: deuteriumHour,
+      energy:    energyTotal
+    };
     player.planets[planet].resourcesAdd     = objSet['planets.$.resourcesAdd'];
     player.planets[planet].resources.energy = energy;
     if(obj != undefined){
@@ -1220,11 +896,6 @@ var exp  = {
     }
   },
 
-  // Cambia los niveles de produccion de los edificios de la luna y actualiza la temperatura del planeta
-  //  -f = Funcion que se ejecuta despues de guardar los nuevos valores en la base de datos
-  //  -player = Objeto con la infomacion sobre el jugador
-  //  -planet = Numero de planeta
-  //  -obj = Objeto con los nuevos niveles de produccion de sunshade y lunar beam
   updateResourcesDataMoon: function(res, player, planet, obj){
     if(fun.validResourcesSettingsObj(obj, true)){
       let objSet = {};
@@ -1242,12 +913,6 @@ var exp  = {
     }
   },
 
-  // Agrega un movement de ida
-  //  -player = Objeto con la informacion del jugador
-  //  -planet = Numero de planeta
-  //  -moon = Booleno que es true si la flota sale de la luna y false si sale del planeta
-  //  -obj = Objeto con la informacion del cliente sobre a donde se dirige la flota
-  //  -res = Objeto respuesta a enviar al cliente
   addFleetMovement: function(player, planet, moon, obj, res){
     // Verifica que las cordenadas sean validas
     if(!fun.coordenadaValida(obj.coorDesde)){
@@ -1459,10 +1124,6 @@ var exp  = {
     }
   },
 
-  // Pasa la flota de una luna con salto cuantico a otra luna con salto cuantico
-  //  -player = Objeto con la informacion del jugador
-  //  -planet = Numero de planeta
-  //  -obj = Objeto con informacion del cliente de a donde va la flota
   moveCuanticFleet: function(player, planet, obj, res){
     if(player.planets[planet].moon.active && player.planets[planet].moon.buildings.jumpGate > 0 && fun.estaColonizado(this.allCord, obj.coorHasta)){
       let index = fun.getIndexOfPlanet(player.planets, obj.coorHasta);
@@ -1501,11 +1162,6 @@ var exp  = {
     return res;
   },
 
-  // Efectua la venta y compra de recursos de un jugador en un mercado lunar
-  //  -player = Objeto con la informacion del jugador
-  //  -planet = Numero de planeta
-  //  -obj = Objeto del cliente con la informacion de que se esta comerciando
-  //  -res = Objeto respuesta a enviar al cliente
   marketResources: function(player, planet, obj, res){
     let recursosSuficientes = false;
     obj.button   = parseInt(obj.button);
@@ -1576,31 +1232,19 @@ var exp  = {
     }
   },
 
-  // Intenta colonizar un planeta para un jugador, devuelve true si lo logra y false si no
-  //  -cord = Coordenadas del planeta a colonizar
-  //  -player = Objeto del jugador que esta colonizando
-  //  -resources = Recursos con los que empieza el nuevo planeta
-  //  -ships = Naves con las que empieza el nuevo planeta
   colonize: function(cord, player, resources = undefined, ships = undefined){
-    // Me fijo que la tecnologia de astrifisica permite colonizar esa posicion
     if((cord.pos === 3 || cord.pos === 13) && player.research.astrophysics < 4) return false;
     if((cord.pos === 2 || cord.pos === 14) && player.research.astrophysics < 6) return false;
     if((cord.pos === 1 || cord.pos === 15) && player.research.astrophysics < 8) return false;
 
-    // Me fijo que halla un lugar disponible para colonizar el planeta y que ese planeta no este ya colonizado
-    if(Math.ceil(player.research.astrophysics/2)+1 > player.planets.length && player.planets.length < 8 && !fun.estaColonizado(this.allCord, player.movement[i].coorHasta)){
-
-      // Seteo los recursos y naves con los que se va a crear el nuevo planeta
+    if(Math.ceil(player.research.astrophysics/2)+1 > player.planets.length && player.planets.length < 8 && !fun.estaColonizado(this.allCord, cord)){
       if(resources === undefined) resources = fun.zeroResources();
       if(ships === undefined) ships = fun.zeroResources();
       let newPlanet = this.createNewPlanet(cord, 'Colony', player, player.type, resources, ships);
-
-      // Guardo el nuevo planeta en la base de datos
-      base.savePlayerData(playerName, undefined, undefined, {planets: newPlanet}, undefined, () => {});
-      return true;  // Salio todo bien
-    }else{
-      return false; // No se cumplieron las condiciones para colonizar
+      base.savePlayerData(player.name, undefined, undefined, {planets: newPlanet}, undefined, () => {});
+      return true;
     }
+    return false;
   },
 
   // Cambia el estado de una vaca, o sea, si esta en la lista de vacas lo saca y si no esta lo agrega
@@ -1648,206 +1292,475 @@ var exp  = {
     }
   },
 
-  // Devuelve un objeto con la informacin de los niveles de cada cosa y si la tecnologia alcaza o no
-  //  -planet = Numero de planeta en el que se va a contar las tecnologias
   techInfo: function(planet){
     let build = this.player.planets[planet].buildings;
     let research = this.player.research;
     let buildMoon = this.player.planets[planet].moon.active ? this.player.planets[planet].moon.buildings : fun.zeroBuildingsMoon();
-    return {metalMine: {tech: true, level: build.metalMine},
-      crystalMine: {tech: true, level: build.crystalMine},
-      deuteriumMine: {tech: true, level: build.deuteriumMine},
-      solarPlant: {tech: true, level: build.solarPlant},
-      fusionReactor: {tech: build.deuteriumMine >= 5 && research.energy >= 3, level: build.fusionReactor},
-      metalStorage: {tech: true, level: build.metalStorage},
-      crystalStorage: {tech: true, level: build.crystalStorage},
-      deuteriumStorage: {tech: true, level: build.deuteriumStorage},
-      robotFactory: {tech: true, level: build.robotFactory},
-      shipyard: {tech: build.robotFactory >= 2, level: build.shipyard},
-      researchLab: {tech: true, level: build.researchLab},
-      alliance: {tech: true, level: build.alliance},
-      silo: {tech: build.shipyard >= 1, level: build.silo},
-      naniteFactory: {tech: build.robotFactory >= 10 && research.computer >= 10, level: build.naniteFactory},
-      terraformer: {tech: build.naniteFactory >= 1 && research.energy >= 12, level: build.terraformer},
-      lunarBase: {tech: true, level: buildMoon.lunarBase},
-      phalanx: {tech: buildMoon.lunarBase >= 3, level: buildMoon.phalanx},
-      spaceDock: {tech: buildMoon.lunarBase >= 1, level: buildMoon.spaceDock},
-      marketplace: {tech: buildMoon.lunarBase >= 2 && research.computer >= 8 && build.alliance >= 4, level: buildMoon.marketplace},
-      lunarSunshade: {tech: buildMoon.lunarBase >= 1 && research.laser >= 12, level: buildMoon.lunarSunshade},
-      lunarBeam: {tech: buildMoon.lunarBase >= 1 && research.ion >= 12, level: buildMoon.lunarBeam},
-      jumpGate: {tech: buildMoon.lunarBase >= 1 && research.hyperspace >= 7, level: buildMoon.jumpGate},
-      moonShield: {tech: buildMoon.lunarBase >= 4 && research.graviton >= 1 && research.shielding >= 12, level: buildMoon.moonShield},
-      energy: {tech: build.researchLab >= 1, level: research.energy},
-      laser: {tech: build.researchLab >= 1 && research.energy >= 2, level: research.laser},
-      ion: {tech: build.researchLab >= 4 && research.energy >= 4  && research.laser >= 5, level: research.ion},
-      hyperspace: {tech: build.researchLab >= 7 && research.energy >= 5 && research.shielding >= 5, level: research.hyperspace},
-      plasma: {tech: build.researchLab >= 4 && research.energy >= 8 && research.laser >= 10 && research.ion >= 5, level: research.plasma},
-      espionage: {tech: build.researchLab >= 3, level: research.espionage},
-      computer: {tech: build.researchLab >= 1, level: research.computer},
-      astrophysics: {tech: build.researchLab >= 3 && research.espionage >= 4, level: research.astrophysics},
-      intergalactic: {tech: build.researchLab >= 10 && research.computer >= 8 && research.hyperspace >= 8, level: research.intergalactic},
-      graviton: {tech: build.researchLab >= 12, level: research.graviton},
-      combustion: {tech: build.researchLab >= 1 && research.energy >= 1, level: research.combustion},
-      impulse: {tech: build.researchLab >= 2 && research.energy >= 2, level: research.impulse},
-      hyperspace_drive: {tech: build.researchLab >= 7 && research.hyperspace >= 3, level: research.hyperspace},
-      weapons: {tech: build.researchLab >= 4, level: research.weapons},
-      shielding: {tech: build.researchLab >= 6 && research.energy >= 3, level: research.shielding},
-      armour: {tech: build.researchLab >= 2, level: research.armour},
-      lightFighter: {tech: build.shipyard >= 1 && research.combustion >= 1},
-      heavyFighter: {tech: build.shipyard >= 3 && research.impulse >= 2},
-      cruiser: {tech: build.shipyard >= 5 && research.impulse >= 4 && research.ion >= 2},
-      battleship: {tech: build.shipyard >= 7 && research.hyperspace_drive >= 4},
-      battlecruiser: {tech: build.shipyard >= 8 && research.hyperspace_drive >= 5 && research.laser >= 12 && research.hyperspace >= 5},
-      bomber: {tech: build.shipyard >= 8 && research.impulse >= 6 && research.plasma >= 5},
-      destroyer: {tech: build.shipyard >= 9 && research.hyperspace_drive >= 6 && research.hyperspace >= 5},
-      deathstar: {tech: build.shipyard >= 12 && research.hyperspace_drive >= 7 && research.graviton >= 1 && research.hyperspace >= 6},
-      smallCargo: {tech: build.shipyard >= 2 && research.combustion >= 2},
-      largeCargo: {tech: build.shipyard >= 4 && research.combustion >= 6},
-      colony: {tech: build.shipyard >= 4 && research.impulse >= 3},
-      recycler: {tech: build.shipyard >= 4 && research.impulse >= 6 && research.shielding >= 2},
-      espionageProbe: {tech: build.shipyard >= 3 && research.combustion >= 3 && research.espionage >= 2},
-      solarSatellite: {tech: build.shipyard >= 1},
-      rocketLauncher: {tech: build.shipyard >= 1},
-      lightLaser: {tech: build.shipyard >= 2 && research.laser >= 3},
-      heavyLaser: {tech: build.shipyard >= 4 && research.laser >= 6 && research.energy >= 3},
-      gauss: {tech: build.shipyard >= 6 && research.weapons >= 3 && research.energy >= 6 && research.shielding >= 1},
-      ionCannon: {tech: build.shipyard >= 4 && research.ion >= 4},
-      plasmaTurret: {tech: build.shipyard >= 8 && research.plasma >= 7},
-      smallShield: {tech: build.shipyard >= 1 && research.shielding >= 2},
-      largeShield: {tech: build.shipyard >= 6 && research.shielding >= 6},
-      antiballisticMissile: {tech: build.silo >= 2},
-      interplanetaryMissile: {tech: build.silo >= 4 && research.impulse >= 1}};
+    let t = costs.techRequirements(build, research, buildMoon);
+    return {
+      metalMine:              {tech: t.metalMine,              level: build.metalMine},
+      crystalMine:            {tech: t.crystalMine,            level: build.crystalMine},
+      deuteriumMine:          {tech: t.deuteriumMine,          level: build.deuteriumMine},
+      solarPlant:             {tech: t.solarPlant,             level: build.solarPlant},
+      fusionReactor:          {tech: t.fusionReactor,          level: build.fusionReactor},
+      metalStorage:           {tech: t.metalStorage,           level: build.metalStorage},
+      crystalStorage:         {tech: t.crystalStorage,         level: build.crystalStorage},
+      deuteriumStorage:       {tech: t.deuteriumStorage,       level: build.deuteriumStorage},
+      robotFactory:           {tech: t.robotFactory,           level: build.robotFactory},
+      shipyard:               {tech: t.shipyard,               level: build.shipyard},
+      researchLab:            {tech: t.researchLab,            level: build.researchLab},
+      alliance:               {tech: t.alliance,               level: build.alliance},
+      silo:                   {tech: t.silo,                   level: build.silo},
+      naniteFactory:          {tech: t.naniteFactory,          level: build.naniteFactory},
+      terraformer:            {tech: t.terraformer,            level: build.terraformer},
+      lunarBase:              {tech: t.lunarBase,              level: buildMoon.lunarBase},
+      phalanx:                {tech: t.phalanx,                level: buildMoon.phalanx},
+      spaceDock:              {tech: t.spaceDock,              level: buildMoon.spaceDock},
+      marketplace:            {tech: t.marketplace,            level: buildMoon.marketplace},
+      lunarSunshade:          {tech: t.lunarSunshade,          level: buildMoon.lunarSunshade},
+      lunarBeam:              {tech: t.lunarBeam,              level: buildMoon.lunarBeam},
+      jumpGate:               {tech: t.jumpGate,               level: buildMoon.jumpGate},
+      moonShield:             {tech: t.moonShield,             level: buildMoon.moonShield},
+      energy:                 {tech: t.energy,                 level: research.energy},
+      laser:                  {tech: t.laser,                  level: research.laser},
+      ion:                    {tech: t.ion,                    level: research.ion},
+      hyperspace:             {tech: t.hyperspace,             level: research.hyperspace},
+      plasma:                 {tech: t.plasma,                 level: research.plasma},
+      espionage:              {tech: t.espionage,              level: research.espionage},
+      computer:               {tech: t.computer,               level: research.computer},
+      astrophysics:           {tech: t.astrophysics,           level: research.astrophysics},
+      intergalactic:          {tech: t.intergalactic,          level: research.intergalactic},
+      graviton:               {tech: t.graviton,               level: research.graviton},
+      combustion:             {tech: t.combustion,             level: research.combustion},
+      impulse:                {tech: t.impulse,                level: research.impulse},
+      hyperspace_drive:       {tech: t.hyperspace_drive,       level: research.hyperspace_drive},
+      weapons:                {tech: t.weapons,                level: research.weapons},
+      shielding:              {tech: t.shielding,              level: research.shielding},
+      armour:                 {tech: t.armour,                 level: research.armour},
+      lightFighter:           {tech: t.lightFighter},
+      heavyFighter:           {tech: t.heavyFighter},
+      cruiser:                {tech: t.cruiser},
+      battleship:             {tech: t.battleship},
+      battlecruiser:          {tech: t.battlecruiser},
+      bomber:                 {tech: t.bomber},
+      destroyer:              {tech: t.destroyer},
+      deathstar:              {tech: t.deathstar},
+      smallCargo:             {tech: t.smallCargo},
+      largeCargo:             {tech: t.largeCargo},
+      colony:                 {tech: t.colony},
+      recycler:               {tech: t.recycler},
+      espionageProbe:         {tech: t.espionageProbe},
+      solarSatellite:         {tech: t.solarSatellite},
+      rocketLauncher:         {tech: t.rocketLauncher},
+      lightLaser:             {tech: t.lightLaser},
+      heavyLaser:             {tech: t.heavyLaser},
+      gauss:                  {tech: t.gauss},
+      ionCannon:              {tech: t.ionCannon},
+      plasmaTurret:           {tech: t.plasmaTurret},
+      smallShield:            {tech: t.smallShield},
+      largeShield:            {tech: t.largeShield},
+      antiballisticMissile:   {tech: t.antiballisticMissile},
+      interplanetaryMissile:  {tech: t.interplanetaryMissile},
+    };
   },
 
-  // Verifica si se cumplio una mision y si es asi, entrega la recompensa
-  //  -player = Objeto con la informacion del jugador
-  //  -mission = Numero de mision a verificar
-  //  -res = Objeto respuesta a devolver al cliente
-  updateRewards: function(player, mission, res){
-    mission = parseInt(mission);
-    if(fun.validInt(mission) && 0 < mission && mission <= 10){
-      if(!player.tutorial[mission-1]){
-        let missionCumplida = false;
-        let objReward = {};
-        switch (mission) { // Para cada mision me fijo si se cumplieron los requisitos y que no le halla dado la recompensa ya
-          // Los requisitos los tiene que cumplir almenos un planeta individualmente, no se cuentan las flotas en la luna ni en vuelo
-          case 1:
-            for(let i = 0 ; i<player.planets.length && !missionCumplida ; i++){
-              if(player.planets[i].buildings.metalMine >= 4 && player.planets[i].buildings.crystalMine >= 2 && player.planets[i].buildings.solarPlant >= 4){
-                missionCumplida = true;
-                objReward['planets.0.resources.metal'] = 150;
-                objReward['planets.0.resources.crystal'] = 75;
-              }
-            }
-            break;
-          case 2:
-            for(let i = 0 ; i<player.planets.length && !missionCumplida ; i++){
-              if(player.planets[i].buildings.deuteriumMine >= 2 && player.planets[i].buildings.shipyard >= 1 && player.planets[i].defense.rocketLauncher >= 1){
-                missionCumplida = true;
-                objReward['puntos'] = 2;
-                objReward['planets.0.defense.rocketLauncher'] = 1;
-              }
-            }
-            break;
-          case 3:
-            for(let i = 0 ; i<player.planets.length && !missionCumplida ; i++){
-              if(player.planets[i].buildings.metalMine >= 10 && player.planets[i].buildings.crystalMine >= 7 && player.planets[i].buildings.solarPlant >= 5){
-                missionCumplida = true;
-                objReward['planets.0.resources.metal'] = 2000;
-                objReward['planets.0.resources.crystal'] = 500;
-              }
-            }
-            break;
-          case 4:
-            if(player.research.combustion >= 2){
-              for(let i = 0 ; i<player.planets.length && !missionCumplida ; i++){
-                if(player.planets[i].buildings.researchLab >= 1 && player.planets[i].fleet.smallCargo >= 1){
-                  missionCumplida = true;
-                  objReward['planets.0.resources.deuterium'] = 1500;
-                }
-              }
-            }
-            break;
-          case 5:
-            if(player.research.combustion >= 3 && player.research.espionage >= 2){
-              for(let i = 0 ; i<player.planets.length && !missionCumplida ; i++){
-                if(player.planets[i].fleet.espionageProbe >= 1){
-                  missionCumplida = true;
-                  objReward['puntos'] = 2;
-                  objReward['planets.0.fleet.espionageProbe'] = 2;
-                }
-              }
-            }
-            break;
-          case 6:
-            if(player.research.impulse >= 1 && player.research.armour >= 1 && player.research.astrophysics >= 1){
-              missionCumplida = true;
-              objReward['puntos'] = 40;
-              objReward['planets.0.fleet.heavyFighter'] = 2;
-              objReward['planets.0.fleet.smallCargo'] = 5;
-            }
-            break;
-          case 7:
-            if(player.research.laser >= 1 && player.research.impulse >= 3 && player.planets.length >= 2){
-              missionCumplida = true;
-              objReward['puntos'] = 32;
-              objReward['planets.0.resources.metal'] = 10000;
-              objReward['planets.0.resources.crystal'] = 10000;
-              objReward['planets.0.resources.deuterium'] = 10000;
-              objReward['planets.0.fleet.largeCargo'] = 1;
-              objReward['planets.0.fleet.smallCargo'] = 5;
-            }
-            break;
-          case 8:
-            for(let i = 0 ; i<player.planets.length && !missionCumplida ; i++){
-              if(player.planets[i].buildings.metalMine >= 17 && player.planets[i].buildings.crystalMine >= 15 && player.planets[i].buildings.deuteriumMine >= 12){
-                missionCumplida = true;
-                objReward['planets.0.resources.metal'] = 20000;
-                objReward['planets.0.resources.crystal'] = 15000;
-                objReward['planets.0.resources.deuterium'] = 10000;
-              }
-            }
-            break;
-          case 9:
-            if(player.research.combustion >= 6 && player.research.shielding >= 2){
-              for(let i = 0 ; i<player.planets.length && !missionCumplida ; i++){
-                if(player.planets[i].fleet.recycler >= 1){
-                  missionCumplida = true;
-                  objReward['puntos'] = 36;
-                  objReward['planets.0.fleet.recycler'] = 2;
-                }
-              }
-            }
-            break;
-          default: // Mission 10
-            if(player.research.ion >= 2 && player.research.impulse >= 4){
-              for(let i = 0 ; i<player.planets.length && !missionCumplida ; i++){
-                if(player.planets[i].fleet.cruiser >= 2){
-                  missionCumplida = true;
-                  objReward['puntos'] = 130;
-                  objReward['planets.0.fleet.lightFighter'] = 10;
-                  objReward['planets.0.fleet.heavyFighter'] = 3;
-                  objReward['planets.0.fleet.battleship'] = 1;
-                }
-              }
-            }
-        }
-        if(missionCumplida){
-          let objSet = {};
-          objSet['tutorial.' + (mission-1)] = true;
-          base.savePlayerData(player.name, objSet, objReward, undefined, undefined, () => {
-            res.send({ok: true});
-          });
-        }else{
-          res.send({ok: false, mes: "Requisitos no cumplidos."});
-        }
-      }else{
-        res.send({ok: false, mes: "Mision ya completada."});
-      }
-    }else{
-      res.send({ok: false, mes: "Numero de mission equivocado."});
+  addNewPlayer: function(name, styleGame) {
+    let newCoor = this.newCord();
+    if(newCoor != undefined){
+      let newPlanet = this.createNewPlanet(newCoor, "Planeta Principal", name, 'activo', fun.zeroResources(), fun.zeroShips());
+      let password = fun.randomString();
+      this.allCord[newCoor.gal+'_'+newCoor.sys+'_'+newCoor.pos] = {espionage: 0, playerName: name};
+      let newPlayer = {'name': name,
+        'styleGame': styleGame,
+        pass: fun.hash(password),
+        planets: [newPlanet],
+        maxPlanets: 1,
+        highscore: this.cantPlayers + 1,
+        lastHighscore: this.cantPlayers + 1,
+        puntos: 0,
+        puntosAcum: 0,
+        vacas: [],
+        sendEspionage: 1,
+        sendSmall: 1,
+        sendLarge: 1,
+        dark: 8000,
+        messagesCant: 0,
+        messages: [],
+        movement: [],
+        researchConstrucction: false,
+        tutorial: [false, false, false, false, false, false, false, false, false, false],
+        research: fun.zeroResearch(),
+        lastVisit: fun.horaActual(),
+        type: "activo",
+        hazards: []
+      };
+      this.cantPlayers++;
+      base.insertPlayer(newPlayer);
+      return password;
     }
   },
+
+  sendMessage: function(playerName, info) {
+    let newMessage = {date: new Date().toString().slice(0,24), type: info.type, title: info.title, text: info.text, data: info.data};
+    if(playerName === this.player.name) this.player.messagesCant++;
+    base.savePlayerData(playerName, undefined, {messagesCant: 1}, {messages: newMessage}, undefined, () => {});
+  },
+
+  deleteMessage: function(playerName, all, borra, res) {
+    let obj;
+    if(all === true){
+      if(fun.validInt(borra)){
+        obj = {type: parseInt(borra)};
+      }else{
+        res.send({ok: false, mes: "Invalid type."});
+        return res;
+      }
+    }else{
+      if(/\w{3} \w{3} .. \d{4} \d{2}:\d{2}:\d{2}/.test(borra)){
+        obj = {date: borra};
+      }else{
+        res.send({ok: false, mes: "Invalid date."});
+        return res;
+      }
+    }
+    base.savePlayerData(playerName, undefined, undefined, undefined, {messages: obj}, () => {
+      res.send({ok: true});
+    });
+  },
+
+  setNoReadMessages: function(){
+    this.player.messagesCant = 0;
+    base.savePlayerData(this.player.name, {messagesCant: 0}, undefined, undefined, undefined, () => {});
+  },
+
+  sendSpyReport: function(playerName, coor, indiceDeEspionage, moon){
+    base.findAndExecute(coor, (res) => {
+      let index = fun.getIndexOfPlanet(res.planets, coor);
+      let report = {};
+      if(index === -1 || (moon && !res.planets[index].moon.active)){
+        report = {type: 3, title: "Espionage Report Failed", text: (index === -1) ? "There is no planet in the coordinates..." : "There is no moon in the coordinates...", data: {}};
+      }else{
+        let dataEsp = {moon, coor, playerName: res.name};
+        dataEsp.planetName = moon ? res.planets[index].moon.name : res.planets[index].name;
+        dataEsp.resources = moon ? res.planets[index].moon.resources : res.planets[index].resources;
+        if(indiceDeEspionage >= 2){
+          dataEsp.fleet = moon ? res.planets[index].moon.fleet : res.planets[index].fleet;
+          if(indiceDeEspionage >= 3){
+            dataEsp.defense = moon ? fun.zeroDefense() : res.planets[index].defense;
+            if(indiceDeEspionage >= 5){
+              dataEsp.research = res.research;
+              if(indiceDeEspionage >= 7){
+                dataEsp.buildings = moon ? res.planets[index].moon.buildings : res.planets[index].buildings;
+              }
+            }
+          }
+        }
+        report = {type: 2, title: "Espionage Report", text: "", data: dataEsp};
+      }
+      this.sendMessage(playerName, report);
+    });
+  },
+
+  usePhalanx: function(coor, coorDesde, phal, res){
+    if(fun.coordenadaValida(coor) && fun.coordenadaValida(coorDesde)){
+      let alcance = phal * phal - 1;
+      let estaEnRango = false;
+      if(this.universo.donutSystem){
+        estaEnRango = Math.min(Math.abs(coorDesde.sys - coor.sys), Math.abs(coorDesde.sys - coor.sys - 499), Math.abs(coorDesde.sys - coor.sys + 499)) <= alcance;
+      }else{
+        estaEnRango = Math.abs(coorDesde.sys - coor.sys) <= alcance;
+      }
+      if(estaEnRango && coor.gal === coorDesde.gal){
+        base.findAndExecute(coor, (resPlayer) => {
+          let listRes = [];
+          for(let i = 0 ; i<resPlayer.movement.length ; i++){
+            if(fun.equalCoor(resPlayer.movement[i].coorDesde, coor)){
+              listRes.push(resPlayer.movement[i]);
+            }
+          }
+          res.send({ok: true, data: listRes});
+        });
+      }else{
+        res.send({ok: false, mes: "Alcance del sensor insuficiente."});
+      }
+    }else{
+      res.send({ok: false, mes: "Coordenadas invalidas."});
+    }
+  },
+
+  systemInfo: function(res, gal, sys){
+    if(!fun.coordenadaValida({gal, sys, pos: 1})){
+      res.send({ok: false, mes: "Coordenadas no validas."});
+      return res;
+    }
+    let respuesta = {};
+    for(let i = 1 ; i<=15 ; i++){
+      respuesta['pos' + i] = {active: false};
+    }
+    let listaPosiblesVacas = fun.posiblesVacas(this.player.vacas, gal, sys);
+    base.findPlayersBySystemCode(gal+'_'+sys, (doc, err) => {
+      for(let i = 0 ; i<doc.planets.length ; i++){
+        if(doc.planets[i].coordinatesCod === gal+'_'+sys){
+          let pos = doc.planets[i].coordinates.pos;
+          respuesta['pos' + pos] = {active:        true,
+                                    player:        doc.name,
+                                    type:          doc.planets[i].type,
+                                    color:         doc.planets[i].color,
+                                    name:          doc.planets[i].name,
+                                    moon:          doc.planets[i].moon.active,
+                                    moonName:      doc.planets[i].moon.name,
+                                    moonSize:      doc.planets[i].moon.size,
+                                    debris:        doc.planets[i].debris.active,
+                                    metalDebris:   doc.planets[i].debris.metal,
+                                    crystalDebris: doc.planets[i].debris.crystal,
+                                    esVaca:        listaPosiblesVacas.includes(pos),
+                                    estado:        "activo"};
+        }
+      }
+    }, () => {
+      res.send({ok: true, mes: "Info de la galaxia: " + gal + ", sistema: " + sys, data: respuesta});
+    });
+  },
+
+  setOptions: function(playerName, res, esp, small, large){
+    if(fun.validInt(esp) && esp > 0 && fun.validInt(small) && small > 0 && fun.validInt(large) && large > 0){
+      base.savePlayerData(playerName, {sendEspionage: esp, sendSmall: small, sendLarge: large}, undefined, undefined, undefined, () => {
+        res.send({ok: true});
+      });
+    }else{
+      res.send({ok: false, mes: "Algo salio mal. Parametros invalidos."});
+    }
+  },
+
+  highscoreData: function(res){
+    let listInfo = [];
+    let newPosition;
+    let i = 1;
+    base.forEachPlayerSortedByPoints((doc, err) => {
+      if(doc.name === this.player.name) newPosition = i;
+      listInfo.push({name: doc.name,
+                     coor: doc.planets[0].coordinates,
+                     points: doc.puntos,
+                     rank: doc.highscore,
+                     lastRank: doc.lastHighscore});
+      i++;
+    }, () => {
+      base.savePlayerData(this.player.name, {highscore: newPosition}, undefined, undefined, undefined, () => {});
+      res.send({ok: true, info: listInfo, newPos: newPosition});
+    });
+  },
+
+  recicleDebris: function(playerName, debris, movement){
+    if(debris.active){
+      let espacioLibre = fun.espacioLibre(movement);
+      let capacidadDeCarga = Math.min(20000*movement.ships.recycler, espacioLibre);
+      let newResources = fun.cargaEscombros(debris, capacidadDeCarga);
+      let newDebris = {active: false, metal: debris.metal-newResources.metal, crystal: debris.crystal-newResources.crystal};
+      newDebris.active = !(newDebris.metal <= 0 && newDebris.crystal <= 0);
+      base.addMovementResources(playerName, movement.time, movement.llegada, newResources.metal, newResources.crystal);
+      return newDebris;
+    }
+    return undefined;
+  },
+
+  returnFleetInDataBase: function(player, num, res = undefined, time = undefined, resources = undefined, ships = undefined){
+    if(fun.validInt(num) && num >= 0 && num < player.movement.length){
+      let actual = fun.horaActual();
+      if(player.movement[num].ida && player.movement[num].mission !== 6 && !(player.movement[num].mission === 0 && actual >= player.movement[num].llegada)){
+        let updateObjAux = player.movement[num];
+        if(time == undefined){
+          time = Math.ceil((actual - updateObjAux['time'])/1000);
+        }
+        let oldTime    = updateObjAux.time;
+        let oldLlegada = updateObjAux.llegada;
+        if(ships != undefined){
+          ships.misil = 0;
+          updateObjAux['ships'] = ships;
+        }
+        if(resources != undefined) updateObjAux['resources'] = resources;
+        updateObjAux.ships['misil'] = 0;
+        updateObjAux['ida']         = false;
+        updateObjAux['duracion']    = time;
+        updateObjAux['time']        = actual;
+        updateObjAux['llegada']     = actual + time*1000;
+        if(res != undefined){
+          events.remove({time: oldLlegada, player: player.name});
+          if(player.movement[num].mission >= 5){
+            events.remove({time: oldLlegada - 1000, player: fun.playerName(this.allCord, player.movement[num].coorHasta)});
+          }
+        }
+        events.addElement({time: updateObjAux['llegada'], player: player.name});
+        player.movement[num] = updateObjAux;
+        if(player.movement[num].mission >= 6){
+          base.removeHazard(player.movement[num].coorHasta, oldLlegada);
+        }
+        base.updateMovementInDB(player.name, oldTime, oldLlegada, updateObjAux, () => {
+          if(res != undefined) res.send({ok: true});
+        });
+      }else{
+        if(res != undefined) res.send({ok: false, mes: "El viaje ya esta regresando."});
+      }
+    }else{
+      if(res != undefined) res.send({ok: false, mes: "Numero de flota invalido."});
+    }
+  },
+
+  returnFleet: function(movement, newResources = undefined, newShips = undefined){
+    let actual = fun.horaActual();
+    let newTime = (movement.llegada - movement.time)/1000;
+    newTime -= (actual - movement.llegada)/1000;
+    if(newTime < 0) newTime = 0;
+    let pushObj = {};
+    pushObj.movement = movement;
+    if(newShips     != undefined) pushObj.movement.ships = newShips;
+    if(newResources != undefined) pushObj.movement.resources = newResources;
+    pushObj.movement.ships.misil = 0;
+    pushObj.movement.ida         = false;
+    pushObj.movement.duracion    = newTime;
+    pushObj.movement.time        = actual;
+    pushObj.movement.llegada     = actual + newTime*1000;
+    events.addElement({time: pushObj.movement.llegada, player: fun.playerName(this.allCord, movement.coorDesde)});
+    base.pushMovementToDataBase(movement.coorDesde, {}, pushObj);
+  },
+
+  contPoint: function(playerName){
+    base.findAndExecuteByName(playerName, (res) => {
+      let puntos = 0;
+      let maxLevel = 0;
+      let costShipyard = fun.costShipsAndDefenses();
+      for(let item in res.research){
+        if(res.research[item] > maxLevel) maxLevel = res.research[item];
+      }
+      for(let j = 0 ; j<=maxLevel ; j++){
+        puntos += (j < res.research.energy)           ? 800*Math.pow(2, j) +  400*Math.pow(2, j) : 0;
+        puntos += (j < res.research.laser)            ? 200*Math.pow(2, j) + 100*Math.pow(2, j) : 0;
+        puntos += (j < res.research.ion)              ? 1000*Math.pow(2, j) + 300*Math.pow(2, j) +  100*Math.pow(2, j) : 0;
+        puntos += (j < res.research.hyperspace)       ? 4000*Math.pow(2, j) +  2000*Math.pow(2, j) : 0;
+        puntos += (j < res.research.plasma)           ? 2000*Math.pow(2, j) + 4000*Math.pow(2, j) +  1000*Math.pow(2, j) : 0;
+        puntos += (j < res.research.espionage)        ? 200*Math.pow(2, j) + 1000*Math.pow(2, j) +  200*Math.pow(2, j) : 0;
+        puntos += (j < res.research.computer)         ? 400*Math.pow(2, j) +  600*Math.pow(2, j) : 0;
+        puntos += (j < res.research.astrophysics)     ? 4000*Math.pow(2, j) + 8000*Math.pow(2, j) +  4000*Math.pow(2, j) : 0;
+        puntos += (j < res.research.intergalactic)    ? 240000*Math.pow(2, j) + 400000*Math.pow(2, j) +  160000*Math.pow(2, j) : 0;
+        puntos += (j < res.research.combustion)       ? 400*Math.pow(2, j) + 600*Math.pow(2, j) : 0;
+        puntos += (j < res.research.impulse)          ? 2000*Math.pow(2, j) + 4000*Math.pow(2, j) +  600*Math.pow(2, j) : 0;
+        puntos += (j < res.research.hyperspace_drive) ? 10000*Math.pow(2, j) + 20000*Math.pow(2, j) +  6000*Math.pow(2, j) : 0;
+        puntos += (j < res.research.weapon)           ? 800*Math.pow(2, j) + 200*Math.pow(2, j) : 0;
+        puntos += (j < res.research.shielding)        ? 200*Math.pow(2, j) + 600*Math.pow(2, j) : 0;
+        puntos += (j < res.research.armour)           ? 1000*Math.pow(2, j) : 0;
+      }
+      for(let i = 0 ; i<res.planets.length ; i++){
+        for(let obj in res.planets[i].fleet){
+          puntos += costShipyard[obj].metal * res.planets[i].fleet[obj] + costShipyard[obj].crystal * res.planets[i].fleet[obj] + costShipyard[obj].deuterium * res.planets[i].fleet[obj];
+        }
+        for(let obj in res.planets[i].defense){
+          puntos += costShipyard[obj].metal * res.planets[i].defense[obj] + costShipyard[obj].crystal * res.planets[i].defense[obj] + costShipyard[obj].deuterium * res.planets[i].defense[obj];
+        }
+        maxLevel = 0;
+        for(let item in res.planets[i].buildings){
+          if(res.planets[i].buildings[item] > maxLevel) maxLevel = res.planets[i].buildings[item];
+        }
+        for(let j = 0 ; j<=maxLevel ; j++){
+          puntos += (j < res.planets[i].buildings.metalMine)        ? Math.floor(60*Math.pow(1.5, j)) + Math.floor(15*Math.pow(1.5, j)) : 0;
+          puntos += (j < res.planets[i].buildings.crystalMine)      ? Math.floor(48*Math.pow(1.6, j)) + Math.floor(24*Math.pow(1.6, j)) : 0;
+          puntos += (j < res.planets[i].buildings.deuteriumMine)    ? Math.floor(225*Math.pow(1.5, j)) + Math.floor(75*Math.pow(1.5, j)) : 0;
+          puntos += (j < res.planets[i].buildings.solarPlant)       ? Math.floor(75*Math.pow(1.5, j)) + Math.floor(30*Math.pow(1.5, j)) : 0;
+          puntos += (j < res.planets[i].buildings.fusionReactor)    ? Math.floor(900*Math.pow(1.8, j)) + Math.floor(360*Math.pow(1.8, j)) + Math.floor(180*Math.pow(1.8, j)) : 0;
+          puntos += (j < res.planets[i].buildings.metalStorage)     ? 1000*Math.pow(2, j) : 0;
+          puntos += (j < res.planets[i].buildings.crystalStorage)   ? 1000*Math.pow(2, j) + 500*Math.pow(2, j) : 0;
+          puntos += (j < res.planets[i].buildings.deuteriumStorage) ? 1000*Math.pow(2, j) + 1000*Math.pow(2, j) : 0;
+          puntos += (j < res.planets[i].buildings.robotFactory)     ? 400*Math.pow(2, j) + 120*Math.pow(2, j) + 200*Math.pow(2, j) : 0;
+          puntos += (j < res.planets[i].buildings.shipyard)         ? 400*Math.pow(2, j) + 200*Math.pow(2, j) + 100*Math.pow(2, j) : 0;
+          puntos += (j < res.planets[i].buildings.researchLab)      ? 200*Math.pow(2, j) + 400*Math.pow(2, j) + 200*Math.pow(2, j) : 0;
+          puntos += (j < res.planets[i].buildings.alliance)         ? 20000*Math.pow(2, j) + 40000*Math.pow(2, j) : 0;
+          puntos += (j < res.planets[i].buildings.silo)             ? 20000*Math.pow(2, j) + 20000*Math.pow(2, j) + 1000*Math.pow(2, j) : 0;
+          puntos += (j < res.planets[i].buildings.naniteFactory)    ? 1000000*Math.pow(2, j) + 500000*Math.pow(2, j) + 100000*Math.pow(2, j) : 0;
+          puntos += (j < res.planets[i].buildings.terraformer)      ? 50000*Math.pow(2, j) + 100000*Math.pow(2, j): 0;
+        }
+        if(res.planets[i].moon.active){
+          for(let obj in res.planets[i].moon.fleet){
+            puntos += costShipyard[obj].metal * res.planets[i].moon.fleet[obj] + costShipyard[obj].crystal * res.planets[i].moon.fleet[obj] + costShipyard[obj].deuterium * res.planets[i].moon.fleet[obj];
+          }
+          maxLevel = 0;
+          for(let item in res.planets[i].moon.buildings){
+            if(res.planets[i].moon.buildings[item] > maxLevel) maxLevel = res.planets[i].moon.buildings[item];
+          }
+          for(let j = 0 ; j<=maxLevel ; j++){
+            puntos += (j < res.planets[i].moon.buildings.lunarBase) ? 10000*Math.pow(2, j) + 20000*Math.pow(2, j) + 10000*Math.pow(2, j) : 0;
+            puntos += (j < res.planets[i].moon.buildings.phalanx) ? 20000*Math.pow(2, j) + 40000*Math.pow(2, j) + 20000*Math.pow(2, j) : 0;
+            puntos += (j < res.planets[i].moon.buildings.spaceDock) ? 200*Math.pow(4, j) + 10*Math.pow(3, j) + 50*Math.pow(5, j) : 0;
+            puntos += (j < res.planets[i].moon.buildings.marketplace) ? 6000000*Math.pow(2, j) + 4000000*Math.pow(2, j) + 2000000*Math.pow(2, j) : 0;
+            puntos += (j < res.planets[i].moon.buildings.lunarSunshade) ? 15000*Math.pow(2, j) + 50000*Math.pow(2, j) : 0;
+            puntos += (j < res.planets[i].moon.buildings.lunarBeam) ? 75000*Math.pow(2, j) + 90000*Math.pow(2, j) : 0;
+            puntos += (j < res.planets[i].moon.buildings.jumpGate) ? 2000000*Math.pow(2, j) + 4000000*Math.pow(2, j) + 2000000*Math.pow(2, j) : 0;
+            puntos += (j < res.planets[i].moon.buildings.moonShield) ? 9000000*Math.pow(3, j) + 5000000*Math.pow(3, j) + 2000000*Math.pow(3, j) : 0;
+          }
+        }
+      }
+      base.savePlayerData(playerName, {'puntos': Math.floor(puntos/1000), puntosAcum: (puntos%1000)}, undefined, undefined, undefined, () => {});
+    });
+  },
+
+  updateAllHighscore: function(){
+    let i = 1;
+    base.forEachPlayerSortedByPoints((doc, err) => {
+      base.savePlayerData(doc.name, {highscore: i, lastHighscore: doc.highscore, type: fun.getTypeActive(doc.lastVisit)}, undefined, undefined, undefined, () => {});
+      i++;
+    }, () => {});
+  },
+
+  changePassword: function(user, newPass, res){
+    console.log("Cambio la pass");
+    base.savePlayerData(user, {pass: fun.hash(newPass)}, undefined, undefined, undefined, () => {
+      console.log("Listo");
+      res.send({ok: true});
+    });
+  },
+
+  searchPlayer: function(res, playerName){
+    base.findAndExecuteByName(playerName, (obj) => {
+      if(obj == null){
+        res.send({ok: false, mes: "Not found"});
+      }else{
+        let coors = [], names = [];
+        for(let i = 0 ; i<obj.planets.length ; i++){
+          coors.push(obj.planets[i].coordinates);
+          names.push(obj.planets[i].name);
+        }
+        res.send({ok: true, 'names': names, 'coors': coors});
+      }
+    });
+  },
+
+  abandonPlanet: function(player, planet, res){
+    if(player.planets.length > 1){
+      let objPull = {};
+      objPull.planets  = {coordinates: player.planets[planet].coordinates};
+      objPull.movement = {coorDesde: player.planets[planet].coordinates};
+      base.savePlayerData(player.name, undefined, undefined, undefined, objPull, () => {
+        res.send({ok: true});
+      });
+    }else{
+      res.send({ok: false, mes: "No podes abandonar el unico planeta que tenes."});
+    }
+  },
+
+  setPlanetName: function(player, coor, newName, moon){
+    let index = fun.getIndexOfPlanet(player.planets, coor);
+    if(index === -1) return false;
+    let objSet = {};
+    if(moon){
+      objSet['planets.$.moon.name'] = newName;
+      player.planets[index].moon.name = newName;
+    }else{
+      objSet['planets.$.name'] = newName;
+      player.planets[index].name = newName;
+    }
+    base.updateResourcesDataBase(coor, objSet, () => {});
+    return true;
+  },
+
+  // Verifica si se cumplio una mision y entrega la recompensa — logica en rewards.js
+  updateRewards: rewards.updateRewards,
 
   // Funcion que se ejecuta periodicamente para actualizar el estado de cada jugador en el universo
   updateUniverse: function(){
@@ -1876,7 +1789,7 @@ var exp  = {
   // Funcion que se ejecuta una vez por dia, cuando el dia empieza
   dailyUpdate: function(){
     console.log('\x1b[36m%s\x1b[0m', "Daily update!!!");
-    base.updateAllHighscore();
+    this.updateAllHighscore();
     // Dentro de un dia se va a ejecutar de nuevo
     setTimeout(() => {this.dailyUpdate();}, 86400000);
   }
@@ -1884,14 +1797,3 @@ var exp  = {
 
 base.setUniverse(exp);
 module.exports = exp;
-
-// Lista de cosas por hacer:
-
-/* Pensar como manejar multiples idiomas
-/* Si un jugador regala una flota a otro jugador tiene que cambiar los puntos
-/* Revisar la segurad de los parametros strings de la api de los bots
-/* Terminar la documentacion
-/* Tener un bot que testee las funcionalidades
-/* Refactorizar todo el codigo
-/* Agregar el fuego rapido en el algoritmo de batalla
-*/

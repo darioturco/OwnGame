@@ -1,5 +1,5 @@
 var router = require('express').Router();
-var uni = require('./universe');
+var uni = require('../universe');
 var fs = require("fs");
 
 // Rutas de informacion usadas solo para obtener informacion sobre el universo
@@ -49,7 +49,7 @@ router.get('/defense', function(req, res, next) {
 });
 
 router.get('/galaxy', function(req, res, next) {
-  uni.base.systemInfo(res, req.query.gal, req.query.sys);
+  uni.systemInfo(res, req.query.gal, req.query.sys);
 });
 
 router.get('/readMessages', function(req, res, next) {
@@ -57,15 +57,15 @@ router.get('/readMessages', function(req, res, next) {
 });
 
 router.get('/searchPlayer', function(req, res, next) {
-  uni.base.searchPlayer(res, req.query.name);
+  uni.searchPlayer(res, req.query.name);
 });
 
 router.get('/highscore', function(req, res, next) {
-  uni.base.highscoreData(res);
+  uni.highscoreData(res);
 });
 
 router.get('/usePhalanx', function(req, res, next) {
-  uni.base.usePhalanx(
+  uni.usePhalanx(
     {gal: parseInt(req.query.gal), sys: parseInt(req.query.sys), pos: parseInt(req.query.pos)},
     uni.player.planets[uni.planeta].coordinates,
     uni.fun.phalanxLevel(uni.player.planets[uni.planeta].moon), res);
@@ -92,7 +92,7 @@ router.get('/set/updateResourcesMoon', function(req, res, next) {
 });
 
 router.get('/set/deleteMessages', function(req, res, next) {
-  uni.base.deleteMessage(uni.player.name, req.query.all == 'true', req.query.id, res);
+  uni.deleteMessage(uni.player.name, req.query.all == 'true', req.query.id, res);
 });
 
 router.get('/set/addVaca', function(req, res, next) {
@@ -101,7 +101,7 @@ router.get('/set/addVaca', function(req, res, next) {
 });
 
 router.get('/set/setOptions', function(req, res, next) {
-  uni.base.setOptions(uni.player.name, res, parseInt(req.query.esp), parseInt(req.query.sml), parseInt(req.query.lar));
+  uni.setOptions(uni.player.name, res, parseInt(req.query.esp), parseInt(req.query.sml), parseInt(req.query.lar));
 });
 
 router.get('/set/clearHazards', function(req, res, next) {
@@ -141,7 +141,7 @@ router.get('/set/cancelShipyardRequest', function(req, res, next) {
 });
 
 router.get('/set/returnFleet', function(req, res, next) {
-  uni.base.returnFleetInDataBase(uni.player, req.query.num, res);
+  uni.returnFleetInDataBase(uni.player, req.query.num, res);
 });
 
 router.get('/set/marketMoon', function(req, res, next) {
@@ -154,7 +154,7 @@ router.get('/set/updateRewards', function(req, res, next) {
 
 router.get('/set/abandonPlanet', function(req, res, next) {
   if(req.query.confirm === "Yes"){
-    uni.base.abandonPlanet(uni.player, uni.planeta, res);
+    uni.abandonPlanet(uni.player, uni.planeta, res);
   }else{
     res.send({ok: false, mes: "Parametros de seguridad incorrectos."});
   }

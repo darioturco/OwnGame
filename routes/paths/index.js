@@ -1,6 +1,7 @@
 require('dotenv').config();
 const UPDATE_TIME = 500;
-var uni = require('./universe');
+var uni = require('../universe');
+var dev = require('../dev/dev_functions');
 var router = require('express').Router();
 var updater = setInterval(() => {uni.updateUniverse();}, UPDATE_TIME);
 setTimeout(() => {uni.dailyUpdate();}, 86400000 - (uni.fun.horaActual() % 86400000));
@@ -17,43 +18,14 @@ router.all('/*', (req, res, next) => {
       uni.base.getListCord(next);
     }
   }else{
-    next();
+     next();
   }
 });
 
 // Ruta de debugeo
 router.get('/', (req, res, next) => {
   if(process.debugMode){
-    //uni.base.deleteCollection(["jugadores", "universo"]);
-    //uni.createUniverse(process.env.UNIVERSE_NAME, 5, {name: "", inicio: 0, maxGalaxies: 9, donutGalaxy: true, donutSystem: true, speed: 1, speedFleet: 100, fleetDebris: 30, defenceDebris: 0, maxMoon: 20, rapidFire: true});
-    //uni.base.addNewPlayer("dturco", 1);
-    //uni.base.setPlanetDataDev(uni.player.planets[0].coordinates);
-    //uni.base.setMoonDataDev(uni.player.planets[0].coordinates);
-    //uni.base.sendMessage("dturco", {type: 1, title: "Nuevo titulo", text: "Mensaje oficial", data: {}});
-    //uni.colonize({gal: 1, sys: 2, pos: 7}, uni.player);
-    //uni.base.contPoint('dturco');
-    //uni.contMoonFields(uni.player, uni.planeta);
-    /*let navesAux = uni.fun.zeroShips();
-    navesAux.deathstar = 5;
-    uni.player.research.astrophysics = 10;
-    for(let i = 0 ; i<100 ; i++){
-        console.log(uni.fun.expedition(navesAux, uni.player.research));
-        for(let item in navesAux){
-          navesAux[item] = 1;
-        }
-    }*/
-    /*let attackerShips = uni.fun.zeroShips();
-    let defenderShips = uni.fun.zeroShips();
-    let defenses = uni.fun.zeroDefense();
-    let attackerTech = uni.fun.zeroResearch();
-    let defenderTech = uni.fun.zeroResearch();
-    for(let item in attackerShips){
-      attackerShips[item] = 100;
-      defenderShips[item] = 100;
-    }
-    for(let item in defenses) defenses[item] = 50;
-    let objAttack = uni.fun.battle(attackerShips, defenderShips, defenses, attackerTech, defenderTech);*/
-    uni.base.seeDataBase(res, "jugadores", false);
+    dev.setupDevEnvironment();
   }else{
     res.render('index', {title: 'Ogame', message: ""});
   }
@@ -132,7 +104,7 @@ router.get('/OGame_Galaxy.html', (req, res, next) => {
 });
 
 router.get('/OGame_Messages.html', (req, res, next) => {
-  uni.base.setNoReadMessages();
+  uni.setNoReadMessages();
   res.render('OGame_Messages', {bodyId: "messages",
     url: req._parsedOriginalUrl.pathname,
     basic: uni.getActualBasicInfo(uni.planeta),
@@ -151,7 +123,7 @@ router.get('/OGame_Movement.html', (req, res, next) => {
 
 router.get('/OGame_Overview.html', (req, res, next) => {
   if(req.query.newName !== undefined && req.query.newName !== "" && req.query.newName.length <= 23){
-    uni.base.setPlanetName(uni.player, uni.player.planets[uni.planeta].coordinates, req.query.newName, uni.moon); // Cambia el nombre al planeta
+    uni.setPlanetName(uni.player, uni.player.planets[uni.planeta].coordinates, req.query.newName, uni.moon); // Cambia el nombre al planeta
   }
   res.render('OGame_Overview', {bodyId: "overview",
     url: req._parsedOriginalUrl.pathname,
@@ -259,4 +231,4 @@ router.get('/Change.html', (req, res, next) => {
 
 module.exports = router;
 
-/*Para pasar un dato por html se puede usar la propiedad data-val=’valor’ y en javascript leerla con item.dataset.val*/
+/*Para pasar un dato por html se puede usar la propiedad data-val='valor' y en javascript leerla con item.dataset.val*/

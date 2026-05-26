@@ -31,7 +31,7 @@ cd ./OwnGame
 echo $'MONGO_URL=mongodb://localhost:27017/\nUNIVERSE_NAME=Universo1\nJUGADORES=jugadores\nPLANETAS=universo\nPLAYER=dturco' > .env
 ```
 
-Afterward, you need to install the dependencies described in the package.json and then start the application (assuming the database **daemon is active**).
+Afterward, you need to install the dependencies described in the package.json and then start the application (assuming the database **daemon is active** in port 27017).
 To do that, just run the following commands:
 
 ```shell script

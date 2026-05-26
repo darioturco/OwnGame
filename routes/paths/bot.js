@@ -1,7 +1,9 @@
 var router = require('express').Router();
-var uni = require('./universe');
+var uni = require('../universe');
 var passport = require('passport');
-var { auth, logout } = require('./authenticater')(passport, uni);
+var { auth, logout } = require('../authenticater')(passport, uni);
+var costs   = require('../constructions/costs');
+var rewards = require('../rewards');
 
 // Rutas de la api que usan los bots para hacer acciones
 
@@ -17,7 +19,7 @@ router.post('/logout', function(req, res, next) {
 
 router.post('/changeName', async function(req, res, next) {
   auth(req, res, next, true, (req, res, next, userId, player) => {
-    if(uni.base.setPlanetName(player, req.body.coor, req.body.newName, req.body.moon)){
+    if(uni.setPlanetName(player, req.body.coor, req.body.newName, req.body.moon)){
       res.send({ok: true, mes: "Cambio de nombre exitoso."});
     }else{
       res.send({ok: false, mes: "Coordenadas no validas."});
@@ -30,7 +32,7 @@ router.post('/abandonPlanet', async function(req, res, next) {
     if(player.planets[req.body.planetNum] == undefined){
       res.send({ok: false, mes: "Numero de planeta incorrecto."});
     }else{
-      uni.base.abandonPlanet(uni.player, uni.planeta, res);
+      uni.abandonPlanet(uni.player, uni.planeta, res);
     }
   });
 });
@@ -40,7 +42,7 @@ router.post('/infoUniverso', function(req, res, next) {
 });
 
 router.post('/infoGalaxy', function(req, res, next) {
-  uni.base.systemInfo(res, req.body.gal, req.body.sys);
+  uni.systemInfo(res, req.body.gal, req.body.sys);
 });
 
 router.post('/changeResourcesOptions', function(req, res, next) {
@@ -215,7 +217,7 @@ router.post('/sendFleet', async function(req, res, next) {
 
 router.post('/returnFleet', async function(req, res, next) {
   auth(req, res, next, true, (req, res, next, userId, player) => {
-    uni.base.returnFleetInDataBase(player, req.body.num, res);
+    uni.returnFleetInDataBase(player, req.body.num, res);
   });
 });
 
@@ -227,30 +229,30 @@ router.post('/readMessage', async function(req, res, next) {
 
 router.post('/deleteMessage', async function(req, res, next) {
   auth(req, res, next, true, (req, res, next, userId, player) => {
-    uni.base.deleteMessage(player.name, req.body.all, req.body.data, res);
+    uni.deleteMessage(player.name, req.body.all, req.body.data, res);
   });
 });
 
 router.post('/changeOptions', async function(req, res, next) {
   auth(req, res, next, true, (req, res, next, userId, player) => {
-    uni.base.setOptions(uni.player.name, res, parseInt(req.body.esp), parseInt(req.body.sml), parseInt(req.body.lar));
+    uni.setOptions(uni.player.name, res, parseInt(req.body.esp), parseInt(req.body.sml), parseInt(req.body.lar));
   });
 });
 
 router.post('/showTechnology', async function(req, res, next) {
-  res.send(uni.fun.getTechnology());
+  res.send(costs.getTechnology());
 });
 
 router.post('/showHighscore', async function(req, res, next) {
-  uni.base.highscoreData(res);
+  uni.highscoreData(res);
 });
 
 router.post('/searchPlayer', async function(req, res, next) {
-  uni.base.searchPlayer(res, req.body.name);
+  uni.searchPlayer(res, req.body.name);
 });
 
 router.post('/seeRewards', async function(req, res, next) {
-  res.send(uni.fun.getRewards());
+  res.send(rewards.getRewards());
 });
 
 router.post('/updateReward', async function(req, res, next) {
@@ -262,7 +264,7 @@ router.post('/updateReward', async function(req, res, next) {
 router.post('/usePhalanx', async function(req, res, next) {
   auth(req, res, next, true, (req, res, next, userId, player) => {
     if(uni.fun.validPlanetNum(player, req.body.planetNum)){
-      uni.base.usePhalanx(req.body.coor, player.planets[req.body.planetNum].coordinates, uni.fun.phalanxLevel(player.planets[req.body.planetNum].moon), res);
+      uni.usePhalanx(req.body.coor, player.planets[req.body.planetNum].coordinates, uni.fun.phalanxLevel(player.planets[req.body.planetNum].moon), res);
     }else{
       res.send({ok: false, mes: "Invalid planet number."});
     }
@@ -291,7 +293,7 @@ router.post('/useMarketMoon', async function(req, res, next) {
 
 router.post('/changePassword', async function(req, res, next) {
   auth(req, res, next, false, (req, res, next, userId, player) => {
-    uni.base.changePassword(player.name, req.body.newPassword, res);
+    uni.changePassword(player.name, req.body.newPassword, res);
   });
 });
 

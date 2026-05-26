@@ -5,9 +5,9 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var passport = require('passport');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/api');
-var botsRouter = require('./routes/bot');
+var indexRouter = require('./routes/paths/index');
+var usersRouter = require('./routes/paths/api');
+var botsRouter = require('./routes/paths/bot');
 
 var app = express();
 
