@@ -1,18 +1,161 @@
+const names = {
+  metalMine:              'Metal Mine',
+  crystalMine:            'Crystal Mine',
+  deuteriumMine:          'Deuterium Mine',
+  solarPlant:             'Solar Plant',
+  fusionReactor:          'Fusion Reactor',
+  metalStorage:           'Metal Storage',
+  crystalStorage:         'Crystal Storage',
+  deuteriumStorage:       'Deuterium Storage',
+  robotFactory:           'Robot Factory',
+  shipyard:               'Shipyard',
+  researchLab:            'Research Lab',
+  alliance:               'Alliance Depot',
+  silo:                   'Silo',
+  naniteFactory:          'Nanite Factory',
+  terraformer:            'Terraformer',
+  energy:                 'Energy Technology',
+  laser:                  'Laser Technology',
+  ion:                    'Ion Technology',
+  hyperspace:             'Hyperspace Technology',
+  plasma:                 'Plasma Technology',
+  espionage:              'Espionage Technology',
+  computer:               'Computer Technology',
+  astrophysics:           'Astrophysics',
+  intergalactic:          'Intergalactic Research Network',
+  graviton:               'Graviton Technology',
+  combustion:             'Combustion Drive',
+  impulse:                'Impulse Drive',
+  hyperspace_drive:       'Hyperspace Drive',
+  weapons:                'Weapons Technology',
+  shielding:              'Shielding Technology',
+  armour:                 'Armour Technology',
+  lightFighter:           'Light Fighter',
+  heavyFighter:           'Heavy Fighter',
+  cruiser:                'Cruiser',
+  battleship:             'Battleship',
+  battlecruiser:          'Battlecruiser',
+  bomber:                 'Bomber',
+  destroyer:              'Destroyer',
+  deathstar:              'Deathstar',
+  smallCargo:             'Small Cargo',
+  largeCargo:             'Large Cargo',
+  colony:                 'Colony Ship',
+  recycler:               'Recycler',
+  espionageProbe:         'Espionage Probe',
+  solarSatellite:         'Solar Satellite',
+  rocketLauncher:         'Rocket Launcher',
+  lightLaser:             'Light Laser',
+  heavyLaser:             'Heavy Laser',
+  gauss:                  'Gauss Cannon',
+  ionCannon:              'Ion Cannon',
+  plasmaTurret:           'Plasma Turret',
+  smallShield:            'Small Shield Dome',
+  largeShield:            'Large Shield Dome',
+  antiballisticMissile:   'Anti-Ballistic Missiles',
+  interplanetaryMissile:  'Interplanetary Missiles',
+  lunarBase:              'Lunar Base',
+  phalanx:                'Phalanx',
+  spaceDock:              'Space Dock',
+  marketplace:            'Marketplace',
+  lunarSunshade:          'Lunar Sunshade',
+  lunarBeam:              'Lunar Beam',
+  jumpGate:               'Jump Gate',
+  moonShield:             'Moon Shield',
+};
+
+// Each entry: {key, category, difficulty, requirements: [{key, level}]}
+// key maps to info[key].tech (bool) in the technology page.
+// requirement key maps to info[key].level for the level check.
+const technologyList = [
+  // Planet Buildings
+  {key: 'metalMine',             category: 'Planet Building',  difficulty: 1,  requirements: []},
+  {key: 'crystalMine',           category: 'Planet Building',  difficulty: 1,  requirements: []},
+  {key: 'deuteriumMine',         category: 'Planet Building',  difficulty: 1,  requirements: []},
+  {key: 'solarPlant',            category: 'Planet Building',  difficulty: 1,  requirements: []},
+  {key: 'fusionReactor',         category: 'Planet Building',  difficulty: 4,  requirements: [{key: 'deuteriumMine', level: 5}, {key: 'energy', level: 3}]},
+  {key: 'metalStorage',          category: 'Planet Building',  difficulty: 1,  requirements: []},
+  {key: 'crystalStorage',        category: 'Planet Building',  difficulty: 1,  requirements: []},
+  {key: 'deuteriumStorage',      category: 'Planet Building',  difficulty: 1,  requirements: []},
+  // Planet Facilities
+  {key: 'robotFactory',          category: 'Planet Facility',  difficulty: 1,  requirements: []},
+  {key: 'shipyard',              category: 'Planet Facility',  difficulty: 2,  requirements: [{key: 'robotFactory', level: 2}]},
+  {key: 'researchLab',           category: 'Planet Facility',  difficulty: 1,  requirements: []},
+  {key: 'alliance',              category: 'Planet Facility',  difficulty: 2,  requirements: []},
+  {key: 'silo',                  category: 'Planet Facility',  difficulty: 3,  requirements: [{key: 'shipyard', level: 1}]},
+  {key: 'naniteFactory',         category: 'Planet Facility',  difficulty: 8,  requirements: [{key: 'robotFactory', level: 10}, {key: 'computer', level: 10}]},
+  {key: 'terraformer',           category: 'Planet Facility',  difficulty: 9,  requirements: [{key: 'naniteFactory', level: 1}, {key: 'energy', level: 12}]},
+  // Research
+  {key: 'energy',                category: 'Investigation',    difficulty: 2,  requirements: [{key: 'researchLab', level: 1}]},
+  {key: 'laser',                 category: 'Investigation',    difficulty: 3,  requirements: [{key: 'researchLab', level: 1}, {key: 'energy', level: 2}]},
+  {key: 'ion',                   category: 'Investigation',    difficulty: 5,  requirements: [{key: 'researchLab', level: 4}, {key: 'energy', level: 4}, {key: 'laser', level: 5}]},
+  {key: 'hyperspace',            category: 'Investigation',    difficulty: 6,  requirements: [{key: 'researchLab', level: 7}, {key: 'energy', level: 5}, {key: 'shielding', level: 5}]},
+  {key: 'plasma',                category: 'Investigation',    difficulty: 7,  requirements: [{key: 'researchLab', level: 4}, {key: 'energy', level: 8}, {key: 'laser', level: 10}, {key: 'ion', level: 8}]},
+  {key: 'espionage',             category: 'Investigation',    difficulty: 3,  requirements: [{key: 'researchLab', level: 3}]},
+  {key: 'computer',              category: 'Investigation',    difficulty: 2,  requirements: [{key: 'researchLab', level: 1}]},
+  {key: 'astrophysics',          category: 'Investigation',    difficulty: 4,  requirements: [{key: 'researchLab', level: 3}, {key: 'espionage', level: 4}, {key: 'computer', level: 2}]},
+  {key: 'intergalactic',         category: 'Investigation',    difficulty: 8,  requirements: [{key: 'researchLab', level: 10}, {key: 'computer', level: 8}, {key: 'hyperspace', level: 8}]},
+  {key: 'graviton',              category: 'Investigation',    difficulty: 10, requirements: [{key: 'researchLab', level: 12}]},
+  {key: 'combustion',            category: 'Investigation',    difficulty: 3,  requirements: [{key: 'researchLab', level: 1}, {key: 'energy', level: 1}]},
+  {key: 'impulse',               category: 'Investigation',    difficulty: 4,  requirements: [{key: 'researchLab', level: 2}, {key: 'energy', level: 2}]},
+  {key: 'hyperspace_drive',      category: 'Investigation',    difficulty: 6,  requirements: [{key: 'researchLab', level: 7}, {key: 'hyperspace', level: 3}]},
+  {key: 'weapons',               category: 'Investigation',    difficulty: 4,  requirements: [{key: 'researchLab', level: 4}]},
+  {key: 'shielding',             category: 'Investigation',    difficulty: 5,  requirements: [{key: 'researchLab', level: 6}, {key: 'energy', level: 3}]},
+  {key: 'armour',                category: 'Investigation',    difficulty: 3,  requirements: [{key: 'researchLab', level: 2}]},
+  // Ships
+  {key: 'lightFighter',          category: 'Ship',             difficulty: 3,  requirements: [{key: 'shipyard', level: 1}, {key: 'combustion', level: 1}]},
+  {key: 'heavyFighter',          category: 'Ship',             difficulty: 3,  requirements: [{key: 'shipyard', level: 3}, {key: 'impulse', level: 2}, {key: 'armour', level: 2}]},
+  {key: 'cruiser',               category: 'Ship',             difficulty: 5,  requirements: [{key: 'shipyard', level: 5}, {key: 'impulse', level: 4}, {key: 'ion', level: 2}]},
+  {key: 'battleship',            category: 'Ship',             difficulty: 6,  requirements: [{key: 'shipyard', level: 7}, {key: 'hyperspace_drive', level: 4}]},
+  {key: 'battlecruiser',         category: 'Ship',             difficulty: 7,  requirements: [{key: 'shipyard', level: 8}, {key: 'hyperspace_drive', level: 5}, {key: 'laser', level: 12}, {key: 'hyperspace', level: 5}]},
+  {key: 'bomber',                category: 'Ship',             difficulty: 8,  requirements: [{key: 'shipyard', level: 8}, {key: 'impulse', level: 6}, {key: 'plasma', level: 5}]},
+  {key: 'destroyer',             category: 'Ship',             difficulty: 9,  requirements: [{key: 'shipyard', level: 9}, {key: 'hyperspace_drive', level: 6}, {key: 'hyperspace', level: 5}]},
+  {key: 'deathstar',             category: 'Ship',             difficulty: 10, requirements: [{key: 'shipyard', level: 12}, {key: 'hyperspace_drive', level: 7}, {key: 'graviton', level: 1}, {key: 'hyperspace', level: 6}]},
+  {key: 'smallCargo',            category: 'Ship',             difficulty: 3,  requirements: [{key: 'shipyard', level: 2}, {key: 'combustion', level: 2}]},
+  {key: 'largeCargo',            category: 'Ship',             difficulty: 5,  requirements: [{key: 'shipyard', level: 4}, {key: 'combustion', level: 6}]},
+  {key: 'colony',                category: 'Ship',             difficulty: 4,  requirements: [{key: 'shipyard', level: 4}, {key: 'impulse', level: 3}]},
+  {key: 'recycler',              category: 'Ship',             difficulty: 5,  requirements: [{key: 'shipyard', level: 4}, {key: 'combustion', level: 6}, {key: 'shielding', level: 2}]},
+  {key: 'espionageProbe',        category: 'Ship',             difficulty: 3,  requirements: [{key: 'shipyard', level: 3}, {key: 'combustion', level: 3}, {key: 'espionage', level: 2}]},
+  {key: 'solarSatellite',        category: 'Ship',             difficulty: 2,  requirements: [{key: 'shipyard', level: 1}]},
+  // Defence
+  {key: 'rocketLauncher',        category: 'Defence',          difficulty: 2,  requirements: [{key: 'shipyard', level: 1}]},
+  {key: 'lightLaser',            category: 'Defence',          difficulty: 3,  requirements: [{key: 'shipyard', level: 2}, {key: 'laser', level: 3}]},
+  {key: 'heavyLaser',            category: 'Defence',          difficulty: 5,  requirements: [{key: 'shipyard', level: 4}, {key: 'laser', level: 6}, {key: 'energy', level: 3}]},
+  {key: 'gauss',                 category: 'Defence',          difficulty: 6,  requirements: [{key: 'shipyard', level: 6}, {key: 'weapons', level: 3}, {key: 'energy', level: 6}, {key: 'shielding', level: 1}]},
+  {key: 'ionCannon',             category: 'Defence',          difficulty: 5,  requirements: [{key: 'shipyard', level: 4}, {key: 'ion', level: 4}]},
+  {key: 'plasmaTurret',          category: 'Defence',          difficulty: 8,  requirements: [{key: 'shipyard', level: 8}, {key: 'plasma', level: 7}, {key: 'armour', level: 6}]},
+  {key: 'smallShield',           category: 'Defence',          difficulty: 5,  requirements: [{key: 'shipyard', level: 1}, {key: 'shielding', level: 2}]},
+  {key: 'largeShield',           category: 'Defence',          difficulty: 6,  requirements: [{key: 'shipyard', level: 6}, {key: 'shielding', level: 6}]},
+  {key: 'antiballisticMissile',  category: 'Defence',          difficulty: 4,  requirements: [{key: 'silo', level: 2}]},
+  {key: 'interplanetaryMissile', category: 'Defence',          difficulty: 5,  requirements: [{key: 'silo', level: 4}, {key: 'impulse', level: 1}]},
+  // Lunar Facilities
+  {key: 'lunarBase',             category: 'Lunar Facility',   difficulty: 6,  requirements: []},
+  {key: 'phalanx',               category: 'Lunar Facility',   difficulty: 7,  requirements: [{key: 'lunarBase', level: 3}]},
+  {key: 'spaceDock',             category: 'Lunar Facility',   difficulty: 6,  requirements: [{key: 'lunarBase', level: 1}]},
+  {key: 'marketplace',           category: 'Lunar Facility',   difficulty: 9,  requirements: [{key: 'lunarBase', level: 2}, {key: 'computer', level: 8}, {key: 'alliance', level: 4}]},
+  {key: 'lunarSunshade',         category: 'Lunar Facility',   difficulty: 7,  requirements: [{key: 'lunarBase', level: 1}, {key: 'laser', level: 12}]},
+  {key: 'lunarBeam',             category: 'Lunar Facility',   difficulty: 7,  requirements: [{key: 'lunarBase', level: 1}, {key: 'ion', level: 12}]},
+  {key: 'jumpGate',              category: 'Lunar Facility',   difficulty: 9,  requirements: [{key: 'lunarBase', level: 1}, {key: 'hyperspace', level: 7}]},
+  {key: 'moonShield',            category: 'Lunar Facility',   difficulty: 10, requirements: [{key: 'lunarBase', level: 4}, {key: 'graviton', level: 1}, {key: 'shielding', level: 12}]},
+];
+
 // Base resource costs for all ships and defenses (puntos = metal+crystal+deuterium, except solarSatellite).
+// Flying ships also carry: carga (cargo), consumo (deuterium/h), speed {base, drive, factor}.
+// drive: 'combustion'|'impulse'|'hyperspace'. upgradeDrive/upgradeFactor/upgradeThreshold: conditional drive upgrade.
 const rawCosts = {
-  lightFighter:          {metal: 3000,    crystal: 1000,    deuterium: 0,        puntos: 4000},
-  heavyFighter:          {metal: 6000,    crystal: 4000,    deuterium: 0,        puntos: 10000},
-  cruiser:               {metal: 20000,   crystal: 7000,    deuterium: 2000,     puntos: 29000},
-  battleship:            {metal: 45000,   crystal: 15000,   deuterium: 0,        puntos: 60000},
-  battlecruiser:         {metal: 30000,   crystal: 40000,   deuterium: 15000,    puntos: 85000},
-  bomber:                {metal: 50000,   crystal: 25000,   deuterium: 15000,    puntos: 90000},
-  destroyer:             {metal: 60000,   crystal: 50000,   deuterium: 15000,    puntos: 125000},
-  deathstar:             {metal: 5000000, crystal: 4000000, deuterium: 1000000,  puntos: 10000000},
-  smallCargo:            {metal: 2000,    crystal: 2000,    deuterium: 0,        puntos: 4000},
-  largeCargo:            {metal: 6000,    crystal: 6000,    deuterium: 0,        puntos: 12000},
-  colony:                {metal: 10000,   crystal: 20000,   deuterium: 10000,    puntos: 40000},
-  recycler:              {metal: 10000,   crystal: 6000,    deuterium: 2000,     puntos: 18000},
-  espionageProbe:        {metal: 0,       crystal: 1000,    deuterium: 0,        puntos: 1000},
+  lightFighter:          {metal: 3000,    crystal: 1000,    deuterium: 0,        puntos: 4000,      carga: 50,      consumo: 10,  speed: {base: 12500,     drive: 'combustion', factor: 1250}},
+  heavyFighter:          {metal: 6000,    crystal: 4000,    deuterium: 0,        puntos: 10000,     carga: 100,     consumo: 20,  speed: {base: 10000,     drive: 'impulse',    factor: 2000}},
+  cruiser:               {metal: 20000,   crystal: 7000,    deuterium: 2000,     puntos: 29000,     carga: 800,     consumo: 150, speed: {base: 15000,     drive: 'impulse',    factor: 3000}},
+  battleship:            {metal: 45000,   crystal: 15000,   deuterium: 0,        puntos: 60000,     carga: 1500,    consumo: 250, speed: {base: 10000,     drive: 'hyperspace', factor: 3000}},
+  battlecruiser:         {metal: 30000,   crystal: 40000,   deuterium: 15000,    puntos: 85000,     carga: 750,     consumo: 120, speed: {base: 10000,     drive: 'hyperspace', factor: 3000}},
+  bomber:                {metal: 50000,   crystal: 25000,   deuterium: 15000,    puntos: 90000,     carga: 500,     consumo: 500, speed: {base: 4000,      drive: 'impulse',    factor: 800,  upgradeDrive: 'hyperspace', upgradeFactor: 1200, upgradeThreshold: 8}},
+  destroyer:             {metal: 60000,   crystal: 50000,   deuterium: 15000,    puntos: 125000,    carga: 2000,    consumo: 500, speed: {base: 5000,      drive: 'hyperspace', factor: 1500}},
+  deathstar:             {metal: 5000000, crystal: 4000000, deuterium: 1000000,  puntos: 10000000,  carga: 1000000, consumo: 1,   speed: {base: 100,       drive: 'hyperspace', factor: 30}},
+  smallCargo:            {metal: 2000,    crystal: 2000,    deuterium: 0,        puntos: 4000,      carga: 5000,    consumo: 5,   speed: {base: 5000,      drive: 'combustion', factor: 500,  upgradeDrive: 'impulse',    upgradeFactor: 1000, upgradeThreshold: 5}},
+  largeCargo:            {metal: 6000,    crystal: 6000,    deuterium: 0,        puntos: 12000,     carga: 25000,   consumo: 25,  speed: {base: 7500,      drive: 'impulse',    factor: 1500}},
+  colony:                {metal: 10000,   crystal: 20000,   deuterium: 10000,    puntos: 40000,     carga: 7500,    consumo: 500, speed: {base: 2500,      drive: 'impulse',    factor: 500}},
+  recycler:              {metal: 10000,   crystal: 6000,    deuterium: 2000,     puntos: 18000,     carga: 20000,   consumo: 150, speed: {base: 2000,      drive: 'impulse',    factor: 400}},
+  espionageProbe:        {metal: 0,       crystal: 1000,    deuterium: 0,        puntos: 1000,      carga: 0,       consumo: 0,   speed: {base: 100000000, drive: 'combustion', factor: 10000000}},
   solarSatellite:        {metal: 0,       crystal: 2000,    deuterium: 500,      puntos: 2000},
   rocketLauncher:        {metal: 2000,    crystal: 0,       deuterium: 0,        puntos: 2000},
   lightLaser:            {metal: 1500,    crystal: 500,     deuterium: 0,        puntos: 2000},
@@ -23,7 +166,7 @@ const rawCosts = {
   smallShield:           {metal: 10000,   crystal: 10000,   deuterium: 0,        puntos: 20000},
   largeShield:           {metal: 50000,   crystal: 50000,   deuterium: 0,        puntos: 100000},
   antiballisticMissile:  {metal: 8000,    crystal: 0,       deuterium: 2000,     puntos: 10000},
-  interplanetaryMissile: {metal: 12500,   crystal: 2500,    deuterium: 10000,    puntos: 25000},
+  interplanetaryMissile: {metal: 12500,   crystal: 2500,    deuterium: 10000,    puntos: 25000,     carga: 0,       consumo: 0,   speed: {base: 1000000,   drive: 'impulse',    factor: 100000}},
 };
 
 // Single source of truth for all build/research/ship/defense tech requirements.
@@ -113,6 +256,8 @@ function techRequirements(build, research, moonBuild) {
 var costs = {
 
   rawCosts: rawCosts,
+  names: names,
+  technologyList: technologyList,
 
   techRequirements: techRequirements,
 
@@ -134,7 +279,7 @@ var costs = {
             alliance: {metal: 20000*Math.pow(2, build.alliance), crystal: 40000*Math.pow(2, build.alliance), deuterium: 0, energy: 0, tech: tech.alliance, level: build.alliance, name: "Alliance Depot", description: "The alliance depot is essential to trade resourses on a moon."},
             silo: {metal: 20000*Math.pow(2, build.silo), crystal: 20000*Math.pow(2, build.silo), deuterium: 1000*Math.pow(2, build.silo), energy: 0, tech: tech.silo, level: build.silo, name: "Silo", description: "Missile silos are used to store missiles."},
             naniteFactory: {metal: 1000000*Math.pow(2, build.naniteFactory), crystal: 500000*Math.pow(2, build.naniteFactory), deuterium: 100000*Math.pow(2, build.naniteFactory), energy: 0, tech: tech.naniteFactory, level: build.naniteFactory, name: "Nanite Factory", description: "This is the ultimate in robotics technology. Each level cuts the construction time for buildings, ships, and defenses."},
-            terraformer: {metal: 0, crystal: 50000*Math.pow(2, build.terraformer), deuterium: 100000*Math.pow(2, build.terraformer), energy: 1000*Math.pow(2, build.terraformer), tech: tech.terraformer, level: build.terraformer, name: "Terraformer", description: "The terraformer increases the usable surface of planets."},
+            terraformer: {metal: 0, crystal: 50000*Math.pow(2, build.terraformer), deuterium: 100000*Math.pow(2, build.terraformer), energy: 0, tech: tech.terraformer, level: build.terraformer, name: "Terraformer", description: "The terraformer increases the usable surface of planets."},
             solarSatellite: {metal: 0, crystal: 2000, deuterium: 500, energy: 0, tech: tech.solarSatellite, level: player.planets[planet].fleet.solarSatellite, name: "Solar Satellite", description: "Solar satellites are simple platforms of solar cells, located in a high, stationary orbit. A solar satellite produces " + Math.floor(((player.planets[planet].temperature.max + player.planets[planet].temperature.min)/2+160)/6) + " energy on this planet."},
             listInfo: ["metalMine", "crystalMine", "deuteriumMine", "solarPlant", "fusionReactor", "solarSatellite", "metalStorage", "crystalStorage", "deuteriumStorage", "robotFactory", "shipyard", "researchLab", "alliance", "silo", "naniteFactory", "terraformer"],
             time: {mult: build.robotFactory, elev: build.naniteFactory},
@@ -228,6 +373,28 @@ var costs = {
             time: {mult: build.shipyard, elev: build.naniteFactory},
             doing: player.planets[planet].shipConstrucction
     };
+  },
+
+  getListSpeed: function(com, imp, hyp){
+    let drives = {combustion: com, impulse: imp, hyperspace: hyp};
+    let ships = ['lightFighter', 'heavyFighter', 'cruiser', 'battleship', 'battlecruiser', 'bomber', 'destroyer', 'deathstar', 'smallCargo', 'largeCargo', 'colony', 'recycler', 'espionageProbe', 'interplanetaryMissile'];
+    return ships.map(ship => {
+      let s = rawCosts[ship].speed;
+      if (s.upgradeDrive && drives[s.upgradeDrive] >= s.upgradeThreshold)
+        return s.base + s.upgradeFactor * drives[s.upgradeDrive];
+      return s.base + s.factor * drives[s.drive];
+    });
+  },
+
+  navesInfo: function(con, imp, hyp){
+    let speedList = this.getListSpeed(con, imp, hyp);
+    let ships = ['lightFighter', 'heavyFighter', 'cruiser', 'battleship', 'battlecruiser', 'bomber', 'destroyer', 'deathstar', 'smallCargo', 'largeCargo', 'colony', 'recycler', 'espionageProbe', 'interplanetaryMissile'];
+    let result = {};
+    ships.forEach((ship, i) => {
+      let key = (ship === 'interplanetaryMissile') ? 'misil' : ship;
+      result[key] = {speed: speedList[i], carga: rawCosts[ship].carga, consumo: rawCosts[ship].consumo};
+    });
+    return result;
   },
 
   getTechnology: function() {

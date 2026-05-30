@@ -59,6 +59,10 @@ class Queue {
     return false;
   }
 
+  hasPlayer(name){
+    return this.queue.some(e => e.player === name);
+  }
+
   get length(){
     return this.queue.length;
   }

@@ -17,8 +17,6 @@ var doing = false, canPress = false, shipyard = false, inMoon = false;
 var descriptionText, resourcesText, resourcesIcon, timeText, nameText, levelText, imgInfo, posibleText;
 var firstShipName, unityDuration, totalDuration, firstLavel, firstImg, otherShips;
 
-setTimeout(initial, 0);
-
 function initial(){
   body = document.body.id;
   inMoon = (document.getElementsByName('ogame-moon')[0].content == 'true');

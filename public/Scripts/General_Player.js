@@ -48,6 +48,7 @@ function initFunction(obj){ // Funcion que se ejecuta apenas carga un pagina
     actualizaFecha();
     if(nextFleetText != null) actualizaFleet();
   }, 1000);
+  if(typeof initial === 'function') initial();
 }
 
 function actualizaFleet(){

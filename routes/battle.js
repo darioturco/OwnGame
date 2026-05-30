@@ -321,4 +321,4 @@ function processBattle(player, movement, uni) {
   });
 }
 
-module.exports = { processBattle, misilAttack };
+module.exports = { processBattle, misilAttack, battle };

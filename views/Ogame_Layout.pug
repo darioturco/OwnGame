@@ -51,6 +51,8 @@ body(id=bodyId onLoad='initFunction();')
               span.textBeefy
                 a.textBeefy(href='./Change.html?name=' + basic.playerName) #{basic.playerName}
             li
+              a(href='/' style='color: #fbd77d; font-weight: bold;') God
+            li
               span#highscoreSpan (#{basic.highscore})
               a(href='./Highscore.html') Highscore
             li
@@ -63,6 +65,8 @@ body(id=bodyId onLoad='initFunction();')
               a(href='./OGame_Reward.html') Tutorial
             li
               a(href='./Ogame_Galaxy.html?gal=' + basic.planets[basic.numPlanet].coordinates.gal + '&sys=' + basic.planets[basic.numPlanet].coordinates.sys) Galaxy
+            li
+              a(href='./OGame_Calculator.html') Calculator
             li#Clock.OGameClock -
         ul#resources
           li#metal_box.metal

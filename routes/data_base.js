@@ -1,14 +1,39 @@
 var uni   = null;
 var mongo = null;
+var dbName = null;
 var date  = new Date();
+var isReady = false;
+var readyCallbacks = [];
 
-require('mongodb').MongoClient.connect(process.env.MONGO_URL, {useUnifiedTopology: true}, (err, db) => {
+function getDb() { return mongo.db(dbName); }
+
+async function detectDbName(client) {
+  const skip = new Set(['admin', 'local', 'config']);
+  try {
+    const { databases } = await client.db('admin').admin().listDatabases();
+    for (const { name } of databases) {
+      if (skip.has(name)) continue;
+      const cols = await client.db(name).listCollections({ name: 'universo' }).toArray();
+      if (cols.length > 0) return name;
+    }
+  } catch(e) {
+    console.error('[db] auto-detect failed:', e.message);
+  }
+  return process.env.UNIVERSE_NAME || 'owngame';
+}
+
+require('mongodb').MongoClient.connect(process.env.MONGO_URL, {useUnifiedTopology: true}, async (err, db) => {
   if(err) throw err;
   mongo = db;
-  exp.getUniverseData(process.env.UNIVERSE_NAME);
-  mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").countDocuments({}, function(err, cant) {uni.cantPlayers = cant});
+  dbName = await detectDbName(mongo);
+  console.log('\x1b[35m%s\x1b[0m', `[db] Using database: ${dbName}`);
+  exp.getUniverseData();
+  getDb().collection("jugadores").countDocuments({}, function(err, cant) {uni.cantPlayers = cant});
   exp.getPlayer(process.env.PLAYER, () => {
     console.log('\x1b[36m%s\x1b[0m', "Base de datos lista.");
+    isReady = true;
+    readyCallbacks.forEach(cb => cb());
+    readyCallbacks = [];
   }, true);
 });
 
@@ -20,19 +45,20 @@ var exp = {
   setUniverseData: function(name, data) {
     data.name    = name;
     uni.universo = data;
-    mongo.db(process.env.UNIVERSE_NAME).collection("universo").insertOne(data);
+    getDb().collection("universo").insertOne(data, (err) => {
+      if(err) console.error('[setUniverseData] insertOne failed:', err.message);
+    });
   },
 
-  getUniverseData: function(name){
-    let cursor = mongo.db(process.env.UNIVERSE_NAME).collection("universo").find();
-    cursor.forEach((doc, err) => {
+  getUniverseData: function(){
+    getDb().collection("universo").findOne({}, (err, doc) => {
       if(err) throw err;
-      if(name === doc.name) uni.universo = doc;
+      if(doc) uni.universo = doc;
     });
   },
 
   getPlayer: function(playerName, f, updateList) {
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOne(
+    getDb().collection("jugadores").findOne(
       {name: playerName}, (err, res) => {
       if(err) throw err;
       if(res == null){
@@ -40,8 +66,7 @@ var exp = {
       }else{
         uni.player = res;
         let fun = () => {
-          uni.updatePlayer(uni.player, (respuesta) => {
-            uni.player = respuesta;
+          uni.updatePlayer(uni.player, () => {
             f();
           });
         };
@@ -57,7 +82,7 @@ var exp = {
   getListCord: function(f){
     let obj = {};
     let espionageLevel = 0;
-    let cursor = mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").find({});
+    let cursor = getDb().collection("jugadores").find({});
     cursor.forEach((doc, err) => {
       espionageLevel = doc.research.espionage;
       for(let i = 0 ; i<doc.planets.length ; i++){
@@ -72,7 +97,7 @@ var exp = {
   seeDataBase: (res, name, json = true, objName = "item", filtro = {}) => {
     let respuesta = json ? {} : "";
     let i = 1;
-    let cursor = mongo.db(process.env.UNIVERSE_NAME).collection(name).find(filtro);
+    let cursor = getDb().collection(name).find(filtro);
     cursor.forEach((doc, err) => {
       if(json){
         respuesta[objName+i] = doc;
@@ -91,7 +116,7 @@ var exp = {
 
   deleteCollection: (nameList) => {
     for(let i = 0 ; i<nameList.length ; i++){
-      mongo.db(process.env.UNIVERSE_NAME).dropCollection(nameList[i],
+      getDb().dropCollection(nameList[i],
         (err, delOK) => {
           if(err) throw err;
           if(delOK) console.log('\x1b[35m%s\x1b[0m', "Collection " + nameList[i] + " deleted.")
@@ -99,8 +124,20 @@ var exp = {
     }
   },
 
+  deletePlayer: function(playerName, f){
+    getDb().collection("jugadores").deleteOne({name: playerName}, (err) => {
+      if(err) throw err;
+      f();
+    });
+  },
+
   insertPlayer: function(player) {
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").insertOne(player);
+    return new Promise((resolve, reject) => {
+      getDb().collection("jugadores").insertOne(player, (err, result) => {
+        if(err) reject(err);
+        else resolve(result);
+      });
+    });
   },
 
   savePlayerData: function(playerName, objSet, objInc, objPush, objPull, f){
@@ -109,7 +146,7 @@ var exp = {
     if(objInc  != undefined) changeObj['$inc'] = objInc;
     if(objPush != undefined) changeObj['$push'] = objPush;
     if(objPull != undefined) changeObj['$pull'] = objPull;
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOneAndUpdate(
+    getDb().collection("jugadores").findOneAndUpdate(
       {name: playerName}, changeObj,
       (err, res) => {
         if(err) throw err;
@@ -124,7 +161,7 @@ var exp = {
     if(fleet     != undefined) setObj['planets.$.fleet']     = fleet;
     if(defenses  != undefined) setObj['planets.$.defense']   = defenses;
     if(moon      != undefined) setObj['planets.$.moon']      = moon;
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+    getDb().collection("jugadores").updateOne(
       {planets :{$elemMatch: {coordinates: coor}}},
       {$set: setObj});
   },
@@ -134,7 +171,7 @@ var exp = {
     if(resources != undefined) setObj['planets.$.moon.resources'] = resources;
     if(buildings != undefined) setObj['planets.$.moon.buildings'] = buildings;
     if(fleet != undefined) setObj['planets.$.moon.fleet'] = fleet;
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+    getDb().collection("jugadores").updateOne(
       {planets :{$elemMatch: {coordinates: coor}}},
       {$set: setObj});
   },
@@ -148,7 +185,7 @@ var exp = {
     for(let i in fleet){
       if(i !== 'misil') incObj['planets.$' + moonStr + 'fleet.' + i] = fleet[i];
     }
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+    getDb().collection("jugadores").updateOne(
       {planets :{$elemMatch: {coordinates: coor}}},
       {$inc: incObj}, (err, result) => {
         if(err) throw err;
@@ -163,7 +200,7 @@ var exp = {
       incObj['planets.$.moon.fleet.' + i] = fleet[i];
     }
     setObj['planets.$.moon.cuantic'] = cuantic;
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+    getDb().collection("jugadores").updateOne(
       {planets :{$elemMatch: {coordinates: cord}}},
       {$set: setObj, $inc: incObj}, (err, res) => {
         if(err) throw err;
@@ -171,20 +208,20 @@ var exp = {
   },
 
   warnFromAttack: function(cord, warnObj){
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+    getDb().collection("jugadores").updateOne(
       {planets: {$elemMatch: {coordinates: cord}}},
       {$push: warnObj});
   },
 
   pushMovementToDataBase: function(cord, objInc, objPush){
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+    getDb().collection("jugadores").updateOne(
       {planets: {$elemMatch: {coordinates: cord}}},
       {$push: objPush, $inc: objInc});
   },
 
   removeHazard: function(coor, time){
     let objPull = {hazards: {time: time}};
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+    getDb().collection("jugadores").updateOne(
       {planets: {$elemMatch: {coordinates: coor}}}, {$pull: objPull},
       (err, res) => {
         if(err) throw err;
@@ -199,7 +236,7 @@ var exp = {
       }else{
         objBase = {$set: {'planets.$.debris': newDebris}};
       }
-      mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+      getDb().collection("jugadores").updateOne(
         {planets: {$elemMatch: {coordinates: coor}}},
         objBase,
         (err, res) => {
@@ -209,24 +246,29 @@ var exp = {
   },
 
   updateResourcesDataBase: function(coor, objSet, f){
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+    getDb().collection("jugadores").updateOne(
       {planets: {$elemMatch: {coordinates: coor}}},
       {$set: objSet}, () => {
         f();
     });
   },
 
-  findAndExecute: function(cord, f){
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOne(
+  findAndExecute: function(cord, f, onNotFound = undefined){
+    getDb().collection("jugadores").findOne(
       {planets: {$elemMatch: {coordinates: cord}}},
       (err, res) => {
         if(err) throw err;
+        if(!res){
+          console.log(`[findAndExecute] No player found at coordinates ${JSON.stringify(cord)}`);
+          if(onNotFound) onNotFound();
+          return;
+        }
         f(res);
     });
   },
 
   findAndExecuteByName: function(playerName, f){
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").findOne(
+    getDb().collection("jugadores").findOne(
       {name: playerName},
       (err, res) => {
         if(err) throw err;
@@ -235,7 +277,7 @@ var exp = {
   },
 
   clearHazards: function(player, res){
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+    getDb().collection("jugadores").updateOne(
       {name: player.name},
       {$set: {hazards: []}}, (err) => {
         res.send({ok: (err == null)});
@@ -243,19 +285,19 @@ var exp = {
   },
 
   findPlayersBySystemCode: function(systemCode, forEach, done){
-    let cursor = mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").find(
+    let cursor = getDb().collection("jugadores").find(
       {planets: {$elemMatch: {coordinatesCod: systemCode}}});
     cursor.forEach(forEach, done);
   },
 
   addMovementResources: function(playerName, time, llegada, metal, crystal){
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+    getDb().collection("jugadores").updateOne(
       {name: playerName, "movement.time": time, "movement.llegada": llegada},
       {$inc: {"movement.$.resources.metal": metal, "movement.$.resources.crystal": crystal}});
   },
 
   updateMovementInDB: function(playerName, oldTime, oldLlegada, updateObj, f){
-    mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").updateOne(
+    getDb().collection("jugadores").updateOne(
       {name: playerName, "movement.time": oldTime, "movement.llegada": oldLlegada},
       {$set: {"movement.$": updateObj}}, (err, resBD) => {
         if(err) throw err;
@@ -264,12 +306,28 @@ var exp = {
   },
 
   forEachPlayerSortedByPoints: function(forEach, done){
-    let cursor = mongo.db(process.env.UNIVERSE_NAME).collection("jugadores").find({}).sort({"puntos": -1});
+    let cursor = getDb().collection("jugadores").find({}).sort({"puntos": -1});
     cursor.forEach(forEach, done);
+  },
+
+  countInactivePlayers: function(f){
+    getDb().collection("jugadores")
+      .countDocuments({type: {$in: ['inactivo', 'Inactivo', 'Abandonado']}}, (err, count) => {
+        f(err ? 0 : count);
+      });
   },
 
   getMongo: function(){
     return mongo;
+  },
+
+  getDb: function(){
+    return getDb();
+  },
+
+  onReady: function(cb){
+    if(isReady) cb();
+    else readyCallbacks.push(cb);
   }
 };
 

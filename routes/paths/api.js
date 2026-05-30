@@ -1,5 +1,6 @@
 var router = require('express').Router();
 var uni = require('../universe');
+var rewards = require('../rewards');
 var fs = require("fs");
 
 // Rutas de informacion usadas solo para obtener informacion sobre el universo
@@ -146,6 +147,10 @@ router.get('/set/returnFleet', function(req, res, next) {
 
 router.get('/set/marketMoon', function(req, res, next) {
   uni.marketResources(uni.player, uni.planeta, req.query, res);
+});
+
+router.get('/missions', function(req, res, next) {
+  res.send(rewards.missionsInfo());
 });
 
 router.get('/set/updateRewards', function(req, res, next) {

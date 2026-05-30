@@ -1,6 +1,99 @@
 extends layout
 
 block content
-  h1= message
-  h2= error.status
-  pre #{error.stack}
+  .error-container
+    .error-header
+      .error-icon ✖
+      .error-code= error.status || '500'
+    h1.error-title= message
+    .error-divider
+    a.error-home(href='/') Volver al inicio
+    .error-divider
+    details.error-stack-wrapper
+      summary Ver detalles técnicos
+      pre.error-stack= error.stack
+
+  style.
+    body {
+      background: #0d0d0d;
+      color: #e0e0e0;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .error-container {
+      background: #1a1a1a;
+      border: 1px solid #ff3333;
+      border-radius: 8px;
+      padding: 40px 50px;
+      max-width: 700px;
+      width: 90%;
+      box-shadow: 0 0 40px rgba(255, 50, 50, 0.15);
+    }
+    .error-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .error-icon {
+      font-size: 32px;
+      color: #ff3333;
+      line-height: 1;
+    }
+    .error-code {
+      font-size: 48px;
+      font-weight: bold;
+      color: #ff3333;
+      font-family: monospace;
+    }
+    .error-title {
+      font-size: 20px;
+      color: #f0f0f0;
+      margin: 0 0 16px 0;
+      font-weight: normal;
+    }
+    .error-divider {
+      border-top: 1px solid #333;
+      margin-bottom: 20px;
+    }
+    .error-stack-wrapper {
+      margin-top: 8px;
+    }
+    .error-home {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 8px 20px;
+      background: #ff3333;
+      color: #fff;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .error-home:hover {
+      background: #cc2222;
+    }
+    .error-stack-wrapper summary {
+      cursor: pointer;
+      color: #888;
+      font-size: 13px;
+      user-select: none;
+      margin-bottom: 10px;
+    }
+    .error-stack-wrapper summary:hover {
+      color: #aaa;
+    }
+    .error-stack {
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 4px;
+      padding: 16px;
+      font-size: 12px;
+      color: #cc8888;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin: 0;
+    }

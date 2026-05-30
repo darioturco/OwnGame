@@ -1,10 +1,12 @@
 require('dotenv').config();
 const UPDATE_TIME = 500;
 var uni = require('../universe');
-var dev = require('../dev/dev_functions');
+var costs = require('../constructions/costs');
+var botSim = require('../bots/bot_simulation');
 var router = require('express').Router();
 var updater = setInterval(() => {uni.updateUniverse();}, UPDATE_TIME);
 setTimeout(() => {uni.dailyUpdate();}, 86400000 - (uni.fun.horaActual() % 86400000));
+uni.base.onReady(() => botSim.runStartupCatchup(uni));
 
 console.log('\x1b[35m%s\x1b[0m', new Date());
 router.all('/*', (req, res, next) => {
@@ -22,13 +24,54 @@ router.all('/*', (req, res, next) => {
   }
 });
 
-// Ruta de debugeo
+// Ruta de admin
 router.get('/', (req, res, next) => {
-  if(process.debugMode){
-    dev.setupDevEnvironment();
-  }else{
-    res.render('index', {title: 'Ogame', message: ""});
+  const coordMap = {};
+  const seen = new Set();
+  for(const [key, val] of Object.entries(uni.allCord)){
+    if(!seen.has(val.playerName)){
+      seen.add(val.playerName);
+      const [gal, sys, pos] = key.split('_');
+      coordMap[val.playerName] = { gal, sys, pos };
+    }
   }
+  uni.base.countInactivePlayers((inactivePlayers) => {
+    const players = [];
+    uni.base.forEachPlayerSortedByPoints((doc) => {
+      if(coordMap[doc.name]){
+        const numPlanets = doc.planets ? doc.planets.length : 0;
+
+        let researchMission = '—';
+        if (doc.bot && doc.bot.research && doc.bot.research.list && doc.bot.research.list.length > 0) {
+          const ri = (doc.bot.research.currentMission || 0) % doc.bot.research.list.length;
+          const rm = doc.bot.research.list[ri];
+          if (rm) researchMission = `${rm.item} ${rm.level}`;
+        }
+
+        let planetMission = '—';
+        if (doc.bot && doc.bot.missionList && doc.bot.missionList.length > 0) {
+          const pi = ((doc.bot.planetProgress && doc.bot.planetProgress[0] != null) ? doc.bot.planetProgress[0] : 0) % doc.bot.missionList.length;
+          const pm = doc.bot.missionList[pi];
+          if (pm) {
+            if (pm.type === 'building' || pm.type === 'moonBuilding') planetMission = `${pm.item} ${pm.level}`;
+            else if (pm.type === 'fleet' || pm.type === 'defense') planetMission = `${pm.item} ${pm.amount}`;
+            else if (pm.type === 'research') planetMission = `${pm.item} ${pm.level}`;
+            else planetMission = pm.type;
+          }
+        }
+
+        players.push({ name: doc.name, coor: coordMap[doc.name], type: doc.type || 'active', puntos: doc.puntos || 0, botType: doc.botType || '—', numPlanets, researchMission, planetMission });
+      }
+    }, () => {
+      res.render('Landing', {
+        universo: uni.universo,
+        cantPlayers: uni.cantPlayers,
+        inactivePlayers,
+        players,
+        debugMode: process.debugMode
+      });
+    });
+  });
 });
 
 router.get('/Highscore.html', (req, res, next) => {
@@ -190,8 +233,22 @@ router.get('/OGame_Technology.html', (req, res, next) => {
   res.render('OGame_Technology', {bodyId: "technology",
     url: req._parsedOriginalUrl.pathname,
     info: uni.techInfo(uni.planeta),
+    technologyList: costs.technologyList,
+    names: costs.names,
     basic: uni.getActualBasicInfo(uni.planeta),
     listScript: []
+  });
+});
+
+router.get('/OGame_Calculator.html', (req, res, next) => {
+  const planet = uni.player.planets[uni.planeta];
+  const temp = Math.floor((planet.temperature.max + planet.temperature.min) / 2);
+  res.render('OGame_Calculator', {bodyId: 'calculator',
+    url: req._parsedOriginalUrl.pathname,
+    basic: uni.getActualBasicInfo(uni.planeta),
+    speed: uni.universo.speed,
+    temp: temp,
+    listScript: ['./Scripts/Calculator.js']
   });
 });
 

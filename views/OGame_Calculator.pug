@@ -1,0 +1,186 @@
+extends Ogame_Layout
+block content
+  #inhalt
+    #planet(style='background-image:url(./Imagenes/Search.jpg)')
+      #header_text
+        h2 Cost Calculator - #{basic.moon ? basic.planets[basic.numPlanet].moon.name : basic.planets[basic.numPlanet].name}
+    .c-left
+    .c-right
+    #buttonz
+      style.
+        .calc-num { text-align: right; }
+        #calcTable input.level-input { width: 52px; background: #1a1a2e; color: #d0d0d0; border: 1px solid #555; padding: 2px 4px; text-align: center; }
+        #calcTable td { padding: 2px 6px; vertical-align: middle; }
+        #calcTable tr[data-key="solarSatellite"] td:first-child { font-style: italic; }
+        #calculator #planet { height: 250px; }
+        #calculator .c-left, #calculator .c-right { top: 214px; }
+        #calcTable tr#totalRow td { border-top: 1px solid #666; font-weight: bold; }
+        #calcTable tr#prodHourRow td { border-top: 1px solid #444; font-weight: bold; }
+      .header
+        h2 Planet Buildings
+      .content
+        script.
+          var CALC_SPEED = #{speed};
+          var CALC_TEMP  = #{temp};
+        table#calcTable.content_table.ignorelist
+          colgroup
+            col(style='width: 155px')
+            col(style='width: 100px')
+            col(style='width: 100px')
+            col(style='width: 100px')
+            col(style='width: 80px')
+            col(style='width: 68px')
+          thead
+            tr.ct_head_row
+              th.ct_th Building
+              th.ct_th.calc-num Metal
+              th.ct_th.calc-num Crystal
+              th.ct_th.calc-num Deuterium
+              th.ct_th.calc-num Energy
+              th.ct_th(style='text-align:center') Lvl / Qty
+          tbody
+            tr(data-key='metalMine')
+              td Metal Mine
+              td.calc-metal.calc-num 0
+              td.calc-crystal.calc-num 0
+              td.calc-deuterium.calc-num 0
+              td.calc-energy.calc-num 0
+              td: input.level-input(type='number' min='0' max='50' value='0' oninput='updateCalculator()')
+            tr(data-key='crystalMine')
+              td Crystal Mine
+              td.calc-metal.calc-num 0
+              td.calc-crystal.calc-num 0
+              td.calc-deuterium.calc-num 0
+              td.calc-energy.calc-num 0
+              td: input.level-input(type='number' min='0' max='50' value='0' oninput='updateCalculator()')
+            tr(data-key='deuteriumMine')
+              td Deuterium Mine
+              td.calc-metal.calc-num 0
+              td.calc-crystal.calc-num 0
+              td.calc-deuterium.calc-num 0
+              td.calc-energy.calc-num 0
+              td: input.level-input(type='number' min='0' max='50' value='0' oninput='updateCalculator()')
+            tr(data-key='solarPlant')
+              td Solar Plant
+              td.calc-metal.calc-num 0
+              td.calc-crystal.calc-num 0
+              td.calc-deuterium.calc-num 0
+              td.calc-energy.calc-num 0
+              td: input.level-input(type='number' min='0' max='50' value='0' oninput='updateCalculator()')
+            tr(data-key='fusionReactor')
+              td Fusion Reactor
+              td.calc-metal.calc-num 0
+              td.calc-crystal.calc-num 0
+              td.calc-deuterium.calc-num 0
+              td.calc-energy.calc-num 0
+              td: input.level-input(type='number' min='0' max='50' value='0' oninput='updateCalculator()')
+            tr(data-key='metalStorage')
+              td Metal Storage
+              td.calc-metal.calc-num 0
+              td.calc-crystal.calc-num 0
+              td.calc-deuterium.calc-num 0
+              td.calc-energy.calc-num 0
+              td: input.level-input(type='number' min='0' max='50' value='0' oninput='updateCalculator()')
+            tr(data-key='crystalStorage')
+              td Crystal Storage
+              td.calc-metal.calc-num 0
+              td.calc-crystal.calc-num 0
+              td.calc-deuterium.calc-num 0
+              td.calc-energy.calc-num 0
+              td: input.level-input(type='number' min='0' max='50' value='0' oninput='updateCalculator()')
+            tr(data-key='deuteriumStorage')
+              td Deuterium Storage
+              td.calc-metal.calc-num 0
+              td.calc-crystal.calc-num 0
+              td.calc-deuterium.calc-num 0
+              td.calc-energy.calc-num 0
+              td: input.level-input(type='number' min='0' max='50' value='0' oninput='updateCalculator()')
+            tr(data-key='robotFactory')
+              td Robot Factory
+              td.calc-metal.calc-num 0
+              td.calc-crystal.calc-num 0
+              td.calc-deuterium.calc-num 0
+              td.calc-energy.calc-num 0
+              td: input.level-input(type='number' min='0' max='50' value='0' oninput='updateCalculator()')
+            tr(data-key='shipyard')
+              td Shipyard
+              td.calc-metal.calc-num 0
+              td.calc-crystal.calc-num 0
+              td.calc-deuterium.calc-num 0
+              td.calc-energy.calc-num 0
+              td: input.level-input(type='number' min='0' max='50' value='0' oninput='updateCalculator()')
+            tr(data-key='researchLab')
+              td Research Lab
+              td.calc-metal.calc-num 0
+              td.calc-crystal.calc-num 0
+              td.calc-deuterium.calc-num 0
+              td.calc-energy.calc-num 0
+              td: input.level-input(type='number' min='0' max='50' value='0' oninput='updateCalculator()')
+            tr(data-key='alliance')
+              td Alliance Depot
+              td.calc-metal.calc-num 0
+              td.calc-crystal.calc-num 0
+              td.calc-deuterium.calc-num 0
+              td.calc-energy.calc-num 0
+              td: input.level-input(type='number' min='0' max='50' value='0' oninput='updateCalculator()')
+            tr(data-key='silo')
+              td Silo
+              td.calc-metal.calc-num 0
+              td.calc-crystal.calc-num 0
+              td.calc-deuterium.calc-num 0
+              td.calc-energy.calc-num 0
+              td: input.level-input(type='number' min='0' max='50' value='0' oninput='updateCalculator()')
+            tr(data-key='naniteFactory')
+              td Nanite Factory
+              td.calc-metal.calc-num 0
+              td.calc-crystal.calc-num 0
+              td.calc-deuterium.calc-num 0
+              td.calc-energy.calc-num 0
+              td: input.level-input(type='number' min='0' max='50' value='0' oninput='updateCalculator()')
+            tr(data-key='terraformer')
+              td Terraformer
+              td.calc-metal.calc-num 0
+              td.calc-crystal.calc-num 0
+              td.calc-deuterium.calc-num 0
+              td.calc-energy.calc-num 0
+              td: input.level-input(type='number' min='0' max='50' value='0' oninput='updateCalculator()')
+            tr(data-key='solarSatellite')
+              td Solar Satellite (qty)
+              td.calc-metal.calc-num 0
+              td.calc-crystal.calc-num 0
+              td.calc-deuterium.calc-num 0
+              td.calc-energy.calc-num 0
+              td: input.level-input(type='number' min='0' max='9999' value='0' title='Quantity' oninput='updateCalculator()')
+            tr#totalRow
+              td
+                strong Total
+              td#total-metal.calc-num 0
+              td#total-crystal.calc-num 0
+              td#total-deuterium.calc-num 0
+              td#total-energy.calc-num 0
+              td -
+            tr#prodHourRow
+              td
+                strong Production/h
+              td#ph-metal.calc-num 0
+              td#ph-crystal.calc-num 0
+              td#ph-deuterium.calc-num 0
+              td#ph-energy.calc-num 0
+              td -
+            tr
+              td
+                strong Production/day
+              td#pd-metal.calc-num 0
+              td#pd-crystal.calc-num 0
+              td#pd-deuterium.calc-num 0
+              td -
+              td -
+            tr
+              td
+                strong Production/week
+              td#pw-metal.calc-num 0
+              td#pw-crystal.calc-num 0
+              td#pw-deuterium.calc-num 0
+              td -
+              td -
+      .footer

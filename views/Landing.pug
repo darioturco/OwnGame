@@ -1,0 +1,958 @@
+doctype html
+html
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1')
+    title OwnGame — #{universo ? universo.name : 'Universe'}
+    link(rel='stylesheet' type='text/css' href='./Css/General_Style.css')
+    link(rel='icon' type='image/x-icon' href='./Imagenes/Favicon.ico')
+    style.
+      body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        padding: 40px 16px 60px;
+        box-sizing: border-box;
+        font-family: Verdana, Arial, SunSans-Regular, sans-serif;
+        font-size: 12px;
+      }
+      .landing-wrap {
+        width: 100%;
+        max-width: 820px;
+      }
+      .clock-wrap {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 1000px;
+        z-index: 100;
+      }
+      .landing-title {
+        text-align: center;
+        padding: 28px 0 22px;
+      }
+      .landing-title h1 {
+        font-size: 28px;
+        font-weight: bold;
+        color: #fbd77d;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-shadow: 0 0 18px #fbd77d66;
+        margin-bottom: 4px;
+      }
+      .landing-title p {
+        color: #848484;
+        font-size: 11px;
+        letter-spacing: 1px;
+      }
+      .panel {
+        background: linear-gradient(180deg, #1c2233 0%, #111620 100%);
+        border: 1px solid #2e3d52;
+        border-radius: 4px;
+        margin-bottom: 18px;
+        overflow: hidden;
+      }
+      .panel-header {
+        background: linear-gradient(180deg, #3b4a5c 0%, #20262f 100%);
+        padding: 8px 16px;
+        font-size: 13px;
+        font-weight: bold;
+        color: #fbd77d;
+        letter-spacing: 1px;
+        border-bottom: 1px solid #2e3d52;
+      }
+      .panel-body {
+        padding: 16px;
+      }
+      /* Stats grid */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+      .stat-item {
+        background: #0d1018;
+        border: 1px solid #2e3d52;
+        border-radius: 3px;
+        padding: 12px 14px;
+        text-align: center;
+      }
+      .stat-label {
+        color: #848484;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 6px;
+      }
+      .stat-value {
+        color: #f1f1f1;
+        font-size: 20px;
+        font-weight: bold;
+      }
+      .stat-value.highlight {
+        color: #fbd77d;
+      }
+      /* Universe creation form */
+      .univ-form {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        align-items: end;
+      }
+      .univ-form .span2 { grid-column: span 2; }
+      .univ-form .univ-check input[type='checkbox'] {
+        width: auto;
+        height: 16px;
+        cursor: pointer;
+        accent-color: #fbd77d;
+        margin-top: 6px;
+        display: block;
+      }
+      /* Bot creation form */
+      .bot-form {
+        display: grid;
+        grid-template-columns: 1fr 110px 70px auto auto;
+        gap: 10px;
+        align-items: end;
+      }
+      .form-group label {
+        display: block;
+        color: #848484;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 5px;
+      }
+      .form-group input {
+        width: 100%;
+        background: #0d1018;
+        border: 1px solid #2e3d52;
+        border-radius: 3px;
+        color: #f1f1f1;
+        padding: 7px 10px;
+        font-size: 12px;
+        box-sizing: border-box;
+        font-family: inherit;
+        color-scheme: dark;
+      }
+      .form-group input:focus {
+        outline: none;
+        border-color: #fbd77d;
+        background: #0d1018;
+        color: #f1f1f1;
+      }
+      .form-group input:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0 1000px #0d1018 inset;
+        -webkit-text-fill-color: #f1f1f1;
+      }
+      .btn-create {
+        padding: 7px 18px;
+        background: linear-gradient(180deg, #3b4a5c 0%, #20262f 100%);
+        border: 1px solid #fbd77d;
+        border-radius: 3px;
+        color: #fbd77d;
+        font-size: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        font-family: inherit;
+        white-space: nowrap;
+      }
+      .btn-create:hover {
+        background: linear-gradient(180deg, #20262f 0%, #3b4a5c 100%);
+        color: #fff;
+      }
+      .bot-msg {
+        margin-top: 10px;
+        font-size: 11px;
+        color: #9cf;
+        display: none;
+      }
+      /* Player table */
+      .player-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .player-table thead tr {
+        background: #0d1018;
+        color: #848484;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .player-table thead td {
+        padding: 8px 12px;
+        border-bottom: 1px solid #2e3d52;
+      }
+      .player-table tbody tr {
+        border-bottom: 1px solid #1c2233;
+        transition: background 0.15s;
+      }
+      .player-table tbody tr:hover {
+        background: #1e2a3a;
+      }
+      .player-table tbody tr:last-child {
+        border-bottom: none;
+      }
+      .player-table td {
+        padding: 9px 12px;
+        vertical-align: middle;
+      }
+      .td-rank {
+        color: #848484;
+        width: 48px;
+        text-align: center;
+      }
+      .td-name {
+        color: #f1f1f1;
+        font-weight: bold;
+      }
+      .td-coor {
+        color: #848484;
+        font-size: 11px;
+      }
+      .td-type {
+        color: #848484;
+        font-size: 11px;
+      }
+      .td-type.inactive { color: #f8c060; }
+      .td-type.abandoned { color: #f88; }
+      .td-puntos {
+        color: #f1f1f1;
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+      .td-bottype {
+        color: #9cf;
+        font-size: 11px;
+      }
+      .td-name a {
+        color: #f1f1f1;
+        font-weight: bold;
+        text-decoration: none;
+      }
+      .td-name a:hover { color: #fbd77d; }
+      .td-planets { color: #f1f1f1; text-align: center; }
+      .td-mission { color: #9cf; font-size: 11px; font-family: monospace; }
+      .td-action {
+        text-align: right;
+      }
+      .sort-header {
+        cursor: pointer;
+        user-select: none;
+      }
+      .sort-header:hover { color: #fbd77d; }
+      .btn-view {
+        display: inline-block;
+        padding: 4px 12px;
+        background: linear-gradient(180deg, #3b4a5c 0%, #20262f 100%);
+        border: 1px solid #2e3d52;
+        border-radius: 3px;
+        color: #fbd77d;
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: bold;
+        transition: background 0.15s;
+        vertical-align: middle;
+      }
+      .btn-view:hover, .btn-view:visited:hover {
+        background: linear-gradient(180deg, #20262f 0%, #3b4a5c 100%);
+        color: #fff;
+        text-decoration: none;
+      }
+      .btn-view:visited {
+        color: #fbd77d;
+        text-decoration: none;
+      }
+      .empty-msg {
+        text-align: center;
+        color: #848484;
+        padding: 24px;
+        font-style: italic;
+      }
+      .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border-top: 1px solid #2e3d52;
+        background: #0d1018;
+      }
+      .pagination-btn {
+        padding: 5px 14px;
+        background: linear-gradient(180deg, #3b4a5c 0%, #20262f 100%);
+        border: 1px solid #2e3d52;
+        border-radius: 3px;
+        color: #fbd77d;
+        font-size: 11px;
+        font-weight: bold;
+        cursor: pointer;
+        font-family: inherit;
+      }
+      .pagination-btn:disabled { opacity: 0.3; cursor: default; }
+      .pagination-btn:not(:disabled):hover {
+        background: linear-gradient(180deg, #20262f 0%, #3b4a5c 100%);
+        color: #fff;
+      }
+      .pagination-info { color: #848484; font-size: 11px; }
+      .btn-delete {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px 7px;
+        background: linear-gradient(180deg, #3b4a5c 0%, #20262f 100%);
+        border: 1px solid #2e3d52;
+        border-radius: 3px;
+        cursor: pointer;
+        vertical-align: middle;
+        transition: background 0.15s;
+      }
+      .btn-delete:hover { border-color: #f88; background: linear-gradient(180deg, #20262f 0%, #3b4a5c 100%); }
+      .btn-delete img { width: 14px; height: 14px; display: block; }
+      .btn-bot {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px 7px;
+        background: linear-gradient(180deg, #3b4a5c 0%, #20262f 100%);
+        border: 1px solid #2e3d52;
+        border-radius: 3px;
+        cursor: pointer;
+        vertical-align: middle;
+        font-size: 11px;
+        color: #9cf;
+        font-family: inherit;
+        font-weight: bold;
+        line-height: 14px;
+        width: 28px;
+        height: 24px;
+        transition: background 0.15s;
+      }
+      .btn-bot:hover { border-color: #9cf; background: linear-gradient(180deg, #20262f 0%, #3b4a5c 100%); }
+      .bot-modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.75);
+        z-index: 1100;
+        align-items: center;
+        justify-content: center;
+      }
+      .bot-modal-overlay.active { display: flex; }
+      .bot-modal-box {
+        background: linear-gradient(180deg, #1c2233 0%, #111620 100%);
+        border: 1px solid #2e3d52;
+        border-radius: 4px;
+        padding: 0;
+        width: 680px;
+        max-width: 95vw;
+        max-height: 80vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .bot-modal-header {
+        background: linear-gradient(180deg, #3b4a5c 0%, #20262f 100%);
+        padding: 10px 16px;
+        font-size: 13px;
+        font-weight: bold;
+        color: #fbd77d;
+        letter-spacing: 1px;
+        border-bottom: 1px solid #2e3d52;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 4px 4px 0 0;
+      }
+      .bot-modal-close {
+        background: none;
+        border: none;
+        color: #848484;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 0 4px;
+        font-family: inherit;
+        line-height: 1;
+      }
+      .bot-modal-close:hover { color: #f1f1f1; }
+      .bot-modal-body {
+        padding: 16px;
+        overflow-y: auto;
+        flex: 1;
+      }
+      .bot-modal-body pre {
+        margin: 0;
+        font-family: monospace;
+        font-size: 11px;
+        color: #9cf;
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.7);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+      }
+      .modal-overlay.active { display: flex; }
+      .modal-box {
+        background: linear-gradient(180deg, #1c2233 0%, #111620 100%);
+        border: 1px solid #2e3d52;
+        border-radius: 4px;
+        padding: 28px 32px;
+        min-width: 300px;
+        text-align: center;
+      }
+      .modal-box p { color: #f1f1f1; margin: 0 0 8px; font-size: 13px; }
+      .modal-box .modal-name { color: #fbd77d; font-weight: bold; margin-bottom: 20px; font-size: 14px; }
+      .modal-actions { display: flex; gap: 12px; justify-content: center; }
+      .btn-confirm-del {
+        padding: 7px 20px;
+        background: linear-gradient(180deg, #4a1515 0%, #2a0a0a 100%);
+        border: 1px solid #f88;
+        border-radius: 3px;
+        color: #f88;
+        font-size: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        font-family: inherit;
+      }
+      .btn-confirm-del:hover { background: linear-gradient(180deg, #6a1515 0%, #3a0a0a 100%); color: #fff; }
+      .btn-cancel-del {
+        padding: 7px 20px;
+        background: linear-gradient(180deg, #3b4a5c 0%, #20262f 100%);
+        border: 1px solid #2e3d52;
+        border-radius: 3px;
+        color: #848484;
+        font-size: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        font-family: inherit;
+      }
+      .btn-cancel-del:hover { color: #f1f1f1; border-color: #f1f1f1; }
+      .btn-del-universe {
+        padding: 7px 18px;
+        background: linear-gradient(180deg, #4a1515 0%, #2a0a0a 100%);
+        border: 1px solid #f88;
+        border-radius: 3px;
+        color: #f88;
+        font-size: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        font-family: inherit;
+        margin-left: 12px;
+      }
+      .btn-del-universe:hover { background: linear-gradient(180deg, #6a1515 0%, #3a0a0a 100%); color: #fff; }
+      .modal-box input {
+        width: 100%;
+        background: #0d1018;
+        border: 1px solid #2e3d52;
+        border-radius: 3px;
+        color: #f1f1f1;
+        padding: 7px 10px;
+        font-size: 12px;
+        box-sizing: border-box;
+        font-family: inherit;
+        margin-bottom: 16px;
+      }
+      .modal-box input:focus { outline: none; border-color: #fbd77d; }
+      .modal-error { color: #f88; font-size: 11px; margin-bottom: 10px; display: none; }
+      .modal-warning { color: #f8c060; font-size: 11px; margin-bottom: 16px; }
+  body
+    .clock-wrap
+      #bar
+        ul
+          li#Clock.OGameClock -
+    .landing-wrap
+      .landing-title
+        h1 #{universo ? universo.name : 'OwnGame'}
+        p Universe Control Panel
+
+      if !universo
+        .panel
+          .panel-header Create Universe
+          .panel-body
+            form#universe-form.univ-form
+              .form-group.span2
+                label Universe name
+                input#univ-name(type='text' placeholder='OwnGame' required)
+              .form-group
+                label Economy speed
+                input#univ-speed(type='number' min='1' step='0.1' value='1' required)
+              .form-group
+                label Fleet speed
+                input#univ-fleet(type='number' min='1' value='100' required)
+              .form-group
+                label Galaxies
+                input#univ-galaxies(type='number' min='1' max='9' value='9' required)
+              .form-group
+                label Fleet debris %
+                input#univ-fleet-debris(type='number' min='0' max='100' value='30' required)
+              .form-group
+                label Defence debris %
+                input#univ-def-debris(type='number' min='0' max='100' value='0' required)
+              .form-group
+                label Moon chance %
+                input#univ-max-moon(type='number' min='0' max='100' value='20' required)
+              .form-group.univ-check
+                label Donut Galaxy
+                input#univ-donut-gal(type='checkbox' checked)
+              .form-group.univ-check
+                label Donut System
+                input#univ-donut-sys(type='checkbox' checked)
+              .form-group.univ-check
+                label Rapid Fire
+                input#univ-rapid-fire(type='checkbox' checked)
+              .form-group
+                button.btn-create(type='submit') Create Universe
+            p#univ-msg.bot-msg
+
+      .panel
+        .panel-header Universe Stats
+        .panel-body
+          .stats-grid
+            .stat-item
+              .stat-label Players
+              .stat-value.highlight #{cantPlayers}
+            .stat-item
+              .stat-label Economy Speed
+              .stat-value #{universo ? universo.speed : '—'}x
+            .stat-item
+              .stat-label Fleet Speed
+              .stat-value #{universo ? universo.speedFleet : '—'}x
+            .stat-item
+              .stat-label Galaxies
+              .stat-value #{universo ? universo.maxGalaxies : '—'}
+            .stat-item
+              .stat-label Systems / Galaxy
+              .stat-value 499
+            .stat-item
+              .stat-label Inactive Players
+              .stat-value #{inactivePlayers !== undefined ? inactivePlayers : '—'}
+
+      if universo
+        .panel
+          .panel-header Create Bots
+          .panel-body
+            form#bot-form.bot-form
+              .form-group
+                label Bot name prefix
+                input#bot-name(type='text' placeholder='bot' required)
+              .form-group
+                label Bot type
+                input#bot-type(type='text' placeholder='aggressive' required)
+              .form-group
+                label Count
+                input#bot-count(type='number' min='1' value='1' required)
+              button.btn-create(type='submit') Create Bots
+              button#btn-random-bots.btn-create(type='button') Random Bots
+            p#bot-msg.bot-msg
+
+      if debugMode
+        .panel
+          .panel-header Dev Tools
+          .panel-body
+            button#btn-dev-code.btn-create(type='button') Execute Dev Code
+            button#btn-del-universe.btn-del-universe(type='button') Delete Universe
+            p#dev-msg.bot-msg
+
+      if universo
+        .panel
+          .panel-header Players
+          .panel-body(style='padding: 0;')
+            if players && players.length > 0
+              div#pagination-top.pagination(style='display:none;')
+                button#btn-prev-top.pagination-btn(type='button') ◀ Prev
+                span#page-info-top.pagination-info
+                button#btn-next-top.pagination-btn(type='button') Next ▶
+              table#player-table.player-table
+                thead
+                  tr
+                    td #
+                    td.sort-header(data-sort='name') Player
+                    td.sort-header(data-sort='coor') Coordinates
+                    td.sort-header(data-sort='type') Type
+                    td.sort-header(data-sort='puntos') Score
+                    td.sort-header(data-sort='botType') Bot Type
+                    td.sort-header(data-sort='numPlanets') Planets
+                    td Research mission
+                    td Mission
+                    td
+                tbody
+                  each player, index in players
+                    - var typeClass = (player.type === 'Inactivo' || player.type === 'inactivo') ? 'inactive' : (player.type === 'Abandonado' ? 'abandoned' : '')
+                    tr(data-name=player.name data-coor=(player.coor.gal + '_' + player.coor.sys + '_' + player.coor.pos) data-type=(player.type || 'active') data-puntos=(player.puntos || 0) data-botType=(player.botType || '—') data-numPlanets=(player.numPlanets || 0))
+                      td.td-rank #{index + 1}
+                      td.td-name
+                        a(href='./Change.html?name=' + player.name) #{player.name}
+                      td.td-coor [#{player.coor.gal}:#{player.coor.sys}:#{player.coor.pos}]
+                      td.td-type(class=typeClass) #{player.type || 'active'}
+                      td.td-puntos #{player.puntos || 0}
+                      td.td-bottype #{player.botType || '—'}
+                      td.td-planets #{player.numPlanets || 0}
+                      td.td-mission #{player.researchMission}
+                      td.td-mission #{player.planetMission}
+                      td.td-action
+                        div(style='display:flex;align-items:center;justify-content:flex-end;gap:6px;')
+                          button.btn-bot(type='button' data-name=player.name title='View bot missions') B
+                          button.btn-delete(type='button' data-name=player.name title='Delete player')
+                            img(src='./Imagenes/Trash_Player.png' alt='Delete')
+              div#pagination.pagination(style='display:none;')
+                button#btn-prev.pagination-btn(type='button') ◀ Prev
+                span#page-info.pagination-info
+                button#btn-next.pagination-btn(type='button') Next ▶
+            else
+              .empty-msg No players in this universe yet.
+
+    #delete-modal.modal-overlay
+      .modal-box
+        p Delete player
+        p#delete-modal-name.modal-name
+        .modal-actions
+          button#btn-confirm-del.btn-confirm-del(type='button') Delete
+          button#btn-cancel-del.btn-cancel-del(type='button') Cancel
+
+    #bot-modal.bot-modal-overlay
+      .bot-modal-box
+        .bot-modal-header
+          span#bot-modal-title Bot — ...
+          button#bot-modal-close.bot-modal-close ✕
+        .bot-modal-body
+          pre#bot-modal-content Loading...
+
+    #del-uni-modal1.modal-overlay
+      .modal-box
+        p Delete Universe
+        p.modal-name Are you sure?
+        p.modal-warning This will permanently delete ALL players and universe data. This operation is IRREVERSIBLE.
+        .modal-actions
+          button#btn-del-uni-yes.btn-confirm-del(type='button') Yes, delete
+          button#btn-del-uni-cancel1.btn-cancel-del(type='button') Cancel
+
+    #del-uni-modal2.modal-overlay
+      .modal-box
+        p Type "Delete" to confirm
+        p.modal-warning(style='margin-top:12px;') This cannot be undone.
+        input#del-uni-input(type='text' placeholder='Delete' autocomplete='off')
+        p#del-uni-error.modal-error Wrong word. Type exactly: Delete
+        .modal-actions
+          button#btn-del-uni-confirm.btn-confirm-del(type='button') Confirm Delete
+          button#btn-del-uni-cancel2.btn-cancel-del(type='button') Cancel
+
+    script.
+      function lockPage() {
+        document.querySelectorAll('button').forEach(function(b){ b.disabled = true; b.style.opacity = '0.5'; });
+        document.querySelectorAll('a.btn-view').forEach(function(a){ a.style.pointerEvents = 'none'; a.style.opacity = '0.5'; });
+      }
+
+      var botForm = document.getElementById('bot-form');
+      if(botForm){
+        botForm.addEventListener('submit', async function(e){
+          e.preventDefault();
+          var name = document.getElementById('bot-name').value.trim();
+          var botType = document.getElementById('bot-type').value.trim();
+          var count = parseInt(document.getElementById('bot-count').value);
+          var msg = document.getElementById('bot-msg');
+          msg.style.display = 'block';
+          try {
+            var res = await fetch('/admin/create-bots', {
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({name: name, botType: botType, count: count})
+            });
+            var data = await res.json();
+            if(data.ok){
+              lockPage();
+              msg.style.color = '#9cf';
+              msg.textContent = data.created + ' bot(s) created. Reloading in 3s...';
+              setTimeout(function(){ window.location.reload(); }, 3000);
+            } else {
+              msg.style.color = '#f88';
+              msg.textContent = data.error || 'Error creating bots.';
+            }
+          } catch(err) {
+            msg.style.color = '#f88';
+            msg.textContent = 'Request failed.';
+          }
+        });
+
+        document.getElementById('btn-random-bots').addEventListener('click', async function(){
+          var count = parseInt(document.getElementById('bot-count').value);
+          var msg = document.getElementById('bot-msg');
+          msg.style.display = 'block';
+          if(isNaN(count) || count < 1){ msg.style.color = '#f88'; msg.textContent = 'Invalid count.'; return; }
+          try {
+            var res = await fetch('/admin/create-random-bots', {
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({count: count})
+            });
+            var data = await res.json();
+            if(data.ok){
+              lockPage();
+              msg.style.color = '#9cf';
+              msg.textContent = data.created + ' random bot(s) created. Reloading in 3s...';
+              setTimeout(function(){ window.location.reload(); }, 3000);
+            } else {
+              msg.style.color = '#f88';
+              msg.textContent = data.error || 'Error creating bots.';
+            }
+          } catch(err) {
+            msg.style.color = '#f88';
+            msg.textContent = 'Request failed.';
+          }
+        });
+      }
+
+      var deleteModal = document.getElementById('delete-modal');
+      var deleteModalName = document.getElementById('delete-modal-name');
+      var pendingDeleteName = null;
+
+      document.querySelectorAll('.btn-delete').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          pendingDeleteName = this.dataset.name;
+          deleteModalName.textContent = pendingDeleteName;
+          deleteModal.classList.add('active');
+        });
+      });
+
+      document.getElementById('btn-cancel-del').addEventListener('click', function(){
+        deleteModal.classList.remove('active');
+        pendingDeleteName = null;
+      });
+
+      document.getElementById('btn-confirm-del').addEventListener('click', async function(){
+        if(!pendingDeleteName) return;
+        deleteModal.classList.remove('active');
+        try {
+          var res = await fetch('/admin/delete-player', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({name: pendingDeleteName})
+          });
+          var data = await res.json();
+          if(data.ok){ window.location.reload(); }
+        } catch(err) {}
+        pendingDeleteName = null;
+      });
+
+      deleteModal.addEventListener('click', function(e){
+        if(e.target === deleteModal){ deleteModal.classList.remove('active'); pendingDeleteName = null; }
+      });
+
+      var botModal = document.getElementById('bot-modal');
+      var botModalTitle = document.getElementById('bot-modal-title');
+      var botModalContent = document.getElementById('bot-modal-content');
+
+      document.querySelectorAll('.btn-bot').forEach(function(btn){
+        btn.addEventListener('click', async function(){
+          var name = this.dataset.name;
+          botModalTitle.textContent = 'Bot — ' + name;
+          botModalContent.textContent = 'Loading...';
+          botModal.classList.add('active');
+          try {
+            var res = await fetch('/admin/get-bot?name=' + encodeURIComponent(name));
+            var data = await res.json();
+            if(data.ok){
+              botModalContent.textContent = JSON.stringify(data.bot, null, 2);
+            } else {
+              botModalContent.textContent = data.mes || 'Error fetching bot data.';
+            }
+          } catch(err) {
+            botModalContent.textContent = 'Request failed.';
+          }
+        });
+      });
+
+      document.getElementById('bot-modal-close').addEventListener('click', function(){
+        botModal.classList.remove('active');
+      });
+      botModal.addEventListener('click', function(e){
+        if(e.target === botModal) botModal.classList.remove('active');
+      });
+
+      // Create universe form
+      var univForm = document.getElementById('universe-form');
+      if(univForm){
+        univForm.addEventListener('submit', async function(e){
+          e.preventDefault();
+          var name       = document.getElementById('univ-name').value.trim();
+          var speed      = parseFloat(document.getElementById('univ-speed').value);
+          var fleet      = parseFloat(document.getElementById('univ-fleet').value);
+          var galaxies   = parseInt(document.getElementById('univ-galaxies').value);
+          var fleetDeb   = parseFloat(document.getElementById('univ-fleet-debris').value);
+          var defDeb     = parseFloat(document.getElementById('univ-def-debris').value);
+          var maxMoon    = parseFloat(document.getElementById('univ-max-moon').value);
+          var donutGal   = document.getElementById('univ-donut-gal').checked;
+          var donutSys   = document.getElementById('univ-donut-sys').checked;
+          var rapidFire  = document.getElementById('univ-rapid-fire').checked;
+          var msg = document.getElementById('univ-msg');
+          msg.style.display = 'block';
+          try {
+            var res = await fetch('/admin/create-universe', {
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({
+                name: name, speed: speed, speedFleet: fleet,
+                maxGalaxies: galaxies, fleetDebris: fleetDeb, defenceDebris: defDeb,
+                maxMoon: maxMoon, donutGalaxy: donutGal, donutSystem: donutSys,
+                rapidFire: rapidFire
+              })
+            });
+            var data = await res.json();
+            if(data.ok){
+              msg.style.color = '#9cf';
+              msg.textContent = 'Universe created. Reloading...';
+              setTimeout(function(){ window.location.reload(); }, 1500);
+            } else {
+              msg.style.color = '#f88';
+              msg.textContent = data.mes || 'Error.';
+            }
+          } catch(err) {
+            msg.style.color = '#f88';
+            msg.textContent = 'Request failed.';
+          }
+        });
+      }
+
+      // Delete universe flow
+      var delUniModal1 = document.getElementById('del-uni-modal1');
+      var delUniModal2 = document.getElementById('del-uni-modal2');
+      var btnDelUni = document.getElementById('btn-del-universe');
+      if(btnDelUni){
+        btnDelUni.addEventListener('click', function(){ delUniModal1.classList.add('active'); });
+      }
+      if(delUniModal1){
+        document.getElementById('btn-del-uni-yes').addEventListener('click', function(){
+          delUniModal1.classList.remove('active');
+          document.getElementById('del-uni-input').value = '';
+          document.getElementById('del-uni-error').style.display = 'none';
+          delUniModal2.classList.add('active');
+        });
+        document.getElementById('btn-del-uni-cancel1').addEventListener('click', function(){
+          delUniModal1.classList.remove('active');
+        });
+        delUniModal1.addEventListener('click', function(e){ if(e.target === delUniModal1) delUniModal1.classList.remove('active'); });
+      }
+      if(delUniModal2){
+        document.getElementById('btn-del-uni-cancel2').addEventListener('click', function(){
+          delUniModal2.classList.remove('active');
+        });
+        document.getElementById('btn-del-uni-confirm').addEventListener('click', async function(){
+          var val = document.getElementById('del-uni-input').value.trim();
+          var errEl = document.getElementById('del-uni-error');
+          if(val !== 'Delete'){ errEl.style.display = 'block'; return; }
+          errEl.style.display = 'none';
+          delUniModal2.classList.remove('active');
+          try {
+            var res = await fetch('/admin/delete-universe?Sure=Delete');
+            var data = await res.json();
+            if(data.ok){ lockPage(); window.location.reload(); }
+          } catch(err) {}
+        });
+        delUniModal2.addEventListener('click', function(e){ if(e.target === delUniModal2) delUniModal2.classList.remove('active'); });
+      }
+
+      var btnDev = document.getElementById('btn-dev-code');
+      if(btnDev){
+        btnDev.addEventListener('click', async function(){
+          var msg = document.getElementById('dev-msg');
+          msg.style.display = 'block';
+          try {
+            var res = await fetch('/admin/execute-dev-code', {method: 'POST'});
+            var data = await res.json();
+            msg.style.color = data.ok ? '#9cf' : '#f88';
+            msg.textContent = data.mes;
+          } catch(err) {
+            msg.style.color = '#f88';
+            msg.textContent = 'Request failed.';
+          }
+        });
+      }
+
+      // Table sorting
+      var sortState = { col: null, dir: 1 };
+      document.querySelectorAll('.sort-header').forEach(function(th){
+        th.addEventListener('click', function(){
+          var col = this.dataset.sort;
+          if(sortState.col === col){ sortState.dir *= -1; }
+          else { sortState.col = col; sortState.dir = col === 'puntos' ? -1 : 1; }
+          sortTable(col, sortState.dir);
+          document.querySelectorAll('.sort-header').forEach(function(h){
+            h.textContent = h.textContent.replace(/ [▲▼]$/, '');
+          });
+          this.textContent += (sortState.dir === 1 ? ' ▲' : ' ▼');
+        });
+      });
+
+      function sortTable(col, dir){
+        var tbody = document.querySelector('#player-table tbody');
+        var rows = Array.from(tbody.rows);
+        rows.sort(function(a, b){
+          var av = a.dataset[col] || '';
+          var bv = b.dataset[col] || '';
+          if(col === 'puntos'){
+            return dir * (parseInt(bv) - parseInt(av));
+          }
+          if(col === 'coor'){
+            var ap = av.split('_').map(Number);
+            var bp = bv.split('_').map(Number);
+            for(var i = 0; i < 3; i++){
+              if(ap[i] !== bp[i]) return dir * (ap[i] - bp[i]);
+            }
+            return 0;
+          }
+          return dir * av.localeCompare(bv);
+        });
+        rows.forEach(function(r, i){
+          r.cells[0].textContent = i + 1;
+          r.style.display = '';
+          tbody.appendChild(r);
+        });
+        showPage(1);
+      }
+
+      var ITEMS_PER_PAGE = 100;
+      var currentPage = 1;
+
+      function showPage(page){
+        var tbody = document.querySelector('#player-table tbody');
+        if(!tbody) return;
+        var rows = Array.from(tbody.rows);
+        var totalPages = Math.ceil(rows.length / ITEMS_PER_PAGE);
+        currentPage = Math.max(1, Math.min(page, totalPages || 1));
+        var start = (currentPage - 1) * ITEMS_PER_PAGE;
+        rows.forEach(function(r, i){
+          r.style.display = (i >= start && i < start + ITEMS_PER_PAGE) ? '' : 'none';
+        });
+        var visible = totalPages > 1 ? 'flex' : 'none';
+        var label = 'Page ' + currentPage + ' of ' + totalPages + ' (' + rows.length + ' players)';
+        ['', '-top'].forEach(function(suffix){
+          document.getElementById('pagination' + suffix).style.display = visible;
+          document.getElementById('btn-prev' + suffix).disabled = currentPage <= 1;
+          document.getElementById('btn-next' + suffix).disabled = currentPage >= totalPages;
+          document.getElementById('page-info' + suffix).textContent = label;
+        });
+      }
+
+      if(document.getElementById('player-table')){
+        showPage(1);
+        ['', '-top'].forEach(function(suffix){
+          document.getElementById('btn-prev' + suffix).addEventListener('click', function(){ showPage(currentPage - 1); });
+          document.getElementById('btn-next' + suffix).addEventListener('click', function(){ showPage(currentPage + 1); });
+        });
+      }
+
+      (function(){
+        var clockEl = document.getElementById('Clock');
+        function updateClock(){
+          var d = new Date();
+          var pad = function(n){ return n < 10 ? '0'+n : n; };
+          clockEl.innerHTML = d.getDate()+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear()+'&nbsp;&nbsp;'+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+      })();

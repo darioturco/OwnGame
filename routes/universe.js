@@ -1,3 +1,5 @@
+var fs        = require('fs');
+var path      = require('path');
 var fun       = require('./funciones_auxiliares');
 var base      = require('./data_base');
 var costs     = require('./constructions/costs');
@@ -5,8 +7,11 @@ var battle    = require('./battle');
 var rewards   = require('./rewards');
 var expedicion = require('./expedicion');
 var queue = require('./Queue')
+var botLogic  = require('./bots/bot_logic');
+var botTypes  = require('./bots/bot_types');
 var events = new queue.Queue();
 var actualizando = false;
+var inFlightPlayers = new Set();
 
 var exp  = {
   universo: null,             // Objeto con la informcaion basica del universo
@@ -27,15 +32,15 @@ var exp  = {
   createUniverse: function(name, cant, data){
     base.setUniverseData(name, data);
     for(let i = 0 ; i<cant ; i++){
-      this.addNewPlayer('bot_' + i, 2);
+      this.addNewPlayer('bot_' + i, 2, 'default');
     }
   },
 
   // Actualiza la informacion del jugador player
   //  -player = Objeto player a actualizar
   //  -f = Funcion que se ejecuta despues de ejecutar esta funcion
-  updatePlayer: function(player, f){
-    let horaActual = fun.horaActual();
+  updatePlayer: function(player, f, simulatedNow = null){
+    let horaActual = simulatedNow || fun.horaActual();
     let objSet = {};
     let objInc = {};
     let objPull = {movement: {llegada: {$lt: horaActual}}, hazards: {time: {$lt: horaActual}}};
@@ -59,9 +64,9 @@ var exp  = {
       }
 
       let almacen = this.getAlmacen(player.planets[i]);
-      objInc['planets.' + i + '.resources.metal']     = Math.max(0, Math.min(player.planets[i].resourcesAdd.metal*timeLastUpdate/(1000*3600),     almacen.metal     - player.planets[i].resources.metal));
-      objInc['planets.' + i + '.resources.crystal']   = Math.max(0, Math.min(player.planets[i].resourcesAdd.crystal*timeLastUpdate/(1000*3600),   almacen.crystal   - player.planets[i].resources.crystal));
-      objInc['planets.' + i + '.resources.deuterium'] = Math.max(0, Math.min(player.planets[i].resourcesAdd.deuterium*timeLastUpdate/(1000*3600), almacen.deuterium - player.planets[i].resources.deuterium));
+      objInc['planets.' + i + '.resources.metal']     = Math.floor(Math.max(0, Math.min(player.planets[i].resourcesAdd.metal*timeLastUpdate/(1000*3600),     almacen.metal     - player.planets[i].resources.metal)));
+      objInc['planets.' + i + '.resources.crystal']   = Math.floor(Math.max(0, Math.min(player.planets[i].resourcesAdd.crystal*timeLastUpdate/(1000*3600),   almacen.crystal   - player.planets[i].resources.crystal)));
+      objInc['planets.' + i + '.resources.deuterium'] = Math.floor(Math.max(0, Math.min(player.planets[i].resourcesAdd.deuterium*timeLastUpdate/(1000*3600), almacen.deuterium - player.planets[i].resources.deuterium)));
     }
 
     for(let i = 0; i < player.movement.length; i++){
@@ -77,7 +82,11 @@ var exp  = {
     objInc['puntos'] = Math.floor(objSet['puntosAcum']/1000);
     objSet['puntosAcum'] = objSet['puntosAcum'] % 1000;
     objSet.lastVisit = horaActual;
-    base.savePlayerData(player.name, objSet, objInc, undefined, objPull, f);
+    const self = this;
+    base.savePlayerData(player.name, objSet, objInc, undefined, objPull, () => {
+      if(f) f();
+      if(player.botType && player.botType !== 'human') botLogic.runBot(player, self, events);
+    });
   },
 
   _calcReturnTime: function(movement, horaActual){
@@ -134,7 +143,14 @@ var exp  = {
       ['planets.' + planet + pathPrefix + '.resources.deuterium']: -deuterium
     };
     player.planets[planet].buildingConstrucction = bc;
+    const _resObj = pathPrefix === '.moon' ? player.planets[planet].moon.resources : player.planets[planet].resources;
+    _resObj.metal     -= metal;
+    _resObj.crystal   -= crystal;
+    _resObj.deuterium -= deuterium;
     events.addElement({time: bc.init + bc.time * 1000, player: player.name});
+    const lvl = (player.planets[planet].buildings[buildingName] || 0) + 1;
+    const logLine = `${new Date().toISOString()} [build] ${player.name} p${planet} ${buildingName} -> lv${lvl}\n`;
+    fs.appendFile(path.join(__dirname, '../logs/buildings.log'), logLine, () => {});
     base.savePlayerData(player.name, objSet, objInc, undefined, undefined, () => {
       res.send({ok: true, mes: "Operation successful."});
     });
@@ -144,6 +160,7 @@ var exp  = {
     let r = player.researchConstrucction;
     if(!r.active || r.time*1000 + r.init > horaActual) return false;
     objSet['researchConstrucction'] = {active: false};
+    r.active = false;
     objSet['puntosAcum'] += r.metal + r.crystal + r.deuterium;
     objInc['research.' + r.item] = 1;
     player.research[r.item] += 1;
@@ -159,6 +176,7 @@ var exp  = {
     let bc = player.planets[i].buildingConstrucction;
     if(!bc.active || 1000*bc.time + bc.init > horaActual) return false;
     objSet['planets.' + i + '.buildingConstrucction'] = {active: false};
+    bc.active = false;
     objSet['puntosAcum'] += bc.metal + bc.crystal + bc.deuterium;
     objInc['planets.' + i + '.campos'] = 1;
     objInc['planets.' + i + '.buildings.' + bc.item] = 1;
@@ -172,6 +190,7 @@ var exp  = {
     let bc = moon.buildingConstrucction;
     if(!moon.active || !bc.active || 1000*bc.time + bc.init > horaActual) return;
     objSet['planets.' + i + '.moon.buildingConstrucction'] = {active: false};
+    bc.active = false;
     objSet['puntosAcum'] += bc.metal + bc.crystal + bc.deuterium;
     objInc['planets.' + i + '.moon.campos'] = 1;
     objInc['planets.' + i + '.moon.buildings.' + bc.item] = 1;
@@ -238,10 +257,10 @@ var exp  = {
     let lunaString = (movement.moon && player.planets[planetIndex].moon.active) ? '.moon.' : '.';
     let plaString = 'planets.' + planetIndex + lunaString;
     for(let item in movement.resources){
-      if(item !== 'misil') objInc[plaString + 'resources.' + item] = movement.resources[item];
+      if(item !== 'misil') objInc[plaString + 'resources.' + item] = (objInc[plaString + 'resources.' + item] || 0) + movement.resources[item];
     }
     for(let item in movement.ships){
-      objInc[plaString + 'fleet.' + item] = movement.ships[item];
+      objInc[plaString + 'fleet.' + item] = (objInc[plaString + 'fleet.' + item] || 0) + movement.ships[item];
     }
   },
 
@@ -254,33 +273,43 @@ var exp  = {
         let resColonia = this.colonize(movement.coorHasta, player, movement.resources, movement.ships);
         let text = resColonia ? "Congratulations, you have a new colony!!!" : "Something went wrong. The comunication with the fleet has been lost...";
         this.sendMessage(player.name, {type: 3, title: "Colonization", text, data: {}});
+        if(!resColonia){
+          let newTime = this._calcReturnTime(movement, horaActual);
+          this.returnFleetInDataBase(player, i, undefined, newTime, movement.resources, movement.ships);
+        }
         break;
       }
       case 2: { // Recycling
+        newTime = this._calcReturnTime(movement, horaActual);
+        this.returnFleetInDataBase(player, i, undefined, newTime, movement.resources, undefined);
         if(fun.estaColonizado(this.allCord, movement.coorHasta)){
+          const newMovTime    = player.movement[i].time;
+          const newMovLlegada = player.movement[i].llegada;
           base.findAndExecute(movement.coorHasta, (res) => {
             let indexPlanet = fun.getIndexOfPlanet(res.planets, movement.coorHasta);
-            let newDebris = this.recicleDebris(player.name, res.planets[indexPlanet].debris, movement);
+            let newDebris = this.recicleDebris(player.name, res.planets[indexPlanet].debris, movement, newMovTime, newMovLlegada);
             if(newDebris != undefined) base.saveDebris(movement.coorHasta, newDebris, false);
           });
         }
-        newTime = this._calcReturnTime(movement, horaActual);
-        this.returnFleetInDataBase(player, i, undefined, newTime, movement.resources, undefined);
         break;
       }
       case 3: { // Transport
+        newTime = this._calcReturnTime(movement, horaActual);
         if(fun.estaColonizado(this.allCord, movement.coorHasta)){
           base.addPlanetData(movement.coorHasta, movement.resources, {}, movement.destination === 2);
+          this.returnFleetInDataBase(player, i, undefined, newTime, fun.zeroResources(), undefined);
+        } else {
+          this.returnFleetInDataBase(player, i, undefined, newTime, movement.resources, undefined);
         }
-        newTime = this._calcReturnTime(movement, horaActual);
-        this.returnFleetInDataBase(player, i, undefined, newTime, fun.zeroResources(), undefined);
         break;
       }
       case 4: { // Deployment
+        newTime = this._calcReturnTime(movement, horaActual);
         if(fun.estaColonizado(this.allCord, movement.coorHasta)){
           base.addPlanetData(movement.coorHasta, movement.resources, movement.ships, movement.destination === 2);
         }else{
-          this.sendMessage(player.name, {type: 3, title: "Failed deployment", text: "The deployment has failed. The comunication with the fleet has been lost...", data: {}});
+          this.sendMessage(player.name, {type: 3, title: "Failed deployment", text: "The planet no longer exists. The fleet is returning.", data: {}});
+          this.returnFleetInDataBase(player, i, undefined, newTime, movement.resources, movement.ships);
         }
         break;
       }
@@ -360,7 +389,7 @@ var exp  = {
   createNewPlanet: function(cord, planetName, playerName, playerTypeNew, initResources, initShips) {
     let typePlanet = fun.generateNewTypeOfPlanet(cord.pos, cord.sys % 2);
     return {idPlanet: Math.pow(500,2)*cord.gal + 500*cord.sys + cord.pos,
-      coordinates: cord,
+      coordinates: {gal: cord.gal, sys: cord.sys, pos: cord.pos},
       coordinatesCod: cord.gal + '_' + cord.sys, // Cordenadas del planeta hecho string
       player: playerName,
       playerType: playerTypeNew,
@@ -410,12 +439,19 @@ var exp  = {
   // rand=false forces sequential search instead of random placement
   newCord: function(rand = true) {
     // Busca un cordenada libre y la devuelve
-    let newCoor = {};
-    for(newCoor.gal = this.comienzoBusquedaNewCoor ; newCoor.gal<=9; newCoor.gal++){ // Comienza en la galaxia numero comienzoBusquedaNewCoor
-      for(newCoor.sys = 1 ; newCoor.sys<=499; newCoor.sys++){
-        for(newCoor.pos = 5 ; newCoor.pos<=10; newCoor.pos++){
-          if(!fun.estaColonizado(this.allCord, newCoor) && (!rand || Math.random() > 0.9)){
-            return newCoor;
+    // Un sistema solar puede tener como maximo 2 planetas
+    let gal, sys, pos;
+    for(gal = this.comienzoBusquedaNewCoor ; gal<=9; gal++){
+      for(sys = 1 ; sys<=499; sys++){
+        let sysCount = 0;
+        for(pos = 5 ; pos<=10; pos++){
+          if(fun.estaColonizado(this.allCord, {gal, sys, pos})) sysCount++;
+        }
+        if(sysCount >= 2) continue;
+        for(pos = 5 ; pos<=10; pos++){
+          const cand = {gal, sys, pos};
+          if(!fun.estaColonizado(this.allCord, cand) && (!rand || Math.random() > 0.9)){
+            return cand;
           }
         }
       }
@@ -424,7 +460,6 @@ var exp  = {
     if(rand){
       return this.newCord(false); // Si no encontro ninguna coordenada aletoriamente busca la primera que este libre
     }else{
-      // Si ya busco linealmente la primer coordenada libre y no hay, tira un mensaje de error y devuelve undefined
       console.log("There is no coordinate available.");
       return undefined;
     }
@@ -596,7 +631,7 @@ var exp  = {
   fleetInfo: function(planet, moon){
     let cantFleetAux = fun.getCantFleets(this.player);
     return {fleets: (moon) ? this.player.planets[planet].moon.fleet : this.player.planets[planet].fleet,
-            speed: fun.getListSpeed(this.player.research.combustion, this.player.research.impulse, this.player.research.hyperspace_drive),
+            speed: costs.getListSpeed(this.player.research.combustion, this.player.research.impulse, this.player.research.hyperspace_drive),
             misil: (moon) ? 0 : this.player.planets[planet].defense.interplanetaryMissile,
             expeditions: cantFleetAux.expeditions,
             maxExpeditions: Math.floor(Math.sqrt(this.player.research.astrophysics)),
@@ -703,6 +738,9 @@ var exp  = {
           researchConstrucctionAux.time      = fun.timeBuild(metal + crystal, objPrice.time.mult, objPrice.time.elev, this.universo.speed);
           researchConstrucction['researchConstrucction'] = researchConstrucctionAux;
           player.researchConstrucction = researchConstrucctionAux;
+          player.planets[planet].resources.metal     -= metal;
+          player.planets[planet].resources.crystal   -= crystal;
+          player.planets[planet].resources.deuterium -= deuterium;
           objInc['planets.' + planet + '.resources.metal']     = -metal;
           objInc['planets.' + planet + '.resources.crystal']   = -crystal;
           objInc['planets.' + planet + '.resources.deuterium'] = -deuterium;
@@ -761,6 +799,9 @@ var exp  = {
         shipyardConstrucctionAux.def = defensa;
         shipyardConstrucction['planets.' + planet + '.shipConstrucction'] = shipyardConstrucctionAux;
         player.planets[planet].shipConstrucction.push(shipyardConstrucctionAux);
+        player.planets[planet].resources.metal     -= metal * shipyardCant;
+        player.planets[planet].resources.crystal   -= crystal * shipyardCant;
+        player.planets[planet].resources.deuterium -= deuterium * shipyardCant;
         objInc['planets.' + planet + '.resources.metal']     = -metal*shipyardCant;
         objInc['planets.' + planet + '.resources.crystal']   = -crystal*shipyardCant;
         objInc['planets.' + planet + '.resources.deuterium'] = -deuterium*shipyardCant;
@@ -954,7 +995,7 @@ var exp  = {
     let neededDeuterium = 0;
     let maxCarga        = 0;
     let distancia       = fun.calculaDistancia(obj.coorDesde, obj.coorHasta, this.universo.donutGalaxy, this.universo.donutSystem);
-    let navesInfo       = fun.navesInfo(player.research.combustion, player.research.impulse, player.research.hyperspace_drive);
+    let navesInfo       = costs.navesInfo(player.research.combustion, player.research.impulse, player.research.hyperspace_drive);
     for(let item in obj.ships){
       if(item !== 'misil'){
         if(moon){
@@ -1080,9 +1121,10 @@ var exp  = {
           // Resto los misiles que se enviaron
           objInc['planets.$' + moonString + 'defense.interplanetaryMissile'] = -obj.ships['misil'];
           player.movement.push(pushObj);
-          player.planets[planet].resources.metal -= obj.resources.metal;
-          player.planets[planet].resources.crystal -= obj.resources.crystal;
-          player.planets[planet].resources.deuterium -= obj.resources.deuterium;
+          const _fleetResObj = moon ? player.planets[planet].moon.resources : player.planets[planet].resources;
+          _fleetResObj.metal     -= obj.resources.metal;
+          _fleetResObj.crystal   -= obj.resources.crystal;
+          _fleetResObj.deuterium -= obj.resources.deuterium;
           events.addElement({time: pushObjAux['llegada'], player: player.name});
           if(obj.mission >= 5 && fun.estaColonizado(this.allCord, obj.coorHasta)){ // Updateo al jugador atacado o espiado, un segundo antes de que llague la flota
             let destinoNamePlayer = fun.playerName(this.allCord, obj.coorHasta);
@@ -1297,107 +1339,85 @@ var exp  = {
     let research = this.player.research;
     let buildMoon = this.player.planets[planet].moon.active ? this.player.planets[planet].moon.buildings : fun.zeroBuildingsMoon();
     let t = costs.techRequirements(build, research, buildMoon);
-    return {
-      metalMine:              {tech: t.metalMine,              level: build.metalMine},
-      crystalMine:            {tech: t.crystalMine,            level: build.crystalMine},
-      deuteriumMine:          {tech: t.deuteriumMine,          level: build.deuteriumMine},
-      solarPlant:             {tech: t.solarPlant,             level: build.solarPlant},
-      fusionReactor:          {tech: t.fusionReactor,          level: build.fusionReactor},
-      metalStorage:           {tech: t.metalStorage,           level: build.metalStorage},
-      crystalStorage:         {tech: t.crystalStorage,         level: build.crystalStorage},
-      deuteriumStorage:       {tech: t.deuteriumStorage,       level: build.deuteriumStorage},
-      robotFactory:           {tech: t.robotFactory,           level: build.robotFactory},
-      shipyard:               {tech: t.shipyard,               level: build.shipyard},
-      researchLab:            {tech: t.researchLab,            level: build.researchLab},
-      alliance:               {tech: t.alliance,               level: build.alliance},
-      silo:                   {tech: t.silo,                   level: build.silo},
-      naniteFactory:          {tech: t.naniteFactory,          level: build.naniteFactory},
-      terraformer:            {tech: t.terraformer,            level: build.terraformer},
-      lunarBase:              {tech: t.lunarBase,              level: buildMoon.lunarBase},
-      phalanx:                {tech: t.phalanx,                level: buildMoon.phalanx},
-      spaceDock:              {tech: t.spaceDock,              level: buildMoon.spaceDock},
-      marketplace:            {tech: t.marketplace,            level: buildMoon.marketplace},
-      lunarSunshade:          {tech: t.lunarSunshade,          level: buildMoon.lunarSunshade},
-      lunarBeam:              {tech: t.lunarBeam,              level: buildMoon.lunarBeam},
-      jumpGate:               {tech: t.jumpGate,               level: buildMoon.jumpGate},
-      moonShield:             {tech: t.moonShield,             level: buildMoon.moonShield},
-      energy:                 {tech: t.energy,                 level: research.energy},
-      laser:                  {tech: t.laser,                  level: research.laser},
-      ion:                    {tech: t.ion,                    level: research.ion},
-      hyperspace:             {tech: t.hyperspace,             level: research.hyperspace},
-      plasma:                 {tech: t.plasma,                 level: research.plasma},
-      espionage:              {tech: t.espionage,              level: research.espionage},
-      computer:               {tech: t.computer,               level: research.computer},
-      astrophysics:           {tech: t.astrophysics,           level: research.astrophysics},
-      intergalactic:          {tech: t.intergalactic,          level: research.intergalactic},
-      graviton:               {tech: t.graviton,               level: research.graviton},
-      combustion:             {tech: t.combustion,             level: research.combustion},
-      impulse:                {tech: t.impulse,                level: research.impulse},
-      hyperspace_drive:       {tech: t.hyperspace_drive,       level: research.hyperspace_drive},
-      weapons:                {tech: t.weapons,                level: research.weapons},
-      shielding:              {tech: t.shielding,              level: research.shielding},
-      armour:                 {tech: t.armour,                 level: research.armour},
-      lightFighter:           {tech: t.lightFighter},
-      heavyFighter:           {tech: t.heavyFighter},
-      cruiser:                {tech: t.cruiser},
-      battleship:             {tech: t.battleship},
-      battlecruiser:          {tech: t.battlecruiser},
-      bomber:                 {tech: t.bomber},
-      destroyer:              {tech: t.destroyer},
-      deathstar:              {tech: t.deathstar},
-      smallCargo:             {tech: t.smallCargo},
-      largeCargo:             {tech: t.largeCargo},
-      colony:                 {tech: t.colony},
-      recycler:               {tech: t.recycler},
-      espionageProbe:         {tech: t.espionageProbe},
-      solarSatellite:         {tech: t.solarSatellite},
-      rocketLauncher:         {tech: t.rocketLauncher},
-      lightLaser:             {tech: t.lightLaser},
-      heavyLaser:             {tech: t.heavyLaser},
-      gauss:                  {tech: t.gauss},
-      ionCannon:              {tech: t.ionCannon},
-      plasmaTurret:           {tech: t.plasmaTurret},
-      smallShield:            {tech: t.smallShield},
-      largeShield:            {tech: t.largeShield},
-      antiballisticMissile:   {tech: t.antiballisticMissile},
-      interplanetaryMissile:  {tech: t.interplanetaryMissile},
-    };
+    let info = {};
+    costs.technologyList.forEach(item => {
+      let level;
+      if      (item.category === 'Planet Building' || item.category === 'Planet Facility') level = build[item.key] || 0;
+      else if (item.category === 'Lunar Facility')  level = buildMoon[item.key] || 0;
+      else if (item.category === 'Investigation')   level = research[item.key]  || 0;
+      info[item.key] = {tech: t[item.key], level};
+    });
+    return info;
   },
 
-  addNewPlayer: function(name, styleGame) {
-    let newCoor = this.newCord();
-    if(newCoor != undefined){
-      let newPlanet = this.createNewPlanet(newCoor, "Planeta Principal", name, 'activo', fun.zeroResources(), fun.zeroShips());
-      let password = fun.randomString();
-      this.allCord[newCoor.gal+'_'+newCoor.sys+'_'+newCoor.pos] = {espionage: 0, playerName: name};
-      let newPlayer = {'name': name,
-        'styleGame': styleGame,
-        pass: fun.hash(password),
-        planets: [newPlanet],
-        maxPlanets: 1,
-        highscore: this.cantPlayers + 1,
-        lastHighscore: this.cantPlayers + 1,
-        puntos: 0,
-        puntosAcum: 0,
-        vacas: [],
-        sendEspionage: 1,
-        sendSmall: 1,
-        sendLarge: 1,
-        dark: 8000,
-        messagesCant: 0,
-        messages: [],
-        movement: [],
-        researchConstrucction: false,
-        tutorial: [false, false, false, false, false, false, false, false, false, false],
-        research: fun.zeroResearch(),
-        lastVisit: fun.horaActual(),
-        type: "activo",
-        hazards: []
-      };
-      this.cantPlayers++;
-      base.insertPlayer(newPlayer);
-      return password;
+  addNewPlayer: async function(name, styleGame, botType) {
+    const existingNames = new Set(Object.values(this.allCord).map(v => v.playerName));
+    if(existingNames.has(name)){
+      console.log(`Player name '${name}' already exists.`);
+      return undefined;
     }
+    let newCoor = this.newCord();
+    if(newCoor == undefined || fun.estaColonizado(this.allCord, newCoor)){
+      console.log(`No free coordinate for player '${name}'.`);
+      return undefined;
+    }
+    let newPlanet = this.createNewPlanet(newCoor, "Planeta Principal", name, 'activo', fun.zeroResources(), fun.zeroShips());
+    let password = fun.randomString();
+    this.allCord[newCoor.gal+'_'+newCoor.sys+'_'+newCoor.pos] = {espionage: 0, playerName: name};
+    const botTemplate = (botType && botType !== 'human' && botTypes[botType])
+      ? JSON.parse(JSON.stringify(botTypes[botType])) : undefined;
+    if (botTemplate) {
+      botTemplate.planetProgress = {};
+      if (botTemplate.research) botTemplate.research.currentMission = 0;
+    }
+    let newPlayer = {'name': name,
+      'styleGame': styleGame,
+      ...(botType !== undefined && {'botType': botType}),
+      ...(botTemplate !== undefined && {'bot': botTemplate}),
+      pass: fun.hash(password),
+      planets: [newPlanet],
+      maxPlanets: 1,
+      highscore: this.cantPlayers + 1,
+      lastHighscore: this.cantPlayers + 1,
+      puntos: 0,
+      puntosAcum: 0,
+      vacas: [],
+      sendEspionage: 1,
+      sendSmall: 1,
+      sendLarge: 1,
+      dark: 8000,
+      messagesCant: 0,
+      messages: [],
+      movement: [],
+      researchConstrucction: false,
+      tutorial: [false, false, false, false, false, false, false, false, false, false],
+      research: fun.zeroResearch(),
+      lastVisit: fun.horaActual(),
+      type: "activo",
+      hazards: []
+    };
+    this.cantPlayers++;
+    try {
+      await base.insertPlayer(newPlayer);
+      if (botType && botType !== 'human') {
+        events.addElement({ time: fun.horaActual(), player: name });
+      }
+      return password;
+    } catch(err) {
+      console.error(`Failed to insert player '${name}':`, err.message);
+      this.cantPlayers--;
+      delete this.allCord[newCoor.gal+'_'+newCoor.sys+'_'+newCoor.pos];
+      return undefined;
+    }
+  },
+
+  deletePlayer: function(playerName, f){
+    for(let key in this.allCord){
+      if(this.allCord[key].playerName === playerName) delete this.allCord[key];
+    }
+    events.queue = events.queue.filter(e => e.player !== playerName);
+    this.cantPlayers--;
+    base.deletePlayer(playerName, f);
   },
 
   sendMessage: function(playerName, info) {
@@ -1550,14 +1570,14 @@ var exp  = {
     });
   },
 
-  recicleDebris: function(playerName, debris, movement){
+  recicleDebris: function(playerName, debris, movement, newMovTime, newMovLlegada){
     if(debris.active){
       let espacioLibre = fun.espacioLibre(movement);
       let capacidadDeCarga = Math.min(20000*movement.ships.recycler, espacioLibre);
       let newResources = fun.cargaEscombros(debris, capacidadDeCarga);
       let newDebris = {active: false, metal: debris.metal-newResources.metal, crystal: debris.crystal-newResources.crystal};
       newDebris.active = !(newDebris.metal <= 0 && newDebris.crystal <= 0);
-      base.addMovementResources(playerName, movement.time, movement.llegada, newResources.metal, newResources.crystal);
+      base.addMovementResources(playerName, newMovTime, newMovLlegada, newResources.metal, newResources.crystal);
       return newDebris;
     }
     return undefined;
@@ -1774,11 +1794,15 @@ var exp  = {
         let updateObj = events.useNext();
 
         // Si tengo que updatear al jugador que estoy usando, lo guardo en la base de datos y en el objeto uni.player
-        if(updateObj.player === this.player.name){
+        if(this.player && updateObj.player === this.player.name){
           base.getPlayer(updateObj.player, () => {}, false);
-        }else{ // Si no lo guardo solo en la base de datos
-          base.findAndExecuteByName(updateObj.player, (player) => {
-            this.updatePlayer(player, () => {});
+        }else if(!inFlightPlayers.has(updateObj.player)){ // Si no lo guardo solo en la base de datos
+          inFlightPlayers.add(updateObj.player);
+          const playerName = updateObj.player;
+          const self = this;
+          base.findAndExecuteByName(playerName, (player) => {
+            if(player) self.updatePlayer(player, () => { inFlightPlayers.delete(playerName); });
+            else inFlightPlayers.delete(playerName);
           });
         }
       }

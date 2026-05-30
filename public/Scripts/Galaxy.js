@@ -190,12 +190,14 @@ function galaxyChange(add){
   if(galaxyVal > 9) galaxyVal = 1;
   if(galaxyVal < 1) galaxyVal = 9;
   galaxyText.value = galaxyVal;
+  loadSystem(parseInt(galaxyText.value), parseInt(systemText.value));
 }
 function systemChange(add){
   let systemVal = parseInt(systemText.value) + add;
   if(systemVal > 499) systemVal = 1;
   if(systemVal < 1) systemVal = 499;
   systemText.value = systemVal;
+  loadSystem(parseInt(galaxyText.value), parseInt(systemText.value));
 }
 
 function updatePanel(nave){

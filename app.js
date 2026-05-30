@@ -8,6 +8,7 @@ var passport = require('passport');
 var indexRouter = require('./routes/paths/index');
 var usersRouter = require('./routes/paths/api');
 var botsRouter = require('./routes/paths/bot');
+var adminRouter = require('./routes/paths/admin');
 
 var app = express();
 
@@ -27,6 +28,7 @@ app.use(passport.initialize());
 app.use('/', indexRouter);
 app.use('/api', usersRouter);
 app.use('/bot', botsRouter);
+app.use('/admin', adminRouter);
 
 // Catch 404 and forward to error handler
 app.use(function(req, res, next) {
